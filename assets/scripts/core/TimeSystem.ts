@@ -31,9 +31,34 @@ export class TimeSystem {
     /** 离线结算上限（防止长期离线一次跳走太多天） */
     static readonly OFFLINE_MAX_DAYS = 2;
 
+    /** 季节长度（§6.2：每季 14 天轮转；crops.seasons 用英文键） */
+    static readonly SEASON_DAYS = 14;
+    static readonly SEASONS = ['spring', 'summer', 'autumn', 'winter'] as const;
+    static readonly SEASON_NAMES: Record<string, string> = {
+        spring: '春', summer: '夏', autumn: '秋', winter: '冬',
+    };
+
     /** 当前游戏日，从第 1 天开始 */
     dayIndex = 1;
     phase: DayPhase = DayPhase.Morning;
+
+    /** 当前季节（day1 起春→夏→秋→冬循环；§6.2 日历解耦真实时间） */
+    get season(): string {
+        const i = Math.floor((this.dayIndex - 1) / TimeSystem.SEASON_DAYS) % TimeSystem.SEASONS.length;
+        return TimeSystem.SEASONS[i];
+    }
+
+    /** 当前季节中文名（HUD 显示用） */
+    get seasonName(): string {
+        return TimeSystem.SEASON_NAMES[this.season] ?? this.season;
+    }
+
+    /** 作物是否当季可种（crops.seasons 空数组视为全年可种） */
+    static cropInSeason(seasons: unknown): boolean {
+        const list = Array.isArray(seasons) ? seasons : [];
+        if (list.length === 0) return true;
+        return list.indexOf(TimeSystem.inst.season) >= 0;
+    }
 
     /** 在线显式推进一天（「结束一天」按钮/流程调用） */
     endDay(): void {

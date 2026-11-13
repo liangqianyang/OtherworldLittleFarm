@@ -65,13 +65,17 @@ export class FarmSystem {
         return this._farm.plots[index] ?? null;
     }
 
-    /** 播种：消耗种子（由调用方扣背包），返回是否成功 */
+    /** 播种：消耗种子（由调用方扣背包），返回是否成功；非当季拒绝（§6.1 季节限定） */
     plant(index: number, seedItemId: string): boolean {
         if (this._farm.plots[index]) return false;
         const cropId = seedItemId.replace(/_seed$/, '');
         const def = DataManager.inst.getRow('catalogs/crops', cropId);
         if (!def) {
             console.warn(`[Farm] 种子 ${seedItemId} 没有对应作物表行`);
+            return false;
+        }
+        if (!TimeSystem.cropInSeason(def.seasons)) {
+            EventBus.inst.emit('farmChanged', { action: 'plant_offseason' });
             return false;
         }
         this._farm.plots[index] = {

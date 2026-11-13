@@ -6,6 +6,7 @@ import { TimeSystem } from '../core/TimeSystem';
 import { GameApp } from '../app/GameApp';
 import { DefenseSystem, FieldMonster } from '../gameplay/defense/DefenseSystem';
 import { SpriteLib } from '../core/SpriteLib';
+import { SfxLib } from '../core/SfxLib';
 
 /** 怪物 id → 精灵路径 */
 function monsterSprite(mid: string): string {
@@ -189,6 +190,7 @@ export class DefenseOverlay extends Component {
         // 终局 → 弹结果面板
         if (s.over && !this._resultRoot.active) {
             this._resultRoot.active = true;
+            SfxLib.inst.play(s.won ? 'win' : 'lose');
             const txt = this._resultRoot.getChildByName('resultText')!.getComponent(Label)!;
             txt.string = s.won
                 ? `封印守住了！\n击杀 ${s.killed} 只怪物，无一漏网。\n守门人的谢礼已放进背包。`
@@ -251,7 +253,8 @@ export class DefenseOverlay extends Component {
         n.addChild(lbl);
 
         n.on(Node.EventType.TOUCH_END, () => {
-            DefenseSystem.inst.playerHit(mo.uid);
+            const r = DefenseSystem.inst.playerHit(mo.uid);
+            SfxLib.inst.play(r === 'kill' ? 'hit' : r === 'hit' ? 'hit' : 'deny');
         });
         return n;
     }

@@ -160,14 +160,18 @@ export class PlotView extends Component {
         else this._label.string = p.wateredOnDay === TimeSystem.inst.dayIndex ? '已浇' : '浇水';
     }
 
-    /** 从背包挑一颗可种的种子（items 表顺序=解锁顺序，先到先种） */
-    private _pickSeed(inv: Record<string, number>): string | null {
+    /** 从背包挑一颗可种的种子（items 表顺序=解锁顺序，先到先种；只挑当季的，§6.1） */
+    private _pickSeed(inv: Record<string, number>): { seed: string | null; offseason: boolean } {
         const rows = DataManager.inst.getRows('catalogs/items');
+        let offseason = false;
         for (const r of rows) {
             const id = String(r['id']);
-            if (r['category'] === 'seed' && (inv[id] ?? 0) > 0) return id;
+            if (r['category'] !== 'seed' || (inv[id] ?? 0) <= 0) continue;
+            const crop = DataManager.inst.getRow('catalogs/crops', id.replace(/_seed$/, ''));
+            if (TimeSystem.cropInSeason(crop ? crop.seasons : null)) return { seed: id, offseason: false };
+            offseason = true;
         }
-        return null;
+        return { seed: null, offseason };
     }
 
     private _onTap(): void {
@@ -176,12 +180,13 @@ export class PlotView extends Component {
         const farm = FarmSystem.inst;
         const p = farm.getPlot(this.index);
         if (!p) {
-            const seed = this._pickSeed(app.inventory);
-            if (seed && farm.plant(this.index, seed)) {
-                app.spendItem(seed, 1);
+            const pick = this._pickSeed(app.inventory);
+            if (pick.seed && farm.plant(this.index, pick.seed)) {
+                app.spendItem(pick.seed, 1);
                 app.persist('plant');
             } else {
-                this._label.string = '缺种子'; // 立即可见反馈，下次 farmChanged 恢复
+                // 立即可见反馈，下次 farmChanged 恢复
+                this._label.string = pick.offseason ? '非当季' : '缺种子';
             }
         } else if (farm.isMature(p)) {
             if (farm.harvest(this.index, (id, c) => app.giveItem(id, c))) {

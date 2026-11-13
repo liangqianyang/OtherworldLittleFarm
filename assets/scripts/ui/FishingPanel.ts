@@ -2,6 +2,7 @@ import { _decorator, Component, Node, Label, Graphics, Color, UITransform, Event
 import { FishingSystem } from '../gameplay/fishing/FishingSystem';
 import { DataManager } from '../core/DataManager';
 import { SpriteLib } from '../core/SpriteLib';
+import { SfxLib } from '../core/SfxLib';
 import { Sprite } from 'cc';
 
 const { ccclass } = _decorator;
@@ -17,6 +18,8 @@ export class FishingPanel extends Component {
     private _float: Node = null!;
     private _mark: Label = null!;
     private _elapsed = 0;
+    private _wasBiting = false;
+    private _resultPlayed = false;
 
     static readonly LAYER = 33554432;
 
@@ -126,22 +129,29 @@ export class FishingPanel extends Component {
             if (sys.lastResult === 'caught') {
                 const def: any = DataManager.inst.getRow('catalogs/fish', sys.lastFishId);
                 this._state.string = `钓到了！${def?.['name'] ?? '鱼'} 入包`;
+                if (!this._resultPlayed) { SfxLib.inst.play('harvest'); this._resultPlayed = true; }
             } else if (sys.lastResult === 'early') {
                 this._state.string = '太急了，鱼被吓跑…（点击再抛竿）';
+                if (!this._resultPlayed) { SfxLib.inst.play('deny'); this._resultPlayed = true; }
             } else if (sys.lastResult === 'miss') {
                 this._state.string = '鱼溜走了…（点击再抛竿）';
+                if (!this._resultPlayed) { SfxLib.inst.play('deny'); this._resultPlayed = true; }
             } else {
                 this._state.string = '点击水塘开始钓鱼';
+                this._resultPlayed = false;
             }
             this._float.setPosition(0, 10);
             this._mark.string = '';
             return;
         }
         if (sys.biting) {
+            if (!this._wasBiting) { SfxLib.inst.play('bite'); }
+            this._wasBiting = true;
             this._state.string = '咬钩了！！点击提竿！';
             this._float.setPosition(0, 2); // 下沉
             this._mark.string = '!';
         } else {
+            this._wasBiting = false;
             this._state.string = '等待咬钩…';
             this._float.setPosition(0, 10 + Math.sin(this._elapsed * 3) * 4); // 浮动
             this._mark.string = '';

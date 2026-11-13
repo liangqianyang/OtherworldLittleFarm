@@ -2,6 +2,7 @@ import { _decorator, Component, Node, Label, Graphics, Color, UITransform, Event
 import { AdventureSystem } from '../gameplay/adventure/AdventureSystem';
 import { EventBus } from '../core/EventBus';
 import { SpriteLib } from '../core/SpriteLib';
+import { SfxLib } from '../core/SfxLib';
 
 const { ccclass } = _decorator;
 
@@ -99,7 +100,8 @@ export class BattlePanel extends Component {
         } else if (result === 'lose') {
             this._log.string = '你倒下了……丢失了一半收获，被送回农场';
             this.scheduleOnce(() => { this.node.active = false; }, 1.4);
-        } else {
+        } else if (result === 'hit') {
+            SfxLib.inst.play('hit');
             const dodged = b.playerHp === AdventureSystem.inst.run!.playerHp && Math.random() < 2; // 日志展示用
             this._log.string = `造成伤害！${b.monsterName} 反击 -${b.damage}${dodged ? '' : ''}`;
         }

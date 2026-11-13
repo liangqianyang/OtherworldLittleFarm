@@ -10,9 +10,10 @@ import { BackpackPanel } from './BackpackPanel';
 import { BedtimeDialog } from './BedtimeDialog';
 import { TutorialGuide } from './TutorialGuide';
 import { DefenseOverlay } from './DefenseOverlay';
+import { DialogPanel } from './DialogPanel';
+import { PauseOverlay } from './PauseOverlay';
 import { DefenseSystem } from '../gameplay/defense/DefenseSystem';
 import { FishingPanel } from './FishingPanel';
-import { DialogPanel } from './DialogPanel';
 
 /**
  * FarmHUD 顶栏（阶段 2.2 布局正式化）：
@@ -29,6 +30,7 @@ export class FarmHUD extends Component {
     private _defense: DefenseOverlay | null = null;
     private _fishing: FishingPanel | null = null;
     private _dialog: DialogPanel | null = null;
+    private _pause: PauseOverlay | null = null;
     private _intelLabel: Label | null = null;
 
     onLoad(): void {
@@ -64,6 +66,8 @@ export class FarmHUD extends Component {
             if (!this._fishing) return;
             this._fishing.node.active = !this._fishing.node.active;
         });
+        // 暂停（§17）：主动暂停遮罩
+        this._makeButton('暂停', -560, -192, () => this._pause?.open());
 
         // 背包面板 + 睡觉弹窗 + 防守覆盖层 + 钓鱼面板 + 对话面板 + 新档引导（挂 HUD 所在 Canvas）
         const canvas = this.node.parent;
@@ -73,6 +77,7 @@ export class FarmHUD extends Component {
             this._bedtime.defenseOverlay = this._defense = DefenseOverlay.create(canvas, this.node.layer);
             this._fishing = FishingPanel.create(canvas, this.node.layer);
             this._dialog = DialogPanel.create(canvas, this.node.layer);
+            this._pause = PauseOverlay.create(canvas, this.node.layer);
             TutorialGuide.maybeStart(canvas, this.node.layer);
             this._makeNpcs(canvas);
         }
@@ -197,7 +202,7 @@ export class FarmHUD extends Component {
         const inv = GameApp.inst?.inventory ?? {};
         const label = this.getComponent(Label);
         if (label) {
-            label.string = `第 ${TimeSystem.inst.dayIndex} 天 · 金币${inv['gold'] ?? 0} · 种子${inv['carrot_seed'] ?? 0} · 萝卜${inv['carrot'] ?? 0}`;
+            label.string = `第 ${TimeSystem.inst.dayIndex} 天·${TimeSystem.inst.seasonName} · 金币${inv['gold'] ?? 0} · 种子${inv['carrot_seed'] ?? 0} · 萝卜${inv['carrot'] ?? 0}`;
         }
         this._refreshShops();
         this._refreshIntel();

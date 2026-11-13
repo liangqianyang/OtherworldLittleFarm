@@ -8,6 +8,7 @@ import { SaveManager, SaveDataV1 } from '../core/SaveManager';
 import { IPlatformAdapter } from '../platform/IPlatformAdapter';
 import { LocalAdapter } from '../platform/LocalAdapter';
 import { DebugPanel } from '../ui/DebugPanel';
+import { SfxLib } from '../core/SfxLib';
 import { FarmSystem } from '../gameplay/farm/FarmSystem';
 
 /** 设计分辨率（§17：1280×720 横屏，锁定高度——竖向安全区恒定 ±360） */
@@ -72,6 +73,9 @@ export class GameApp extends Component {
 
         // 切后台 = 立即存档（红线：挂后台暂停游戏内时间；引擎 rAF 停转即天然暂停）
         this.adapter!.onHide(() => this.persist('onHide'));
+
+        // 合成音效事件挂点（farmChanged/itemGained/itemSpent → SfxLib）
+        SfxLib.inst.bindEvents();
 
         if (this.DEBUG) this.node.addComponent(DebugPanel);
 
