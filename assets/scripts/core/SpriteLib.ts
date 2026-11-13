@@ -1,8 +1,10 @@
-import { assetManager, SpriteFrame, TextureFilter, Bundle } from 'cc';
+import { assetManager, SpriteFrame, Bundle } from 'cc';
 
 /**
  * SpriteLib —— texture Bundle 的 SpriteFrame 运行时加载器（阶段 2.5）。
- * 所有像素素材按 16/32px 网格生成，加载后强制 NEAREST 采样保证像素锐利。
+ * 像素锐利采样配置在各 png.meta 导入层（minfilter/magfilter=nearest、trimType=false 关裁剪）。
+ * ⚠️ 不要在这里 import TextureFilter 等枚举值：预览构建下枚举值导入为 undefined，
+ *    TextureFilter.NEAREST 会抛 "Cannot read properties of undefined (reading 'NEAREST')"（已踩坑）。
  * init 失败（素材未生成/Bundle 不存在）时调用方应回退到 Graphics 占位渲染。
  *
  * 路径约定：Bundle 'texture' 挂在 assets/textures/，条目形如 'tiles/plot_soil/spriteFrame'。
@@ -40,7 +42,6 @@ export class SpriteLib {
             const frame = await new Promise<SpriteFrame | null>((res) =>
                 bundle.load(`${path}/spriteFrame`, SpriteFrame, (err, s) => res(err ? null : s as SpriteFrame)));
             if (frame) {
-                frame.texture?.setFilters(TextureFilter.NEAREST, TextureFilter.NEAREST);
                 this._frames.set(path, frame);
             } else {
                 console.warn(`[SpriteLib] 缺素材: ${path}`);
