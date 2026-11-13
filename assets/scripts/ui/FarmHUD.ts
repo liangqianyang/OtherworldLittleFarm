@@ -5,15 +5,19 @@ import { EventBus } from '../core/EventBus';
 import { TimeSystem } from '../core/TimeSystem';
 import { GameApp } from '../app/GameApp';
 import { EconomySystem } from '../systems/EconomySystem';
+import { BackpackPanel } from './BackpackPanel';
 
 /**
- * FarmHUD 顶栏（阶段 2.1）：第X天 · 金币 · 种子 · 胡萝卜 + 跳一天/存档/卖粮/买种子 按钮。
- * 占位 Graphics 风格，阶段 2.5 换像素素材；布局正式化在 2.2 完整顶栏。
+ * FarmHUD 顶栏（阶段 2.2 布局正式化）：
+ * 中央信息（天/金币/种子/萝卜）· 左角 卖粮+买种子 · 右角 跳一天+存档+背包。
+ * 1280×720 设计分辨率，按钮 110×52 距边 ≥24px（§17 安全区）。
+ * 占位 Graphics 风格，阶段 2.5 换像素素材。
  */
 @ccclass('FarmHUD')
 export class FarmHUD extends Component {
     private _sellLabel: Label | null = null;
     private _buyLabel: Label | null = null;
+    private _panel: BackpackPanel | null = null;
 
     onLoad(): void {
         EventBus.inst.on('dayAdvanced', this._refresh, this);
@@ -23,22 +27,33 @@ export class FarmHUD extends Component {
     }
 
     start(): void {
-        this._makeButton('跳一天', 360, () => {
+        // 左角：经济（出货/买种）—— x=-560 → 绝对边距 640-560-55=25px ≥24 ✓
+        this._sellLabel = this._makeButton('卖粮(0)', -560, 0, () => this._onSell());
+        this._buyLabel = this._makeButton('买种子', -560, -64, () => this._onBuySeed());
+
+        // 右角：流程（背包/跳天/存档）
+        this._makeButton('背包', 560, 0, () => this._panel?.open());
+        this._makeButton('跳一天', 560, -64, () => {
             TimeSystem.inst.endDay();
             GameApp.inst?.persist('endDay'); // 关键节点落盘（§12）
         });
-        this._makeButton('存档', 500, () => GameApp.inst?.persist('manual'));
+        this._makePersistButton();
 
-        // 经济闭环（阶段 2.1）：卖粮/买种子
-        this._sellLabel = this._makeButton('卖粮(0)', -490, () => this._onSell());
-        this._buyLabel = this._makeButton('买种子', -365, () => this._onBuySeed());
-        this._refreshShops();
+        // 背包面板（挂 HUD 所在 Canvas，隐藏备用）
+        const canvas = this.node.parent;
+        if (canvas) this._panel = BackpackPanel.create(canvas, this.node.layer);
     }
 
     onDestroy(): void {
         EventBus.inst.off('dayAdvanced', this._refresh, this);
         EventBus.inst.off('itemGained', this._refresh, this);
         EventBus.inst.off('itemSpent', this._refresh, this);
+    }
+
+    /** 存档按钮单独放（低频操作，底部右角更不误触） */
+    private _makePersistButton(): void {
+        // 占位：阶段 2.3 bedtime 流程接管后，手动存档降级为设置页功能
+        this._makeButton('存档', 560, -82, () => GameApp.inst?.persist('manual'));
     }
 
     private _onSell(): void {
@@ -66,7 +81,7 @@ export class FarmHUD extends Component {
         const inv = GameApp.inst?.inventory ?? {};
         const label = this.getComponent(Label);
         if (label) {
-            label.string = `第 ${TimeSystem.inst.dayIndex} 天 · 金币×${inv['gold'] ?? 0} · 种子×${inv['carrot_seed'] ?? 0} · 胡萝卜×${inv['carrot'] ?? 0}`;
+            label.string = `第 ${TimeSystem.inst.dayIndex} 天 · 金币${inv['gold'] ?? 0} · 种子${inv['carrot_seed'] ?? 0} · 萝卜${inv['carrot'] ?? 0}`;
         }
         this._refreshShops();
     }
@@ -80,11 +95,11 @@ export class FarmHUD extends Component {
     }
 
     /** 程序化占位按钮（Graphics，同 PlotView 风格）；返回文本 Label 供动态刷新 */
-    private _makeButton(text: string, x: number, onTap: () => void): Label {
+    private _makeButton(text: string, x: number, y: number, onTap: () => void): Label {
         const node = new Node(`btn_${text}`);
         node.layer = this.node.layer; // 继承 UI_2D，否则相机不渲染
         node.addComponent(UITransform).setContentSize(110, 52);
-        node.setPosition(x, 0);
+        node.setPosition(x, y);
 
         const g = node.addComponent(Graphics)!;
         g.fillColor = new Color(60, 48, 38, 255);
