@@ -131,3 +131,8 @@
 - 症状：reload 后农场偶发停留在 Graphics 占位样式（console 明明 [SpriteLib] 8/8）。
 - 根因：首帧早于 Bundle 加载完成，PlotView 已按占位模式绘制；素材就绪后无人通知重绘。
 - 解法：SpriteLib.init 完成后 `EventBus.emit('farmChanged', {action:'sprites_ready'})`，PlotView 等视图已订阅 farmChanged 全量重绘——异步资源就绪统一走事件广播，不做轮询。
+
+## 26. 后台标签页 RAF 停转，引擎帧循环暂停（2026-11-13）
+- 症状：bsk 控制的预览标签页失焦（后台）时，`Component.update` 完全不执行——DefenseOverlay 怪物节点不创建、结果面板不弹，但 `console.log` 与事件派发正常，极易误判为代码 bug。
+- 根因：浏览器对后台标签页暂停 requestAnimationFrame，Cocos 主循环停转；直调的方法（evaluate 里手动调用）照常执行。
+- 解法：自动化验证时手动驱动帧循环——状态机用 `__debug.defTick(0.5)×N`，UI 同步用 `comp.update(0.05)` 直调组件 update。前台人工试玩不受影响；判定「update 没跑」前先确认标签页是否在前台。
