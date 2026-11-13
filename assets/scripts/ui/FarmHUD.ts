@@ -6,6 +6,7 @@ import { TimeSystem } from '../core/TimeSystem';
 import { GameApp } from '../app/GameApp';
 import { EconomySystem } from '../systems/EconomySystem';
 import { BackpackPanel } from './BackpackPanel';
+import { BedtimeDialog } from './BedtimeDialog';
 
 /**
  * FarmHUD 顶栏（阶段 2.2 布局正式化）：
@@ -18,6 +19,7 @@ export class FarmHUD extends Component {
     private _sellLabel: Label | null = null;
     private _buyLabel: Label | null = null;
     private _panel: BackpackPanel | null = null;
+    private _bedtime: BedtimeDialog | null = null;
 
     onLoad(): void {
         EventBus.inst.on('dayAdvanced', this._refresh, this);
@@ -37,18 +39,18 @@ export class FarmHUD extends Component {
             if (this._panel.node.active) this._panel.close();
             else this._panel.open();
         });
-        this._makeButton('跳一天', 560, -64, () => {
-            TimeSystem.inst.endDay();
-            GameApp.inst?.persist('endDay'); // 关键节点落盘（§12）
-        });
+        this._makeButton('跳一天', 560, -64, () => this._bedtime?.open());
         const saveLabel = this._makeButton('存档', 560, -128, () => {
             GameApp.inst?.persist('manual');
             this._flash(saveLabel, '已存档✓', '存档');
         });
 
-        // 背包面板（挂 HUD 所在 Canvas，隐藏备用）
+        // 背包面板 + 睡觉弹窗（挂 HUD 所在 Canvas，隐藏备用）
         const canvas = this.node.parent;
-        if (canvas) this._panel = BackpackPanel.create(canvas, this.node.layer);
+        if (canvas) {
+            this._panel = BackpackPanel.create(canvas, this.node.layer);
+            this._bedtime = BedtimeDialog.create(canvas, this.node.layer);
+        }
     }
 
     onDestroy(): void {
