@@ -1,0 +1,8 @@
+- insert:
+    - id: cocos-creator-mcp
+      name: '@deepseek-ai/dsh-mcp-client'
+      config:
+        serverName: cocos-creator
+        transport: streamable-http
+        url: http://127.0.0.1:3000/mcp
+        failOnStartupError: true
