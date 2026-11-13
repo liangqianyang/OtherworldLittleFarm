@@ -46,6 +46,8 @@ export class PlotView extends Component {
         soilNode.layer = this.node.layer;
         soilNode.addComponent(UITransform).setContentSize(ART, ART);
         this._soil = soilNode.addComponent(Sprite)!;
+        // 必须在赋 spriteFrame 之前设 CUSTOM：默认 TRIMMED 模式下赋图会把 UITransform 重置回图片原始 32px
+        this._soil.sizeMode = Sprite.SizeMode.CUSTOM;
         soilNode.setPosition(0, 0);
         this.node.addChild(soilNode);
 
@@ -53,6 +55,7 @@ export class PlotView extends Component {
         cropNode.layer = this.node.layer;
         cropNode.addComponent(UITransform).setContentSize(ART, ART);
         this._crop = cropNode.addComponent(Sprite)!;
+        this._crop.sizeMode = Sprite.SizeMode.CUSTOM;
         cropNode.setPosition(0, 10); // 作物略上移，露出土里的萝卜
         this.node.addChild(cropNode);
 
@@ -89,7 +92,6 @@ export class PlotView extends Component {
         const soilFrame = lib.get(wet ? 'tiles/plot_soil_wet' : 'tiles/plot_soil');
         if (soilFrame) {
             this._soil.spriteFrame = soilFrame;
-            this._soil.sizeMode = Sprite.SizeMode.CUSTOM;
             this._soil.node.active = true;
         }
 
@@ -104,7 +106,6 @@ export class PlotView extends Component {
             const cropFrame = lib.get(stage);
             if (cropFrame) {
                 this._crop.spriteFrame = cropFrame;
-                this._crop.sizeMode = Sprite.SizeMode.CUSTOM;
                 this._crop.node.active = true;
             }
         } else {

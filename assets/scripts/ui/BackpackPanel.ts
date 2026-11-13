@@ -142,8 +142,8 @@ export class BackpackPanel extends Component {
         n.addComponent(UITransform).setContentSize(32, 32); // 16px 素材 ×2 整数缩放
         n.setPosition(x, y);
         const s = n.addComponent(Sprite)!;
+        s.sizeMode = Sprite.SizeMode.CUSTOM; // 先设 CUSTOM：默认 TRIMMED 赋图会把尺寸重置回图片原始 16px
         s.spriteFrame = frame;
-        s.sizeMode = Sprite.SizeMode.CUSTOM;
         parent.addChild(n);
     }
 
