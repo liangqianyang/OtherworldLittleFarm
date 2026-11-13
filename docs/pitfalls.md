@@ -91,3 +91,12 @@
 
 ### 18. 布局重叠自查
 - 程序化 UI 按钮堆叠时按行规划 y 坐标（HUD 右角三行：0/-64/-128）；截图验收时专门看遮挡。
+
+## 19. 千问 Token Plan 文生图 API 契约（2026-11-13 实测）
+- **key 只认 token-plan 域名**：`https://token-plan.maas.qianwenaiapi.com`；通用 `maas.qianwenaiapi.com` 对 token-plan key 返回 401。
+- **兼容模式 `/compatible-mode/v1/images/generations` 不可用**（400 "url error"），`multimodal-generation` 端点 403。
+- **可用端点**：原生异步 `POST /api/v1/services/aigc/image-generation/generation`，header `X-DashScope-Async: enable`，body 用 `input.messages[{role:user,content:[{text:prompt}]}]`（新模型不认老 `input.prompt`，报 "Field required: input.messages"）。
+- **轮询** `GET /api/v1/tasks/{id}`（~50s/张），结果 URL 在 `output.choices[0].message.content[0].image`（不在 `results[0].url`，OpenAI 形状的记忆会踩 KeyError）。
+- **模型不会画纯 #FF00FF 品红底**（会画成 (200,54,118) 类柔和洋红）——抠透明必须取角点色做参考再按色距抠（tol=90），不能用固定品红阈值。
+- RGBA 图 Pillow 量化必须 `Image.FASTOCTREE`（MEDIANCUT 直接报错）。
+- 复现入口：`python3 tools/gen_pixel_art.py [--only id] [--model X]`，密钥在 `.secrets/qwen.key`（已 gitignore，且 CC Safety Net 禁止 agent 读 .key 路径）。
