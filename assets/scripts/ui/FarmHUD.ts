@@ -45,6 +45,11 @@ export class FarmHUD extends Component {
             GameApp.inst?.persist('manual');
             this._flash(saveLabel, '已存档✓', '存档');
         });
+        // 探险入口（阶段 3）：存档后切探险场景
+        this._makeButton('出发探险', 560, -192, () => {
+            GameApp.inst?.persist('adventure_start');
+            GameApp.inst?.loadAdventure();
+        });
 
         // 背包面板 + 睡觉弹窗 + 新档引导（挂 HUD 所在 Canvas）
         const canvas = this.node.parent;

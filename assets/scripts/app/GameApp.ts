@@ -101,6 +101,15 @@ export class GameApp extends Component {
         return this.saveData?.inventory ?? {};
     }
 
+    /** 场景切换样板：农场 ⇄ 探险（AdventureHUD 出口/放弃、FarmHUD 出发按钮共用） */
+    loadFarm(): void {
+        director.loadScene('farm');
+    }
+
+    loadAdventure(): void {
+        director.loadScene('adventure');
+    }
+
     /** 扣减背包（播种等），数量不足返回 false */
     spendItem(itemId: string, count: number): boolean {
         const inv = this.saveData?.inventory;
