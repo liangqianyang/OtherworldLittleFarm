@@ -23,6 +23,7 @@ export class FarmGrid extends Component {
             const col = i % GRID_COLS;
             const row = Math.floor(i / GRID_COLS);
             const node = new Node(`plot_${i}`);
+            node.layer = this.node.layer; // 程序化节点默认 DEFAULT 层，UI 相机看不见——继承父层(UI_2D)
             node.addComponent(UITransform);
             node.setPosition(originX + col * step, originY - row * step);
             this.node.addChild(node);

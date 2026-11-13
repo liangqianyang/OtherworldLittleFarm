@@ -27,6 +27,7 @@ export class PlotView extends Component {
         this.node.getComponent(UITransform)!.setContentSize(CELL, CELL);
         this._g = this.addComponent(Graphics)!;
         const labelNode = new Node('plotLabel');
+        labelNode.layer = this.node.layer; // 同上：继承 UI_2D 层，否则相机不渲染
         labelNode.addComponent(UITransform);
         this._label = labelNode.addComponent(Label)!;
         this._label.fontSize = 22;
@@ -87,6 +88,7 @@ export class PlotView extends Component {
 
     private _onTap(): void {
         const app = GameApp.inst;
+        if (!app) return; // 直开 farm 场景预览时 GameApp 未启动(launch 场景才装配服务)
         const farm = FarmSystem.inst;
         const p = farm.getPlot(this.index);
         if (!p) {
