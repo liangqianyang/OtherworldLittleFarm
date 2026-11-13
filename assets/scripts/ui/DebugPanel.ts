@@ -5,6 +5,7 @@ import { GameApp } from '../app/GameApp';
 import { TimeSystem } from '../core/TimeSystem';
 import { AdventureSystem } from '../gameplay/adventure/AdventureSystem';
 import { DefenseSystem } from '../gameplay/defense/DefenseSystem';
+import { FishingSystem } from '../gameplay/fishing/FishingSystem';
 
 /**
  * DebugPanel —— 第一周就要的调试红利（建议书 §7）：
@@ -160,6 +161,44 @@ export class DebugPanel extends Component {
 
     defSettle(): void {
         console.log(`[Debug] settle → ${JSON.stringify(DefenseSystem.inst.settle())}`);
+    }
+
+    // ===== 钓鱼驱动（阶段 5 浏览器自测用） =====
+
+    /** 查看钓鱼状态机 */
+    fishDump(): void {
+        const sys = FishingSystem.inst;
+        console.log(`[Debug] fish cast=${JSON.stringify(sys.cast)} biting=${sys.biting} last=${sys.lastResult}`);
+    }
+
+    /** 抛竿（自动在 farm 场景 HUD 可用时） */
+    fishCast(): void {
+        const ok = FishingSystem.inst.castRod();
+        console.log(`[Debug] fishCast → ${ok}`);
+        this.fishDump();
+    }
+
+    /** 推进 N 秒（传小数；RAF 停转时手动驱动） */
+    fishTick(sec: number): void {
+        FishingSystem.inst.tick(sec);
+        console.log(`[Debug] fishTick(+${sec}s)`);
+        this.fishDump();
+    }
+
+    /** 直接快进到咬钩窗口中间（跳过等待） */
+    fishToBite(): void {
+        const sys = FishingSystem.inst;
+        if (!sys.cast) { console.log('[Debug] fishToBite: no cast'); return; }
+        const need = sys.cast.biteAt - sys.cast.elapsed + 0.05;
+        sys.tick(need);
+        console.log(`[Debug] fishToBite → +${need.toFixed(2)}s`);
+        this.fishDump();
+    }
+
+    /** 提竿 */
+    fishHook(): void {
+        console.log(`[Debug] fishHook → ${FishingSystem.inst.hook()}`);
+        this.fishDump();
     }
 
     private _onKey(event: EventKeyboard): void {

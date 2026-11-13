@@ -10,6 +10,7 @@ import { BedtimeDialog } from './BedtimeDialog';
 import { TutorialGuide } from './TutorialGuide';
 import { DefenseOverlay } from './DefenseOverlay';
 import { DefenseSystem } from '../gameplay/defense/DefenseSystem';
+import { FishingPanel } from './FishingPanel';
 
 /**
  * FarmHUD 顶栏（阶段 2.2 布局正式化）：
@@ -24,6 +25,7 @@ export class FarmHUD extends Component {
     private _panel: BackpackPanel | null = null;
     private _bedtime: BedtimeDialog | null = null;
     private _defense: DefenseOverlay | null = null;
+    private _fishing: FishingPanel | null = null;
     private _intelLabel: Label | null = null;
 
     onLoad(): void {
@@ -54,13 +56,19 @@ export class FarmHUD extends Component {
             GameApp.inst?.persist('adventure_start');
             GameApp.inst?.loadAdventure();
         });
+        // 钓鱼入口（阶段 5）：开关小面板
+        this._makeButton('钓鱼', -560, -128, () => {
+            if (!this._fishing) return;
+            this._fishing.node.active = !this._fishing.node.active;
+        });
 
-        // 背包面板 + 睡觉弹窗 + 防守覆盖层 + 新档引导（挂 HUD 所在 Canvas）
+        // 背包面板 + 睡觉弹窗 + 防守覆盖层 + 钓鱼面板 + 新档引导（挂 HUD 所在 Canvas）
         const canvas = this.node.parent;
         if (canvas) {
             this._panel = BackpackPanel.create(canvas, this.node.layer);
             this._bedtime = BedtimeDialog.create(canvas, this.node.layer);
             this._bedtime.defenseOverlay = this._defense = DefenseOverlay.create(canvas, this.node.layer);
+            this._fishing = FishingPanel.create(canvas, this.node.layer);
             TutorialGuide.maybeStart(canvas, this.node.layer);
         }
 

@@ -1,0 +1,32 @@
+[
+  {
+    "id": "crucian",
+    "name": "鲫鱼",
+    "rarity": "common",
+    "difficulty": 1,
+    "catchWindowSec": 0.9,
+    "sellPrice": 12,
+    "waitSec": [1.5, 4.0],
+    "weight": 70
+  },
+  {
+    "id": "perch",
+    "name": "鲈鱼",
+    "rarity": "common",
+    "difficulty": 2,
+    "catchWindowSec": 0.62,
+    "sellPrice": 20,
+    "waitSec": [2.0, 5.0],
+    "weight": 25
+  },
+  {
+    "id": "moonfish",
+    "name": "月光鱼",
+    "rarity": "rare",
+    "difficulty": 4,
+    "catchWindowSec": 0.42,
+    "sellPrice": 55,
+    "waitSec": [3.0, 6.0],
+    "weight": 5
+  }
+]

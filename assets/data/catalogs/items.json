@@ -106,5 +106,29 @@
     "stackable": true,
     "sellPrice": 4,
     "description": "粘怪的凝胶，合成材料"
+  },
+  {
+    "id": "crucian",
+    "name": "鲫鱼",
+    "category": "fish",
+    "stackable": true,
+    "sellPrice": 12,
+    "description": "常见淡水鱼（难度1·窗口0.9s）"
+  },
+  {
+    "id": "perch",
+    "name": "鲈鱼",
+    "category": "fish",
+    "stackable": true,
+    "sellPrice": 20,
+    "description": "机警的鱼（难度2·窗口0.62s）"
+  },
+  {
+    "id": "moonfish",
+    "name": "月光鱼",
+    "category": "fish",
+    "stackable": true,
+    "sellPrice": 55,
+    "description": "稀有·银鳞在夜里发光（难度4·窗口0.42s）"
   }
 ]
