@@ -34,9 +34,9 @@ export class DebugPanel extends Component {
     addTestItem(): void {
         const app = GameApp.inst;
         if (!app) return;
-        app.giveItem('debug.crop.test', 1);
-        const n = app.saveData?.inventory['debug.crop.test'] ?? 0;
-        console.log(`[Debug] debug.crop.test ×1（累计 ${n}）`);
+        app.giveItem('carrot', 1);
+        const n = app.saveData?.inventory['carrot'] ?? 0;
+        console.log(`[Debug] carrot ×1（累计 ${n}）`);
     }
 
     /** 打印当前存档内容 */

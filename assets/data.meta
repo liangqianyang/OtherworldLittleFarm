@@ -5,5 +5,13 @@
   "uuid": "a485b4e6-3f8c-4aed-b859-298acfd93589",
   "files": [],
   "subMetas": {},
-  "userData": {}
+  "userData": {
+    "isBundle": true,
+    "bundleName": "data",
+    "priority": 6,
+    "compressionType": {},
+    "optimizeHotUpdate": {},
+    "inlineSpriteFrames": [],
+    "isRemoteBundle": {}
+  }
 }

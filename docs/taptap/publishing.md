@@ -24,6 +24,17 @@
   - 时效：全程预计 20 个工作日；初审 12-16 个工作日后工信部向负责人发短信核验，收到后 24 小时内未完成即自动退回重提——保持手机畅通。
   - 审核通过后获得服务核准号，可继续版本提审与物料提交。
 
+## 每次构建后的固定步骤（2026-11-13 实测）
+
+Cocos Creator 3.8.8 的微信小游戏构建模板**硬编码 `deviceOrientation: "portrait"`**，且 taptap-minigame-tools 转换器只原样继承该字段（无任何横屏开关）。横屏包必须每次构建后、转换前手工补丁：
+
+1. 构建微信小游戏（面板 → 构建，暂不用「运行」——微信开发者工具路径/服务端口未配置时会报「Creator 拒绝了此操作」，不影响构建产物）。
+2. 把 `build/wechatgame/game.json` 的 `deviceOrientation` 由 `portrait` 改为 `landscape`（后续可做成构建钩子自动化）。
+3. 菜单 → 扩展 → taptap-minigame-tools → 对 `build/wechatgame` 执行转换 → 产出 `build/TapBuild/game.zip`。
+4. 转换完成后抽查 `build/TapBuild/game/game.json` 确认横屏生效；再上传开发者中心真机试玩。
+
+> 项目设计分辨率已配为 1280×720（fitHeight），`settings/v2/packages/project.json`；data Bundle（assets/data）已配置，预览 404 问题已修复。
+
 ## 发布前核对
 
 - TapTap 插件已在目标 Creator 版本成功加载，控制台无适配错误。
