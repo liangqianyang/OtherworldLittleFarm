@@ -3,6 +3,7 @@ const { ccclass } = _decorator;
 
 import { EventBus } from '../core/EventBus';
 import { TimeSystem } from '../core/TimeSystem';
+import { DataManager } from '../core/DataManager';
 import { GameApp } from '../app/GameApp';
 import { EconomySystem } from '../systems/EconomySystem';
 import { SpriteLib } from '../core/SpriteLib';
@@ -12,6 +13,8 @@ import { TutorialGuide } from './TutorialGuide';
 import { DefenseOverlay } from './DefenseOverlay';
 import { DialogPanel } from './DialogPanel';
 import { PauseOverlay } from './PauseOverlay';
+import { DecorPanel } from './DecorPanel';
+import { CodexPanel } from './CodexPanel';
 import { DefenseSystem } from '../gameplay/defense/DefenseSystem';
 import { FishingPanel } from './FishingPanel';
 
@@ -31,6 +34,8 @@ export class FarmHUD extends Component {
     private _fishing: FishingPanel | null = null;
     private _dialog: DialogPanel | null = null;
     private _pause: PauseOverlay | null = null;
+    private _decor: DecorPanel | null = null;
+    private _codex: CodexPanel | null = null;
     private _intelLabel: Label | null = null;
 
     onLoad(): void {
@@ -68,6 +73,10 @@ export class FarmHUD extends Component {
         });
         // 暂停（§17）：主动暂停遮罩
         this._makeButton('暂停', -560, -192, () => this._pause?.open());
+        // 小屋（§10 拍板③：预布置房间展示）
+        this._makeButton('小屋', 560, -256, () => this._decor?.open());
+        // 图鉴（§13 MVP v2 收窄：作物+鱼）
+        this._makeButton('图鉴', 560, -320, () => this._codex?.open());
 
         // 背包面板 + 睡觉弹窗 + 防守覆盖层 + 钓鱼面板 + 对话面板 + 新档引导（挂 HUD 所在 Canvas）
         const canvas = this.node.parent;
@@ -78,6 +87,8 @@ export class FarmHUD extends Component {
             this._fishing = FishingPanel.create(canvas, this.node.layer);
             this._dialog = DialogPanel.create(canvas, this.node.layer);
             this._pause = PauseOverlay.create(canvas, this.node.layer);
+            this._decor = DecorPanel.create(canvas, this.node.layer);
+            this._codex = CodexPanel.create(canvas, this.node.layer);
             TutorialGuide.maybeStart(canvas, this.node.layer);
             this._makeNpcs(canvas);
         }
@@ -201,11 +212,21 @@ export class FarmHUD extends Component {
     private _refresh(_p: { dayIndex: number }): void {
         const inv = GameApp.inst?.inventory ?? {};
         const label = this.getComponent(Label);
+        const term = this._todayTerm();
         if (label) {
-            label.string = `第 ${TimeSystem.inst.dayIndex} 天·${TimeSystem.inst.seasonName} · 金币${inv['gold'] ?? 0} · 种子${inv['carrot_seed'] ?? 0} · 萝卜${inv['carrot'] ?? 0}`;
+            const dayPart = term ? `第 ${TimeSystem.inst.dayIndex} 天·${TimeSystem.inst.seasonName}·〔${term['name'] as string}〕` : `第 ${TimeSystem.inst.dayIndex} 天·${TimeSystem.inst.seasonName}`;
+            label.string = `${dayPart} · 金币${inv['gold'] ?? 0} · 种子${inv['carrot_seed'] ?? 0} · 萝卜${inv['carrot'] ?? 0}`;
         }
         this._refreshShops();
         this._refreshIntel();
+    }
+
+    /** 今日节气（§6.2 MVP：每季末一个，共 4 个循环）；非节气日返回 null */
+    private _todayTerm(): Record<string, unknown> | null {
+        const rows = DataManager.inst.getRows('catalogs/calendar');
+        if (!rows.length) return null;
+        const dayOfYear = ((TimeSystem.inst.dayIndex - 1) % 56) + 1;
+        return rows.find((r) => Number(r['day']) === dayOfYear) ?? null;
     }
 
     /** 守门人情报行：今晚有防守=红色警报；否则预告下一波日期 */

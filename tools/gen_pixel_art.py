@@ -166,6 +166,31 @@ ASSETS = [
     ("npc_gatekeeper", 48, "assets/textures/npc/npc_gatekeeper.png", True,
      "像素画，16位复古农场游戏NPC角色立绘正面站姿，沉稳的守门人中年大叔，深蓝色连帽斗篷，腰系麻绳，手持一盏发光提灯，浓眉严肃但善良的表情，深色描边，纯品红色背景，游戏角色。" + PALETTE +
      " pixel art NPC character, 16-bit retro farm game, stoic middle-aged gatekeeper front view standing, dark blue hooded cloak with rope belt, holding glowing lantern, thick eyebrows stern but kind face, dark outline, isolated on solid magenta background"),
+    # ---- Batch5：小屋家具（预布置房间展示 §10） ----
+    ("bed", 48, "assets/textures/decor/bed.png", True,
+     "像素画，16位复古农场游戏家具精灵图，侧面视角单人体积木床，深棕色木架配砖红色被子枕头，深色描边，纯品红色背景。" + PALETTE +
+     " pixel art furniture, 16-bit retro farm game, side view single wooden bed frame dark brown with brick-red blanket and pillow, dark outline, isolated on solid magenta background"),
+    ("table", 32, "assets/textures/decor/table.png", True,
+     "像素画，16位复古农场游戏家具精灵图，正面视角小方木桌，温暖棕色桌面带木纹，四条桌腿，深色描边，纯品红色背景。" + PALETTE +
+     " pixel art furniture, 16-bit retro farm game, small square wooden table front view, warm brown tabletop with wood grain, four legs, dark outline, isolated on solid magenta background"),
+    ("chair", 32, "assets/textures/decor/chair.png", True,
+     "像素画，16位复古农场游戏家具精灵图，侧面视角小木椅，温暖棕色带靠背，深色描边，纯品红色背景。" + PALETTE +
+     " pixel art furniture, 16-bit retro farm game, small wooden chair side view, warm brown with backrest, dark outline, isolated on solid magenta background"),
+    ("cabinet", 48, "assets/textures/decor/cabinet.png", True,
+     "像素画，16位复古农场游戏家具精灵图，正面视角高木柜，深棕色对开门带小把手，顶面稍浅，深色描边，纯品红色背景。" + PALETTE +
+     " pixel art furniture, 16-bit retro farm game, tall wooden cabinet front view, dark brown double doors with small handles, slightly lighter top, dark outline, isolated on solid magenta background"),
+    ("rug", 48, "assets/textures/decor/rug.png", True,
+     "像素画，16位复古农场游戏家具精灵图，俯视圆形编织地毯，暖橙与奶白相间的同心圆纹样，深色描边，纯品红色背景。" + PALETTE +
+     " pixel art furniture, 16-bit retro farm game, top-down round woven rug, warm orange and cream concentric circle pattern, dark outline, isolated on solid magenta background"),
+    ("fireplace", 48, "assets/textures/decor/fireplace.png", True,
+     "像素画，16位复古农场游戏家具精灵图，正面视角石砌壁炉，灰石块炉体炉膛里有温暖橙色火焰，深色描边，纯品红色背景。" + PALETTE +
+     " pixel art furniture, 16-bit retro farm game, stone fireplace front view, grey stone body with warm orange flame inside hearth, dark outline, isolated on solid magenta background"),
+    ("plant_pot", 32, "assets/textures/decor/plant_pot.png", True,
+     "像素画，16位复古农场游戏家具精灵图，陶土色花盆里一株圆润绿叶小盆栽，深色描边，纯品红色背景。" + PALETTE +
+     " pixel art furniture, 16-bit retro farm game, terracotta pot with round green leafy house plant, dark outline, isolated on solid magenta background"),
+    ("window_f", 32, "assets/textures/decor/window_f.png", True,
+     "像素画，16位复古农场游戏家具精灵图，正面视角木框窗户，四格窗格能看到淡蓝色天空和一角白云，深色描边，纯品红色背景。" + PALETTE +
+     " pixel art furniture, 16-bit retro farm game, wooden framed window front view, four panes showing pale blue sky and a corner of white cloud, dark outline, isolated on solid magenta background"),
 ]
 
 

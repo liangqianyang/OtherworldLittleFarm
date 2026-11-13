@@ -3,10 +3,10 @@ import { IPlatformAdapter } from '../platform/IPlatformAdapter';
 
 const SAVE_KEY = 'save_main';
 const BAK_KEY = 'save_main.bak';
-const SAVE_VERSION = 1;
+const SAVE_VERSION = 2;
 
 /**
- * 存档顶层结构（v1）——只存纯数据（id/坐标/数值/时间戳），绝不序列化节点引用。
+ * 存档顶层结构——只存纯数据（id/坐标/数值/时间戳），绝不序列化节点引用。
  * 后续阶段新增内容一律「加字段 + 加迁移」，不删旧字段（§12 存档工程约束）。
  */
 export interface SaveDataV1 {
@@ -19,14 +19,15 @@ export interface SaveDataV1 {
     inventory: Record<string, number>;
     /** 农场地块（阶段 1 切片）。类型来自 FarmSystem——仅类型引用，无核心→玩法运行时依赖 */
     farm?: import('../gameplay/farm/FarmSystem').FarmSave;
-    // TODO 阶段 2+：图鉴 / NPC / 设置 / 农场装饰段
+    /** 图鉴：已收集条目 id（作物 id / 鱼 id），v2 新增 */
+    codex?: string[];
 }
 
 type AnyRecord = Record<string, unknown>;
 
 /** 版本迁移链：v(n-1) → v(n)，按序执行；只加字段不删字段 */
 const migrations: Record<number, (data: AnyRecord) => AnyRecord> = {
-    // 示例：2: (d) => ({ ...d, collection: {} }),
+    2: (d) => ({ ...d, codex: Array.isArray(d['codex']) ? d['codex'] : [] }),
 };
 
 export class SaveManager {

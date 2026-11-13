@@ -105,6 +105,20 @@ export class GameApp extends Component {
         return this.saveData?.inventory ?? {};
     }
 
+    /** 图鉴登记：去重收集（作物收获/钓鱼入包时调用）；已在册返回 false */
+    collectCodex(id: string): boolean {
+        if (!this.saveData) return false;
+        if (!this.saveData.codex) this.saveData.codex = [];
+        if (this.saveData.codex.indexOf(id) >= 0) return false;
+        this.saveData.codex.push(id);
+        return true;
+    }
+
+    /** 只读图鉴视图 */
+    get codex(): string[] {
+        return this.saveData?.codex ?? [];
+    }
+
     /** 场景切换样板：农场 ⇄ 探险（AdventureHUD 出口/放弃、FarmHUD 出发按钮共用） */
     loadFarm(): void {
         director.loadScene('farm');
@@ -131,11 +145,12 @@ export class GameApp extends Component {
 
     private _newGame(): SaveDataV1 {
         return {
-            version: 1,
+            version: 2,
             dayIndex: 1,
             savedRealTimeMs: this.adapter!.time.nowMs(),
             inventory: { carrot_seed: 5 }, // 切片引导：开局 5 包胡萝卜种子
             farm: { plots: [] },
+            codex: [],
         };
     }
 }

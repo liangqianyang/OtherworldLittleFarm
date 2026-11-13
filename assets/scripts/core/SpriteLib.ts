@@ -51,6 +51,14 @@ const NEED = [
     'monsters/sporeling',
     'npc/npc_gardener',
     'npc/npc_gatekeeper',
+    'decor/bed',
+    'decor/table',
+    'decor/chair',
+    'decor/cabinet',
+    'decor/rug',
+    'decor/fireplace',
+    'decor/plant_pot',
+    'decor/window_f',
 ];
 
 export class SpriteLib {

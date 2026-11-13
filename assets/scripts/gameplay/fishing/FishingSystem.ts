@@ -103,6 +103,7 @@ export class FishingSystem {
         }
         const fishDef: any = DataManager.inst.getRow('catalogs/fish', s.fishId);
         GameApp.inst.giveItem(s.fishId, 1);
+        GameApp.inst.collectCodex(s.fishId); // 图鉴登记（去重在 App 层）
         this.lastResult = 'caught';
         this.lastFishId = s.fishId;
         this.cast = null;

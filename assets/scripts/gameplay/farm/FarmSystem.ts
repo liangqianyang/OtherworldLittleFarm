@@ -1,6 +1,7 @@
 import { EventBus } from '../../core/EventBus';
 import { DataManager } from '../../core/DataManager';
 import { TimeSystem } from '../../core/TimeSystem';
+import { GameApp } from '../../app/GameApp';
 
 /**
  * FarmSystem —— 农场地块状态机（阶段 1 农场切片核心）。
@@ -111,13 +112,14 @@ export class FarmSystem {
         return def ? Math.min(p.growth / def.growDays, 1) : 0;
     }
 
-    /** 收获：产出经 giveItem 入背包（触发 itemGained 信号），地块清空 */
+    /** 收获：产出经 giveItem 入背包（触发 itemGained 信号），地块清空；首次收获登记图鉴 */
     harvest(index: number, giveItem: (itemId: string, count: number) => void): boolean {
         const p = this._farm.plots[index];
         if (!p || !this.isMature(p)) return false;
         const def = this._cropDef(p.cropId)!;
         const count = def.harvest.min + Math.floor(Math.random() * (def.harvest.max - def.harvest.min + 1));
         giveItem(def.harvest.itemId, Math.max(count, 1));
+        GameApp.inst?.collectCodex(p.cropId); // 图鉴登记（去重在 App 层）
         this._farm.plots[index] = null;
         EventBus.inst.emit('farmChanged', { action: 'harvest' });
         return true;

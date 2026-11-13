@@ -1,0 +1,9 @@
+{
+  "yearLengthDays": 56,
+  "terms": [
+    { "id": "chunfen", "name": "春分", "day": 14, "season": "spring", "desc": "昼夜均分，播种正当时" },
+    { "id": "xiazhi", "name": "夏至", "day": 28, "season": "summer", "desc": "白日最长，作物疯长" },
+    { "id": "qiufen", "name": "秋分", "day": 42, "season": "autumn", "desc": "满仓的金黄，丰收的季节" },
+    { "id": "dongzhi", "name": "冬至", "day": 56, "season": "winter", "desc": "夜最长，守着火炉过冬" }
+  ]
+}

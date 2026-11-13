@@ -1,0 +1,12 @@
+[
+  { "id": "bed", "name": "木头床", "px": 48, "decorPos": [-280, 160], "desc": "铺着软干草垫的小床" },
+  { "id": "fireplace", "name": "石壁炉", "px": 48, "decorPos": [0, 210], "desc": "冬夜里最温暖的角落" },
+  { "id": "cabinet", "name": "木柜", "px": 48, "decorPos": [280, 170], "desc": "存放种子和工具的柜子" },
+  { "id": "window_f", "name": "木窗", "px": 32, "decorPos": [-160, 230], "desc": "能望见农田的小窗" },
+  { "id": "window_f", "name": "木窗", "px": 32, "decorPos": [160, 230], "desc": "能望见农田的小窗" },
+  { "id": "table", "name": "木桌", "px": 32, "decorPos": [-60, 20], "desc": "喝热汤写日志的地方" },
+  { "id": "chair", "name": "木椅", "px": 32, "decorPos": [60, 20], "desc": "坐着歇脚的木椅" },
+  { "id": "rug", "name": "圆地毯", "px": 48, "decorPos": [0, -80], "desc": "暖橙色的编织地毯" },
+  { "id": "plant_pot", "name": "盆栽", "px": 32, "decorPos": [-300, -20], "desc": "长势喜人的绿盆栽" },
+  { "id": "plant_pot", "name": "盆栽", "px": 32, "decorPos": [300, -60], "desc": "长势喜人的绿盆栽" }
+]
