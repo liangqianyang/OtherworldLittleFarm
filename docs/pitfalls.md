@@ -106,3 +106,8 @@
 - 根因：`import { TextureFilter } from 'cc'` 在预览构建产物里该枚举绑定是 undefined（类型能过编译，运行时没有值）。
 - 解法：**不要在运行时代码引用 cc 枚举值**。像素采样需求改在 png.meta 导入层解决：texture 子 meta 的 `minfilter/magfilter: "nearest"`；`sprite-frame` 子 meta `trimType: false`（防自动裁透明边导致精灵变形）。运行时只能用「字面量+类型断言」或干脆不引用。
 - 批量改 meta 的脚本内联在会话里（遍历 png.meta 按 subMetas[].importer 分流改 userData）。
+
+## 21. Sprite 赋图把 UITransform 重置回图片原始尺寸（2026-11-13）
+- 症状：32px 像素图缩在 150px 地块中心，不铺满。setContentSize(128) 被覆盖。
+- 根因：Sprite 默认 sizeMode=TRIMMED，**赋 spriteFrame 那一刻**会按图片裁剪尺寸重写 UITransform.contentSize；之后才改 CUSTOM 已经晚了（尺寸已被覆盖成 32×32）。
+- 解法：`sizeMode = Sprite.SizeMode.CUSTOM` 必须在**赋 spriteFrame 之前**设置（程序化建 UI 的固定顺序：加组件→设 CUSTOM→setContentSize→赋图）。
