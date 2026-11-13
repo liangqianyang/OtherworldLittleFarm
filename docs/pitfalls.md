@@ -136,3 +136,16 @@
 - 症状：bsk 控制的预览标签页失焦（后台）时，`Component.update` 完全不执行——DefenseOverlay 怪物节点不创建、结果面板不弹，但 `console.log` 与事件派发正常，极易误判为代码 bug。
 - 根因：浏览器对后台标签页暂停 requestAnimationFrame，Cocos 主循环停转；直调的方法（evaluate 里手动调用）照常执行。
 - 解法：自动化验证时手动驱动帧循环——状态机用 `__debug.defTick(0.5)×N`，UI 同步用 `comp.update(0.05)` 直调组件 update。前台人工试玩不受影响；判定「update 没跑」前先确认标签页是否在前台。
+
+## 27. Agent Window tab 永远 document.hidden=true，引擎启动链不跑（2026-11-13）
+- 症状：bsk 新开的预览 tab `document.hidden=true`：引擎 Init 极慢（SubSystem 12.5s/正常 4.5s）、`[Data]`/`LoadScene` 日志不出、场景停 launch、`cc.director.getScene()=null`。`osascript activate`、`bsk_tabs select`、`noFocus=false` 全无效——Agent Window 是插件设计的不可见窗口。深度节流后 timer 1 次/分钟。
+- 限制：一切依赖 timer 的异步（loadBundle/loadScene/场景加载链）不可用；`cc.director.tick(0.016)` 手动泵帧有效但推不动启动链。
+- 解法（类级验证通道）：①场景没加载但代码 chunk 已被引擎 import——`Object.getPrototypeOf(System).entries.call(System)` 遍历模块从 export namespace 抓类挂 `window.__mods`；②数据注入绕过 loadBundle：`dm._tables.set('catalogs/xxx', [...])`（`private` 只是编译层）；JSON 源文件不 serve（fetch 404），从磁盘 bash 读文件拼字面量最可靠；③只走同步代码+字面量数据断言，渲染验证留给用户刷新预览页。
+
+## 28. evaluate 探针自伤：短超时竞速误判挂起、探私有字段触发错误遮罩（2026-11-13）
+- 症状①：`Promise.race([loadBundle, 3s timeout])` 返回 TIMEOUT 误判 bundle 挂起——实际后台 tab 每张素材串行 ~1s（节流），34 张 ≈ 40s+。解法：后台验证 bundle 加载等 40s+，别用短超时竞速判死。
+- 症状②：探针 `Object.keys(b._data)` 探私有字段抛 TypeError → 页面顶部出现 CC 错误遮罩（需 reload 清除）。解法：探针只走公开 API。
+
+## 29. 用旧 label 判断循环推进导致误收获/空地重种（2026-11-13）
+- 症状：`for d: if (lbl(p)!=='收获!') p._onTap()` 的条件读的是循环开头旧值；skipDay 后状态已变，旧'已浇'会让熟地被收获、空地被重种，把背包种子轮换耗尽。
+- 解法：skipDay 之后重读 label 再判断；涉及 spendItem 时数量用精确值（99 会被安全检查拒绝导致"清种子"静默失败——返回 false 要检查）。
