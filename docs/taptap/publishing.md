@@ -26,12 +26,12 @@
 
 ## 每次构建后的固定步骤（2026-11-13 实测）
 
-Cocos Creator 3.8.8 的微信小游戏构建模板**硬编码 `deviceOrientation: "portrait"`**，且 taptap-minigame-tools 转换器只原样继承该字段（无任何横屏开关）。横屏包必须每次构建后、转换前手工补丁：
+Cocos Creator 3.8.8 的微信小游戏构建模板**硬编码 `deviceOrientation`: "portrait"**，且 taptap-minigame-tools 转换器只原样继承该字段。已用 build-templates 覆盖机制解决（见下）。转换插件**没有独立菜单**——它的接入方式是构建面板任务配置里的勾选项「转换为Tap小游戏」（builder hook），构建完成后自动转换并打包：
 
-1. 构建微信小游戏（面板 → 构建，暂不用「运行」——微信开发者工具路径/服务端口未配置时会报「Creator 拒绝了此操作」，不影响构建产物）。
-2. ~~手工改 game.json~~ 已自动化：`build-templates/wechatgame/game.json`（landscape）会在每次构建后自动覆盖产物，无需再手工补丁（构建模板机制，2026-11-13 生效；若发现产物仍为 portrait 说明模板未生效，回退手工 sed 补丁）。
-3. 菜单 → 扩展 → taptap-minigame-tools → 对 `build/wechatgame` 执行转换 → 产出 `build/TapBuild/game.zip`。
-4. 转换完成后抽查 `build/TapBuild/game/game.json` 确认横屏生效；再上传开发者中心真机试玩。
+1. 扩展 → 扩展管理器 → 确认「TapTap小游戏构建工具」已启用（扩展菜单里没有它的独立菜单项，这是正常的——它只往构建面板注入勾选项）。
+2. 项目 → 构建发布 → 编辑微信小游戏任务 → ☑ 勾选「**转换为Tap小游戏**」→ 构建。
+3. 构建完成自动产出 `build/TapBuild/game.zip`（转换器 packGame：`TapBuild/game` 目录 → 同级 `game.zip`）。
+4. 抽查 `build/TapBuild/game/game.json` 确认 `deviceOrientation: landscape`（build-templates 生效时应自动就是）；再上传开发者中心真机试玩。
 
 ### 开发者中心上传路径（2026-11-13 实测界面）
 
