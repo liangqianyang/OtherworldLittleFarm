@@ -49,12 +49,12 @@ export class BedtimeDialog extends Component {
         g.fill();
         g.stroke();
 
-        root.addChild(BedtimeDialog._labelNode('该睡觉了…', 26, 0, H / 2 - 46));
-        const info = BedtimeDialog._labelNode('', 20, 0, 30);
+        root.addChild(BedtimeDialog._labelNode('该睡觉了…', 26, 0, H / 2 - 46, layer));
+        const info = BedtimeDialog._labelNode('', 20, 0, 30, layer);
         root.addChild(info);
-        const confirm = BedtimeDialog._buttonNode('睡觉', -110, -100, () => comp._onConfirm());
+        const confirm = BedtimeDialog._buttonNode('睡觉', -110, -100, () => comp._onConfirm(), layer);
         root.addChild(confirm);
-        root.addChild(BedtimeDialog._buttonNode('再玩会儿', 110, -100, () => comp.close()));
+        root.addChild(BedtimeDialog._buttonNode('再玩会儿', 110, -100, () => comp.close(), layer));
 
         const comp = root.addComponent(BedtimeDialog);
         comp._infoLabel = info.getComponent(Label)!;
@@ -97,9 +97,10 @@ export class BedtimeDialog extends Component {
         EventBus.inst.emit('farmChanged', { action: 'bedtime' });
     }
 
-    // —— UI 小工具 ——
-    private static _labelNode(text: string, fontSize: number, x: number, y: number): Node {
+    // —— UI 小工具（layer 必传：程序化节点不设层 = UI 相机看不见） ——
+    private static _labelNode(text: string, fontSize: number, x: number, y: number, layer: number): Node {
         const n = new Node('lbl');
+        n.layer = layer;
         n.addComponent(UITransform);
         n.setPosition(x, y);
         const l = n.addComponent(Label)!;
@@ -109,8 +110,9 @@ export class BedtimeDialog extends Component {
         return n;
     }
 
-    private static _buttonNode(text: string, x: number, y: number, onTap: () => void): Node {
+    private static _buttonNode(text: string, x: number, y: number, onTap: () => void, layer: number): Node {
         const n = new Node('btn');
+        n.layer = layer;
         n.addComponent(UITransform).setContentSize(150, 56);
         n.setPosition(x, y);
         const g = n.addComponent(Graphics)!;
@@ -120,7 +122,7 @@ export class BedtimeDialog extends Component {
         g.roundRect(-75, -28, 150, 56, 10);
         g.fill();
         g.stroke();
-        const lbl = BedtimeDialog._labelNode(text, 22, 0, 0);
+        const lbl = BedtimeDialog._labelNode(text, 22, 0, 0, layer);
         lbl.name = 'label';
         n.addChild(lbl);
         n.on(Node.EventType.TOUCH_END, onTap);
