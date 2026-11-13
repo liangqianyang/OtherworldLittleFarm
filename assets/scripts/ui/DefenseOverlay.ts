@@ -9,7 +9,9 @@ import { SpriteLib } from '../core/SpriteLib';
 
 /** 怪物 id → 精灵路径 */
 function monsterSprite(mid: string): string {
-    return mid.includes('elite') ? 'monsters/slime_elite' : 'monsters/slime';
+    if (mid.includes('elite')) return 'monsters/slime_elite';
+    if (mid.includes('sporeling')) return 'monsters/sporeling';
+    return 'monsters/slime';
 }
 
 /**

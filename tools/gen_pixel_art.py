@@ -157,6 +157,15 @@ ASSETS = [
     ("icon_moonfish", 16, "assets/textures/ui/icon_moonfish.png", True,
      "像素画，16位复古游戏图标，一条奇幻发光淡蓝色圆月鱼侧面带月牙形尾鳍和微光效果，深色描边，纯品红色背景，游戏物品图标。" + PALETTE +
      " pixel art icon, 16-bit retro game item icon, fantasy glowing pale blue round moonfish side view with crescent tail and faint glow, dark outline, isolated on solid magenta background"),
+    ("sporeling", 32, "assets/textures/monsters/sporeling.png", True,
+     "像素画，16位复古农场游戏怪物，呆萌小蘑菇怪正面站姿，棕色圆菌盖上有浅色斑点，短粗奶白色菌柄身体，一双小黑豆眼和憨厚微笑，滑稽可爱不恐怖，深色描边，纯品红色背景，游戏敌人精灵。" + PALETTE +
+     " pixel art monster, 16-bit retro farm game enemy, cute small mushroom creature front view standing, round brown cap with light spots, stout creamy white stem body, tiny black bean eyes and goofy smile, comedic not scary, dark outline, isolated on solid magenta background"),
+    ("npc_gardener", 48, "assets/textures/npc/npc_gardener.png", True,
+     "像素画，16位复古农场游戏NPC角色立绘正面站姿，慈祥的园艺师老奶奶，戴宽边草帽系橙色头巾，穿绿色围裙长裙，手拿小浇水壶，面容和善微笑，深色描边，纯品红色背景，游戏角色。" + PALETTE +
+     " pixel art NPC character, 16-bit retro farm game, kind elderly gardener grandma front view standing, wide straw hat with orange headscarf, green apron long dress, holding small watering can, warm smile, dark outline, isolated on solid magenta background"),
+    ("npc_gatekeeper", 48, "assets/textures/npc/npc_gatekeeper.png", True,
+     "像素画，16位复古农场游戏NPC角色立绘正面站姿，沉稳的守门人中年大叔，深蓝色连帽斗篷，腰系麻绳，手持一盏发光提灯，浓眉严肃但善良的表情，深色描边，纯品红色背景，游戏角色。" + PALETTE +
+     " pixel art NPC character, 16-bit retro farm game, stoic middle-aged gatekeeper front view standing, dark blue hooded cloak with rope belt, holding glowing lantern, thick eyebrows stern but kind face, dark outline, isolated on solid magenta background"),
 ]
 
 

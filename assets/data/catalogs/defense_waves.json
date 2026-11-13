@@ -16,11 +16,25 @@
     "firstDay": 12,
     "waves": [
       { "monsterId": "slime", "count": 4, "interval": 1.4, "delay": 1.0 },
-      { "monsterId": "slime_elite", "count": 1, "interval": 1.0, "delay": 2.5 }
+      { "monsterId": "sporeling", "count": 1, "interval": 1.0, "delay": 2.5 },
+      { "monsterId": "slime_elite", "count": 1, "interval": 1.0, "delay": 5.0 }
     ],
     "reward": [
       { "itemId": "gold", "min": 30, "max": 45 },
       { "itemId": "slime_gel", "min": 2, "max": 3 }
+    ]
+  },
+  {
+    "id": "night_spore_1",
+    "everyDays": 6,
+    "firstDay": 24,
+    "waves": [
+      { "monsterId": "sporeling", "count": 3, "interval": 2.2, "delay": 1.0 },
+      { "monsterId": "slime", "count": 2, "interval": 1.4, "delay": 4.0 }
+    ],
+    "reward": [
+      { "itemId": "gold", "min": 35, "max": 50 },
+      { "itemId": "spore_cap", "min": 2, "max": 3 }
     ]
   }
 ]

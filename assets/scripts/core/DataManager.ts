@@ -21,6 +21,7 @@ const TABLE_MANIFEST: readonly string[] = [
     'catalogs/calendar',
     'catalogs/adventure_rooms',
     'catalogs/defense_waves',
+    'catalogs/npc_dialogs',
     'events/npc_tasks',
 ];
 

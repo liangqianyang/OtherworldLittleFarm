@@ -108,6 +108,14 @@
     "description": "粘怪的凝胶，合成材料"
   },
   {
+    "id": "spore_cap",
+    "name": "孢子帽",
+    "category": "material",
+    "stackable": true,
+    "sellPrice": 6,
+    "description": "孢子菇的菌盖，据说晒干能入药"
+  },
+  {
     "id": "crucian",
     "name": "鲫鱼",
     "category": "fish",

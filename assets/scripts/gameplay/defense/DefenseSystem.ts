@@ -107,15 +107,18 @@ export class DefenseSystem {
         return best;
     }
 
-    /** 今晚来袭情报（守门人简报：怪物名+数量） */
+    /** 今晚来袭情报（守门人简报：怪物名+数量；与 startNight 同表——取 firstDay 最大命中者） */
     intelTonight(): { monsterName: string; count: number }[] {
         const nights = DataManager.inst.getRows('catalogs/defense_waves');
-        const n = nights.find((row) => {
+        const d = TimeSystem.inst.dayIndex;
+        const hits = nights.filter((row) => {
             const first = Number(row['firstDay'] ?? 4);
             const every = Number(row['everyDays'] ?? 4);
-            const d = TimeSystem.inst.dayIndex;
             return d >= first && (d - first) % every === 0;
         });
+        const n = hits.length
+            ? hits.reduce((a, b) => (Number(b['firstDay'] ?? 0) > Number(a['firstDay'] ?? 0) ? b : a))
+            : null;
         if (!n) return [];
         const monsters = DataManager.inst.getRows('catalogs/monsters');
         const out: { monsterName: string; count: number }[] = [];
@@ -131,12 +134,16 @@ export class DefenseSystem {
     startNight(): boolean {
         if (this.night && !this.night.over) return false;
         const nights = DataManager.inst.getRows('catalogs/defense_waves');
-        const n = nights.find((row) => {
+        const d = TimeSystem.inst.dayIndex;
+        const hits = nights.filter((row) => {
             const first = Number(row['firstDay'] ?? 4);
             const every = Number(row['everyDays'] ?? 4);
-            const d = TimeSystem.inst.dayIndex;
             return d >= first && (d - first) % every === 0;
         });
+        // 多表同日命中时取 firstDay 最大者（表越新波次越强，进化式难度）
+        const n = hits.length
+            ? hits.reduce((a, b) => (Number(b['firstDay'] ?? 0) > Number(a['firstDay'] ?? 0) ? b : a))
+            : null;
         if (!n) return false;
 
         const monsters = DataManager.inst.getRows('catalogs/monsters');

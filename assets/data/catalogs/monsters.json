@@ -28,5 +28,20 @@
       }
     ],
     "codexId": "slime"
+  },
+  {
+    "id": "sporeling",
+    "name": "孢子菇",
+    "behavior": "tank",
+    "hp": 22,
+    "damage": 3,
+    "rewards": [
+      {
+        "itemId": "spore_cap",
+        "min": 1,
+        "max": 2
+      }
+    ],
+    "codexId": "sporeling"
   }
 ]

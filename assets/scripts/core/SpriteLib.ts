@@ -47,6 +47,10 @@ const NEED = [
     'ui/icon_crucian',
     'ui/icon_perch',
     'ui/icon_moonfish',
+    // Batch4：第三怪物 + NPC 立绘
+    'monsters/sporeling',
+    'npc/npc_gardener',
+    'npc/npc_gatekeeper',
 ];
 
 export class SpriteLib {

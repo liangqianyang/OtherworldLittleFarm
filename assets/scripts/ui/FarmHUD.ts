@@ -1,16 +1,18 @@
-import { _decorator, Component, Label, Node, UITransform, Graphics, Color } from 'cc';
+import { _decorator, Component, Label, Node, UITransform, Graphics, Color, Sprite } from 'cc';
 const { ccclass } = _decorator;
 
 import { EventBus } from '../core/EventBus';
 import { TimeSystem } from '../core/TimeSystem';
 import { GameApp } from '../app/GameApp';
 import { EconomySystem } from '../systems/EconomySystem';
+import { SpriteLib } from '../core/SpriteLib';
 import { BackpackPanel } from './BackpackPanel';
 import { BedtimeDialog } from './BedtimeDialog';
 import { TutorialGuide } from './TutorialGuide';
 import { DefenseOverlay } from './DefenseOverlay';
 import { DefenseSystem } from '../gameplay/defense/DefenseSystem';
 import { FishingPanel } from './FishingPanel';
+import { DialogPanel } from './DialogPanel';
 
 /**
  * FarmHUD 顶栏（阶段 2.2 布局正式化）：
@@ -26,6 +28,7 @@ export class FarmHUD extends Component {
     private _bedtime: BedtimeDialog | null = null;
     private _defense: DefenseOverlay | null = null;
     private _fishing: FishingPanel | null = null;
+    private _dialog: DialogPanel | null = null;
     private _intelLabel: Label | null = null;
 
     onLoad(): void {
@@ -62,14 +65,16 @@ export class FarmHUD extends Component {
             this._fishing.node.active = !this._fishing.node.active;
         });
 
-        // 背包面板 + 睡觉弹窗 + 防守覆盖层 + 钓鱼面板 + 新档引导（挂 HUD 所在 Canvas）
+        // 背包面板 + 睡觉弹窗 + 防守覆盖层 + 钓鱼面板 + 对话面板 + 新档引导（挂 HUD 所在 Canvas）
         const canvas = this.node.parent;
         if (canvas) {
             this._panel = BackpackPanel.create(canvas, this.node.layer);
             this._bedtime = BedtimeDialog.create(canvas, this.node.layer);
             this._bedtime.defenseOverlay = this._defense = DefenseOverlay.create(canvas, this.node.layer);
             this._fishing = FishingPanel.create(canvas, this.node.layer);
+            this._dialog = DialogPanel.create(canvas, this.node.layer);
             TutorialGuide.maybeStart(canvas, this.node.layer);
+            this._makeNpcs(canvas);
         }
 
         // 守门人情报（§8.1）：顶栏下方一行预告
@@ -98,6 +103,68 @@ export class FarmHUD extends Component {
     private _makePersistButton(): void { /* 已并入 start() */ }
 
     /** 按钮文字闪现提示（存档/钱不够等即时反馈） */
+    /** NPC 立绘节点（阶段 5.3）：农场右侧空区两个 NPC，点击触发线性对话 */
+    private _makeNpcs(canvas: Node): void {
+        const defs = [
+            { id: 'gardener', name: '园艺师', art: 'npc/npc_gardener', x: 400, y: -90, tint: new Color(120, 170, 110, 255) },
+            { id: 'gatekeeper', name: '守门人', art: 'npc/npc_gatekeeper', x: 400, y: 70, tint: new Color(110, 120, 170, 255) },
+        ];
+        for (const d of defs) {
+            const n = new Node('npc_' + d.id);
+            n.layer = this.node.layer;
+            n.addComponent(UITransform).setContentSize(96, 128);
+            n.setPosition(d.x, d.y);
+            canvas.addChild(n);
+
+            // 身体（Graphics 像素小人：头圆+身块，素材就绪后由立绘覆盖）
+            const body = n.addComponent(Graphics)!;
+            body.fillColor = d.tint;
+            body.circle(0, 34, 16);
+            body.fill();
+            body.roundRect(-14, -26, 28, 58, 6);
+            body.fill();
+
+            const nameN = new Node('nm');
+            nameN.layer = this.node.layer;
+            nameN.addComponent(UITransform).setContentSize(120, 22);
+            nameN.setPosition(0, -46);
+            const nl = nameN.addComponent(Label)!;
+            nl.fontSize = 16;
+            nl.lineHeight = 20;
+            nl.color = new Color(220, 216, 208, 255);
+            nl.string = d.name;
+            n.addChild(nameN);
+
+            n.on(Node.EventType.TOUCH_END, () => {
+                // 对话打开时忽略（遮罩层接管点击）
+                if (this._dialog && this._dialog.node.active) return;
+                this._dialog?.openNpc(d.id);
+            });
+
+            // 素材就绪 → 立绘覆盖色块
+            const tryArt = (): void => {
+                const lib = SpriteLib.inst;
+                if (!lib.ready) { n.scheduleOnce(tryArt, 1); return; }
+                const sf = lib.get(d.art);
+                if (!sf) return;
+                let sprNode = n.getChildByName('spr');
+                if (!sprNode) {
+                    sprNode = new Node('spr');
+                    sprNode.layer = this.node.layer;
+                    sprNode.addComponent(UITransform).setContentSize(96, 96);
+                    sprNode.setPosition(0, 8);
+                    n.addChild(sprNode);
+                }
+                const s = sprNode.getComponent(Sprite) || sprNode.addComponent(Sprite);
+                s.sizeMode = Sprite.SizeMode.CUSTOM;
+                s.spriteFrame = sf;
+                sprNode.active = true;
+                body.clear();
+            };
+            n.scheduleOnce(tryArt, 0.5);
+        }
+    }
+
     private _flash(label: Label, temp: string, restore: string): void {
         label.string = temp;
         this.scheduleOnce(() => {
