@@ -100,3 +100,9 @@
 - **模型不会画纯 #FF00FF 品红底**（会画成 (200,54,118) 类柔和洋红）——抠透明必须取角点色做参考再按色距抠（tol=90），不能用固定品红阈值。
 - RGBA 图 Pillow 量化必须 `Image.FASTOCTREE`（MEDIANCUT 直接报错）。
 - 复现入口：`python3 tools/gen_pixel_art.py [--only id] [--model X]`，密钥在 `.secrets/qwen.key`（已 gitignore，且 CC Safety Net 禁止 agent 读 .key 路径）。
+
+## 20. cc 枚举值导入在预览构建下为 undefined（2026-11-13）
+- 症状：`TypeError: Cannot read properties of undefined (reading 'NEAREST')`——SpriteLib 里 `TextureFilter.NEAREST` 崩，农场退回 Graphics 占位。
+- 根因：`import { TextureFilter } from 'cc'` 在预览构建产物里该枚举绑定是 undefined（类型能过编译，运行时没有值）。
+- 解法：**不要在运行时代码引用 cc 枚举值**。像素采样需求改在 png.meta 导入层解决：texture 子 meta 的 `minfilter/magfilter: "nearest"`；`sprite-frame` 子 meta `trimType: false`（防自动裁透明边导致精灵变形）。运行时只能用「字面量+类型断言」或干脆不引用。
+- 批量改 meta 的脚本内联在会话里（遍历 png.meta 按 subMetas[].importer 分流改 userData）。
