@@ -6,14 +6,17 @@ const { ccclass } = _decorator;
 
 const CELL = 150;   // 需与 PlotView.CELL 一致
 const GAP = 12;
+/** 网格中心 y：-20 使底部(-257)高于引导横幅顶(-263)，顶部(217)低于天数标签底(~256) */
+const GRID_CENTER_Y = -20;
 
 /**
  * FarmGrid —— 农场切片的 3×3 地块容器（程序化生成，无预制体）。
- * 挂在 farm 场景 Canvas 下的节点上即可。
+ * 挂在 farm 场景 Canvas 下的节点上即可；位置由此处统一控制（覆盖场景值）。
  */
 @ccclass('FarmGrid')
 export class FarmGrid extends Component {
     start(): void {
+        this.node.setPosition(0, GRID_CENTER_Y);
         const total = GRID_COLS * GRID_ROWS;
         const step = CELL + GAP;
         const originX = -((GRID_COLS - 1) * step) / 2;
