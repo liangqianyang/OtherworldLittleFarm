@@ -1,6 +1,7 @@
 import { _decorator, Component, Node, UITransform } from 'cc';
 import { PlotView } from './PlotView';
 import { GRID_COLS, GRID_ROWS } from './FarmSystem';
+import { SpriteLib } from '../../core/SpriteLib';
 
 const { ccclass } = _decorator;
 
@@ -33,5 +34,10 @@ export class FarmGrid extends Component {
             const view = node.addComponent(PlotView)!;
             view.setup(i);
         }
+
+        // 素材异步就绪后统一刷新（就绪前 PlotView 走 Graphics 占位）
+        SpriteLib.inst.init().then(() => {
+            for (const child of this.node.children) child.getComponent(PlotView)?.refresh();
+        });
     }
 }

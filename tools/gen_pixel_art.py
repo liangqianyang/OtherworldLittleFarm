@@ -74,6 +74,9 @@ ASSETS = [
     ("icon_seed", 16, "assets/textures/ui/icon_seed.png", True,
      "像素画，16位复古游戏种子袋图标，小牛皮纸种子袋，袋口折叠，正面画橙色小胡萝卜，纯品红色背景，游戏图标。" + PALETTE +
      " pixel art icon, 16-bit retro game seed packet, small kraft paper bag with folded top and tiny orange carrot drawing, isolated on solid magenta background"),
+    ("icon_carrot", 16, "assets/textures/ui/icon_carrot.png", True,
+     "像素画，16位复古游戏图标，一根鲜艳橙色胡萝卜带绿色缨子，斜置，深色描边，纯品红色背景，游戏物品图标。" + PALETTE +
+     " pixel art icon, 16-bit retro game item icon, single vivid orange carrot with green leafy top, tilted, dark outline, isolated on solid magenta background"),
 ]
 
 
@@ -125,13 +128,14 @@ def gen_image(key: str, prompt: str, out_tmp: str, model: str) -> None:
     _poll(key, task_id, out_tmp)
 
 
-def chroma_key(img):  # 品红 → 透明
+def chroma_key(img, tol=90):  # 以左上角点取样背景色 → 按色距抠透明（模型不画纯品红也能适配）
     px = img.load()
     w, h = img.size
+    ref = px[2, 2][:3]
     for y in range(h):
         for x in range(w):
             r, g_, b, a = px[x, y]
-            if abs(r - 255) < 70 and g_ < 90 and abs(b - 255) < 70:
+            if (r - ref[0]) ** 2 + (g_ - ref[1]) ** 2 + (b - ref[2]) ** 2 < tol * tol:
                 px[x, y] = (r, g_, b, 0)
     return img
 

@@ -4,6 +4,8 @@ const { ccclass } = _decorator;
 import { EventBus } from '../core/EventBus';
 import { DataManager } from '../core/DataManager';
 import { GameApp } from '../app/GameApp';
+import { SpriteLib } from '../core/SpriteLib';
+import { Sprite, SpriteFrame } from 'cc';
 
 type AnyRow = Record<string, unknown>;
 
@@ -107,6 +109,14 @@ export class BackpackPanel extends Component {
             const id = String(r['id']);
             const name = String(r['name'] ?? id);
             const sell = typeof r['sellPrice'] === 'number' ? ` 卖${r['sellPrice']}金` : '';
+            // 素材就绪时给行首加 16px×2 图标（只有已生成的素材有图标）
+            if (SpriteLib.inst.ready) {
+                const iconPath = id === 'gold' ? 'ui/icon_gold'
+                    : id.endsWith('_seed') ? 'ui/icon_seed'
+                    : id === 'carrot' ? 'ui/icon_carrot' : null;
+                const frame = iconPath ? SpriteLib.inst.get(iconPath) : null;
+                if (frame) BackpackPanel._icon(this._listRoot, frame, -PANEL_W / 2 + 44, y);
+            }
             BackpackPanel._label(this._listRoot, `${name} ×${inv[id]}${sell}`, 20, 0, y, 22);
             y -= ROW_H;
         }
@@ -124,6 +134,17 @@ export class BackpackPanel extends Component {
         l.string = text;
         parent.addChild(n);
         return l;
+    }
+
+    private static _icon(parent: Node, frame: SpriteFrame, x: number, y: number): void {
+        const n = new Node('icon');
+        n.layer = parent.layer;
+        n.addComponent(UITransform).setContentSize(32, 32); // 16px 素材 ×2 整数缩放
+        n.setPosition(x, y);
+        const s = n.addComponent(Sprite)!;
+        s.spriteFrame = frame;
+        s.sizeMode = Sprite.SizeMode.CUSTOM;
+        parent.addChild(n);
     }
 
     private static _button(parent: Node, text: string, x: number, y: number, onTap: () => void, w = 56, h = 44): Node {
