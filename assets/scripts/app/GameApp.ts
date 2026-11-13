@@ -1,4 +1,4 @@
-import { _decorator, Component, director } from 'cc';
+import { _decorator, Component, director, view, ResolutionPolicy } from 'cc';
 const { ccclass } = _decorator;
 
 import { EventBus } from '../core/EventBus';
@@ -10,11 +10,15 @@ import { LocalAdapter } from '../platform/LocalAdapter';
 import { DebugPanel } from '../ui/DebugPanel';
 import { FarmSystem } from '../gameplay/farm/FarmSystem';
 
+/** 设计分辨率（§17：1280×720 横屏，锁定高度——竖向安全区恒定 ±360） */
+const DESIGN_WIDTH = 1280;
+const DESIGN_HEIGHT = 720;
+
 /**
  * GameApp —— 服务装配与启动顺序（挂在 launch 场景 GameRoot 上，常驻节点）。
  *
  * 启动序（设计完善建议书 §7 第一周骨架）：
- *   平台适配层 → 数据表 → 读档（含离线结算） → 生命周期挂钩 → DebugPanel → 进 farm 场景
+ *   设计分辨率 → 平台适配层 → 数据表 → 读档（含离线结算） → 生命周期挂钩 → DebugPanel → 进 farm 场景
  *
  * 周验收链路：种→浇→连跳数天→收→杀进程重进，存档完整还原（当前已具备：dayIndex + 背包 + 离线结算）。
  */
@@ -32,6 +36,9 @@ export class GameApp extends Component {
 
     onLoad(): void {
         GameApp.inst = this;
+        // 运行时强制设计分辨率：settings 文件不热加载（pitfalls #5），代码级设置保证
+        // 预览/真机/任何宿主环境下布局一致，不受编辑器进程设置状态影响
+        view.setDesignResolutionSize(DESIGN_WIDTH, DESIGN_HEIGHT, ResolutionPolicy.FIXED_HEIGHT);
         // GameRoot 是场景根节点 → 常驻，跨场景存活
         director.addPersistRootNode(this.node);
     }
