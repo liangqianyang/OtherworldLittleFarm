@@ -28,6 +28,12 @@ export interface GameEvents {
 
 type Handler<T> = (payload: T) => void;
 
+/** 订阅项：保存 target 以便回调时正确绑定 this（组件方法直接订阅的前提） */
+interface Binding {
+    handler: Handler<never>;
+    target: unknown;
+}
+
 export class EventBus {
     private static _instance: EventBus | null = null;
     static get inst(): EventBus {
@@ -35,25 +41,39 @@ export class EventBus {
         return this._instance;
     }
 
-    private _handlers = new Map<string, Set<Handler<never>>>();
+    private _handlers = new Map<string, Set<Binding>>();
 
-    on<K extends keyof GameEvents>(event: K, handler: Handler<GameEvents[K]>): void {
+    on<K extends keyof GameEvents>(event: K, handler: Handler<GameEvents[K]>, target?: unknown): void {
         let set = this._handlers.get(event);
         if (!set) {
             set = new Set();
             this._handlers.set(event, set);
         }
-        set.add(handler as Handler<never>);
+        set.add({ handler: handler as Handler<never>, target });
     }
 
-    off<K extends keyof GameEvents>(event: K, handler: Handler<GameEvents[K]>): void {
-        this._handlers.get(event)?.delete(handler as Handler<never>);
+    off<K extends keyof GameEvents>(event: K, handler: Handler<GameEvents[K]>, target?: unknown): void {
+        const set = this._handlers.get(event);
+        if (!set) return;
+        for (const b of set) {
+            if (b.handler === handler && (target === undefined || b.target === target)) {
+                set.delete(b);
+                break;
+            }
+        }
     }
 
     emit<K extends keyof GameEvents>(event: K, payload: GameEvents[K]): void {
         const set = this._handlers.get(event);
         if (!set) return;
-        for (const h of set) (h as Handler<GameEvents[K]>)(payload);
+        for (const b of set) {
+            try {
+                (b.handler as Handler<GameEvents[K]>).call(b.target, payload);
+            } catch (err) {
+                // 单个监听器异常不中断其他监听器（缺陷隔离），错误照常抛到控制台
+                console.error(`[EventBus] 监听器处理 ${String(event)} 时抛错:`, err);
+            }
+        }
     }
 
     /** 仅调试/重开档时使用 */
