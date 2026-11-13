@@ -33,6 +33,10 @@ Cocos Creator 3.8.8 的微信小游戏构建模板**硬编码 `deviceOrientation
 3. 菜单 → 扩展 → taptap-minigame-tools → 对 `build/wechatgame` 执行转换 → 产出 `build/TapBuild/game.zip`。
 4. 转换完成后抽查 `build/TapBuild/game/game.json` 确认横屏生效；再上传开发者中心真机试玩。
 
+### 开发者中心上传路径（2026-11-13 实测界面）
+
+上传入口是「小游戏管理 → **包体管理**」；游戏发布页的「选择包体」按钮只能从包体管理中**已上传**的包里选取（安卓包默认与 iOS 一致自动同步）。上传后包体管理内直接提供真机试玩二维码，无需将游戏状态改为「开放试玩」。
+
 > 项目设计分辨率已配为 1280×720（fitHeight），`settings/v2/packages/project.json`；data Bundle（assets/data）已配置，预览 404 问题已修复。
 
 ## 发布前核对
