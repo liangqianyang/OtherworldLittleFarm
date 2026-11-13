@@ -31,13 +31,20 @@ export class FarmHUD extends Component {
         this._sellLabel = this._makeButton('卖粮(0)', -560, 0, () => this._onSell());
         this._buyLabel = this._makeButton('买种子', -560, -64, () => this._onBuySeed());
 
-        // 右角：流程（背包/跳天/存档）
-        this._makeButton('背包', 560, 0, () => this._panel?.open());
+        // 右角：流程（背包=开关/跳天/存档）
+        this._makeButton('背包', 560, 0, () => {
+            if (!this._panel) return;
+            if (this._panel.node.active) this._panel.close();
+            else this._panel.open();
+        });
         this._makeButton('跳一天', 560, -64, () => {
             TimeSystem.inst.endDay();
             GameApp.inst?.persist('endDay'); // 关键节点落盘（§12）
         });
-        this._makePersistButton();
+        const saveLabel = this._makeButton('存档', 560, -128, () => {
+            GameApp.inst?.persist('manual');
+            this._flash(saveLabel, '已存档✓', '存档');
+        });
 
         // 背包面板（挂 HUD 所在 Canvas，隐藏备用）
         const canvas = this.node.parent;
@@ -50,10 +57,15 @@ export class FarmHUD extends Component {
         EventBus.inst.off('itemSpent', this._refresh, this);
     }
 
-    /** 存档按钮单独放（低频操作，底部右角更不误触） */
-    private _makePersistButton(): void {
-        // 占位：阶段 2.3 bedtime 流程接管后，手动存档降级为设置页功能
-        this._makeButton('存档', 560, -82, () => GameApp.inst?.persist('manual'));
+    /** 存档按钮独立一行（-128），不与跳一天(-64)重叠 */
+    private _makePersistButton(): void { /* 已并入 start() */ }
+
+    /** 按钮文字闪现提示（存档/钱不够等即时反馈） */
+    private _flash(label: Label, temp: string, restore: string): void {
+        label.string = temp;
+        this.scheduleOnce(() => {
+            if (label.isValid) label.string = restore;
+        }, 0.9);
     }
 
     private _onSell(): void {

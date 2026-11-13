@@ -70,11 +70,12 @@ export class BackpackPanel extends Component {
         listRoot.addComponent(UITransform);
         root.addChild(listRoot);
 
-        // 关闭按钮（右上角）
-        const close = BackpackPanel._button(root, '×', 24, PANEL_H / 2 - 34, () => {
-            root.getComponent(BackpackPanel)!.close();
-        });
-        close.layer = layer;
+        // 关闭按钮（右上角，加大加明显）
+        BackpackPanel._button(
+            root, '×', PANEL_W / 2 - 44, PANEL_H / 2 - 36,
+            () => { root.getComponent(BackpackPanel)!.close(); },
+            64, 48,
+        );
 
         const comp = root.addComponent(BackpackPanel);
         comp._listRoot = listRoot;
@@ -121,16 +122,16 @@ export class BackpackPanel extends Component {
         return l;
     }
 
-    private static _button(parent: Node, text: string, x: number, y: number, onTap: () => void): Node {
+    private static _button(parent: Node, text: string, x: number, y: number, onTap: () => void, w = 56, h = 44): Node {
         const n = new Node('btn');
         n.layer = parent.layer;
-        n.addComponent(UITransform).setContentSize(56, 44);
+        n.addComponent(UITransform).setContentSize(w, h);
         n.setPosition(x, y);
         const g = n.addComponent(Graphics)!;
         g.fillColor = new Color(60, 48, 38, 255);
         g.strokeColor = new Color(255, 255, 255, 90);
         g.lineWidth = 2;
-        g.roundRect(-28, -22, 56, 44, 8);
+        g.roundRect(-w / 2, -h / 2, w, h, 8);
         g.fill();
         g.stroke();
         BackpackPanel._label(n, text, 20, 0, 0, 24);
