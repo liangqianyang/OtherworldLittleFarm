@@ -47,6 +47,12 @@ export class GameApp extends Component {
         // 农场切片：旧档补 farm 字段，FarmSystem 接管地块状态（订阅 dayAdvanced）
         if (!this.saveData.farm) this.saveData.farm = { plots: [] };
         FarmSystem.inst.init(this.saveData.farm);
+
+        // 旧档补发初始种子（undefined=从未拥有过；显式 0=已种完，不补）
+        if (this.saveData.inventory['carrot_seed'] === undefined) {
+            this.giveItem('carrot_seed', 5);
+            this.persist('grantInitialSeeds');
+        }
         TimeSystem.inst.dayIndex = this.saveData.dayIndex;
 
         // 离线结算（方案 B：冷启动按整天，作物只长不枯，红线：倒流按 0）

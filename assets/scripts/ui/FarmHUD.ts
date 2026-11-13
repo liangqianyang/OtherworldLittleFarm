@@ -14,17 +14,19 @@ export class FarmHUD extends Component {
     onLoad(): void {
         EventBus.inst.on('dayAdvanced', this._refresh, this);
         EventBus.inst.on('itemGained', this._refresh, this);
+        EventBus.inst.on('itemSpent', this._refresh, this);
         this._refresh({ dayIndex: TimeSystem.inst.dayIndex });
     }
 
     onDestroy(): void {
         EventBus.inst.off('dayAdvanced', this._refresh, this);
         EventBus.inst.off('itemGained', this._refresh, this);
+        EventBus.inst.off('itemSpent', this._refresh, this);
     }
 
     private _refresh(_p: { dayIndex: number }): void {
-        const carrots = GameApp.inst?.saveData?.inventory['carrot'] ?? 0;
+        const inv = GameApp.inst?.inventory ?? {};
         const label = this.getComponent(Label);
-        if (label) label.string = `第 ${TimeSystem.inst.dayIndex} 天 · 胡萝卜×${carrots}`;
+        if (label) label.string = `第 ${TimeSystem.inst.dayIndex} 天 · 种子×${inv['carrot_seed'] ?? 0} · 胡萝卜×${inv['carrot'] ?? 0}`;
     }
 }

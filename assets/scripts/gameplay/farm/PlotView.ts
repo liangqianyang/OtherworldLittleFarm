@@ -98,6 +98,8 @@ export class PlotView extends Component {
                     app.spendItem(SEED_ITEM, 1);
                     app.persist('plant');
                 }
+            } else {
+                this._label.string = '缺种子'; // 立即可见反馈，下次 farmChanged 恢复
             }
         } else if (farm.isMature(p)) {
             if (farm.harvest(this.index, (id, c) => app.giveItem(id, c))) {
