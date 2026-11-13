@@ -7,6 +7,7 @@ import { GameApp } from '../app/GameApp';
 import { EconomySystem } from '../systems/EconomySystem';
 import { BackpackPanel } from './BackpackPanel';
 import { BedtimeDialog } from './BedtimeDialog';
+import { TutorialGuide } from './TutorialGuide';
 
 /**
  * FarmHUD 顶栏（阶段 2.2 布局正式化）：
@@ -45,11 +46,12 @@ export class FarmHUD extends Component {
             this._flash(saveLabel, '已存档✓', '存档');
         });
 
-        // 背包面板 + 睡觉弹窗（挂 HUD 所在 Canvas，隐藏备用）
+        // 背包面板 + 睡觉弹窗 + 新档引导（挂 HUD 所在 Canvas）
         const canvas = this.node.parent;
         if (canvas) {
             this._panel = BackpackPanel.create(canvas, this.node.layer);
             this._bedtime = BedtimeDialog.create(canvas, this.node.layer);
+            TutorialGuide.maybeStart(canvas, this.node.layer);
         }
     }
 

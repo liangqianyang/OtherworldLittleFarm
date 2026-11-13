@@ -89,11 +89,15 @@ export class BackpackPanel extends Component {
         const inv = GameApp.inst?.inventory ?? {};
         const rows = DataManager.inst.getRows('catalogs/items') as AnyRow[];
 
-        // 排序：金币 → 种子 → 作物产出 → 其他
+        // 排序：金币 → 种子 → 作物产出 → 其他；__ 前缀是元数据（如 __guide），不是物品，滤掉
         const order = (cat: unknown): number => (cat === 'currency' ? 0 : cat === 'seed' ? 1 : cat === 'crop_product' ? 2 : 3);
-        const owned = rows
-            .filter((r) => (inv[String(r['id'])] ?? 0) > 0)
-            .sort((a, b) => order(a['category']) - order(b['category']));
+        const owned: AnyRow[] = [];
+        for (const r of rows) {
+            const id = String(r['id']);
+            if (id.startsWith('__')) continue;
+            if ((inv[id] ?? 0) > 0) owned.push(r);
+        }
+        owned.sort((a, b) => order(a['category']) - order(b['category']));
 
         let y = PANEL_H / 2 - 84;
         if (owned.length === 0) {
