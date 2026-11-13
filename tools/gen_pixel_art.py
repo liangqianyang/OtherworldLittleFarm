@@ -77,6 +77,40 @@ ASSETS = [
     ("icon_carrot", 16, "assets/textures/ui/icon_carrot.png", True,
      "像素画，16位复古游戏图标，一根鲜艳橙色胡萝卜带绿色缨子，斜置，深色描边，纯品红色背景，游戏物品图标。" + PALETTE +
      " pixel art icon, 16-bit retro game item icon, single vivid orange carrot with green leafy top, tilted, dark outline, isolated on solid magenta background"),
+    # ---- Batch2：探险（旧林地）+ 防守（封印之夜）素材 ----
+    ("ground_forest", 32, "assets/textures/tiles/ground_forest.png", False,
+     "像素画，16位复古游戏暗色林地地面地砖，顶部俯视满幅，深绿褐色苔藓泥土与散落小树叶纹理均匀分布，色调比普通草地更深更暗，可无缝平铺，无任何边界和装饰。" + PALETTE +
+     " pixel art tile, 16-bit retro game dark forest floor, full-bleed top-down, dark green-brown mossy dirt with scattered tiny leaves, seamless tileable, edge-to-edge"),
+    ("bush_berry", 32, "assets/textures/adventure/bush_berry.png", True,
+     "像素画，16位复古游戏浆果灌木丛精灵图，圆润深绿色灌木上点缀多颗鲜红色小浆果，深色描边，纯品红色背景。" + PALETTE +
+     " pixel art sprite, 16-bit retro game berry bush, round dark green shrub dotted with vivid red berries, dark outline, isolated on solid magenta background"),
+    ("herb_patch", 32, "assets/textures/adventure/herb_patch.png", True,
+     "像素画，16位复古游戏药草丛精灵图，一小簇鲜绿色药草叶束从土丘长出，深色描边，纯品红色背景。" + PALETTE +
+     " pixel art sprite, 16-bit retro game herb cluster, small bunch of bright green herb leaves growing from a dirt mound, dark outline, isolated on solid magenta background"),
+    ("wood_log", 32, "assets/textures/adventure/wood_log.png", True,
+     "像素画，16位复古游戏原木堆精灵图，两根横放的棕色圆木叠在一起，截面年轮可见，深色描边，纯品红色背景。" + PALETTE +
+     " pixel art sprite, 16-bit retro game log pile, two stacked brown round logs with visible tree-ring cut ends, dark outline, isolated on solid magenta background"),
+    ("slime", 32, "assets/textures/monsters/slime.png", True,
+     "像素画，16位复古游戏可爱粘液怪精灵图，圆胖半透明的草绿色史莱姆，两只呆萌大眼睛，底部微扁，滑稽可爱不恐怖，深色描边，纯品红色背景。" + PALETTE +
+     " pixel art sprite, 16-bit retro game cute slime monster, chubby round translucent grass-green blob with two silly big eyes, flat bottom, goofy not scary, dark outline, isolated on solid magenta background"),
+    ("slime_elite", 48, "assets/textures/monsters/slime_elite.png", True,
+     "像素画，16位复古游戏精英粘液怪精灵图，比普通粘怪更大更胖的紫色史莱姆，头顶小皇冠，呆萌大眼睛，滑稽威风不恐怖，深色描边，纯品红色背景。" + PALETTE +
+     " pixel art sprite, 16-bit retro game elite slime monster, bigger chubbier purple blob wearing a tiny golden crown, silly big eyes, goofy not scary, dark outline, isolated on solid magenta background"),
+    ("barn", 64, "assets/textures/adventure/barn.png", True,
+     "像素画，16位复古游戏农场谷仓精灵图，正面视角红棕色木板谷仓，白色 X 形大门装饰，三角屋顶，深色描边，纯品红色背景。" + PALETTE +
+     " pixel art sprite, 16-bit retro game farm barn, front view red-brown wooden barn with white X-shaped door trim and triangular roof, dark outline, isolated on solid magenta background"),
+    ("icon_berry", 16, "assets/textures/ui/icon_berry.png", True,
+     "像素画，16位复古游戏图标，一颗鲜红色圆形浆果带小绿叶，深色描边，纯品红色背景，游戏物品图标。" + PALETTE +
+     " pixel art icon, 16-bit retro game item icon, single vivid red round berry with tiny green leaf, dark outline, isolated on solid magenta background"),
+    ("icon_herb", 16, "assets/textures/ui/icon_herb.png", True,
+     "像素画，16位复古游戏图标，一小束鲜绿色药草叶，深色描边，纯品红色背景，游戏物品图标。" + PALETTE +
+     " pixel art icon, 16-bit retro game item icon, small bundle of bright green herb leaves tied together, dark outline, isolated on solid magenta background"),
+    ("icon_wood", 16, "assets/textures/ui/icon_wood.png", True,
+     "像素画，16位复古游戏图标，一根横放棕色圆木带年轮截面，深色描边，纯品红色背景，游戏物品图标。" + PALETTE +
+     " pixel art icon, 16-bit retro game item icon, single horizontal brown log with tree-ring end, dark outline, isolated on solid magenta background"),
+    ("icon_gel", 16, "assets/textures/ui/icon_gel.png", True,
+     "像素画，16位复古游戏图标，一滴半透明草绿色粘液圆球带高光，深色描边，纯品红色背景，游戏物品图标。" + PALETTE +
+     " pixel art icon, 16-bit retro game item icon, single translucent grass-green slime gel drop with highlight, dark outline, isolated on solid magenta background"),
 ]
 
 

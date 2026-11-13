@@ -1,6 +1,7 @@
-import { _decorator, Component, Node, Label, Graphics, Color, UITransform, EventTouch, UIOpacity } from 'cc';
+import { _decorator, Component, Node, Label, Graphics, Color, UITransform, EventTouch, UIOpacity, Sprite } from 'cc';
 import { AdventureSystem } from '../gameplay/adventure/AdventureSystem';
 import { EventBus } from '../core/EventBus';
+import { SpriteLib } from '../core/SpriteLib';
 
 const { ccclass } = _decorator;
 
@@ -16,6 +17,7 @@ export class BattlePanel extends Component {
     private _log: Label = null!;
     private _attackBtn: Node = null!;
     private _fleeBtn: Node = null!;
+    private _art: Node = null!;
 
     static create(parent: Node, layer: number): BattlePanel {
         const root = new Node('BattlePanel');
@@ -43,15 +45,23 @@ export class BattlePanel extends Component {
         this._g.lineWidth = 3;
         this._g.stroke();
 
-        this._info = this._makeLabel('战斗', 30, Color.WHITE, 0, 110);
-        this._log = this._makeLabel('', 22, new Color(230, 210, 180), 0, 20);
+        this._info = this._makeLabel('战斗', 30, Color.WHITE, 80, 110);
+        this._log = this._makeLabel('', 22, new Color(230, 210, 180), 80, 20);
         this._log.overflow = Label.Overflow.SHRINK;
         this._log.node.getComponent(UITransform)!.setContentSize(520, 120);
+
+        // 怪物立绘（战斗框左侧）
+        this._art = new Node('art');
+        this._art.layer = this.node.layer;
+        this._art.setPosition(-170, 30);
+        this._art.addComponent(UITransform).setContentSize(128, 128);
+        this._art.addComponent(Sprite)!.sizeMode = Sprite.SizeMode.CUSTOM;
+        this.node.addChild(this._art);
 
         this._attackBtn = this._button('攻 击', 60, -170, new Color(178, 60, 52), () => this._onAttack());
         this._fleeBtn = this._button('撤 退', 200, -170, new Color(90, 90, 100), () => this._onFlee());
         this._fleeBtn.setPosition(-60, -170);
-        this._attackBtn.setPosition(60, -170);
+        this._attackBtn.setPosition(160, -170);
     }
 
     /** 每帧同步战斗状态显示 */
@@ -64,6 +74,19 @@ export class BattlePanel extends Component {
     show(): void {
         this.node.active = true;
         this._log.string = '';
+        // 怪物立绘赋图（elite 用大紫怪）
+        const b = AdventureSystem.inst.battle;
+        if (b) {
+            const path = b.monsterId.includes('elite') ? 'monsters/slime_elite' : 'monsters/slime';
+            const frame = SpriteLib.inst.get(path);
+            const sp = this._art.getComponent(Sprite)!;
+            if (frame) {
+                sp.spriteFrame = frame;
+                this._art.active = true;
+            } else {
+                this._art.active = false;
+            }
+        }
     }
 
     private _onAttack(): void {
@@ -116,10 +139,16 @@ export class BattlePanel extends Component {
         g.strokeColor = Color.WHITE;
         g.lineWidth = 2;
         g.stroke();
-        const l = n.addComponent(Label);
+        // Label 放子节点：Graphics 与 Label 同节点会 renderable 冲突（不渲染+warning）
+        const ln = new Node('lbl');
+        ln.layer = this.node.layer;
+        ln.addComponent(UITransform);
+        const l = ln.addComponent(Label);
         l.string = text;
         l.fontSize = 26;
+        l.lineHeight = 32;
         l.color = Color.WHITE;
+        n.addChild(ln);
         n.on(Node.EventType.TOUCH_END, (e: EventTouch) => { e.propagationStopped = true; cb(); }, this);
         this.node.addChild(n);
         return n;

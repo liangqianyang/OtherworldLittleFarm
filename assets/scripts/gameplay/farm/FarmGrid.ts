@@ -37,6 +37,8 @@ export class FarmGrid extends Component {
 
         // 素材异步就绪后统一刷新（就绪前 PlotView 走 Graphics 占位）
         SpriteLib.inst.init().then(() => {
+            // 场景可能在素材加载完成前切换（node 已销毁），跳过
+            if (!this.node || !this.node.isValid) return;
             for (const child of this.node.children) child.getComponent(PlotView)?.refresh();
         });
     }

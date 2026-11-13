@@ -19,6 +19,18 @@ const NEED = [
     'ui/icon_gold',
     'ui/icon_seed',
     'ui/icon_carrot',
+    // Batch2：探险（旧林地）+ 防守（封印之夜）
+    'tiles/ground_forest',
+    'adventure/bush_berry',
+    'adventure/herb_patch',
+    'adventure/wood_log',
+    'adventure/barn',
+    'monsters/slime',
+    'monsters/slime_elite',
+    'ui/icon_berry',
+    'ui/icon_herb',
+    'ui/icon_wood',
+    'ui/icon_gel',
 ];
 
 export class SpriteLib {

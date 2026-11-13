@@ -113,7 +113,11 @@ export class BackpackPanel extends Component {
             if (SpriteLib.inst.ready) {
                 const iconPath = id === 'gold' ? 'ui/icon_gold'
                     : id.endsWith('_seed') ? 'ui/icon_seed'
-                    : id === 'carrot' ? 'ui/icon_carrot' : null;
+                    : id === 'carrot' ? 'ui/icon_carrot'
+                    : id === 'berry' ? 'ui/icon_berry'
+                    : id === 'herb' ? 'ui/icon_herb'
+                    : id === 'wood' ? 'ui/icon_wood'
+                    : id === 'slime_gel' ? 'ui/icon_gel' : null;
                 const frame = iconPath ? SpriteLib.inst.get(iconPath) : null;
                 if (frame) BackpackPanel._icon(this._listRoot, frame, -PANEL_W / 2 + 44, y);
             }

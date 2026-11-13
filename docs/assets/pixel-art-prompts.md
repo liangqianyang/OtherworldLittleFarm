@@ -92,10 +92,18 @@
 
 ---
 
-## Batch 2（暂不做，防 scope 膨胀）
+## Batch 2（探险旧林地 + 防守封印之夜，2026-11-13 已生成）
+- 提示词已固化在 `tools/gen_pixel_art.py` ASSETS 清单（单一真源），本表不再重复。
+- 清单：ground_forest(32 满幅) / bush_berry、herb_patch、wood_log、barn(64)（adventure/）/
+  slime(32)、slime_elite(48)（monsters/）/ icon_berry、icon_herb、icon_wood、icon_gel(16)（ui/）。
+- 风格要点：怪物滑稽化不恐怖（设计红线）；林地地面比农场草地更深更暗；精英=紫色+小皇冠。
+- 生成命令：`python3 tools/gen_pixel_art.py --only <id...>`（默认 qwen-image-3.0-pro）。
+
+## Batch 3（暂不做，防 scope 膨胀）
 - HUD 按钮九宫格框 / 面板底 / 弹窗遮罩纹理
 - 番茄/南瓜/月光花（种子商店扩品时）
-- 角色立绘 / 怪物 / 探险区 tileset（阶段 3）
+- 角色立绘 / 玩家小人
+- 房间场景大图（现在用 ground_forest 平铺+图标表意，够用）
 - 位图数字字体（阶段 5 平台验证前）
 
 ## 生成后的接入流程（我来做）

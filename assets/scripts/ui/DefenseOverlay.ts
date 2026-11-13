@@ -1,10 +1,16 @@
-import { _decorator, Component, Node, UITransform, Graphics, Color, Label } from 'cc';
+import { _decorator, Component, Node, UITransform, Graphics, Color, Label, Sprite } from 'cc';
 const { ccclass } = _decorator;
 
 import { EventBus } from '../core/EventBus';
 import { TimeSystem } from '../core/TimeSystem';
 import { GameApp } from '../app/GameApp';
 import { DefenseSystem, FieldMonster } from '../gameplay/defense/DefenseSystem';
+import { SpriteLib } from '../core/SpriteLib';
+
+/** 怪物 id → 精灵路径 */
+function monsterSprite(mid: string): string {
+    return mid.includes('elite') ? 'monsters/slime_elite' : 'monsters/slime';
+}
 
 /**
  * DefenseOverlay —— 封印之夜覆盖层（阶段 4 样板）。
@@ -12,8 +18,8 @@ import { DefenseSystem, FieldMonster } from '../gameplay/defense/DefenseSystem';
  * BedtimeDialog 确认睡觉时若今晚有防守（DefenseSystem.hasNightTonight），
  * 先进入本覆盖层打完夜战，结算后（settle）才真正 endDay 过夜——防守只在在线流程判定。
  *
- * 视觉（占位 Graphics，素材后补）：深蓝夜幕、左侧生成、右侧「谷仓」防线；
- * 怪物 = 圆形色块 + HP 条（slime 绿 / elite 紫），点击怪物挥击（4-7 伤）。
+ * 视觉：夜幕 + 林地地面平铺（夜间调暗）、左侧生成、右侧谷仓（barn 精灵）；
+ * 怪物 = slime/slime_elite 精灵 + HP 条，点击怪物挥击（4-7 伤）。
  * 漏怪会吃库存（DefenseSystem._devour），全灭 = 胜利战利品。
  */
 @ccclass('DefenseOverlay')
@@ -39,11 +45,23 @@ export class DefenseOverlay extends Component {
         root.on(Node.EventType.TOUCH_START, swallow);
         root.on(Node.EventType.TOUCH_END, swallow);
 
+        // 林地地面平铺（夜间压暗调蓝，盖在夜幕上作战场底）
+        const ground = new Node('ground');
+        ground.layer = layer;
+        ground.addComponent(UITransform).setContentSize(1280, 720);
+        const gs = ground.addComponent(Sprite)!;
+        gs.sizeMode = Sprite.SizeMode.CUSTOM;
+        gs.type = Sprite.Type.TILED;
+        gs.color = new Color(120, 128, 165, 235);
+        ground.setPosition(0, 0);
+        ground.active = false; // open() 时素材就绪再显示
+        root.addChild(ground);
+
         root.addChild(DefenseOverlay._labelNode('封 印 之 夜', 30, 0, 280, layer));
         const info = DefenseOverlay._labelNode('', 20, 0, 230, layer);
         root.addChild(info);
 
-        // 谷仓防线（右侧）
+        // 谷仓防线（右侧）—— barn 精灵 + Graphics 底框兜底
         const barn = new Node('barn');
         barn.layer = layer;
         barn.addComponent(UITransform).setContentSize(120, 340);
@@ -55,7 +73,15 @@ export class DefenseOverlay extends Component {
         bg.roundRect(-50, -160, 100, 320, 12);
         bg.fill();
         bg.stroke();
-        barn.addChild(DefenseOverlay._labelNode('谷仓', 22, 0, 0, layer));
+        const barnSpr = new Node('barnSpr');
+        barnSpr.layer = layer;
+        barnSpr.addComponent(UITransform).setContentSize(128, 128);
+        const bs = barnSpr.addComponent(Sprite)!;
+        bs.sizeMode = Sprite.SizeMode.CUSTOM; // 先 CUSTOM 再赋图（坑#21）
+        barnSpr.setPosition(0, 0);
+        barnSpr.active = false;
+        barn.addChild(barnSpr);
+        barn.addChild(DefenseOverlay._labelNode('谷仓', 22, 0, -120, layer));
         root.addChild(barn);
 
         // 怪物容器
@@ -101,8 +127,27 @@ export class DefenseOverlay extends Component {
         const brief = intel.map((i) => `${i.monsterName}×${i.count}`).join('、');
         this._infoLabel.string = `守门人：${brief} 正在接近封印之门！`;
         this._resultRoot.active = false;
+        this._applyArt();
         this.node.active = true;
         return true;
+    }
+
+    /** 素材赋图（open 时 SpriteLib 必已就绪；未就绪保留 Graphics 占位） */
+    private _applyArt(): void {
+        const lib = SpriteLib.inst;
+        if (!lib.ready) return;
+        const barnFrame = lib.get('adventure/barn');
+        const barnSpr = this.node.getChildByName('barn')?.getChildByName('barnSpr');
+        if (barnFrame && barnSpr) {
+            barnSpr.getComponent(Sprite)!.spriteFrame = barnFrame;
+            barnSpr.active = true;
+        }
+        const groundFrame = lib.get('tiles/ground_forest');
+        const ground = this.node.getChildByName('ground');
+        if (groundFrame && ground) {
+            ground.getComponent(Sprite)!.spriteFrame = groundFrame;
+            ground.active = true;
+        }
     }
 
     update(dt: number): void {
@@ -164,13 +209,14 @@ export class DefenseOverlay extends Component {
         this._nodes.clear();
     }
 
-    /** 怪物节点：圆形色块 + HP 条 + 名字，可点击挥击 */
+    /** 怪物节点：slime/slime_elite 精灵 + HP 条 + 名字，可点击挥击 */
     private _makeMonsterNode(mo: FieldMonster, layer: number): Node {
         const n = new Node(`mo_${mo.uid}`);
         n.layer = layer;
-        n.addComponent(UITransform).setContentSize(96, 96);
-        const body = n.addComponent(Graphics)!;
         const elite = mo.mid.includes('elite');
+        const size = elite ? 132 : 96;
+        n.addComponent(UITransform).setContentSize(size, size);
+        const body = n.addComponent(Graphics)!;
         const col = elite ? new Color(150, 80, 200, 255) : new Color(90, 170, 70, 255);
         body.fillColor = col;
         body.strokeColor = new Color(20, 20, 20, 255);
@@ -178,6 +224,18 @@ export class DefenseOverlay extends Component {
         body.circle(0, 0, elite ? 34 : 26);
         body.fill();
         body.stroke();
+
+        // 精灵图（open 时 SpriteLib 必已就绪；赋图成功则盖住 Graphics 圆）
+        const frame = SpriteLib.inst.get(monsterSprite(mo.mid));
+        if (frame) {
+            const sprNode = new Node('bodySpr');
+            sprNode.layer = layer;
+            sprNode.addComponent(UITransform).setContentSize(size, size);
+            const sp = sprNode.addComponent(Sprite)!;
+            sp.sizeMode = Sprite.SizeMode.CUSTOM; // 先 CUSTOM 再赋图（坑#21）
+            sp.spriteFrame = frame;
+            n.addChild(sprNode);
+        }
 
         // HP 条（画在同一 Graphics 上方一点：用子节点）
         const hp = new Node('hp');
