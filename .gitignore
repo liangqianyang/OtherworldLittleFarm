@@ -25,3 +25,6 @@ node_modules/
 .idea/
 # TapTap 包体私钥等敏感凭据，绝不入库
 tools/package-private-keys/
+
+# API 密钥（严禁提交）
+.secrets/
