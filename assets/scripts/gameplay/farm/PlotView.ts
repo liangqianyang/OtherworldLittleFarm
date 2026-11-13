@@ -4,6 +4,7 @@ import { EventBus } from '../../core/EventBus';
 import { GameApp } from '../../app/GameApp';
 import { SpriteLib } from '../../core/SpriteLib';
 import { TimeSystem } from '../../core/TimeSystem';
+import { DataManager } from '../../core/DataManager';
 
 const { ccclass } = _decorator;
 
@@ -12,7 +13,6 @@ const ART = 128;           // 素材实际显示边长（32px × 4 整数倍缩�
 const MATURE_COLOR = new Color(230, 168, 50, 255);   // 成熟金黄（占位模式用）
 const SOIL_COLOR = new Color(74, 58, 42, 255);       // 空地深褐（占位模式用）
 const GROW_COLOR = new Color(74, 140, 66, 255);      // 生长绿（占位模式用）
-const SEED_ITEM = 'carrot_seed';                     // 切片阶段固定种胡萝卜
 
 /**
  * PlotView —— 单个地块的视图 + 触屏交互。
@@ -101,12 +101,20 @@ export class PlotView extends Component {
         this._g.stroke();
 
         if (p) {
-            const stage = FarmSystem.inst.isMature(p) ? 'crops/carrot_2'
-                : p.growth > 0 ? 'crops/carrot_1' : 'crops/carrot_0';
-            const cropFrame = lib.get(stage);
+            // 作物阶段图来自 crops 表 stages 关键帧（day<=growth 的最后一帧）
+            const crop = DataManager.inst.getRow('catalogs/crops', p.cropId);
+            let spritePath: string | null = null;
+            if (crop && Array.isArray(crop['stages'])) {
+                for (const st of crop['stages'] as { day: number; sprite: string }[]) {
+                    if (p.growth >= st.day && st.sprite) spritePath = st.sprite;
+                }
+            }
+            const cropFrame = spritePath ? lib.get(spritePath) : null;
             if (cropFrame) {
                 this._crop.spriteFrame = cropFrame;
                 this._crop.node.active = true;
+            } else {
+                this._crop.node.active = false;
             }
         } else {
             this._crop.node.active = false;
@@ -152,18 +160,26 @@ export class PlotView extends Component {
         else this._label.string = p.wateredOnDay === TimeSystem.inst.dayIndex ? '已浇' : '浇水';
     }
 
+    /** 从背包挑一颗可种的种子（items 表顺序=解锁顺序，先到先种） */
+    private _pickSeed(inv: Record<string, number>): string | null {
+        const rows = DataManager.inst.getRows('catalogs/items');
+        for (const r of rows) {
+            const id = String(r['id']);
+            if (r['category'] === 'seed' && (inv[id] ?? 0) > 0) return id;
+        }
+        return null;
+    }
+
     private _onTap(): void {
         const app = GameApp.inst;
         if (!app) return; // 直开 farm 场景预览时 GameApp 未启动(launch 场景才装配服务)
         const farm = FarmSystem.inst;
         const p = farm.getPlot(this.index);
         if (!p) {
-            const inv = app.inventory;
-            if ((inv[SEED_ITEM] ?? 0) > 0) {
-                if (farm.plant(this.index, SEED_ITEM)) {
-                    app.spendItem(SEED_ITEM, 1);
-                    app.persist('plant');
-                }
+            const seed = this._pickSeed(app.inventory);
+            if (seed && farm.plant(this.index, seed)) {
+                app.spendItem(seed, 1);
+                app.persist('plant');
             } else {
                 this._label.string = '缺种子'; // 立即可见反馈，下次 farmChanged 恢复
             }

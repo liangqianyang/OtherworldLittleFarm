@@ -99,12 +99,10 @@
 - 风格要点：怪物滑稽化不恐怖（设计红线）；林地地面比农场草地更深更暗；精英=紫色+小皇冠。
 - 生成命令：`python3 tools/gen_pixel_art.py --only <id...>`（默认 qwen-image-3.0-pro）。
 
-## Batch 3（暂不做，防 scope 膨胀）
-- HUD 按钮九宫格框 / 面板底 / 弹窗遮罩纹理
-- 番茄/南瓜/月光花（种子商店扩品时）
-- 角色立绘 / 玩家小人
-- 房间场景大图（现在用 ground_forest 平铺+图标表意，够用）
-- 位图数字字体（阶段 5 平台验证前）
+## Batch 3（2026-11-13 已生成，提示词固化在 tools/gen_pixel_art.py ASSETS 单一真源）
+- 番茄/南瓜/月光花三阶段各 3 张（32px 透明，crops/）+ 对应图标（16px）+ 鱼类图标 crucian/perch/moonfish（16px）
+- 接入：crops.json stages 改为关键帧语义（{day, sprite}，day<=growth 取最后一帧）；PlotView 读表不再硬编码 carrot；SpriteLib NEED 共 35 项
+- 暂不做（防 scope 膨胀）：HUD 按钮九宫格框 / 面板底 / 弹窗遮罩纹理 / 角色立绘 / 玩家小人 / 房间场景大图（ground_forest 平铺+图标表意够用）/ 位图数字字体（阶段 5 平台验证前）
 
 ## 生成后的接入流程（我来做）
 1. 文件放进上表路径（PNG，文件名严格按表）

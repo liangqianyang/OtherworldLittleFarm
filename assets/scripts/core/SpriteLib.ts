@@ -31,6 +31,22 @@ const NEED = [
     'ui/icon_herb',
     'ui/icon_wood',
     'ui/icon_gel',
+    // Batch3：番茄/南瓜/月光花三阶段 + 图标 + 鱼类图标
+    'crops/tomato_0',
+    'crops/tomato_1',
+    'crops/tomato_2',
+    'crops/pumpkin_0',
+    'crops/pumpkin_1',
+    'crops/pumpkin_2',
+    'crops/moonflower_0',
+    'crops/moonflower_1',
+    'crops/moonflower_2',
+    'ui/icon_tomato',
+    'ui/icon_pumpkin',
+    'ui/icon_moonflower',
+    'ui/icon_crucian',
+    'ui/icon_perch',
+    'ui/icon_moonfish',
 ];
 
 export class SpriteLib {

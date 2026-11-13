@@ -111,6 +111,52 @@ ASSETS = [
     ("icon_gel", 16, "assets/textures/ui/icon_gel.png", True,
      "像素画，16位复古游戏图标，一滴半透明草绿色粘液圆球带高光，深色描边，纯品红色背景，游戏物品图标。" + PALETTE +
      " pixel art icon, 16-bit retro game item icon, single translucent grass-green slime gel drop with highlight, dark outline, isolated on solid magenta background"),
+    # ---- Batch3：四种作物三阶段 + 对应图标 + 鱼类图标 ----
+    ("tomato_0", 32, "assets/textures/crops/tomato_0.png", True,
+     "像素画，16位复古农场游戏，单株番茄嫩芽（两片小绿叶），纯品红色背景，游戏精灵图。" + PALETTE +
+     " pixel art sprite, 16-bit retro farm game, single tiny tomato seedling with two small green leaves, isolated on solid magenta background"),
+    ("tomato_1", 32, "assets/textures/crops/tomato_1.png", True,
+     "像素画，16位复古农场游戏，生长中的番茄植株（绿色茎叶支架上挂着2颗青色小番茄），纯品红色背景，游戏精灵图。" + PALETTE +
+     " pixel art sprite, 16-bit retro farm game, growing tomato plant on a small wooden stake with two green unripe tomatoes, isolated on solid magenta background"),
+    ("tomato_2", 32, "assets/textures/crops/tomato_2.png", True,
+     "像素画，16位复古农场游戏，成熟番茄植株（茂密绿叶+3颗鲜艳红色大番茄饱满圆润），纯品红色背景，游戏精灵图。" + PALETTE +
+     " pixel art sprite, 16-bit retro farm game, mature harvest-ready tomato plant, lush green foliage with three vivid red ripe tomatoes, isolated on solid magenta background"),
+    ("pumpkin_0", 32, "assets/textures/crops/pumpkin_0.png", True,
+     "像素画，16位复古农场游戏，单株南瓜嫩芽（两片圆润小绿叶），纯品红色背景，游戏精灵图。" + PALETTE +
+     " pixel art sprite, 16-bit retro farm game, single tiny pumpkin sprout with two round green leaves, isolated on solid magenta background"),
+    ("pumpkin_1", 32, "assets/textures/crops/pumpkin_1.png", True,
+     "像素画，16位复古农场游戏，生长中的南瓜藤蔓（深绿大叶片爬地藤蔓+一个绿色小南瓜），纯品红色背景，游戏精灵图。" + PALETTE +
+     " pixel art sprite, 16-bit retro farm game, growing pumpkin vine with broad dark green leaves and one small green pumpkin, isolated on solid magenta background"),
+    ("pumpkin_2", 32, "assets/textures/crops/pumpkin_2.png", True,
+     "像素画，16位复古农场游戏，成熟南瓜（一个饱满巨大橙红色南瓜带棱纹瓜瓣+粗绿瓜蒂，趴在藤叶间），纯品红色背景，游戏精灵图。" + PALETTE +
+     " pixel art sprite, 16-bit retro farm game, mature harvest-ready big plump orange pumpkin with ribbed segments and thick green stem among vine leaves, isolated on solid magenta background"),
+    ("moonflower_0", 32, "assets/textures/crops/moonflower_0.png", True,
+     "像素画，16位复古农场游戏，单株月光花嫩芽（两片淡蓝绿色小叶），纯品红色背景，游戏精灵图。" + PALETTE +
+     " pixel art sprite, 16-bit retro farm game, single tiny moonflower sprout with two pale blue-green leaves, isolated on solid magenta background"),
+    ("moonflower_1", 32, "assets/textures/crops/moonflower_1.png", True,
+     "像素画，16位复古农场游戏，生长中的月光花植株（银蓝色细长叶片+一根未开放的花苞茎），纯品红色背景，游戏精灵图。" + PALETTE +
+     " pixel art sprite, 16-bit retro farm game, growing moonflower plant with slender silver-blue leaves and one closed flower bud on a stem, isolated on solid magenta background"),
+    ("moonflower_2", 32, "assets/textures/crops/moonflower_2.png", True,
+     "像素画，16位复古农场游戏，成熟月光花（一朵盛开的发光淡蓝色大花带淡黄色花蕊，花瓣微微发光效果，深蓝银色叶片环绕），纯品红色背景，游戏精灵图。" + PALETTE +
+     " pixel art sprite, 16-bit retro farm game, mature harvest-ready blooming glowing pale blue moonflower with soft yellow center and faint glow, surrounded by dark blue-silver leaves, isolated on solid magenta background"),
+    ("icon_tomato", 16, "assets/textures/ui/icon_tomato.png", True,
+     "像素画，16位复古游戏图标，一颗鲜艳红色圆番茄带绿色星形瓜蒂，深色描边，纯品红色背景，游戏物品图标。" + PALETTE +
+     " pixel art icon, 16-bit retro game item icon, single vivid red round tomato with green star calyx, dark outline, isolated on solid magenta background"),
+    ("icon_pumpkin", 16, "assets/textures/ui/icon_pumpkin.png", True,
+     "像素画，16位复古游戏图标，一个橙红色带棱纹小南瓜带粗短瓜蒂，深色描边，纯品红色背景，游戏物品图标。" + PALETTE +
+     " pixel art icon, 16-bit retro game item icon, single orange ribbed pumpkin with short thick stem, dark outline, isolated on solid magenta background"),
+    ("icon_moonflower", 16, "assets/textures/ui/icon_moonflower.png", True,
+     "像素画，16位复古游戏图标，一朵发光淡蓝色五瓣小花带淡黄色花心，深色描边，纯品红色背景，游戏物品图标。" + PALETTE +
+     " pixel art icon, 16-bit retro game item icon, single glowing pale blue five-petal flower with soft yellow center, dark outline, isolated on solid magenta background"),
+    ("icon_crucian", 16, "assets/textures/ui/icon_crucian.png", True,
+     "像素画，16位复古游戏图标，一条银白色小鲫鱼侧面带淡金色鳞片和圆眼睛，深色描边，纯品红色背景，游戏物品图标。" + PALETTE +
+     " pixel art icon, 16-bit retro game item icon, small silver-white crucian carp side view with pale gold scales and round eye, dark outline, isolated on solid magenta background"),
+    ("icon_perch", 16, "assets/textures/ui/icon_perch.png", True,
+     "像素画，16位复古游戏图标，一条青绿色鲈鱼侧面带深色条纹和尖鳍，深色描边，纯品红色背景，游戏物品图标。" + PALETTE +
+     " pixel art icon, 16-bit retro game item icon, green-blue perch side view with dark stripes and pointed dorsal fin, dark outline, isolated on solid magenta background"),
+    ("icon_moonfish", 16, "assets/textures/ui/icon_moonfish.png", True,
+     "像素画，16位复古游戏图标，一条奇幻发光淡蓝色圆月鱼侧面带月牙形尾鳍和微光效果，深色描边，纯品红色背景，游戏物品图标。" + PALETTE +
+     " pixel art icon, 16-bit retro game item icon, fantasy glowing pale blue round moonfish side view with crescent tail and faint glow, dark outline, isolated on solid magenta background"),
 ]
 
 
