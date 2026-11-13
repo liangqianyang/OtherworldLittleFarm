@@ -8,6 +8,8 @@ import { EconomySystem } from '../systems/EconomySystem';
 import { BackpackPanel } from './BackpackPanel';
 import { BedtimeDialog } from './BedtimeDialog';
 import { TutorialGuide } from './TutorialGuide';
+import { DefenseOverlay } from './DefenseOverlay';
+import { DefenseSystem } from '../gameplay/defense/DefenseSystem';
 
 /**
  * FarmHUD 顶栏（阶段 2.2 布局正式化）：
@@ -21,6 +23,8 @@ export class FarmHUD extends Component {
     private _buyLabel: Label | null = null;
     private _panel: BackpackPanel | null = null;
     private _bedtime: BedtimeDialog | null = null;
+    private _defense: DefenseOverlay | null = null;
+    private _intelLabel: Label | null = null;
 
     onLoad(): void {
         EventBus.inst.on('dayAdvanced', this._refresh, this);
@@ -51,16 +55,29 @@ export class FarmHUD extends Component {
             GameApp.inst?.loadAdventure();
         });
 
-        // 背包面板 + 睡觉弹窗 + 新档引导（挂 HUD 所在 Canvas）
+        // 背包面板 + 睡觉弹窗 + 防守覆盖层 + 新档引导（挂 HUD 所在 Canvas）
         const canvas = this.node.parent;
         if (canvas) {
             this._panel = BackpackPanel.create(canvas, this.node.layer);
             this._bedtime = BedtimeDialog.create(canvas, this.node.layer);
+            this._bedtime.defenseOverlay = this._defense = DefenseOverlay.create(canvas, this.node.layer);
             TutorialGuide.maybeStart(canvas, this.node.layer);
         }
 
+        // 守门人情报（§8.1）：顶栏下方一行预告
+        const intelNode = new Node('intel');
+        intelNode.layer = this.node.layer;
+        intelNode.addComponent(UITransform);
+        intelNode.setPosition(0, 215);
+        const il = intelNode.addComponent(Label)!;
+        il.fontSize = 20;
+        il.string = '';
+        this.node.addChild(intelNode);
+        this._intelLabel = il;
+
         // 按钮文本按当前背包刷一次（初始硬编码文本不反映实况）
         this._refreshShops();
+        this._refreshIntel();
     }
 
     onDestroy(): void {
@@ -108,6 +125,21 @@ export class FarmHUD extends Component {
             label.string = `第 ${TimeSystem.inst.dayIndex} 天 · 金币${inv['gold'] ?? 0} · 种子${inv['carrot_seed'] ?? 0} · 萝卜${inv['carrot'] ?? 0}`;
         }
         this._refreshShops();
+        this._refreshIntel();
+    }
+
+    /** 守门人情报行：今晚有防守=红色警报；否则预告下一波日期 */
+    private _refreshIntel(): void {
+        if (!this._intelLabel?.isValid) return;
+        const sys = DefenseSystem.inst;
+        if (sys.hasNightTonight()) {
+            const intel = sys.intelTonight();
+            const brief = intel.map((i) => `${i.monsterName}×${i.count}`).join('、');
+            this._intelLabel.string = `⚠ 今晚防守：${brief}！睡前做好准备`;
+        } else {
+            const next = sys.nextNightDay();
+            this._intelLabel.string = next !== null ? `守门人来报：第 ${next} 天夜里有怪物来袭` : '';
+        }
     }
 
     private _refreshShops(): void {

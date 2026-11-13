@@ -1,0 +1,26 @@
+[
+  {
+    "id": "night_slime_1",
+    "everyDays": 4,
+    "firstDay": 4,
+    "waves": [
+      { "monsterId": "slime", "count": 3, "interval": 1.6, "delay": 1.0 }
+    ],
+    "reward": [
+      { "itemId": "gold", "min": 15, "max": 25 }
+    ]
+  },
+  {
+    "id": "night_slime_2",
+    "everyDays": 4,
+    "firstDay": 12,
+    "waves": [
+      { "monsterId": "slime", "count": 4, "interval": 1.4, "delay": 1.0 },
+      { "monsterId": "slime_elite", "count": 1, "interval": 1.0, "delay": 2.5 }
+    ],
+    "reward": [
+      { "itemId": "gold", "min": 30, "max": 45 },
+      { "itemId": "slime_gel", "min": 2, "max": 3 }
+    ]
+  }
+]

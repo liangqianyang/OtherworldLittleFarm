@@ -4,6 +4,7 @@ const { ccclass } = _decorator;
 import { GameApp } from '../app/GameApp';
 import { TimeSystem } from '../core/TimeSystem';
 import { AdventureSystem } from '../gameplay/adventure/AdventureSystem';
+import { DefenseSystem } from '../gameplay/defense/DefenseSystem';
 
 /**
  * DebugPanel —— 第一周就要的调试红利（建议书 §7）：
@@ -109,6 +110,56 @@ export class DebugPanel extends Component {
     advSettle(): void {
         AdventureSystem.inst.settle();
         console.log(`[Debug] settled, inventory=${JSON.stringify(GameApp.inst?.saveData?.inventory)}`);
+    }
+
+    // —— 防守驱动（阶段4自测） ——
+
+    defDump(): void {
+        const s = DefenseSystem.inst.night;
+        console.log(`[Debug] tonight=${DefenseSystem.inst.hasNightTonight()} next=${DefenseSystem.inst.nextNightDay()} night=${s ? JSON.stringify({ id: s.def.id, spawned: s.spawned, total: s.total, killed: s.killed, leaked: s.leaked, over: s.over, won: s.won, alive: s.monsters.filter(m => m.alive).map(m => ({ uid: m.uid, hp: m.hp, x: Math.round(m.x), y: Math.round(m.y) })) }) : 'null'}`);
+    }
+
+    /** 时间快进到防守日（第4/8/12…天） */
+    defGotoNight(): void {
+        const target = DefenseSystem.inst.nextNightDay();
+        if (target === null) { console.log('[Debug] no night scheduled'); return; }
+        while (TimeSystem.inst.dayIndex < target) TimeSystem.inst.endDay();
+        console.log(`[Debug] dayIndex=${TimeSystem.inst.dayIndex} tonight=${DefenseSystem.inst.hasNightTonight()}`);
+    }
+
+    defStart(): void {
+        console.log(`[Debug] startNight → ${DefenseSystem.inst.startNight()}`);
+        this.defDump();
+    }
+
+    defTick(sec = 1): void {
+        DefenseSystem.inst.tick(sec);
+        this.defDump();
+    }
+
+    /** 打第一只活怪一刀 */
+    defHit(): void {
+        const s = DefenseSystem.inst.night;
+        const mo = s?.monsters.find((m) => m.alive);
+        if (!mo) { console.log('[Debug] no alive monster'); return; }
+        console.log(`[Debug] hit uid=${mo.uid} → ${DefenseSystem.inst.playerHit(mo.uid)} (hp=${Math.max(0, mo.hp)})`);
+        this.defDump();
+    }
+
+    /** 打死场上所有活怪（快速终局） */
+    defClear(): void {
+        const s = DefenseSystem.inst.night;
+        if (!s) return;
+        for (let i = 0; i < 40; i++) {
+            const mo = s.monsters.find((m) => m.alive);
+            if (!mo) break;
+            DefenseSystem.inst.playerHit(mo.uid);
+        }
+        this.defDump();
+    }
+
+    defSettle(): void {
+        console.log(`[Debug] settle → ${JSON.stringify(DefenseSystem.inst.settle())}`);
     }
 
     private _onKey(event: EventKeyboard): void {

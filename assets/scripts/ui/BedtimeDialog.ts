@@ -19,6 +19,9 @@ export class BedtimeDialog extends Component {
     private _confirmBtnLabel: Label = null!;
     private _pendingMature = 0;
 
+    /** 防守覆盖层引用（FarmHUD 注入）：今晚有防守时先开夜战再过夜 */
+    defenseOverlay: { open(): boolean } | null = null;
+
     /** 程序化创建（挂 farm Canvas，隐藏备用） */
     static create(parent: Node, layer: number): BedtimeDialog {
         const W = 520, H = 360;
@@ -92,6 +95,8 @@ export class BedtimeDialog extends Component {
 
     private _onConfirm(): void {
         this.close();
+        // §8.1/§12 红线：防守只挂在睡觉在线流程上；打完夜战由 DefenseOverlay._onDawn 过夜
+        if (this.defenseOverlay && this.defenseOverlay.open()) return;
         TimeSystem.inst.endDay();
         GameApp.inst?.persist('bedtime');
         EventBus.inst.emit('farmChanged', { action: 'bedtime' });
