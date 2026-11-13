@@ -1,0 +1,15 @@
+[
+  {
+    "id": "old_wood",
+    "name": "旧林地",
+    "rooms": [
+      { "idx": 0, "kind": "entry", "name": "林缘小径", "desc": "树影渐深，你踏入了旧林地。", "next": [1] },
+      { "idx": 1, "kind": "gather", "name": "莓果灌木丛", "desc": "灌木上挂着饱满的浆果。", "spots": [{ "itemId": "berry", "max": 3 }], "next": [2] },
+      { "idx": 2, "kind": "fork", "name": "岔路：倒木前", "desc": "巨大的倒木挡路，两侧分岔。", "next": [3, 4] },
+      { "idx": 3, "kind": "gather", "name": "东：药草坡", "desc": "向阳的坡地长满草药。", "spots": [{ "itemId": "herb", "max": 3 }, { "itemId": "wood", "max": 1 }], "next": [5] },
+      { "idx": 4, "kind": "battle", "name": "西：粘怪领地", "desc": "一团粘怪在腐木间蠕动。", "monster": "slime", "next": [5] },
+      { "idx": 5, "kind": "elite", "name": "林心空地", "desc": "巨粘怪盘踞于此，传说它守着宝物。", "monster": "slime_elite", "treasure": [{ "itemId": "carrot_seed", "min": 2, "max": 3 }], "next": [6] },
+      { "idx": 6, "kind": "exit", "name": "归途", "desc": "顺着记忆中的小径撤回农场。", "next": [] }
+    ]
+  }
+]

@@ -1,11 +1,110 @@
 [
-  { "id": "gold", "name": "金币", "category": "currency", "stackable": true, "sellPrice": 1, "description": "农场通用货币（阶段2经济闭环启用）" },
-  { "id": "carrot", "name": "胡萝卜", "category": "crop_product", "stackable": true, "sellPrice": 8, "description": "普通作物·价格锚8" },
-  { "id": "carrot_seed", "name": "胡萝卜种子", "category": "seed", "stackable": true, "sellPrice": 3, "buyPrice": 3, "description": "售价≈产出35%" },
-  { "id": "tomato", "name": "番茄", "category": "crop_product", "stackable": true, "sellPrice": 15, "description": "普通作物·价格锚15" },
-  { "id": "tomato_seed", "name": "番茄种子", "category": "seed", "stackable": true, "sellPrice": 5, "buyPrice": 5, "description": "售价≈产出35%" },
-  { "id": "pumpkin", "name": "南瓜", "category": "crop_product", "stackable": true, "sellPrice": 25, "description": "普通作物·价格锚25；防守待验证作物候选" },
-  { "id": "pumpkin_seed", "name": "南瓜种子", "category": "seed", "stackable": true, "sellPrice": 9, "buyPrice": 9, "description": "售价≈产出35%" },
-  { "id": "moonflower", "name": "月光花", "category": "crop_product", "stackable": true, "sellPrice": 60, "description": "稀有作物·价格锚60（贵+慢+全年可种延后）" },
-  { "id": "moonflower_seed", "name": "月光花种子", "category": "seed", "stackable": true, "sellPrice": 21, "buyPrice": 21, "description": "售价≈产出35%" }
+  {
+    "id": "gold",
+    "name": "金币",
+    "category": "currency",
+    "stackable": true,
+    "sellPrice": 1,
+    "description": "农场通用货币（阶段2经济闭环启用）"
+  },
+  {
+    "id": "carrot",
+    "name": "胡萝卜",
+    "category": "crop_product",
+    "stackable": true,
+    "sellPrice": 8,
+    "description": "普通作物·价格锚8"
+  },
+  {
+    "id": "carrot_seed",
+    "name": "胡萝卜种子",
+    "category": "seed",
+    "stackable": true,
+    "sellPrice": 3,
+    "buyPrice": 3,
+    "description": "售价≈产出35%"
+  },
+  {
+    "id": "tomato",
+    "name": "番茄",
+    "category": "crop_product",
+    "stackable": true,
+    "sellPrice": 15,
+    "description": "普通作物·价格锚15"
+  },
+  {
+    "id": "tomato_seed",
+    "name": "番茄种子",
+    "category": "seed",
+    "stackable": true,
+    "sellPrice": 5,
+    "buyPrice": 5,
+    "description": "售价≈产出35%"
+  },
+  {
+    "id": "pumpkin",
+    "name": "南瓜",
+    "category": "crop_product",
+    "stackable": true,
+    "sellPrice": 25,
+    "description": "普通作物·价格锚25；防守待验证作物候选"
+  },
+  {
+    "id": "pumpkin_seed",
+    "name": "南瓜种子",
+    "category": "seed",
+    "stackable": true,
+    "sellPrice": 9,
+    "buyPrice": 9,
+    "description": "售价≈产出35%"
+  },
+  {
+    "id": "moonflower",
+    "name": "月光花",
+    "category": "crop_product",
+    "stackable": true,
+    "sellPrice": 60,
+    "description": "稀有作物·价格锚60（贵+慢+全年可种延后）"
+  },
+  {
+    "id": "moonflower_seed",
+    "name": "月光花种子",
+    "category": "seed",
+    "stackable": true,
+    "sellPrice": 21,
+    "buyPrice": 21,
+    "description": "售价≈产出35%"
+  },
+  {
+    "id": "wood",
+    "name": "木材",
+    "category": "material",
+    "stackable": true,
+    "sellPrice": 2,
+    "description": "旧林地基础材料"
+  },
+  {
+    "id": "herb",
+    "name": "草药",
+    "category": "material",
+    "stackable": true,
+    "sellPrice": 5,
+    "description": "初级药材"
+  },
+  {
+    "id": "berry",
+    "name": "浆果",
+    "category": "material",
+    "stackable": true,
+    "sellPrice": 3,
+    "description": "林地浆果"
+  },
+  {
+    "id": "slime_gel",
+    "name": "粘液",
+    "category": "material",
+    "stackable": true,
+    "sellPrice": 4,
+    "description": "粘怪的凝胶，合成材料"
+  }
 ]

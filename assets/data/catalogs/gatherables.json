@@ -1,0 +1,5 @@
+[
+  { "id": "wood", "name": "木材", "category": "material", "stackable": true, "sellPrice": 2, "description": "旧林地基础材料，建造与修理用" },
+  { "id": "herb", "name": "草药", "category": "material", "stackable": true, "sellPrice": 5, "description": "初级药材，后续合成用" },
+  { "id": "berry", "name": "浆果", "category": "material", "stackable": true, "sellPrice": 3, "description": "林地浆果，可食用" }
+]
