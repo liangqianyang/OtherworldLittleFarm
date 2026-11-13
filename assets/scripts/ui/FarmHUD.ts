@@ -66,4 +66,3 @@ export class FarmHUD extends Component {
         this.node.addChild(node);
     }
 }
-}
