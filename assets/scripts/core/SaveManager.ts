@@ -17,7 +17,9 @@ export interface SaveDataV1 {
     savedRealTimeMs: number;
     /** 最小背包：itemId → 数量 */
     inventory: Record<string, number>;
-    // TODO 阶段 2+：作物地块 / 图鉴 / NPC / 设置 / 农场装饰段
+    /** 农场地块（阶段 1 切片）。类型来自 FarmSystem——仅类型引用，无核心→玩法运行时依赖 */
+    farm?: import('../gameplay/farm/FarmSystem').FarmSave;
+    // TODO 阶段 2+：图鉴 / NPC / 设置 / 农场装饰段
 }
 
 type AnyRecord = Record<string, unknown>;

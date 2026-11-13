@@ -22,6 +22,8 @@ export interface GameEvents {
     invasionWarning: { daysUntil: number };
     /** 每日天气 roll（阶段 2 接入） */
     weatherRolled: { weather: string };
+    /** 农场地块变化（种植/浇水/收获/生长推进） */
+    farmChanged: { action: string };
 }
 
 type Handler<T> = (payload: T) => void;

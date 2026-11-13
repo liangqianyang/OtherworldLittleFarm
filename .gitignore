@@ -23,3 +23,5 @@ node_modules/
 # WebStorm
 #//////////////////////////
 .idea/
+# TapTap 包体私钥等敏感凭据，绝不入库
+tools/package-private-keys/

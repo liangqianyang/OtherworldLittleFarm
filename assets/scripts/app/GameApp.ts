@@ -8,6 +8,7 @@ import { SaveManager, SaveDataV1 } from '../core/SaveManager';
 import { IPlatformAdapter } from '../platform/IPlatformAdapter';
 import { LocalAdapter } from '../platform/LocalAdapter';
 import { DebugPanel } from '../ui/DebugPanel';
+import { FarmSystem } from '../gameplay/farm/FarmSystem';
 
 /**
  * GameApp —— 服务装配与启动顺序（挂在 launch 场景 GameRoot 上，常驻节点）。
@@ -43,12 +44,16 @@ export class GameApp extends Component {
         // 读档（含上一代备份回退与迁移）
         const loaded = this.save!.load();
         this.saveData = loaded ?? this._newGame();
+        // 农场切片：旧档补 farm 字段，FarmSystem 接管地块状态（订阅 dayAdvanced）
+        if (!this.saveData.farm) this.saveData.farm = { plots: [] };
+        FarmSystem.inst.init(this.saveData.farm);
         TimeSystem.inst.dayIndex = this.saveData.dayIndex;
 
         // 离线结算（方案 B：冷启动按整天，作物只长不枯，红线：倒流按 0）
         const days = TimeSystem.inst.settleOffline(this.saveData.savedRealTimeMs, this.adapter!.time.nowMs());
         if (days > 0) {
             this.saveData.dayIndex = TimeSystem.inst.dayIndex;
+            FarmSystem.inst.growOffline(days); // 作物只长不枯（2026-11-13 拍板）
             console.log(`[Game] 离线结算：推进 ${days} 个游戏日，当前第 ${TimeSystem.inst.dayIndex} 天（离线简报卡在阶段 2 接入 UI）`);
         }
 
@@ -78,6 +83,20 @@ export class GameApp extends Component {
         EventBus.inst.emit('itemGained', { itemId, count });
     }
 
+    /** 只读背包视图（UI/交互层用） */
+    get inventory(): Record<string, number> {
+        return this.saveData?.inventory ?? {};
+    }
+
+    /** 扣减背包（播种等），数量不足返回 false */
+    spendItem(itemId: string, count: number): boolean {
+        const inv = this.saveData?.inventory;
+        if (!inv || (inv[itemId] ?? 0) < count) return false;
+        inv[itemId] -= count;
+        EventBus.inst.emit('itemSpent', { itemId, count });
+        return true;
+    }
+
     private _initPlatform(): void {
         // TODO 阶段 5：按运行时探测切换 TapAdapter（tap 全局对象存在且工程为 Tap 构建时）
         this.adapter = new LocalAdapter();
@@ -89,7 +108,8 @@ export class GameApp extends Component {
             version: 1,
             dayIndex: 1,
             savedRealTimeMs: this.adapter!.time.nowMs(),
-            inventory: {},
+            inventory: { carrot_seed: 5 }, // 切片引导：开局 5 包胡萝卜种子
+            farm: { plots: [] },
         };
     }
 }
