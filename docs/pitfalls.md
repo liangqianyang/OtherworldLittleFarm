@@ -111,3 +111,23 @@
 - 症状：32px 像素图缩在 150px 地块中心，不铺满。setContentSize(128) 被覆盖。
 - 根因：Sprite 默认 sizeMode=TRIMMED，**赋 spriteFrame 那一刻**会按图片裁剪尺寸重写 UITransform.contentSize；之后才改 CUSTOM 已经晚了（尺寸已被覆盖成 32×32）。
 - 解法：`sizeMode = Sprite.SizeMode.CUSTOM` 必须在**赋 spriteFrame 之前**设置（程序化建 UI 的固定顺序：加组件→设 CUSTOM→setContentSize→赋图）。
+
+## 22. BrowserSkill 截图 sha 缓存（2026-11-13）
+- 症状：页面明明变了，`bsk_inspect screenshot` 返回同一张旧图（响应里 sha256 与上次相同）。
+- 根因：bsk 按内容 hash 缓存截图响应；游戏 canvas 是纯绘制（DOM 无变化），sha 计算命中缓存。
+- 解法：**优先不用截图验证**——`bsk_interact evaluate` 遍历场景树读 `cc.Label.string` / 组件类型（Sprite vs Graphics）是文字级精确验证，不受缓存影响。必须截图时，先点击一次 canvas（状态变化破缓存）再截。
+
+## 23. 预览页 reload 后引擎启动时序（2026-11-13）
+- `bsk_page reload` + 两次 `networkidle` 后，`cc.director.getScene().getChildByName('Canvas')` 仍可能是 null。
+- 时序：load → 引擎 Init Project（重编译后首载可达 12s）→ LoadScene farm（~80ms-5s）→ 场景树可用。networkidle 只保证网络安静，不等引擎。
+- 解法：evaluate 里判 null 就返回 'not-ready'，隔几秒重试；或先看 console（bsk_inspect console since=续读）确认 `LoadScene farm` 与 `[SpriteLib]` 日志出现再操作。
+- 普通 reload 可能吃到缓存的旧 chunk index——验证新代码是否生效要看 console 日志的**行号/文件 hash**（如 chunk 1e…js:86 vs 旧 :76），必要时 hard reload。
+
+## 24. bsk strict 策略下所有动作都要最新 contextId（2026-11-13）
+- `bsk_page reload/wait` 也报 "requires the context returned by the latest cooperate sync"——不只 interact/evaluate，页面级动作同样检查。
+- 每个动作前 `bsk_session sync` 拿 contextId 并显式传入；evaluate 报错一次后 context 会变，必须重 sync 再发（不要原样重放）。
+
+## 25. SpriteLib 异步就绪竞态（2026-11-13）
+- 症状：reload 后农场偶发停留在 Graphics 占位样式（console 明明 [SpriteLib] 8/8）。
+- 根因：首帧早于 Bundle 加载完成，PlotView 已按占位模式绘制；素材就绪后无人通知重绘。
+- 解法：SpriteLib.init 完成后 `EventBus.emit('farmChanged', {action:'sprites_ready'})`，PlotView 等视图已订阅 farmChanged 全量重绘——异步资源就绪统一走事件广播，不做轮询。

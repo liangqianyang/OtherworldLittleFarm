@@ -1,4 +1,5 @@
 import { assetManager, SpriteFrame, Bundle } from 'cc';
+import { EventBus } from './EventBus';
 
 /**
  * SpriteLib —— texture Bundle 的 SpriteFrame 运行时加载器（阶段 2.5）。
@@ -48,7 +49,12 @@ export class SpriteLib {
             }
         }
         this.ready = this._frames.size > 0;
-        if (this.ready) console.log(`[SpriteLib] 已加载 ${this._frames.size}/${NEED.length} 张像素素材`);
+        if (this.ready) {
+            console.log(`[SpriteLib] 已加载 ${this._frames.size}/${NEED.length} 张像素素材`);
+            // 就绪竞态修复：首帧可能早于本加载完成（PlotView 已走占位模式），
+            // 广播一次让所有视图按素材模式重绘
+            EventBus.inst.emit('farmChanged', { action: 'sprites_ready' });
+        }
     }
 
     /** 取 SpriteFrame；未就绪或缺素材返回 null（调用方回退占位） */
