@@ -54,8 +54,8 @@ export class AdventureSystem {
         bag: Record<string, number>;
         bagCount: number;
         playerHp: number;
-        /** 已清空采集点的记录（roomIdx:spotIdx） */
-        emptied: Set<string>;
+        /** 采集点已采次数（key=roomIdx:spotIdx，对照 spot.max） */
+        emptied: Map<string, number>;
     } | null = null;
 
     /** 当前战斗（null=不在战斗） */
@@ -79,7 +79,7 @@ export class AdventureSystem {
             bag: {},
             bagCount: 0,
             playerHp: AdventureSystem.PLAYER_MAX_HP,
-            emptied: new Set<string>(),
+            emptied: new Map<string, number>(),
         };
         this.battle = null;
         EventBus.inst.emit('farmChanged', { action: 'adventure_start' }); // 复用刷新信号
@@ -93,25 +93,30 @@ export class AdventureSystem {
         return rooms.find((r) => r.idx === idx) ?? null;
     }
 
-    /** 采集一个点（roomIdx:spotIdx 已采过则拒绝；负重满拒绝） */
+    /** 采集一个点（已采满 spot.max 拒绝；负重满拒绝） */
     gather(roomIdx: number, spotIdx: number): string | null {
         const run = this.run;
         const room = this.room(roomIdx);
         if (!run || !room?.spots) return null;
-        const key = `${roomIdx}:${spotIdx}`;
-        if (run.emptied.has(key)) return null;
-        if (run.bagCount >= AdventureSystem.BAG_CAP) return null;
         const spot = room.spots[spotIdx];
         if (!spot) return null;
+        const key = `${roomIdx}:${spotIdx}`;
+        const taken = run.emptied.get(key) ?? 0;
+        if (taken >= (Number(spot['max'] ?? 1))) return null;
+        if (run.bagCount >= AdventureSystem.BAG_CAP) return null;
         run.bag[spot.itemId] = (run.bag[spot.itemId] ?? 0) + 1;
         run.bagCount += 1;
-        run.emptied.add(key);
+        run.emptied.set(key, taken + 1);
         EventBus.inst.emit('farmChanged', { action: 'adventure_gather' });
         return spot.itemId;
     }
 
     spotEmptied(roomIdx: number, spotIdx: number): boolean {
-        return this.run?.emptied.has(`${roomIdx}:${spotIdx}`) ?? true;
+        const run = this.run;
+        if (!run) return true;
+        const spot = this.room(roomIdx)?.spots?.[spotIdx];
+        const taken = run.emptied.get(`${roomIdx}:${spotIdx}`) ?? 0;
+        return taken >= (Number(spot?.['max'] ?? 1));
     }
 
     /** 进入战斗（战斗房/精英房） */
@@ -136,9 +141,9 @@ export class AdventureSystem {
      * 玩家攻击一次。样板公式：玩家 4~7 随机伤害，怪物每回合反伤 damage（玩家闪避 25%）。
      * 返回 'hit' | 'win' | 'lose'。
      */
-    playerAttack(): 'hit' | 'win' | 'lose' {
+    playerAttack(): 'hit' | 'win' | 'lose' | 'none' {
         const b = this.battle;
-        if (!b || !this.run) return 'hit';
+        if (!b || !this.run) return 'none';
         b.hp -= 4 + Math.floor(Math.random() * 4);
         if (b.hp <= 0) {
             // 战利品入包（受负重限制，超出丢弃并提示）

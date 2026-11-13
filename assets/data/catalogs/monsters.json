@@ -1,4 +1,32 @@
 [
-  { "id": "slime", "name": "林地粘怪", "behavior": "chaser", "hp": 12, "damage": 3, "rewards": [{ "itemId": "slime_gel", "min": 1, "max": 2 }], "codexId": "slime" },
-  { "id": "slime_elite", "name": "巨粘怪", "behavior": "tank", "hp": 30, "damage": 5, "rewards": [{ "itemId": "slime_gel", "min": 2, "max": 4 }], "codexId": "slime" }
+  {
+    "id": "slime",
+    "name": "林地粘怪",
+    "behavior": "chaser",
+    "hp": 12,
+    "damage": 3,
+    "rewards": [
+      {
+        "itemId": "slime_gel",
+        "min": 1,
+        "max": 2
+      }
+    ],
+    "codexId": "slime"
+  },
+  {
+    "id": "slime_elite",
+    "name": "巨粘怪",
+    "behavior": "tank",
+    "hp": 18,
+    "damage": 4,
+    "rewards": [
+      {
+        "itemId": "slime_gel",
+        "min": 2,
+        "max": 4
+      }
+    ],
+    "codexId": "slime"
+  }
 ]

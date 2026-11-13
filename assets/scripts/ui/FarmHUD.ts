@@ -58,6 +58,9 @@ export class FarmHUD extends Component {
             this._bedtime = BedtimeDialog.create(canvas, this.node.layer);
             TutorialGuide.maybeStart(canvas, this.node.layer);
         }
+
+        // 按钮文本按当前背包刷一次（初始硬编码文本不反映实况）
+        this._refreshShops();
     }
 
     onDestroy(): void {
@@ -109,8 +112,8 @@ export class FarmHUD extends Component {
 
     private _refreshShops(): void {
         const inv = GameApp.inst?.inventory ?? {};
-        const carrots = inv['carrot'] ?? 0;
-        if (this._sellLabel?.isValid) this._sellLabel.string = `卖粮(${carrots})`;
+        const kinds = EconomySystem.inst.sellableKinds(inv);
+        if (this._sellLabel?.isValid) this._sellLabel.string = `卖粮(${kinds})`;
         const price = EconomySystem.inst.getBuyPrice('carrot_seed');
         if (this._buyLabel?.isValid && price !== null) this._buyLabel.string = `买种子${price}金`;
     }

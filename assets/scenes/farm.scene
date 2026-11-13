@@ -52,7 +52,7 @@
     },
     "autoReleaseAssets": false,
     "_globals": {
-      "__id__": 15
+      "__id__": 16
     },
     "_id": "0fc02952-2c66-4409-b0e5-8a21af6dd3e5"
   },
@@ -82,6 +82,9 @@
       },
       {
         "__id__": 14
+      },
+      {
+        "__id__": 15
       }
     ],
     "_prefab": null,
@@ -326,7 +329,7 @@
     "_string": "第 1 天 · 农场启动中…",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 40,
+    "_actualFontSize": 41,
     "_fontSize": 40,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -498,30 +501,42 @@
     "_id": "4dbjP22vxA6KSsCvBAYf4v"
   },
   {
+    "__type__": "347bbjRd0tDjY/1O0HhqUE8",
+    "_name": "",
+    "_objFlags": 0,
+    "__editorExtras__": {},
+    "node": {
+      "__id__": 2
+    },
+    "_enabled": true,
+    "__prefab": null,
+    "_id": "e9dhBgFfdNA5Wy0v4JryCP"
+  },
+  {
     "__type__": "cc.SceneGlobals",
     "ambient": {
-      "__id__": 16
-    },
-    "shadows": {
       "__id__": 17
     },
-    "_skybox": {
+    "shadows": {
       "__id__": 18
     },
-    "fog": {
+    "_skybox": {
       "__id__": 19
     },
-    "octree": {
+    "fog": {
       "__id__": 20
     },
-    "skin": {
+    "octree": {
       "__id__": 21
     },
-    "lightProbeInfo": {
+    "skin": {
       "__id__": 22
     },
-    "postSettings": {
+    "lightProbeInfo": {
       "__id__": 23
+    },
+    "postSettings": {
+      "__id__": 24
     },
     "bakedWithStationaryMainLight": false,
     "bakedWithHighpLightmap": false

@@ -23,11 +23,12 @@ export class EconomySystem {
         return this._price(itemId, 'buyPrice');
     }
 
-    /** 卖出背包全部作物产出，返回所得金币（0=没货可卖） */
+    /** 卖出背包全部可卖物（非货币/非种子且有卖价：作物+探险材料），返回所得金币（0=没货可卖） */
     sellAllProducts(inv: Record<string, number>): number {
         let total = 0;
         for (const row of DataManager.inst.getRows('catalogs/items') as AnyRow[]) {
-            if (row['category'] !== 'crop_product') continue;
+            const cat = String(row['category'] ?? '');
+            if (cat === 'currency' || cat === 'seed') continue;
             const id = String(row['id']);
             const n = inv[id] ?? 0;
             if (n <= 0) continue;
@@ -40,6 +41,17 @@ export class EconomySystem {
             EventBus.inst.emit('itemGained', { itemId: 'gold', count: total });
         }
         return total;
+    }
+
+    /** 背包中可卖出物件的种类数（卖粮按钮计数用） */
+    sellableKinds(inv: Record<string, number>): number {
+        let kinds = 0;
+        for (const row of DataManager.inst.getRows('catalogs/items') as AnyRow[]) {
+            const cat = String(row['category'] ?? '');
+            if (cat === 'currency' || cat === 'seed') continue;
+            if ((inv[String(row['id'])] ?? 0) > 0) kinds++;
+        }
+        return kinds;
     }
 
     /** 买种子（默认 1 包）。金币不足/缺表返回 false */

@@ -64,6 +64,8 @@ export class AdventureHUD extends Component {
             this._desc.string = '';
             this._bag.string = '';
             this._hp.string = '';
+            // 死亡/放弃后的兜底出口：回农场（否则卡死在探险场景）
+            this._button('返回农场', 0, -120, new Color(90, 110, 170), () => GameApp.inst.loadFarm(), this._actionRoot, 240);
             return;
         }
 
@@ -105,18 +107,20 @@ export class AdventureHUD extends Component {
         }
         if (sys.battle) this._battle.show();
 
-        // 前进 / 岔路
-        const next = room.next ?? [];
-        if (next.length === 1) {
-            this._button('前 进', 420, -260, new Color(90, 110, 170), () => AdventureSystem.inst.advance(0), this._actionRoot, 180);
-        } else if (next.length > 1) {
-            next.forEach((target, i) => {
-                const tRoom = sys.room(target);
-                const name = tRoom?.name ?? `岔路 ${i + 1}`;
-                this._button(`走：${name}`, -420 + i * 260, -260, new Color(90, 110, 170), () => {
-                    AdventureSystem.inst.advance(i);
-                }, this._actionRoot, 240);
-            });
+        // 前进 / 岔路（战斗中锁定：怪没打完不能走）
+        if (!sys.battle) {
+            const next = room.next ?? [];
+            if (next.length === 1) {
+                this._button('前 进', 420, -260, new Color(90, 110, 170), () => AdventureSystem.inst.advance(0), this._actionRoot, 180);
+            } else if (next.length > 1) {
+                next.forEach((target, i) => {
+                    const tRoom = sys.room(target);
+                    const name = tRoom?.name ?? `岔路 ${i + 1}`;
+                    this._button(`走：${name}`, -420 + i * 260, -260, new Color(90, 110, 170), () => {
+                        AdventureSystem.inst.advance(i);
+                    }, this._actionRoot, 240);
+                });
+            }
         }
 
         // 出口房：撤回结算

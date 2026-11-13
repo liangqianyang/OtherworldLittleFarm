@@ -1,5 +1,6 @@
 import { _decorator, Component, Node, Label, Graphics, Color, UITransform, EventTouch, UIOpacity } from 'cc';
 import { AdventureSystem } from '../gameplay/adventure/AdventureSystem';
+import { EventBus } from '../core/EventBus';
 
 const { ccclass } = _decorator;
 
@@ -85,6 +86,8 @@ export class BattlePanel extends Component {
         // 样板：撤退=放弃战斗（怪不追击），留在原房（可再进战）
         AdventureSystem.inst.battle = null;
         this.node.active = false;
+        // 通知 HUD 刷新（解锁被战斗锁住的前进按钮）
+        EventBus.inst.emit('farmChanged', { action: 'adventure_flee' });
     }
 
     private _makeLabel(str: string, size: number, color: Color, x: number, y: number): Label {
