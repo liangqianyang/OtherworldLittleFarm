@@ -29,7 +29,7 @@
 Cocos Creator 3.8.8 的微信小游戏构建模板**硬编码 `deviceOrientation: "portrait"`**，且 taptap-minigame-tools 转换器只原样继承该字段（无任何横屏开关）。横屏包必须每次构建后、转换前手工补丁：
 
 1. 构建微信小游戏（面板 → 构建，暂不用「运行」——微信开发者工具路径/服务端口未配置时会报「Creator 拒绝了此操作」，不影响构建产物）。
-2. 把 `build/wechatgame/game.json` 的 `deviceOrientation` 由 `portrait` 改为 `landscape`（后续可做成构建钩子自动化）。
+2. ~~手工改 game.json~~ 已自动化：`build-templates/wechatgame/game.json`（landscape）会在每次构建后自动覆盖产物，无需再手工补丁（构建模板机制，2026-11-13 生效；若发现产物仍为 portrait 说明模板未生效，回退手工 sed 补丁）。
 3. 菜单 → 扩展 → taptap-minigame-tools → 对 `build/wechatgame` 执行转换 → 产出 `build/TapBuild/game.zip`。
 4. 转换完成后抽查 `build/TapBuild/game/game.json` 确认横屏生效；再上传开发者中心真机试玩。
 
