@@ -179,3 +179,13 @@
 ## 35. 编辑器打开场景期间别用 MCP 建/删节点（2026-11-16 补强 #31）
 - MCP 的场景操作作用于「编辑器当前打开的场景进程」，与预览进程无关；execute_component_method 的输出不会出现在预览页 console。
 - 预览进程驱动唯一可靠通道=组件 onLoad 里 `(window as any).__xxx = this` 挂桥 + bsk evaluate 直调 JS（合成 MouseEvent/PointerEvent 会被 input 层拦截）。
+
+## 36. hidden tab 自愈启动循环：loadScene 只能发一次（2026-11-16）
+- 症状：装 setInterval 每 2.5s 重发 `cc.director.loadScene('launch')`，8 分钟后场景仍是 null。
+- 根因：引擎对同一场景的重复 loadScene 直接拒绝（"launch is already being loaded"），**首次请求在深度节流下要 4+ 分钟才完成**；反复重发全部被拒，第一次请求本身没被打断但后续重发毫无意义还刷屏。
+- 正解：**fire-once**——只发一次 loadScene，之后循环只轮询 `cc.director.getScene()`；启动链的每一步 await（bundle/13 表/farm）各吃 1-2 分钟节流节拍，全程 10-15 分钟。
+- 配套：全自动断言链（farm→捕获 window.__debug→loadScene('world')→战斗→结算→localStorage 断言）装进一个 setInterval 轮询器，等爬完一次性收结果，避免每步人工轮询。
+
+## 37. ui/ 目录 import 层级速查（2026-11-16，两次踩）
+- assets/scripts/ui/X.ts 里：cc 核心/自研 core → `../core/...`；gameplay 下的系统 → `../gameplay/<sub>/...`；`../../` 会越到 assets/ 上层（报「以 X.ts 为起点找不到模块」）。
+- 反向（gameplay/world → ui）：`../../ui/X`。编译错误真源：temp/logs/project.log grep「找不到模块」。
