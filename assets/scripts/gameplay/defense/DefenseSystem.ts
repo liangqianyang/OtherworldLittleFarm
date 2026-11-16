@@ -1,64 +1,41 @@
+/**
+ * DefenseSystem —— 封印防守夜晚状态机（M4 塔防化薄适配层）。
+ *
+ * 战斗数学全部在 DefenseCore（纯逻辑、可无头单测）：
+ * 固定 waypoints 直线移动、四塔系、逐波门控、祭坛血量、完胜判定。
+ * 本层职责：读表选波、实例化塔（存档 seal）、事件桥接（fx/音效/UI）、
+ * 战利品与奖励结算、祭坛与塔的持久化、玩家挥击。
+ *
+ * 离线红线不变：防守只挂「睡觉」在线流程，离线绝不判定失守。
+ */
 import { EventBus } from '../../core/EventBus';
 import { DataManager } from '../../core/DataManager';
 import { GameApp } from '../../app/GameApp';
 import { TimeSystem } from '../../core/TimeSystem';
+import { EconomySystem } from '../../systems/EconomySystem';
+import {
+    CoreNight, CoreTower, ResolvedMap,
+    resolveMap, makeTower, towerStatsAt, startCoreNight, beginWave, tickCoreNight,
+    damageMonster, canPlace, setMonsterMetaLookup,
+} from './DefenseCore';
 
 type AnyRow = Record<string, unknown>;
 
-export interface WaveSpawn {
-    monsterId: string;
-    count: number;
-    interval: number;
-    delay: number;
-}
-
-export interface NightDef {
-    id: string;
-    waves: WaveSpawn[];
-    reward: { itemId: string; min: number; max: number }[];
-}
-
-/** 场上活体怪物（战斗实时态） */
-export interface FieldMonster {
-    uid: number;
-    mid: string;
-    name: string;
-    hp: number;
-    maxHp: number;
-    /** 撞仓伤害（未用上，谷仓无血量：到达即漏怪） */
-    damage: number;
-    /** 横向速度 px/s */
-    speed: number;
-    /** 当前位置（设计坐标，原点居中） */
-    x: number;
-    y: number;
-    alive: boolean;
+export interface SealSave {
+    towers: { cropId: string; cx: number; cy: number; lv: number }[];
+    altarHp: number;
 }
 
 export interface NightState {
-    def: NightDef;
-    /** 扁平化生成计划：t 秒后生成怪物表 mid（速度 speed px/s） */
-    plan: { t: number; mid: string; speed: number }[];
-    monsters: FieldMonster[];
-    spawned: number;
-    total: number;
+    core: CoreNight;
+    mapRow: AnyRow;
+    tableRow: AnyRow;
+    map: ResolvedMap;
     killed: number;
-    leaked: number;
-    elapsed: number;
-    over: boolean;
-    won: boolean;
+    /** 事件钩子（DefenseOverlay 注入）：spawn、arrive、altar_hit、bait_eat、bait_gone、pod_shot、spike_hit、kill、wave_break、wave_start、end */
+    hook: ((ev: string, payload?: Record<string, unknown>) => void) | null;
 }
 
-/**
- * DefenseSystem —— 封印防守夜晚状态机（阶段 4 样板）。
- *
- * 节奏（§8.1 拍板）：每 everyDays 天来一波（defense_waves.json 数据驱动）；
- * 守门人情报 = FarmHUD 提前显示「下一波：第 X 天」，当晚睡前开战。
- *
- * 玩法（第一版可玩）：怪物从左缘生成 → 向右「谷仓」移动 → 玩家点击怪物挥击
- * （4-7 伤，与探险手感一致）→ 到仓=漏怪（随机吃库存作物/金币）→ 全灭=胜利入战利品。
- * 离线顺延红线（§12）：防守只挂在「睡觉」在线流程上，离线绝不判定失守。
- */
 export class DefenseSystem {
     private static _instance: DefenseSystem | null = null;
     static get inst(): DefenseSystem {
@@ -66,27 +43,56 @@ export class DefenseSystem {
         return this._instance;
     }
 
-    static readonly SPAWN_X = -560;      // 左缘生成线
-    static readonly BARN_X = 480;        // 谷仓防线
     static readonly PLAYER_DMG_MIN = 4;
     static readonly PLAYER_DMG_MAX = 7;
+    /** 失守次日祭坛回血值 */
+    static readonly ALTAR_LOST_HP = 50;
+    /** 祭坛修复到满的金币价 */
+    static readonly ALTAR_REPAIR_GOLD = 20;
+    /** 拆塔返还比例 */
+    static readonly REFUND_RATE = 0.6;
 
     /** 今晚防守战实时态（null=不在防守） */
     night: NightState | null = null;
-    private _uid = 0;
+    private _metaBound = false;
 
     get inNight(): boolean {
-        return this.night !== null && !this.night.over;
+        return this.night !== null && !this.night.core.over;
+    }
+
+    // ---------- 存档 seal 段 ----------
+
+    seal(): SealSave {
+        const sd = GameApp.inst?.saveData as Record<string, unknown> | undefined;
+        const s = sd?.['seal'] as SealSave | undefined;
+        if (s && Array.isArray(s.towers)) return s;
+        const fresh: SealSave = { towers: [], altarHp: 100 };
+        if (sd) sd['seal'] = fresh;
+        return fresh;
+    }
+
+    persistSeal(action: string): void {
+        GameApp.inst?.persist(action);
+        EventBus.inst.emit('farmChanged', { action: 'seal_changed' });
+    }
+
+    // ---------- 表选择（情报与开战同表，多表同日取 firstDay 最大） ----------
+
+    private _pickTableRow(dayIndex = TimeSystem.inst.dayIndex): AnyRow | null {
+        const nights = DataManager.inst.getRows('catalogs/defense_waves');
+        const hits = nights.filter((row) => {
+            const first = Number(row['firstDay'] ?? 4);
+            const every = Number(row['everyDays'] ?? 4);
+            return dayIndex >= first && (dayIndex - first) % every === 0;
+        });
+        return hits.length
+            ? hits.reduce((a, b) => (Number(b['firstDay'] ?? 0) > Number(a['firstDay'] ?? 0) ? b : a))
+            : null;
     }
 
     /** 当天（正在过的这个白天）夜里有没有防守 */
     hasNightTonight(dayIndex = TimeSystem.inst.dayIndex): boolean {
-        const nights = DataManager.inst.getRows('catalogs/defense_waves');
-        return nights.some((n) => {
-            const first = Number(n['firstDay'] ?? 4);
-            const every = Number(n['everyDays'] ?? 4);
-            return dayIndex >= first && (dayIndex - first) % every === 0;
-        });
+        return this._pickTableRow(dayIndex) !== null;
     }
 
     /** 下一波防守是第几天（HUD 情报预告用；null=表里没有更晚的了） */
@@ -96,7 +102,6 @@ export class DefenseSystem {
         for (const n of nights) {
             const first = Number(n['firstDay'] ?? 4);
             const every = Number(n['everyDays'] ?? 4);
-            // 从今天起找下一个触发日
             for (let d = Math.max(dayIndex, first); ; d++) {
                 if (d >= first && (d - first) % every === 0) {
                     if (best === null || d < best) best = d;
@@ -107,188 +112,263 @@ export class DefenseSystem {
         return best;
     }
 
-    /** 今晚来袭情报（守门人简报：怪物名+数量；与 startNight 同表——取 firstDay 最大命中者） */
-    intelTonight(): { monsterName: string; count: number }[] {
-        const nights = DataManager.inst.getRows('catalogs/defense_waves');
-        const d = TimeSystem.inst.dayIndex;
-        const hits = nights.filter((row) => {
-            const first = Number(row['firstDay'] ?? 4);
-            const every = Number(row['everyDays'] ?? 4);
-            return d >= first && (d - first) % every === 0;
-        });
-        const n = hits.length
-            ? hits.reduce((a, b) => (Number(b['firstDay'] ?? 0) > Number(a['firstDay'] ?? 0) ? b : a))
-            : null;
-        if (!n) return [];
+    /** 今晚来袭情报：{线路提示, 台词, 首波组成}；与 startNight 同表 */
+    intelTonight(): { entranceHint: string; hint: string; comp: { monsterName: string; count: number }[] } | null {
+        const n = this._pickTableRow();
+        if (!n) return null;
         const monsters = DataManager.inst.getRows('catalogs/monsters');
-        const out: { monsterName: string; count: number }[] = [];
-        for (const w of (n['waves'] ?? []) as AnyRow[]) {
-            const mid = String(w['monsterId']);
+        const w0 = ((n['waves'] ?? []) as AnyRow[][])[0] ?? [];
+        const comp: { monsterName: string; count: number }[] = [];
+        for (const g of w0) {
+            const mid = String(g['monsterId']);
             const m = monsters.find((x) => x['id'] === mid);
-            out.push({ monsterName: String(m?.['name'] ?? mid), count: Number(w['count'] ?? 1) });
+            comp.push({ monsterName: String(m?.['name'] ?? mid), count: Number(g['count'] ?? 1) });
         }
-        return out;
+        return {
+            entranceHint: String(n['intel'] ? (n['intel'] as AnyRow)['entranceHint'] ?? '' : ''),
+            hint: String(n['intel'] ? (n['intel'] as AnyRow)['hint'] ?? '' : ''),
+            comp,
+        };
     }
 
-    /** 开战（BedtimeDialog 确认后调用；打完由 UI 调 finishNight 走真正过夜） */
+    // ---------- 开战 ----------
+
+    /** 开战（BedtimeDialog 确认后调用；打完由 UI 调 settle 走真正过夜） */
     startNight(): boolean {
-        if (this.night && !this.night.over) return false;
-        const nights = DataManager.inst.getRows('catalogs/defense_waves');
-        const d = TimeSystem.inst.dayIndex;
-        const hits = nights.filter((row) => {
-            const first = Number(row['firstDay'] ?? 4);
-            const every = Number(row['everyDays'] ?? 4);
-            return d >= first && (d - first) % every === 0;
-        });
-        // 多表同日命中时取 firstDay 最大者（表越新波次越强，进化式难度）
-        const n = hits.length
-            ? hits.reduce((a, b) => (Number(b['firstDay'] ?? 0) > Number(a['firstDay'] ?? 0) ? b : a))
-            : null;
-        if (!n) return false;
+        if (this.night && !this.night.core.over) return false;
+        const tableRow = this._pickTableRow();
+        if (!tableRow) return false;
+        const maps = DataManager.inst.getRows('catalogs/defense_maps');
+        const mapRow = maps.find((x) => x['id'] === tableRow['mapId']);
+        if (!mapRow) return false;
 
-        const monsters = DataManager.inst.getRows('catalogs/monsters');
-        const plan: { t: number; mid: string; speed: number }[] = [];
-        for (const w of (n['waves'] ?? []) as AnyRow[]) {
-            const mid = String(w['monsterId']);
-            const count = Number(w['count'] ?? 1);
-            const interval = Number(w['interval'] ?? 1.5);
-            const delay = Number(w['delay'] ?? 1.0);
-            const m = monsters.find((x) => x['id'] === mid);
-            const speed = m ? (String(m['behavior']) === 'tank' ? 38 : 60) : 55;
-            for (let i = 0; i < count; i++) {
-                plan.push({ t: delay + i * interval, mid, speed });
-            }
+        if (!this._metaBound) {
+            setMonsterMetaLookup((mid) => {
+                const m = DataManager.inst.getRows('catalogs/monsters').find((x) => x['id'] === mid);
+                if (!m) return null;
+                return {
+                    hp: Number(m['hp'] ?? 10),
+                    damage: Number(m['damage'] ?? 3),
+                    speed: String(m['behavior']) === 'tank' ? 38 : 60,
+                    name: String(m['name'] ?? mid),
+                    slowResist: Number(m['slowResist'] ?? 0),
+                    baitImmune: m['baitImmune'] === true,
+                };
+            });
+            this._metaBound = true;
         }
-        plan.sort((a, b) => a.t - b.t);
 
-        this.night = {
-            def: {
-                id: String(n['id']),
-                waves: (n['waves'] ?? []) as WaveSpawn[],
-                reward: (n['reward'] ?? []) as NightDef['reward'],
-            },
-            plan,
-            monsters: [],
-            spawned: 0,
-            total: plan.length,
-            killed: 0,
-            leaked: 0,
-            elapsed: 0,
-            over: false,
-            won: false,
-        };
+        const map = resolveMap(mapRow as unknown as Parameters<typeof resolveMap>[0]);
+        const crops = DataManager.inst.getRows('catalogs/crops');
+        const seal = this.seal();
+        const towers: CoreTower[] = [];
+        for (const t of seal.towers) {
+            const crop = crops.find((x) => x['id'] === t.cropId);
+            const d = crop?.['defense'] as AnyRow | undefined;
+            if (!d) continue;
+            const tw = makeTower(t.cropId, d, t.cx, t.cy, Number(mapRow['cellPx']), Number(mapRow['originX']), Number(mapRow['originY']));
+            if (t.lv >= 2) towerStatsAt(tw, d, Number(mapRow['cellPx']));
+            towers.push(tw);
+        }
+
+        const real = startCoreNight(map, tableRow, {}, towers, seal.altarHp);
+        this.night = { core: real, mapRow: mapRow as AnyRow, tableRow, map, killed: 0, hook: null };
+        beginWave(real, 0);
         EventBus.inst.emit('farmChanged', { action: 'defense_start' });
         return true;
     }
 
-    /** 每帧推进（DefenseOverlay.update 调用；只在 FIGHT 中生效） */
+    /** 每帧推进（DefenseOverlay.update 调用） */
     tick(dt: number): void {
         const s = this.night;
-        if (!s || s.over) return;
-        s.elapsed += dt;
+        if (!s || s.core.over) return;
+        tickCoreNight(s.core, dt, (ev, p) => this._onCoreEvent(ev, p));
+    }
 
-        // 按计划生成
-        while (s.plan.length > 0 && s.plan[0].t <= s.elapsed) {
-            const item = s.plan.shift()!;
-            const monsters = DataManager.inst.getRows('catalogs/monsters');
-            const m = monsters.find((x) => x['id'] === item.mid);
-            s.monsters.push({
-                uid: ++this._uid,
-                mid: item.mid,
-                name: String(m?.['name'] ?? item.mid),
-                hp: Number(m?.['hp'] ?? 10),
-                maxHp: Number(m?.['hp'] ?? 10),
-                damage: Number(m?.['damage'] ?? 3),
-                speed: item.speed,
-                x: DefenseSystem.SPAWN_X,
-                y: -140 + Math.random() * 280,   // 三车道随机
-                alive: true,
-            });
-            s.spawned++;
-            EventBus.inst.emit('farmChanged', { action: 'defense_spawn' });
-        }
-
-        // 移动 + 撞仓
-        for (const mo of s.monsters) {
-            if (!mo.alive) continue;
-            mo.x += mo.speed * dt;
-            if (mo.x >= DefenseSystem.BARN_X) {
-                mo.alive = false;
-                s.leaked++;
-                this._devour(mo);
+    private _onCoreEvent(ev: string, p?: Record<string, unknown>): void {
+        const s = this.night!;
+        const c = s.core;
+        switch (ev) {
+            case 'spawn':
+                EventBus.inst.emit('farmChanged', { action: 'defense_spawn' });
+                break;
+            case 'arrive':
+                // 漏怪=偷吃一次（击杀不回退，leak 计数已在 core）
+                this._devour(String(p?.['mid'] ?? ''));
+                break;
+            case 'kill': {
+                s.killed++;
+                const by = String(p?.['by'] ?? 'player');
+                if (by !== 'player') {
+                    // 塔击杀也有战利品（归玩家，塔防区设计：掉落归玩家）
+                    this._grantRewards(String(p?.['mid'] ?? ''));
+                } else {
+                    this._grantRewards(String(p?.['mid'] ?? ''));
+                }
+                EventBus.inst.emit('farmChanged', { action: 'defense_kill' });
+                break;
             }
+            case 'wave_break':
+                EventBus.inst.emit('farmChanged', { action: 'defense_wave_break' });
+                break;
+            case 'end':
+                EventBus.inst.emit('farmChanged', { action: c.won ? 'defense_win' : 'defense_end' });
+                break;
+            default:
+                break; // altar_hit/bait_eat/bait_gone/pod_shot/spike_hit 由 hook 直达 UI
         }
+        s.hook?.(ev, p);
+    }
 
-        // 终局判定：全部生成完且场上无活口
-        if (s.plan.length === 0 && s.monsters.every((mo) => !mo.alive)) {
-            s.over = true;
-            s.won = s.leaked === 0;
-            EventBus.inst.emit('farmChanged', { action: s.won ? 'defense_win' : 'defense_end' });
+    private _grantRewards(mid: string): void {
+        const app = GameApp.inst;
+        const m = DataManager.inst.getRows('catalogs/monsters').find((x) => x['id'] === mid);
+        for (const r of (m?.['rewards'] ?? []) as AnyRow[]) {
+            const min = Number(r['min'] ?? 1), max = Number(r['max'] ?? 1);
+            const cnt = min + Math.floor(Math.random() * (max - min + 1));
+            if (cnt > 0) app.giveItem(String(r['itemId']), cnt);
         }
     }
 
-    /** 玩家点击挥击：打中返回 'hit'|'kill'，没打中 'miss' */
-    playerHit(uid: number): 'hit' | 'kill' | 'miss' {
-        const s = this.night;
-        if (!s || s.over) return 'miss';
-        const mo = s.monsters.find((m) => m.uid === uid && m.alive);
-        if (!mo) return 'miss';
-        const dmg = DefenseSystem.PLAYER_DMG_MIN + Math.floor(Math.random() * (DefenseSystem.PLAYER_DMG_MAX - DefenseSystem.PLAYER_DMG_MIN + 1));
-        mo.hp -= dmg;
-        if (mo.hp <= 0) {
-            mo.alive = false;
-            s.killed++;
-            // 击杀战利品（复用 monsters.rewards）
-            const app = GameApp.inst;
-            const monsters = DataManager.inst.getRows('catalogs/monsters');
-            const m = monsters.find((x) => x['id'] === mo.mid);
-            for (const r of (m?.['rewards'] ?? []) as AnyRow[]) {
-                const min = Number(r['min'] ?? 1), max = Number(r['max'] ?? 1);
-                const cnt = min + Math.floor(Math.random() * (max - min + 1));
-                if (cnt > 0) app.giveItem(String(r['itemId']), cnt);
-            }
-            EventBus.inst.emit('farmChanged', { action: 'defense_kill' });
-            return 'kill';
-        }
-        EventBus.inst.emit('farmChanged', { action: 'defense_hit' });
-        return 'hit';
-    }
-
-    /** 漏怪惩罚：随机吃掉库存 1 份作物或 2 金币（ visibly 有损失但不毁档） */
-    private _devour(mo: FieldMonster): void {
+    /** 漏怪惩罚：随机吃掉库存 1 份作物或 2 金币（有损失但不毁档） */
+    private _devour(mid: string): void {
         const app = GameApp.inst;
         const inv = app.inventory;
         const crops = Object.keys(inv).filter(
             (k) => !k.startsWith('__') && k !== 'gold' && !k.endsWith('_seed') && (inv[k] ?? 0) > 0
         );
+        const name = DataManager.inst.getRows('catalogs/monsters').find((x) => x['id'] === mid);
+        const mname = String(name?.['name'] ?? '怪物');
         if (crops.length > 0) {
             const pick = crops[Math.floor(Math.random() * crops.length)];
             app.spendItem(pick, 1);
-            console.log(`[Defense] ${mo.name} 吃掉了 ${pick} ×1！`);
+            console.log(`[Defense] ${mname} 吃掉了 ${pick} ×1！`);
         } else if ((inv['gold'] ?? 0) >= 2) {
             app.spendItem('gold', 2);
-            console.log(`[Defense] ${mo.name} 偷走了 2 金币！`);
+            console.log(`[Defense] ${mname} 偷走了 2 金币！`);
         } else {
-            console.log(`[Defense] ${mo.name} 冲进谷仓翻了个空仓……`);
+            console.log(`[Defense] ${mname} 冲进封印翻了个空仓……`);
         }
         EventBus.inst.emit('farmChanged', { action: 'defense_leak' });
     }
 
-    /** 战斗结束后的收尾：胜利发奖励；由 UI 在结果面板确认后调用，之后才真正 endDay */
-    settle(): { won: boolean; killed: number; leaked: number } {
+    /** 玩家点击挥击：打中返回 'hit'|'kill'，没打中 'miss' */
+    playerHit(uid: number): 'hit' | 'kill' | 'miss' {
         const s = this.night;
-        if (!s) return { won: false, killed: 0, leaked: 0 };
-        if (s.won) {
-            const app = GameApp.inst;
-            for (const r of s.def.reward) {
+        if (!s || s.core.over) return 'miss';
+        const mo = s.core.monsters.find((m) => m.uid === uid && m.hp > 0);
+        if (!mo) return 'miss';
+        const dmg = DefenseSystem.PLAYER_DMG_MIN + Math.floor(Math.random() * (DefenseSystem.PLAYER_DMG_MAX - DefenseSystem.PLAYER_DMG_MIN + 1));
+        const before = mo.hp;
+        damageMonster(s.core, mo, dmg, (ev, p) => this._onCoreEvent(ev, p), 'kill');
+        if (before > 0 && mo.hp > 0) {
+            EventBus.inst.emit('farmChanged', { action: 'defense_hit' });
+            return 'hit';
+        }
+        return 'kill';
+    }
+
+    /** 战斗结束后的收尾：胜利发奖励/完胜加码；祭坛血量落档（失守→次日 50）。UI 结果面板确认后调用。 */
+    settle(): { won: boolean; perfect: boolean; killed: number; leakA: number; leakB: number; altarHp: number } {
+        const s = this.night;
+        if (!s) return { won: false, perfect: false, killed: 0, leakA: 0, leakB: 0, altarHp: 0 };
+        const c = s.core;
+        const app = GameApp.inst;
+        if (c.won && app) {
+            for (const r of (s.tableRow['reward'] ?? []) as AnyRow[]) {
                 const min = Number(r['min'] ?? 1), max = Number(r['max'] ?? 1);
                 const cnt = min + Math.floor(Math.random() * (max - min + 1));
-                if (cnt > 0) app.giveItem(r['itemId'], cnt);
+                if (cnt > 0) app.giveItem(String(r['itemId']), cnt);
+            }
+            if (c.perfect) {
+                for (const r of (s.tableRow['noLeakBonus'] ?? []) as AnyRow[]) {
+                    const min = Number(r['min'] ?? 1), max = Number(r['max'] ?? 1);
+                    const cnt = min + Math.floor(Math.random() * (max - min + 1));
+                    if (cnt > 0) app.giveItem(String(r['itemId']), cnt);
+                }
             }
         }
-        const out = { won: s.won, killed: s.killed, leaked: s.leaked };
+        const seal = this.seal();
+        seal.altarHp = c.won ? c.altarHp : DefenseSystem.ALTAR_LOST_HP;
+        seal.towers = c.towers.map((t) => ({ cropId: t.cropId, cx: t.cx, cy: t.cy, lv: t.lv }));
+        const out = { won: c.won, perfect: c.perfect, killed: s.killed, leakA: c.leakA, leakB: c.leakB, altarHp: seal.altarHp };
         this.night = null;
-        EventBus.inst.emit('farmChanged', { action: 'defense_settled' });
+        this.persistSeal('defense_settled');
         return out;
+    }
+
+    // ---------- 白天：塔建造/升级/拆除（BuildPanel 调用） ----------
+
+    /** 放置塔：扣金币、写 seal、跨夜常驻 */
+    placeTower(cropId: string, cx: number, cy: number): { ok: boolean; reason?: string } {
+        const s = this.night;
+        if (s) return { ok: false, reason: 'night' };
+        const crop = DataManager.inst.getRows('catalogs/crops').find((x) => x['id'] === cropId);
+        const d = crop?.['defense'] as AnyRow | undefined;
+        if (!d) return { ok: false, reason: 'no_def' };
+        const mapRow = this._mapRow();
+        if (!mapRow) return { ok: false, reason: 'no_map' };
+        const map = resolveMap(mapRow as unknown as Parameters<typeof resolveMap>[0]);
+        const seal = this.seal();
+        const towers: CoreTower[] = seal.towers.map((t) => ({ cropId: t.cropId, cx: t.cx, cy: t.cy, lv: t.lv, x: 0, y: 0, rPx: 0, power: 0, interval: 0, hp: 0, cd: 0 }));
+        const cell = cy * Number(mapRow['cols']) + cx;
+        const chk = canPlace(map, towers, cell, Number(mapRow['cols']));
+        if (!chk.ok) return { ok: false, reason: chk.reason };
+        const gold = Number(d['buildGold'] ?? 0);
+        if (!EconomySystem.inst.spendCost(GameApp.inst.inventory, { gold })) return { ok: false, reason: 'poor' };
+        seal.towers.push({ cropId, cx, cy, lv: 1 });
+        this.persistSeal('seal_place');
+        return { ok: true };
+    }
+
+    /** 升级到 Lv2（crops.defense.lv2.upgradeGold） */
+    upgradeTower(cx: number, cy: number): { ok: boolean; reason?: string } {
+        if (this.night) return { ok: false, reason: 'night' };
+        const mapRow = this._mapRow();
+        const seal = this.seal();
+        const t = seal.towers.find((x) => x.cx === cx && x.cy === cy);
+        if (!t) return { ok: false, reason: 'no_tower' };
+        if (t.lv >= 2) return { ok: false, reason: 'max' };
+        const crop = DataManager.inst.getRows('catalogs/crops').find((x) => x['id'] === t.cropId);
+        const d = crop?.['defense'] as AnyRow | undefined;
+        if (!d || !d['lv2']) return { ok: false, reason: 'no_lv2' };
+        const gold = Number((d['lv2'] as AnyRow)['upgradeGold'] ?? 0);
+        if (!EconomySystem.inst.spendCost(GameApp.inst.inventory, { gold })) return { ok: false, reason: 'poor' };
+        t.lv = 2;
+        this.persistSeal('seal_upgrade');
+        return { ok: true };
+    }
+
+    /** 拆塔返还 60% 建造价（夜间不可拆） */
+    removeTower(cx: number, cy: number): { ok: boolean; reason?: string } {
+        if (this.night) return { ok: false, reason: 'night' };
+        const seal = this.seal();
+        const i = seal.towers.findIndex((x) => x.cx === cx && x.cy === cy);
+        if (i < 0) return { ok: false, reason: 'no_tower' };
+        const t = seal.towers[i];
+        const crop = DataManager.inst.getRows('catalogs/crops').find((x) => x['id'] === t.cropId);
+        const d = crop?.['defense'] as AnyRow | undefined;
+        if (!d) return { ok: false, reason: 'no_def' };
+        const refund = Math.floor(Number(d['buildGold'] ?? 0) * DefenseSystem.REFUND_RATE);
+        if (refund > 0) GameApp.inst.giveItem('gold', refund);
+        seal.towers.splice(i, 1);
+        this.persistSeal('seal_remove');
+        return { ok: true };
+    }
+
+    /** 白天修复祭坛到满（20 金；失守次日可用） */
+    repairAltar(): { ok: boolean; reason?: string } {
+        if (this.night) return { ok: false, reason: 'night' };
+        const seal = this.seal();
+        if (seal.altarHp >= 100) return { ok: false, reason: 'full' };
+        if (!EconomySystem.inst.spendCost(GameApp.inst.inventory, { gold: DefenseSystem.ALTAR_REPAIR_GOLD })) return { ok: false, reason: 'poor' };
+        seal.altarHp = 100;
+        this.persistSeal('seal_repair');
+        return { ok: true };
+    }
+
+    private _mapRow(): AnyRow | null {
+        const maps = DataManager.inst.getRows('catalogs/defense_maps');
+        return (maps.find((x) => x['id'] === 'seal_1') ?? null) as AnyRow | null;
     }
 }

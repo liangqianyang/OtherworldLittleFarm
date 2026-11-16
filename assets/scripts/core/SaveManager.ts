@@ -18,12 +18,17 @@ export interface WorldSave {
     terrain?: string;
 }
 
+/** 封印防守切片（M4 塔防化：塔跨夜常驻 + 祭坛血量） */
+export interface SealSave {
+    towers?: { cropId: string; cx: number; cy: number; lv: number }[];
+    altarHp?: number;
+}
+
 /**
  * 存档顶层结构——只存纯数据（id/坐标/数值/时间戳），绝不序列化节点引用。
  * 后续阶段新增内容一律「加字段 + 加迁移」，不删旧字段（§12 存档工程约束）。
  */
-export interface SaveDataV1 {
-    version: number;
+export interface SaveDataV1 {    version: number;
     /** 游戏日（与 TimeSystem.dayIndex 同步） */
     dayIndex: number;
     /** 上次存档的真实时间戳（离线结算依据，来自平台时间源） */
@@ -36,6 +41,8 @@ export interface SaveDataV1 {
     codex?: string[];
     /** 世界切片：开荒/复活/玩家位置/地形差量（v3 新增） */
     world?: WorldSave;
+    /** 封印防守切片：塔/祭坛血量（M4 新增，可选字段缺省由 DefenseSystem 补默认） */
+    seal?: SealSave;
 }
 
 type AnyRecord = Record<string, unknown>;

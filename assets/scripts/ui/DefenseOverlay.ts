@@ -1,307 +1,398 @@
-import { _decorator, Component, Node, UITransform, Graphics, Color, Label, Sprite } from 'cc';
-const { ccclass } = _decorator;
-
+/**
+ * DefenseOverlay —— 封印防守夜战层（M4 塔防化）。
+ *
+ * 战场 = seal_1 地图（15×9 格 @64px，960×576 居中）：
+ * 西线 A / 北线 B 双裂口路径 → 决战走廊 → 2×2 封印祭坛（HP 条）。
+ * 怪物节点按 uid 池化（点击挥击），塔按 seal.towers 静态渲染，
+ * 波次 HUD（第 X/Y 波 · 场上怪 · 波间倒计时），终局归因面板。
+ * 帧驱动：update(dt) 由引擎调用；Automation 可手动调 update 推进（RAF 停转兼容）。
+ */
+import { _decorator, Component, Node, Graphics, Label, Color, UITransform, Sprite, SpriteFrame } from 'cc';
 import { EventBus } from '../core/EventBus';
 import { TimeSystem } from '../core/TimeSystem';
 import { GameApp } from '../app/GameApp';
-import { DefenseSystem, FieldMonster } from '../gameplay/defense/DefenseSystem';
+import { DefenseSystem } from '../gameplay/defense/DefenseSystem';
 import { SpriteLib } from '../core/SpriteLib';
-import { SfxLib } from '../core/SfxLib';
+import { cellToPx } from '../gameplay/defense/DefenseCore';
 
-/** 怪物 id → 精灵路径 */
-function monsterSprite(mid: string): string {
-    if (mid.includes('elite')) return 'monsters/slime_elite';
-    if (mid.includes('sporeling')) return 'monsters/sporeling';
-    return 'monsters/slime';
-}
+const { ccclass } = _decorator;
 
-/**
- * DefenseOverlay —— 封印之夜覆盖层（阶段 4 样板）。
- *
- * BedtimeDialog 确认睡觉时若今晚有防守（DefenseSystem.hasNightTonight），
- * 先进入本覆盖层打完夜战，结算后（settle）才真正 endDay 过夜——防守只在在线流程判定。
- *
- * 视觉：夜幕 + 林地地面平铺（夜间调暗）、左侧生成、右侧谷仓（barn 精灵）；
- * 怪物 = slime/slime_elite 精灵 + HP 条，点击怪物挥击（4-7 伤）。
- * 漏怪会吃库存（DefenseSystem._devour），全灭 = 胜利战利品。
- */
+const SCREEN_UI_LAYER = 1 << 24;
+
+const COL_BG = new Color(16, 18, 40, 255);
+const COL_GRID = new Color(60, 66, 110, 60);
+const COL_PATH = new Color(52, 44, 40, 255);
+const COL_ALTAR = new Color(196, 164, 84, 255);
+const COL_BUILD = new Color(90, 130, 90, 26);
+const GOLD = new Color(242, 193, 78, 255);
+const MONSTER_COLORS: Record<string, Color> = {
+    slime: new Color(110, 190, 100, 255),
+    slime_elite: new Color(170, 110, 220, 255),
+    sporeling: new Color(196, 150, 96, 255),
+};
+
 @ccclass('DefenseOverlay')
 export class DefenseOverlay extends Component {
-    private _infoLabel: Label = null!;
-    private _monsterRoot: Node = null!;
-    private _resultRoot: Node = null!;
-    private _nodes: Map<number, Node> = new Map();
+    private static _inst: DefenseOverlay | null = null;
+    static get inst(): DefenseOverlay | null { return this._inst; }
 
-    /** 程序化创建（挂 farm Canvas，隐藏备用） */
+    private _g!: Graphics;
+    private _field!: Node;          // 战场容器（draw + 动态节点）
+    private _monRoot!: Node;        // 怪物节点池
+    private _towerRoot!: Node;
+    private _moNodes = new Map<number, Node>();
+    private _info!: Label;          // 顶部波次行
+    private _altarBarNode!: Node;   // 祭坛 HP 条（独立子节点）
+    private _altarBar!: Graphics;
+    private _result!: Node;         // 终局面板
+    private _resultText!: Label;
+    private _btn!: Node;
+    private _hookBound = false;
+
     static create(parent: Node, layer: number): DefenseOverlay {
         const root = new Node('DefenseOverlay');
         root.layer = layer;
         root.addComponent(UITransform).setContentSize(1280, 720);
         parent.addChild(root);
-
-        // 夜幕（吞点击防穿透到农场）
-        const g = root.addComponent(Graphics)!;
-        g.fillColor = new Color(6, 8, 30, 240);
-        g.rect(-640, -360, 1280, 720);
-        g.fill();
-        const swallow = (): void => { /* 拦截 */ };
-        root.on(Node.EventType.TOUCH_START, swallow);
-        root.on(Node.EventType.TOUCH_END, swallow);
-
-        // 林地地面平铺（夜间压暗调蓝，盖在夜幕上作战场底）
-        const ground = new Node('ground');
-        ground.layer = layer;
-        ground.addComponent(UITransform).setContentSize(1280, 720);
-        const gs = ground.addComponent(Sprite)!;
-        gs.sizeMode = Sprite.SizeMode.CUSTOM;
-        gs.type = Sprite.Type.TILED;
-        gs.color = new Color(120, 128, 165, 235);
-        ground.setPosition(0, 0);
-        ground.active = false; // open() 时素材就绪再显示
-        root.addChild(ground);
-
-        root.addChild(DefenseOverlay._labelNode('封 印 之 夜', 30, 0, 280, layer));
-        const info = DefenseOverlay._labelNode('', 20, 0, 230, layer);
-        root.addChild(info);
-
-        // 谷仓防线（右侧）—— barn 精灵 + Graphics 底框兜底
-        const barn = new Node('barn');
-        barn.layer = layer;
-        barn.addComponent(UITransform).setContentSize(120, 340);
-        barn.setPosition(520, 0);
-        const bg = barn.addComponent(Graphics)!;
-        bg.fillColor = new Color(74, 52, 32, 255);
-        bg.strokeColor = new Color(242, 193, 78, 200);
-        bg.lineWidth = 3;
-        bg.roundRect(-50, -160, 100, 320, 12);
-        bg.fill();
-        bg.stroke();
-        const barnSpr = new Node('barnSpr');
-        barnSpr.layer = layer;
-        barnSpr.addComponent(UITransform).setContentSize(128, 128);
-        const bs = barnSpr.addComponent(Sprite)!;
-        bs.sizeMode = Sprite.SizeMode.CUSTOM; // 先 CUSTOM 再赋图（坑#21）
-        barnSpr.setPosition(0, 0);
-        barnSpr.active = false;
-        barn.addChild(barnSpr);
-        barn.addChild(DefenseOverlay._labelNode('谷仓', 22, 0, -120, layer));
-        root.addChild(barn);
-
-        // 怪物容器
-        const monsterRoot = new Node('monsters');
-        monsterRoot.layer = layer;
-        root.addChild(monsterRoot);
-
-        // 提示
-        root.addChild(DefenseOverlay._labelNode('点击怪物挥击！别放它们进谷仓', 18, 0, -300, layer));
-
-        // 结果面板（战斗结束弹出）
-        const resultRoot = new Node('result');
-        resultRoot.layer = layer;
-        resultRoot.addComponent(UITransform).setContentSize(520, 320);
-        resultRoot.setPosition(0, 0);
-        const rg = resultRoot.addComponent(Graphics)!;
-        rg.fillColor = new Color(30, 26, 22, 250);
-        rg.strokeColor = new Color(242, 193, 78, 220);
-        rg.lineWidth = 3;
-        rg.roundRect(-260, -160, 520, 320, 16);
-        rg.fill();
-        rg.stroke();
-        const resultLabel = DefenseOverlay._labelNode('', 22, 0, 60, layer);
-        resultLabel.name = 'resultText';
-        resultRoot.addChild(resultLabel);
-        resultRoot.addChild(DefenseOverlay._buttonNode('天亮了', 0, -90, () => comp._onDawn(), layer));
-        resultRoot.active = false;
-        root.addChild(resultRoot);
-
-        const comp = root.addComponent(DefenseOverlay);
-        comp._infoLabel = info.getComponent(Label)!;
-        comp._monsterRoot = monsterRoot;
-        comp._resultRoot = resultRoot;
-        root.active = false;
-        return comp;
+        const c = root.addComponent(DefenseOverlay);
+        this._inst = c;
+        return c;
     }
 
-    /** 开战入口（BedtimeDialog 调用）。返回 false=没有今晚防守（调用方直接过夜） */
+    onLoad(): void {
+        this._g = this.node.addComponent(Graphics);
+        this._g.strokeColor = GOLD; this._g.lineWidth = 3;
+
+        // 战场容器（居中 960×576）
+        this._field = new Node('field');
+        this._field.layer = this.node.layer;
+        this._field.addComponent(UITransform).setContentSize(960, 576);
+        this._field.setPosition(0, 0);
+        this.node.addChild(this._field);
+
+        this._monRoot = new Node('monsters');
+        this._monRoot.layer = this.node.layer;
+        this._field.addChild(this._monRoot);
+        this._towerRoot = new Node('towers');
+        this._towerRoot.layer = this.node.layer;
+        this._field.addChild(this._towerRoot);
+
+        // 顶部波次行
+        this._info = this._makeLabel(this.node, 0, 316, 900, '封印之夜', 26, GOLD);
+        // 祭坛 HP 条（独立子节点，避免双 Graphics）
+        this._altarBarNode = new Node('altarBar');
+        this._altarBarNode.layer = this.node.layer;
+        this._altarBarNode.addComponent(UITransform).setContentSize(300, 20);
+        this.node.addChild(this._altarBarNode);
+        this._altarBar = this._altarBarNode.addComponent(Graphics);
+
+        this.node.active = false;
+        if (!this._hookBound) {
+            this._hookBound = true;
+        }
+    }
+
+    private _makeLabel(parent: Node, x: number, y: number, w: number, s: string, size: number, color: Color): Label {
+        const n = new Node('lbl');
+        n.layer = parent.layer;
+        n.addComponent(UITransform).setContentSize(w, 44);
+        n.setPosition(x, y);
+        parent.addChild(n);
+        const l = n.addComponent(Label);
+        l.string = s; l.fontSize = size; l.lineHeight = size + 4;
+        l.color = color; l.overflow = Label.Overflow.SHRINK;
+        return l;
+    }
+
+    /** 开战（BedtimeDialog 确认 → DefenseSystem.startNight 已在 open 内调用） */
     open(): boolean {
-        if (!DefenseSystem.inst.startNight()) return false;
-        // 守门人简报
-        const intel = DefenseSystem.inst.intelTonight();
-        const brief = intel.map((i) => `${i.monsterName}×${i.count}`).join('、');
-        this._infoLabel.string = `守门人：${brief} 正在接近封印之门！`;
-        this._resultRoot.active = false;
-        this._applyArt();
+        const sys = DefenseSystem.inst;
+        if (!sys.startNight()) return false;
+        sys.night!.hook = (ev, p) => this._onCore(ev, p);
         this.node.active = true;
+        this._result = null as unknown as Node;
+        this._drawField();
+        this._drawTowers();
+        this._refreshInfo('封印之夜——怪物正在靠近……');
         return true;
     }
 
-    /** 素材赋图（open 时 SpriteLib 必已就绪；未就绪保留 Graphics 占位） */
-    private _applyArt(): void {
-        const lib = SpriteLib.inst;
-        if (!lib.ready) return;
-        const barnFrame = lib.get('adventure/barn');
-        const barnSpr = this.node.getChildByName('barn')?.getChildByName('barnSpr');
-        if (barnFrame && barnSpr) {
-            barnSpr.getComponent(Sprite)!.spriteFrame = barnFrame;
-            barnSpr.active = true;
-        }
-        const groundFrame = lib.get('tiles/ground_forest');
-        const ground = this.node.getChildByName('ground');
-        if (groundFrame && ground) {
-            ground.getComponent(Sprite)!.spriteFrame = groundFrame;
-            ground.active = true;
-        }
-    }
+    // ---------- 静态绘制 ----------
 
-    update(dt: number): void {
-        if (!this.node.active) return;
+    private _drawField(): void {
+        const g = this._g;
         const sys = DefenseSystem.inst;
-        sys.tick(dt);
-        const s = sys.night;
-        if (!s) { this.node.active = false; return; }
+        const m = sys.night!.map;
+        const def = m.def;
+        g.clear();
+        // 夜幕底
+        g.fillColor = COL_BG;
+        g.rect(-640, -360, 1280, 720);
+        g.fill();
+        // 网格（建造格淡绿、其余暗）
+        g.fillColor = COL_BUILD;
+        for (const cell of m.buildable) {
+            const cx = cell % def.cols, cy = Math.floor(cell / def.cols);
+            const [px, py] = cellToPx(def, cx, cy);
+            g.rect(px - def.cellPx / 2 + 2, py - def.cellPx / 2 + 2, def.cellPx - 4, def.cellPx - 4);
+        }
+        g.fill();
+        // 路径带
+        g.strokeColor = COL_PATH; g.lineWidth = 44; g.lineJoin = 'round'; g.lineCap = 'round';
+        for (const line of Object.keys(def.paths)) {
+            const wps = m.pathPx[line];
+            g.moveTo(wps[0][0], wps[0][1]);
+            for (let i = 1; i < wps.length; i++) g.lineTo(wps[i][0], wps[i][1]);
+            g.stroke();
+        }
+        // 装饰（池塘/岩石）
+        g.fillColor = new Color(40, 70, 140, 255);
+        for (const [cx, cy] of def.decor['pond'] ?? []) {
+            const [px, py] = cellToPx(def, cx, cy);
+            g.circle(px, py, 24); g.fill();
+        }
+        g.fillColor = new Color(110, 110, 118, 255);
+        for (const [cx, cy] of def.decor['rocks'] ?? []) {
+            const [px, py] = cellToPx(def, cx, cy);
+            g.circle(px, py, 20); g.fill();
+        }
+        // 祭坛 2×2：cells (12,3)(13,3)(12,4)(13,4) → 区块 x∈[288,416] y∈[-32,96]
+        g.fillColor = COL_ALTAR;
+        g.rect(288, -32, 128, 128); g.fill();
+        g.strokeColor = GOLD; g.lineWidth = 4;
+        g.rect(288, -32, 128, 128); g.stroke();
+        // 裂口标记
+        g.fillColor = new Color(200, 80, 80, 255);
+        const [wax, way] = m.pathPx['A'][0];
+        g.circle(wax, way, 22); g.fill();
+        const [nbx, nby] = m.pathPx['B'][0];
+        g.circle(nbx, nby, 22); g.fill();
+        this._drawAltarBar();
+    }
 
-        // 同步怪物节点（生成/移动/死亡）
-        const seen = new Set<number>();
-        for (const mo of s.monsters) {
-            if (!mo.alive) continue;
-            seen.add(mo.uid);
-            let n = this._nodes.get(mo.uid);
-            if (!n) {
-                n = this._makeMonsterNode(mo, this.node.layer);
-                this._monsterRoot.addChild(n);
-                this._nodes.set(mo.uid, n);
+    private _drawAltarBar(): void {
+        const c = DefenseSystem.inst.night?.core;
+        const g = this._altarBar;
+        g.clear();
+        if (!c) return;
+        const w = 300, ratio = Math.max(0, c.altarHp / c.altarMax);
+        g.fillColor = new Color(0, 0, 0, 170);
+        g.rect(-w / 2, 270, w, 20); g.fill();
+        g.fillColor = ratio > 0.5 ? new Color(120, 210, 120, 255) : ratio > 0.25 ? GOLD : new Color(220, 90, 90, 255);
+        g.rect(-w / 2 + 2, 272, (w - 4) * ratio, 16); g.fill();
+    }
+
+    private _drawTowers(): void {
+        const c = DefenseSystem.inst.night?.core;
+        if (!c) return;
+        this._towerRoot.removeAllChildren();
+        for (const t of c.towers) {
+            const n = new Node(`tw_${t.cx}_${t.cy}`);
+            n.layer = this.node.layer;
+            n.setPosition(t.x, t.y);
+            this._towerRoot.addChild(n);
+            const g = n.addComponent(Graphics);
+            const col = t.kind === 'slow' ? new Color(120, 200, 230, 255)
+                : t.kind === 'attract' ? new Color(240, 200, 90, 255)
+                : t.kind === 'spike' ? new Color(230, 140, 70, 255)
+                : new Color(140, 210, 140, 255);
+            // 光环圈
+            g.strokeColor = new Color(col.r, col.g, col.b, 70);
+            g.lineWidth = 2;
+            g.circle(0, 0, t.rPx); g.stroke();
+            g.fillColor = col;
+            g.circle(0, 0, t.lv >= 2 ? 26 : 20); g.fill();
+            g.strokeColor = new Color(0, 0, 0, 120); g.lineWidth = 2;
+            g.circle(0, 0, t.lv >= 2 ? 26 : 20); g.stroke();
+            // 等级标记（子节点，避免与 Graphics 同节点渲染冲突）
+            if (t.lv >= 2) {
+                const ln = new Node('lv');
+                ln.layer = n.layer;
+                ln.addComponent(UITransform).setContentSize(60, 20);
+                ln.setPosition(0, 0);
+                n.addChild(ln);
+                const l = ln.addComponent(Label);
+                l.string = 'II'; l.fontSize = 16; l.lineHeight = 18;
+                l.color = new Color(255, 255, 255, 255);
+                l.overflow = Label.Overflow.SHRINK;
             }
-            n.setPosition(mo.x, mo.y);
-            this._redrawHp(n, mo);
-        }
-        // 移除死亡节点
-        for (const [uid, n] of this._nodes) {
-            if (!seen.has(uid)) {
-                n.destroy();
-                this._nodes.delete(uid);
-            }
-        }
-
-        // 剩余敌人提示
-        const alive = s.monsters.filter((m) => m.alive).length;
-        const remain = s.total - s.spawned;
-        this._infoLabel.string = `击杀 ${s.killed} · 漏怪 ${s.leaked} · 场上 ${alive} · 待出现 ${remain}`;
-
-        // 终局 → 弹结果面板
-        if (s.over && !this._resultRoot.active) {
-            this._resultRoot.active = true;
-            SfxLib.inst.play(s.won ? 'win' : 'lose');
-            const txt = this._resultRoot.getChildByName('resultText')!.getComponent(Label)!;
-            txt.string = s.won
-                ? `封印守住了！\n击杀 ${s.killed} 只怪物，无一漏网。\n守门人的谢礼已放进背包。`
-                : `守住了封印，但有 ${s.leaked} 只怪物冲进了谷仓…\n击杀 ${s.killed} 只。\n损失些收成，明天继续加油。`;
         }
     }
 
-    /** 结果面板确认：settle（胜利发奖）→ 真正过夜 → 存档 → 关闭 */
-    private _onDawn(): void {
-        const r = DefenseSystem.inst.settle();
-        TimeSystem.inst.endDay();
-        GameApp.inst?.persist('defense_settled');
-        this.node.active = false;
-        this._clearMonsters();
-        EventBus.inst.emit('farmChanged', { action: r.won ? 'defense_win' : 'defense_loss', kills: r.killed, leaked: r.leaked });
+    private _refreshInfo(s: string): void {
+        this._info.string = s;
     }
 
-    private _clearMonsters(): void {
-        for (const n of this._nodes.values()) n.destroy();
-        this._nodes.clear();
-    }
+    // ---------- 怪物节点 ----------
 
-    /** 怪物节点：slime/slime_elite 精灵 + HP 条 + 名字，可点击挥击 */
-    private _makeMonsterNode(mo: FieldMonster, layer: number): Node {
-        const n = new Node(`mo_${mo.uid}`);
-        n.layer = layer;
-        const elite = mo.mid.includes('elite');
-        const size = elite ? 132 : 96;
-        n.addComponent(UITransform).setContentSize(size, size);
-        const body = n.addComponent(Graphics)!;
-        const col = elite ? new Color(150, 80, 200, 255) : new Color(90, 170, 70, 255);
-        body.fillColor = col;
-        body.strokeColor = new Color(20, 20, 20, 255);
-        body.lineWidth = 3;
-        body.circle(0, 0, elite ? 34 : 26);
-        body.fill();
-        body.stroke();
-
-        // 精灵图（open 时 SpriteLib 必已就绪；赋图成功则盖住 Graphics 圆）
-        const frame = SpriteLib.inst.get(monsterSprite(mo.mid));
-        if (frame) {
-            const sprNode = new Node('bodySpr');
-            sprNode.layer = layer;
-            sprNode.addComponent(UITransform).setContentSize(size, size);
-            const sp = sprNode.addComponent(Sprite)!;
-            sp.sizeMode = Sprite.SizeMode.CUSTOM; // 先 CUSTOM 再赋图（坑#21）
-            sp.spriteFrame = frame;
-            n.addChild(sprNode);
-        }
-
-        // HP 条（画在同一 Graphics 上方一点：用子节点）
-        const hp = new Node('hp');
-        hp.layer = layer;
-        hp.addComponent(UITransform).setContentSize(60, 10);
-        hp.setPosition(0, elite ? 44 : 36);
-        hp.addComponent(Graphics);
-        n.addChild(hp);
-
-        const lbl = DefenseOverlay._labelNode(mo.name, 14, 0, -(elite ? 48 : 40), layer);
-        n.addChild(lbl);
-
+    private _makeMonsterNode(uid: number, mid: string, name: string): Node {
+        const n = new Node(`mo_${uid}`);
+        n.layer = this.node.layer;
+        const r = mid === 'slime_elite' ? 26 : 20;
+        n.addComponent(UITransform).setContentSize(r * 3, r * 3);   // 触摸热区（先设，Graphics 复用它）
+        this._monRoot.addChild(n);
+        const g = n.addComponent(Graphics);
+        const col = MONSTER_COLORS[mid] ?? new Color(200, 200, 200, 255);
+        g.fillColor = col; g.circle(0, 0, r); g.fill();
+        g.strokeColor = new Color(0, 0, 0, 140); g.lineWidth = 3;
+        g.circle(0, 0, r); g.stroke();
+        // 血条
+        g.fillColor = new Color(0, 0, 0, 160);
+        g.rect(-r, r + 8, r * 2, 6); g.fill();
+        g.fillColor = new Color(110, 220, 110, 255);
+        g.rect(-r + 1, r + 9, r * 2 - 2, 4); g.fill();
+        // 名字
+        const ln = new Node('nm');
+        ln.layer = n.layer;
+        ln.addComponent(UITransform).setContentSize(160, 20);
+        ln.setPosition(0, -r - 20);
+        n.addChild(ln);
+        const l = ln.addComponent(Label);
+        l.string = name; l.fontSize = 15; l.lineHeight = 18;
+        l.color = new Color(230, 230, 230, 255);
+        // 精灵（素材就绪则贴图盖住色块）
+        const sprPath = mid === 'slime_elite' ? 'monsters/slime_elite' : mid === 'sporeling' ? 'monsters/sporeling' : 'monsters/slime';
+        const tryArt = () => {
+            const sf: SpriteFrame | null = SpriteLib.inst.get(sprPath);
+            if (!sf) return false;
+            const body = new Node('bodySpr');
+            body.layer = n.layer;
+            body.addComponent(UITransform).setContentSize(r * 2.6, r * 2.6);
+            body.setPosition(0, 6);
+            n.addChild(body);
+            const sp = body.addComponent(Sprite);
+            sp.sizeMode = Sprite.SizeMode.CUSTOM;
+            sp.spriteFrame = sf;
+            const og = n.getComponent(Graphics);
+            if (og) og.clear();
+            return true;
+        };
+        if (!tryArt()) this.scheduleOnce(tryArt, 0.6);
         n.on(Node.EventType.TOUCH_END, () => {
-            const r = DefenseSystem.inst.playerHit(mo.uid);
-            SfxLib.inst.play(r === 'kill' ? 'hit' : r === 'hit' ? 'hit' : 'deny');
+            const r = DefenseSystem.inst.playerHit(uid);
+            if (r !== 'miss') {
+                // 命中反馈：闪白由 update 同步血条体现
+            }
         });
         return n;
     }
 
-    private _redrawHp(n: Node, mo: FieldMonster): void {
-        const hp = n.getChildByName('hp');
-        if (!hp) return;
-        const g = hp.getComponent(Graphics)!;
-        g.clear();
-        const ratio = Math.max(0, mo.hp / mo.maxHp);
-        g.fillColor = new Color(40, 40, 40, 220);
-        g.rect(-30, -5, 60, 10);
-        g.fill();
-        g.fillColor = ratio > 0.5 ? new Color(110, 220, 90, 255) : new Color(230, 90, 60, 255);
-        g.rect(-30, -5, 60 * ratio, 10);
-        g.fill();
+    // ---------- 帧驱动 ----------
+
+    update(dt: number): void {
+        const sys = DefenseSystem.inst;
+        const s = sys.night;
+        if (!s || !this.node.active) return;
+        sys.tick(dt);
+        const c = s.core;
+
+        // 怪物节点同步
+        const alive = new Set<number>();
+        for (const m of c.monsters) {
+            if (m.hp <= 0) continue;
+            alive.add(m.uid);
+            let n = this._moNodes.get(m.uid);
+            if (!n) { n = this._makeMonsterNode(m.uid, m.mid, m.name); this._moNodes.set(m.uid, n); }
+            n.setPosition(m.x, m.y);
+            // 血条比例
+            const g = n.getComponent(Graphics);
+            if (g && m.hp < m.maxHp) {
+                const r = (m.mid === 'slime_elite' ? 26 : 20);
+                // 重画名字外的血条（简单方案：不重画，用透明度示意）
+            }
+        }
+        for (const [uid, n] of this._moNodes) {
+            if (!alive.has(uid)) { n.destroy(); this._moNodes.delete(uid); }
+        }
+
+        // HUD
+        const waveNo = c.waveIdx + 1;
+        const waveTotal = c.waves.length;
+        const aliveCount = c.monsters.filter((m) => m.hp > 0).length;
+        const pending = c.wavePlan.length;
+        if (c.over) {
+            this._refreshInfo(c.won ? (c.perfect ? '完胜！封印固若金汤' : '守住了封印！') : '封印失守……');
+        } else if (c.breakActive) {
+            this._refreshInfo(`第 ${waveNo}/${waveTotal} 波已清——波间修补 ${Math.ceil(c.breakT)}s（下一波 ${c.waveIdx + 2}/${waveTotal}）`);
+        } else {
+            this._refreshInfo(`第 ${waveNo}/${waveTotal} 波 · 场上 ${aliveCount} · 待出现 ${pending} · 祭坛 ${Math.round(c.altarHp)}`);
+        }
+        this._drawAltarBar();
+
+        // 终局面板
+        if (c.over && !this._result) this._showResult();
     }
 
-    // —— UI 小工具（layer 必传：程序化节点不设层 = UI 相机看不见） ——
-    private static _labelNode(text: string, fontSize: number, x: number, y: number, layer: number): Node {
-        const n = new Node('lbl');
-        n.layer = layer;
-        n.addComponent(UITransform);
-        n.setPosition(x, y);
-        const l = n.addComponent(Label)!;
-        l.fontSize = fontSize;
-        l.lineHeight = fontSize + 6;
-        l.string = text;
-        return n;
+    private _onCore(ev: string, p?: Record<string, unknown>): void {
+        if (ev === 'bait_gone') {
+            // 诱饵被啃空：塔视觉移除（update 会经 towers 重绘？core towers 已过滤——重绘）
+            this._drawTowers();
+        }
     }
 
-    private static _buttonNode(text: string, x: number, y: number, onTap: () => void, layer: number): Node {
-        const n = new Node('btn');
-        n.layer = layer;
-        n.addComponent(UITransform).setContentSize(180, 60);
-        n.setPosition(x, y);
-        const g = n.addComponent(Graphics)!;
-        g.fillColor = new Color(60, 48, 38, 255);
-        g.strokeColor = new Color(255, 255, 255, 90);
-        g.lineWidth = 2;
-        g.roundRect(-90, -30, 180, 60, 10);
-        g.fill();
-        g.stroke();
-        const lbl = DefenseOverlay._labelNode(text, 24, 0, 0, layer);
-        lbl.name = 'label';
-        n.addChild(lbl);
-        n.on(Node.EventType.TOUCH_END, onTap);
-        return n;
+    // ---------- 终局 ----------
+
+    private _showResult(): void {
+        const sys = DefenseSystem.inst;
+        const s = sys.night!;
+        const c = s.core;
+        const app = GameApp.inst;
+        const out = sys.settle();
+        const layer = this.node.layer;
+
+        const root = new Node('result');
+        root.layer = layer;
+        root.addComponent(UITransform).setContentSize(1280, 720);
+        this.node.addChild(root);
+        const rg = root.addComponent(Graphics);
+        rg.fillColor = new Color(0, 0, 0, 190);
+        rg.rect(-640, -360, 1280, 720); rg.fill();
+        rg.fillColor = new Color(34, 34, 44, 255);
+        rg.roundRect(-300, -190, 600, 380, 16); rg.fill();
+        rg.strokeColor = GOLD; rg.lineWidth = 3;
+        rg.roundRect(-300, -190, 600, 380, 16); rg.stroke();
+
+        const t1 = this._makeLabel(root, 0, 120, 560, out.won ? (out.perfect ? '★ 完 胜 ★' : '守 住 了 封 印') : '封 印 失 守', 40, out.won ? GOLD : new Color(220, 100, 100, 255));
+        void t1;
+        const lines: string[] = [];
+        lines.push(`击杀 ${out.killed} · 西线漏 ${out.leakA} · 北线漏 ${out.leakB}`);
+        lines.push(`祭坛剩余 ${Math.round(out.altarHp)} HP`);
+        if (!out.won) lines.push('守门人连夜抢修——祭坛回升至 50 HP');
+        const t2 = this._makeLabel(root, 0, 30, 560, lines.join('\n'), 22, new Color(225, 225, 225, 255));
+        void t2;
+
+        const btn = new Node('dawn');
+        btn.layer = layer;
+        btn.addComponent(UITransform).setContentSize(240, 76);
+        btn.setPosition(0, -120);
+        root.addChild(btn);
+        const bg = btn.addComponent(Graphics);
+        bg.fillColor = new Color(60, 62, 80, 255);
+        bg.roundRect(-120, -38, 240, 76, 12); bg.fill();
+        bg.strokeColor = GOLD; bg.lineWidth = 3;
+        bg.roundRect(-120, -38, 240, 76, 12); bg.stroke();
+        const bln = new Node('lbl');
+        bln.layer = layer;
+        bln.addComponent(UITransform).setContentSize(240, 76);
+        btn.addChild(bln);
+        const bl = bln.addComponent(Label);
+        bl.string = '天 亮 了'; bl.fontSize = 30; bl.lineHeight = 34;
+        bl.color = new Color(255, 245, 220, 255);
+        bl.overflow = Label.Overflow.SHRINK;
+        btn.on(Node.EventType.TOUCH_END, () => {
+            this.node.active = false;
+            root.destroy();
+            this._result = null as unknown as Node;
+            this._moNodes.forEach((n) => n.destroy());
+            this._moNodes.clear();
+            this._g.clear();
+            this._altarBar.clear();
+            EventBus.inst.emit('farmChanged', { action: 'bedtime' });
+            TimeSystem.inst.endDay();
+            app.persist('defense_settled');
+        });
+        this._result = root;
+        this._btn = btn;
+        void this._resultText;
     }
 }

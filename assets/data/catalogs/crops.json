@@ -1,6 +1,208 @@
 [
-  { "id": "carrot", "name": "胡萝卜", "seasons": ["spring"], "growDays": 2, "stages": [{ "day": 0, "sprite": "crops/carrot_0" }, { "day": 1, "sprite": "crops/carrot_1" }, { "day": 2, "sprite": "crops/carrot_2" }], "waterNeed": 1, "harvest": { "itemId": "carrot", "min": 1, "max": 2 }, "defense": null, "rarity": "common" },
-  { "id": "tomato", "name": "番茄", "seasons": ["spring", "summer"], "growDays": 3, "stages": [{ "day": 0, "sprite": "crops/tomato_0" }, { "day": 1, "sprite": "crops/tomato_1" }, { "day": 3, "sprite": "crops/tomato_2" }], "waterNeed": 1, "harvest": { "itemId": "tomato", "min": 1, "max": 2 }, "defense": null, "rarity": "common" },
-  { "id": "pumpkin", "name": "南瓜", "seasons": ["summer", "autumn"], "growDays": 5, "stages": [{ "day": 0, "sprite": "crops/pumpkin_0" }, { "day": 2, "sprite": "crops/pumpkin_1" }, { "day": 5, "sprite": "crops/pumpkin_2" }], "waterNeed": 1, "harvest": { "itemId": "pumpkin", "min": 1, "max": 1 }, "defense": null, "rarity": "common" },
-  { "id": "moonflower", "name": "月光花", "seasons": ["autumn", "winter"], "growDays": 7, "stages": [{ "day": 0, "sprite": "crops/moonflower_0" }, { "day": 3, "sprite": "crops/moonflower_1" }, { "day": 7, "sprite": "crops/moonflower_2" }], "waterNeed": 1, "harvest": { "itemId": "moonflower", "min": 1, "max": 1 }, "defense": null, "rarity": "rare" }
+  {
+    "id": "carrot",
+    "name": "胡萝卜",
+    "seasons": [
+      "spring"
+    ],
+    "growDays": 2,
+    "stages": [
+      {
+        "day": 0,
+        "sprite": "crops/carrot_0"
+      },
+      {
+        "day": 1,
+        "sprite": "crops/carrot_1"
+      },
+      {
+        "day": 2,
+        "sprite": "crops/carrot_2"
+      }
+    ],
+    "waterNeed": 1,
+    "harvest": {
+      "itemId": "carrot",
+      "min": 1,
+      "max": 2
+    },
+    "defense": null,
+    "rarity": "common"
+  },
+  {
+    "id": "tomato",
+    "name": "番茄",
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "growDays": 3,
+    "stages": [
+      {
+        "day": 0,
+        "sprite": "crops/tomato_0"
+      },
+      {
+        "day": 1,
+        "sprite": "crops/tomato_1"
+      },
+      {
+        "day": 3,
+        "sprite": "crops/tomato_2"
+      }
+    ],
+    "waterNeed": 1,
+    "harvest": {
+      "itemId": "tomato",
+      "min": 1,
+      "max": 2
+    },
+    "defense": null,
+    "rarity": "common"
+  },
+  {
+    "id": "pumpkin",
+    "name": "南瓜",
+    "seasons": [
+      "summer",
+      "autumn"
+    ],
+    "growDays": 5,
+    "stages": [
+      {
+        "day": 0,
+        "sprite": "crops/pumpkin_0"
+      },
+      {
+        "day": 2,
+        "sprite": "crops/pumpkin_1"
+      },
+      {
+        "day": 5,
+        "sprite": "crops/pumpkin_2"
+      }
+    ],
+    "waterNeed": 1,
+    "harvest": {
+      "itemId": "pumpkin",
+      "min": 1,
+      "max": 1
+    },
+    "defense": null,
+    "rarity": "common"
+  },
+  {
+    "id": "moonflower",
+    "name": "月光花",
+    "seasons": [
+      "autumn",
+      "winter"
+    ],
+    "growDays": 7,
+    "stages": [
+      {
+        "day": 0,
+        "sprite": "crops/moonflower_0"
+      },
+      {
+        "day": 3,
+        "sprite": "crops/moonflower_1"
+      },
+      {
+        "day": 7,
+        "sprite": "crops/moonflower_2"
+      }
+    ],
+    "waterNeed": 1,
+    "harvest": {
+      "itemId": "moonflower",
+      "min": 1,
+      "max": 1
+    },
+    "defense": null,
+    "rarity": "rare"
+  },
+  {
+    "id": "frostbell",
+    "name": "霜铃花",
+    "seasons": [],
+    "growDays": 0,
+    "stages": [],
+    "waterNeed": 0,
+    "harvest": null,
+    "defense": {
+      "kind": "slow",
+      "buildGold": 20,
+      "upgradeGold": 40,
+      "radiusCells": 1.5,
+      "power": 0.4,
+      "lv2": {
+        "radiusCells": 2.0,
+        "power": 0.5
+      }
+    },
+    "rarity": "common"
+  },
+  {
+    "id": "honeyplot",
+    "name": "蜜瓜圃",
+    "seasons": [],
+    "growDays": 0,
+    "stages": [],
+    "waterNeed": 0,
+    "harvest": null,
+    "defense": {
+      "kind": "attract",
+      "buildGold": 15,
+      "radiusCells": 2.5,
+      "hp": 18
+    },
+    "rarity": "common"
+  },
+  {
+    "id": "spikepumpkin",
+    "name": "尖刺南瓜",
+    "seasons": [],
+    "growDays": 0,
+    "stages": [],
+    "waterNeed": 0,
+    "harvest": null,
+    "defense": {
+      "kind": "spike",
+      "buildGold": 35,
+      "upgradeGold": 60,
+      "radiusCells": 1.2,
+      "power": 5,
+      "interval": 1.2,
+      "lv2": {
+        "radiusCells": 1.5,
+        "power": 8,
+        "interval": 1.0
+      }
+    },
+    "rarity": "common"
+  },
+  {
+    "id": "podgun",
+    "name": "豆荚炮",
+    "seasons": [],
+    "growDays": 0,
+    "stages": [],
+    "waterNeed": 0,
+    "harvest": null,
+    "defense": {
+      "kind": "pod",
+      "buildGold": 30,
+      "upgradeGold": 55,
+      "radiusCells": 3.0,
+      "power": 6,
+      "interval": 1.5,
+      "lv2": {
+        "radiusCells": 3.5,
+        "power": 10,
+        "interval": 1.2
+      }
+    },
+    "rarity": "common"
+  }
 ]

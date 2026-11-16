@@ -1,40 +1,66 @@
 [
   {
-    "id": "night_slime_1",
-    "everyDays": 4,
+    "id": "seal_slime_1",
+    "mapId": "seal_1",
     "firstDay": 4,
-    "waves": [
-      { "monsterId": "slime", "count": 3, "interval": 1.6, "delay": 1.0 }
-    ],
-    "reward": [
-      { "itemId": "gold", "min": 15, "max": 25 }
-    ]
-  },
-  {
-    "id": "night_slime_2",
     "everyDays": 4,
-    "firstDay": 12,
+    "waveBreak": 25,
     "waves": [
-      { "monsterId": "slime", "count": 4, "interval": 1.4, "delay": 1.0 },
-      { "monsterId": "sporeling", "count": 1, "interval": 1.0, "delay": 2.5 },
-      { "monsterId": "slime_elite", "count": 1, "interval": 1.0, "delay": 5.0 }
+      [
+        { "monsterId": "slime", "count": 3, "interval": 1.6, "delay": 1.0, "entrance": "A" }
+      ]
     ],
-    "reward": [
-      { "itemId": "gold", "min": 30, "max": 45 },
-      { "itemId": "slime_gel", "min": 2, "max": 3 }
-    ]
+    "intel": { "entranceHint": "西线", "hint": "几只粘怪从西边林子钻出来……沿小路直奔祭坛。" },
+    "reward": [ { "itemId": "gold", "min": 15, "max": 25 } ],
+    "noLeakBonus": [ { "itemId": "gold", "min": 8, "max": 12 } ]
   },
   {
-    "id": "night_spore_1",
-    "everyDays": 6,
-    "firstDay": 24,
+    "id": "seal_pack_2",
+    "mapId": "seal_1",
+    "firstDay": 10,
+    "everyDays": 4,
+    "waveBreak": 25,
     "waves": [
-      { "monsterId": "sporeling", "count": 3, "interval": 2.2, "delay": 1.0 },
-      { "monsterId": "slime", "count": 2, "interval": 1.4, "delay": 4.0 }
+      [
+        { "monsterId": "slime", "count": 4, "interval": 1.4, "delay": 1.0, "entrance": "A" }
+      ],
+      [
+        { "monsterId": "sporeling", "count": 2, "interval": 3.0, "delay": 3.0, "entrance": "B" }
+      ],
+      [
+        { "monsterId": "slime_elite", "count": 1, "interval": 1.5, "delay": 1.0, "entrance": "A" },
+        { "monsterId": "slime", "count": 3, "interval": 1.4, "delay": 1.0, "entrance": "B" }
+      ]
     ],
-    "reward": [
-      { "itemId": "gold", "min": 35, "max": 50 },
-      { "itemId": "spore_cap", "min": 2, "max": 3 }
-    ]
+    "intel": { "entranceHint": "双线", "hint": "孢子菇不吃蜜瓜……它们怕刺，不怕甜。小心大个子，铃铛摇不晕它。" },
+    "reward": [ { "itemId": "gold", "min": 30, "max": 45 }, { "itemId": "slime_gel", "min": 1, "max": 2 } ],
+    "noLeakBonus": [ { "itemId": "gold", "min": 20, "max": 30 } ]
+  },
+  {
+    "id": "seal_spore_3",
+    "mapId": "seal_1",
+    "firstDay": 20,
+    "everyDays": 4,
+    "waveBreak": 25,
+    "waves": [
+      [
+        { "monsterId": "sporeling", "count": 2, "interval": 2.2, "delay": 1.0, "entrance": "B" }
+      ],
+      [
+        { "monsterId": "slime", "count": 4, "interval": 1.4, "delay": 1.0, "entrance": "A" },
+        { "monsterId": "slime", "count": 2, "interval": 2.0, "delay": 2.0, "entrance": "B" }
+      ],
+      [
+        { "monsterId": "slime_elite", "count": 2, "interval": 5.0, "delay": 1.0, "entrance": "A" },
+        { "monsterId": "sporeling", "count": 2, "interval": 3.0, "delay": 2.0, "entrance": "B" }
+      ],
+      [
+        { "monsterId": "slime", "count": 3, "interval": 1.4, "delay": 1.0, "entrance": "B" },
+        { "monsterId": "sporeling", "count": 1, "interval": 3.0, "delay": 2.0, "entrance": "A" }
+      ]
+    ],
+    "intel": { "entranceHint": "主攻西线", "hint": "大队从西边压过来……但林子里总有漏网之鱼，别把北边晾着。" },
+    "reward": [ { "itemId": "gold", "min": 45, "max": 70 }, { "itemId": "spore_cap", "min": 2, "max": 3 } ],
+    "noLeakBonus": [ { "itemId": "gold", "min": 30, "max": 40 } ]
   }
 ]

@@ -12,7 +12,8 @@
         "max": 2
       }
     ],
-    "codexId": "slime"
+    "codexId": "slime",
+    "attackInterval": 1.5
   },
   {
     "id": "slime_elite",
@@ -27,7 +28,9 @@
         "max": 4
       }
     ],
-    "codexId": "slime"
+    "codexId": "slime",
+    "slowResist": 0.5,
+    "attackInterval": 1.5
   },
   {
     "id": "sporeling",
@@ -42,6 +45,8 @@
         "max": 2
       }
     ],
-    "codexId": "sporeling"
+    "codexId": "sporeling",
+    "baitImmune": true,
+    "attackInterval": 1.5
   }
 ]

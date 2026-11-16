@@ -117,7 +117,14 @@ export class DebugPanel extends Component {
 
     defDump(): void {
         const s = DefenseSystem.inst.night;
-        console.log(`[Debug] tonight=${DefenseSystem.inst.hasNightTonight()} next=${DefenseSystem.inst.nextNightDay()} night=${s ? JSON.stringify({ id: s.def.id, spawned: s.spawned, total: s.total, killed: s.killed, leaked: s.leaked, over: s.over, won: s.won, alive: s.monsters.filter(m => m.alive).map(m => ({ uid: m.uid, hp: m.hp, x: Math.round(m.x), y: Math.round(m.y) })) }) : 'null'}`);
+        console.log(`[Debug] tonight=${DefenseSystem.inst.hasNightTonight()} next=${DefenseSystem.inst.nextNightDay()} night=${s ? JSON.stringify({
+            id: s.tableRow['id'], wave: `${s.core.waveIdx + 1}/${s.core.waves.length}`,
+            spawned: s.core.spawnedInWave, killed: s.killed,
+            leakA: s.core.leakA, leakB: s.core.leakB, altar: s.core.altarHp,
+            over: s.core.over, won: s.core.won,
+            alive: s.core.monsters.filter(m => m.hp > 0).map(m => ({ uid: m.uid, st: m.state, hp: m.hp, x: Math.round(m.x), y: Math.round(m.y) })),
+            towers: s.core.towers.length,
+        }) : 'null'}`);
     }
 
     /** 时间快进到防守日（第4/8/12…天） */
@@ -141,7 +148,7 @@ export class DebugPanel extends Component {
     /** 打第一只活怪一刀 */
     defHit(): void {
         const s = DefenseSystem.inst.night;
-        const mo = s?.monsters.find((m) => m.alive);
+        const mo = s?.core.monsters.find((m) => m.hp > 0);
         if (!mo) { console.log('[Debug] no alive monster'); return; }
         console.log(`[Debug] hit uid=${mo.uid} → ${DefenseSystem.inst.playerHit(mo.uid)} (hp=${Math.max(0, mo.hp)})`);
         this.defDump();
@@ -151,8 +158,8 @@ export class DebugPanel extends Component {
     defClear(): void {
         const s = DefenseSystem.inst.night;
         if (!s) return;
-        for (let i = 0; i < 40; i++) {
-            const mo = s.monsters.find((m) => m.alive);
+        for (let i = 0; i < 99; i++) {
+            const mo = s.core.monsters.find((m) => m.hp > 0);
             if (!mo) break;
             DefenseSystem.inst.playerHit(mo.uid);
         }

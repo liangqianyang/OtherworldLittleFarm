@@ -6,6 +6,7 @@ import { SpriteLib } from '../../../core/SpriteLib';
 import { GameApp } from '../../../app/GameApp';
 import { BedtimeDialog } from '../../../ui/BedtimeDialog';
 import { DefenseOverlay } from '../../../ui/DefenseOverlay';
+import { BuildPanel } from '../../../ui/BuildPanel';
 import { DialogPanel } from '../../../ui/DialogPanel';
 import { FishingPanel } from '../../../ui/FishingPanel';
 import { InteractionManager } from '../interact/InteractionManager';
@@ -35,6 +36,7 @@ export class WorldLiving extends Component {
     private _defense: DefenseOverlay | null = null;
     private _dialog: DialogPanel | null = null;
     private _fishing: FishingPanel | null = null;
+    private _build: BuildPanel | null = null;
     private _fishProbe: Interactable | null = null;
     private _player: Node | null = null;
     private _terrain: TerrainData | null = null;
@@ -53,6 +55,7 @@ export class WorldLiving extends Component {
         comp._buildBed(layer);
         comp._buildNpcs(layer);
         comp._buildFishingProbe(layer);
+        comp._buildSeal(layer);
         WorldLiving._inst = comp;
     }
 
@@ -84,6 +87,17 @@ export class WorldLiving extends Component {
         this._dialog = DialogPanel.create(canvas, layer);
         this._fishing = FishingPanel.create(canvas, layer);
         this._fishing.node.active = false;
+        this._build = BuildPanel.create(canvas, layer);
+    }
+
+    /** 封印祭坛：防守区入口 (110,52)，白天布置塔防（BuildPanel） */
+    private _buildSeal(layer: number): void {
+        void layer;
+        const n = this._makePointNode('world_seal', 110, 52, new Color(196, 164, 84, 255), 44, 30);
+        const it = n.addComponent(Interactable);
+        it.setupSimple('world_seal', '布置封印', 96, () => {
+            this._build?.open();
+        });
     }
 
     /** 床：家门口固定点位（出生点 (74,26) 北侧一格），情境按钮「睡觉」 */
@@ -188,7 +202,8 @@ export class WorldLiving extends Component {
         const modal = !!(this._bedtime && this._bedtime.node.active) ||
             !!(this._defense && this._defense.node.active) ||
             !!(this._dialog && this._dialog.node.active) ||
-            !!(this._fishing && this._fishing.node.active);
+            !!(this._fishing && this._fishing.node.active) ||
+            !!(this._build && this._build.node.active);
         if (InteractionManager.inst.suppressed !== modal) {
             InteractionManager.inst.suppress(modal);
         }
