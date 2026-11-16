@@ -29,7 +29,7 @@ export class CompassHUD extends Component {
 
     private _player: Node | null = null;
     private _data: TerrainData | null = null;
-    private _arrows: { key: string; node: Node; g: Graphics; color: Color; tx: number; ty: number }[] = [];
+    private _arrows: { key: string; node: Node; lbNode: Node; color: Color; tx: number; ty: number }[] = [];
     private _frame = 0;
     private _bridged = false;
 
@@ -66,7 +66,7 @@ export class CompassHUD extends Component {
             lb.string = p.label;
             lb.fontSize = 18;
             lb.color = new Color(p.color.r, p.color.g, p.color.b, 255);
-            this._arrows.push({ key: p.key, node: an, g, color: p.color, tx: p.tx, ty: p.ty });
+            this._arrows.push({ key: p.key, node: an, lbNode: ln, color: p.color, tx: p.tx, ty: p.ty });
         }
     }
 
@@ -95,6 +95,7 @@ export class CompassHUD extends Component {
             const k = Math.min((HALF_W - EDGE) / (adx || 1e-6), (HALF_H - EDGE) / (ady || 1e-6));
             a.node.setPosition(dx * k, dy * k, 0);
             a.node.angle = Math.atan2(-dx, dy) * 180 / Math.PI;   // 默认指上 → 指向 (dx,dy)
+            a.lbNode.angle = -a.node.angle;                       // 文字始终正立（抵消箭头旋转）
         }
     }
 }
