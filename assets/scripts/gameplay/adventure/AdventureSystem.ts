@@ -2,6 +2,10 @@ import { EventBus } from '../../core/EventBus';
 import { DataManager } from '../../core/DataManager';
 import { GameApp } from '../../app/GameApp';
 import { TimeSystem } from '../../core/TimeSystem';
+import {
+    CombatSession, CombatInput, CombatMonsterSpec, CombatWeapon,
+    startCombat, spawnWave, tickCombat, COMBAT_DT,
+} from '../dungeon/CombatLogic';
 
 type AnyRow = Record<string, unknown>;
 
@@ -14,16 +18,6 @@ export interface RoomDef {
     monster?: string;
     treasure?: { itemId: string; min: number; max: number }[];
     next: number[];
-}
-
-export interface BattleState {
-    monsterId: string;
-    monsterName: string;
-    hp: number;
-    maxHp: number;
-    damage: number;
-    playerHp: number;
-    playerMaxHp: number;
 }
 
 /**
@@ -58,11 +52,18 @@ export class AdventureSystem {
         emptied: Map<string, number>;
     } | null = null;
 
-    /** 当前战斗（null=不在战斗） */
-    battle: BattleState | null = null;
+    /** 当前实时战斗会话（null=不在战斗；M5 元气骑士式） */
+    combat: CombatSession | null = null;
+    /** 战斗输入（DungeonOverlay 填充） */
+    combatInput: CombatInput = { mx: 0, my: 0, attack: false, roll: false };
+    private _combatAcc = 0;
 
     get inRun(): boolean {
         return this.run !== null;
+    }
+
+    get inCombat(): boolean {
+        return this.combat !== null && !this.combat.over;
     }
 
     /** 出发：按 mapId 初始化 run，落到 idx=0 入口房 */
@@ -81,7 +82,7 @@ export class AdventureSystem {
             playerHp: AdventureSystem.PLAYER_MAX_HP,
             emptied: new Map<string, number>(),
         };
-        this.battle = null;
+        this.combat = null;
         EventBus.inst.emit('farmChanged', { action: 'adventure_start' }); // 复用刷新信号
     }
 
@@ -119,35 +120,73 @@ export class AdventureSystem {
         return taken >= (Number(spot?.['max'] ?? 1));
     }
 
-    /** 进入战斗（战斗房/精英房） */
+    /** 进入实时战斗（战斗房/精英房）：monsters 表行 → CombatSpec → CombatSession */
     startBattle(): void {
         const room = this.room();
-        if (!this.run || !room?.monster) return;
+        if (!this.run || !room?.monster || this.combat) return;
         const def = DataManager.inst.getRow('catalogs/monsters', room.monster);
         if (!def) return;
-        const hp = Number(def['hp'] ?? 10);
-        this.battle = {
-            monsterId: String(def['id']),
-            monsterName: String(def['name'] ?? def['id']),
-            hp,
-            maxHp: hp,
+        const spec: CombatMonsterSpec = {
+            mid: String(def['id']),
+            name: String(def['name'] ?? def['id']),
+            hp: Number(def['hp'] ?? 10),
             damage: Number(def['damage'] ?? 2),
-            playerHp: this.run.playerHp,
-            playerMaxHp: AdventureSystem.PLAYER_MAX_HP,
+            speed: String(def['behavior']) === 'tank' ? 38 : 60,
+            behavior: (String(def['dungeonBehavior'] ?? def['behavior']) as CombatMonsterSpec['behavior']),
+            fireInterval: def['fireInterval'] !== undefined ? Number(def['fireInterval']) : undefined,
+            bulletSpeed: def['bulletSpeed'] !== undefined ? Number(def['bulletSpeed']) : undefined,
+            radius: Number(def['radius'] ?? (String(def['id']).includes('elite') ? 26 : 20)),
+            elite: String(def['id']).includes('elite'),
+        };
+        const weapon = this._weapon();
+        this.combat = startCombat(960, 576, weapon, this.run.playerHp, AdventureSystem.PLAYER_MAX_HP);
+        spawnWave(this.combat, [spec], () => {});
+        this._combatAcc = 0;
+        EventBus.inst.emit('farmChanged', { action: 'adventure_combat_start' });
+    }
+
+    /** 武器表行 → CombatWeapon（run.weaponId 缺省木剑） */
+    private _weapon(): CombatWeapon {
+        const wid = String(this.run?.weaponId ?? 'wood_sword');
+        const w = DataManager.inst.getRow('catalogs/weapons', wid);
+        return {
+            id: String(w?.['id'] ?? 'wood_sword'),
+            name: String(w?.['name'] ?? '木剑'),
+            kind: String(w?.['kind'] ?? 'melee') as CombatWeapon['kind'],
+            damage: Number(w?.['damage'] ?? 4),
+            interval: Number(w?.['interval'] ?? 0.5),
+            range: Number(w?.['range'] ?? 80),
+            arcDeg: w?.['arcDeg'] !== undefined ? Number(w['arcDeg']) : undefined,
+            bulletSpeed: w?.['bulletSpeed'] !== undefined ? Number(w['bulletSpeed']) : undefined,
+            blockBullets: w?.['blockBullets'] === true,
         };
     }
 
-    /**
-     * 玩家攻击一次。样板公式：玩家 4~7 随机伤害，怪物每回合反伤 damage（玩家闪避 25%）。
-     * 返回 'hit' | 'win' | 'lose'。
-     */
-    playerAttack(): 'hit' | 'win' | 'lose' | 'none' {
-        const b = this.battle;
-        if (!b || !this.run) return 'none';
-        b.hp -= 4 + Math.floor(Math.random() * 4);
-        if (b.hp <= 0) {
-            // 战利品入包（受负重限制，超出丢弃并提示）
-            const def = DataManager.inst.getRow('catalogs/monsters', b.monsterId);
+    /** 每帧推进战斗（DungeonOverlay.update 调用；内部按 1/30 固定步泵） */
+    tickCombat(dt: number): void {
+        const c = this.combat;
+        if (!c) return;
+        this._combatAcc += Math.min(dt, 0.25);
+        while (this._combatAcc >= COMBAT_DT && this.combat && !this.combat.over) {
+            this._combatAcc -= COMBAT_DT;
+            tickCombat(this.combat, this.combatInput, (ev) => this._onCombatEvent(ev));
+        }
+        if (this.combat) this.run!.playerHp = Math.max(0, Math.round(this.combat.player.hp));
+        if (c.over) this._finishCombat();
+    }
+
+    private _onCombatEvent(ev: string): void {
+        if (ev === 'hurt_p') EventBus.inst.emit('farmChanged', { action: 'adventure_hurt' });
+        else if (ev === 'die') EventBus.inst.emit('farmChanged', { action: 'adventure_kill' });
+    }
+
+    /** 战斗收尾：胜利掠夺（战利品+宝箱）/失败减半结算 */
+    private _finishCombat(): void {
+        const c = this.combat;
+        if (!c || !this.run) return;
+        if (c.won) {
+            const room = this.room();
+            const def = room?.monster ? DataManager.inst.getRow('catalogs/monsters', room.monster) : null;
             const rewards = (def?.['rewards'] as { itemId: string; min: number; max: number }[]) ?? [];
             for (const r of rewards) {
                 const n = r.min + Math.floor(Math.random() * (r.max - r.min + 1));
@@ -157,35 +196,33 @@ export class AdventureSystem {
                     this.run.bagCount += 1;
                 }
             }
-            // 精英房附带宝箱
-            const room = this.room();
             if (room?.treasure) {
                 for (const t of room.treasure) {
                     const n = t.min + Math.floor(Math.random() * (t.max - t.min + 1));
                     this.run.bag[t.itemId] = (this.run.bag[t.itemId] ?? 0) + n;
                 }
             }
-            this.battle = null;
+            this.combat = null;
             EventBus.inst.emit('farmChanged', { action: 'adventure_win' });
-            return 'win';
+        } else {
+            this.combat = null;
+            this._onDefeat();
         }
-        // 怪物反击（25% 闪避）
-        if (Math.random() >= 0.25) {
-            b.playerHp -= b.damage;
-            this.run.playerHp = b.playerHp;
-            if (b.playerHp <= 0) {
-                this._onDefeat();
-                return 'lose';
-            }
-        }
-        return 'hit';
+    }
+
+    /** 撤退战斗（留原房可再战，血量保留至少 1） */
+    fleeCombat(): void {
+        if (!this.combat) return;
+        this.run!.playerHp = Math.max(1, Math.round(this.combat.player.hp));
+        this.combat = null;
+        EventBus.inst.emit('farmChanged', { action: 'adventure_flee' });
     }
 
     /** 战斗倒下：损失一半收获（向上取整），回农场（§7.3） */
     private _onDefeat(): void {
         const run = this.run;
         if (!run) return;
-        this.battle = null;
+        this.combat = null;
         for (const id of Object.keys(run.bag)) {
             run.bag[id] = Math.ceil(run.bag[id] / 2);
         }
@@ -221,7 +258,7 @@ export class AdventureSystem {
         TimeSystem.inst.endDay();
         app.persist('adventure_settle');
         this.run = null;
-        this.battle = null;
+        this.combat = null;
         EventBus.inst.emit('farmChanged', { action: 'adventure_settled' });
     }
 }

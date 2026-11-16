@@ -1,0 +1,44 @@
+[
+  {
+    "id": "wood_sword",
+    "name": "木剑",
+    "kind": "melee",
+    "damage": 4,
+    "interval": 0.45,
+    "range": 78,
+    "arcDeg": 100,
+    "blockBullets": true,
+    "desc": "新手木剑，挥砍能拍掉迎面的弹幕。"
+  },
+  {
+    "id": "iron_sword",
+    "name": "铁剑",
+    "kind": "melee",
+    "damage": 7,
+    "interval": 0.55,
+    "range": 92,
+    "arcDeg": 110,
+    "blockBullets": true,
+    "desc": "林心宝箱里偶得的铁剑。"
+  },
+  {
+    "id": "slingshot",
+    "name": "弹弓",
+    "kind": "ranged",
+    "damage": 3,
+    "interval": 0.5,
+    "range": 280,
+    "bulletSpeed": 460,
+    "desc": "远程骚扰，自动瞄准最近的怪物。"
+  },
+  {
+    "id": "firewand",
+    "name": "火法杖",
+    "kind": "ranged",
+    "damage": 6,
+    "interval": 0.9,
+    "range": 300,
+    "bulletSpeed": 380,
+    "desc": "喷吐火球，威力大但出手慢。"
+  }
+]

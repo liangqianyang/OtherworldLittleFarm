@@ -22,6 +22,7 @@ const TABLE_MANIFEST: readonly string[] = [
     'catalogs/adventure_rooms',
     'catalogs/defense_waves',
     'catalogs/defense_maps',
+    'catalogs/weapons',
     'catalogs/npc_dialogs',
     'catalogs/interactables',
     'catalogs/terrain_ops',

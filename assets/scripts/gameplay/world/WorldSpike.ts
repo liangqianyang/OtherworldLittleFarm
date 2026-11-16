@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Camera, view, ResolutionPolicy, SpriteFrame, Layers, assetManager, Asset } from 'cc';
+import { _decorator, Component, Node, Camera, view, ResolutionPolicy, SpriteFrame, Layers, assetManager, Asset, UITransform, Graphics, Color } from 'cc';
 import { MAP_W, MAP_H, TILE, SPAWN, TerrainData } from './TerrainData';
 import { TerrainBakeRenderer } from './TerrainBakeRenderer';
 import { TerrainPoolRenderer } from './TerrainPoolRenderer';
@@ -13,6 +13,9 @@ import { TerrainEdit, ToolId } from './terrain/TerrainEdit';
 import { ToolDockUI } from './terrain/ToolDockUI';
 import { TerrainEditInput } from './TerrainEditInput';
 import { WorldLiving } from './living/WorldLiving';
+import { AdventureSystem } from '../adventure/AdventureSystem';
+import { Interactable } from './interact/Interactable';
+import { DungeonOverlay } from '../../ui/DungeonOverlay';
 import { TimeSystem } from '../../core/TimeSystem';
 import { GameApp } from '../../app/GameApp';
 const { ccclass } = _decorator;
@@ -44,6 +47,7 @@ export class WorldSpike extends Component {
     private _dock: ToolDockUI | null = null;
     private _editInput: TerrainEditInput | null = null;
     private _statusTimer = 0;
+    private _dungeon: Node | null = null;
 
     start(): void {
         (window as unknown as Record<string, unknown>).__spike = this;
@@ -130,6 +134,10 @@ export class WorldSpike extends Component {
         this.node.addChild(joyNode);
         joyNode.addComponent(JoystickController);
 
+        // M5：探险副本传送门 + 全屏副本面板
+        this._buildDungeonGate();
+        this._dungeon = DungeonOverlay.create(this.node);
+
         // 烘焙源图（native png；SpriteFrame.texture 的 nativeUrl 为空，须回主 uuid 取 ImageAsset 的 nativeUrl）
         SpriteLib.inst.init().then(() => {
             const nativeUrlOf = (sf: SpriteFrame | null): string | null => {
@@ -160,6 +168,21 @@ export class WorldSpike extends Component {
     }
 
     update(): void {
+        // M5：摇杆路由——战斗中喂 CombatInput；副本面板打开时冻结世界移动
+        const adv = AdventureSystem.inst;
+        const joy = JoystickController.inst;
+        const dungeonOpen = this._dungeon !== null && this._dungeon.active;
+        if (adv.inCombat) {
+            adv.combatInput.mx = joy ? joy.dirX : 0;
+            adv.combatInput.my = joy ? joy.dirY : 0;
+            PlayerCharacter.inst?.setInput(0, 0);
+        } else if (dungeonOpen) {
+            adv.combatInput.mx = 0; adv.combatInput.my = 0;
+            PlayerCharacter.inst?.setInput(0, 0);
+        } else if (joy) {
+            PlayerCharacter.inst?.setInput(joy.dirX, joy.dirY);
+        }
+
         // M2：情境交互每帧判定（范围内最近物件 → 提示）
         if (this._player) {
             const pp = this._player.node.position;
@@ -266,6 +289,79 @@ export class WorldSpike extends Component {
         const cur = InteractionManager.inst.current;
         InteractionManager.inst.dispatchCurrent();
         return cur ? cur.objId : '';
+    }
+
+    // ===== M5 探险副本调试 =====
+
+    private _buildDungeonGate(): void {
+        const adv = AdventureSystem.inst;
+        // 传送门视觉（advGate 区中心附近 (112,10)）
+        const gNode = new Node('dungeon_gate');
+        gNode.layer = this.node.layer;
+        gNode.addComponent(UITransform).setContentSize(96, 96);
+        gNode.setPosition((112 + 0.5) * TILE, -(10 + 0.5) * TILE, 0);
+        this.node.addChild(gNode);
+        const g = gNode.addComponent(Graphics);
+        g.fillColor = new Color(120, 70, 170, 230);
+        g.circle(0, 0, 30);
+        g.fill();
+        g.strokeColor = new Color(220, 190, 255, 255);
+        g.lineWidth = 4;
+        g.circle(0, 0, 30);
+        g.stroke();
+        const it = gNode.addComponent(Interactable);
+        it.setupSimple('dungeon_gate', '进入旧林地', 96, () => {
+            if (!adv.inRun) adv.start('old_wood');
+            this.advOpen();
+        });
+    }
+
+    /** 打开副本面板（不自动开局，开局走 start/dbgAdvStart） */
+    advOpen(): void {
+        if (this._dungeon) (this._dungeon.getComponent('DungeonOverlayComp') as { open(): void }).open();
+    }
+
+    advClose(): void {
+        if (this._dungeon) (this._dungeon.getComponent('DungeonOverlayComp') as { close(): void }).close();
+    }
+
+    /** 开局+开面板 */
+    dbgAdvStart(): Record<string, unknown> {
+        const adv = AdventureSystem.inst;
+        adv.start('old_wood');
+        this.advOpen();
+        return { room: adv.room()?.name, kind: adv.room()?.kind };
+    }
+
+    /** 手动泵战斗 n 步（1/30 步长；hidden tab 下 update 不跑的主验证手段） */
+    dbgAdvTick(n = 30): Record<string, unknown> {
+        const adv = AdventureSystem.inst;
+        if (!adv.combat) return { err: 'no combat' };
+        const evs: string[] = [];
+        for (let i = 0; i < n; i++) {
+            if (!adv.combat || adv.combat.over) break;
+            adv.tickCombat(1 / 30);
+        }
+        const c = adv.combat;
+        return { over: c ? c.over : 'finished', won: c ? c.won : null,
+            php: c ? Math.round(c.player.hp) : adv.run?.playerHp,
+            monsters: c ? c.monsters.length : 0, bullets: c ? c.bullets.length : 0 };
+    }
+
+    /** 设定战斗输入（无头驱动） */
+    dbgAdvInput(mx: number, my: number, attack = false, roll = false): void {
+        const i = AdventureSystem.inst.combatInput;
+        i.mx = mx; i.my = my; i.attack = attack; i.roll = roll;
+    }
+
+    /** 探险状态快照 */
+    advDump(): Record<string, unknown> {
+        const adv = AdventureSystem.inst;
+        const c = adv.combat;
+        return { inRun: adv.inRun, room: adv.room()?.name, kind: adv.room()?.kind,
+            bag: adv.run ? { ...adv.run.bag } : null, bagCount: adv.run?.bagCount,
+            hp: adv.run?.playerHp, roomIdx: adv.run?.roomIdx,
+            combat: c ? { over: c.over, won: c.won, php: Math.round(c.player.hp), mons: c.monsters.map(m => [m.spec.mid, m.hp]) } : null };
     }
 
     /** 开荒状态快照（物件/存档切片/当前提示） */

@@ -47,6 +47,10 @@
     ],
     "codexId": "sporeling",
     "baitImmune": true,
-    "attackInterval": 1.5
+    "attackInterval": 1.5,
+    "dungeonBehavior": "shooter",
+    "fireInterval": 2.2,
+    "bulletSpeed": 185,
+    "radius": 20
   }
 ]
