@@ -191,6 +191,46 @@ ASSETS = [
     ("window_f", 32, "assets/textures/decor/window_f.png", True,
      "像素画，16位复古农场游戏家具精灵图，正面视角木框窗户，四格窗格能看到淡蓝色天空和一角白云，深色描边，纯品红色背景。" + PALETTE +
      " pixel art furniture, 16-bit retro farm game, wooden framed window front view, four panes showing pale blue sky and a corner of white cloud, dark outline, isolated on solid magenta background"),
+    # ===== 1.0 可玩版新增：主角/战斗/UI =====
+    ("player_down", 32, "assets/textures/characters/player_down.png", True,
+     "像素画游戏主角，16位复古农场游戏年轻农夫正面站姿，金色草帽，白色衬衫棕色背带裤，棕色靴子，微笑，正面朝向观众，全身占画面约70%，深色描边，纯品红背景隔离。" + PALETTE +
+     " pixel art game protagonist, 16-bit retro farm game young farmer front view standing pose, golden straw hat, white shirt brown overalls, brown boots, facing viewer, full body 70% of frame, dark outline, isolated on solid magenta background"),
+    ("player_up", 32, "assets/textures/characters/player_up.png", True,
+     "像素画游戏主角背面，16位复古农场游戏年轻农夫背影站姿，金色草帽从后看，棕色背带裤背部交叉带，无面部，全身占画面约70%，深色描边，纯品红背景隔离。" + PALETTE +
+     " pixel art game protagonist back view, 16-bit retro farm game young farmer standing seen from behind, golden straw hat, brown overalls cross straps, no face visible, full body 70% of frame, dark outline, isolated on solid magenta background"),
+    ("player_right", 32, "assets/textures/characters/player_right.png", True,
+     "像素画游戏主角侧面，16位复古农场游戏年轻农夫右侧面站姿，金色草帽，白衬衫棕背带裤，右手持锄头垂在身侧，面朝右，全身占画面约70%，深色描边，纯品红背景隔离。" + PALETTE +
+     " pixel art game protagonist side view, 16-bit retro farm game young farmer standing facing right, golden straw hat, white shirt brown overalls, holding hoe at side, full body 70% of frame, dark outline, isolated on solid magenta background"),
+    ("slime_idle", 32, "assets/textures/monsters/slime_idle.png", True,
+     "像素画怪物，16位复古游戏绿色史莱姆，圆润果冻质感半透明感，两只大圆眼睛，底部微扁贴地，正面，深色描边，纯品红背景隔离。" + PALETTE +
+     " pixel art monster, 16-bit retro game green slime jelly creature, round gelatinous body, two big round eyes, flat bottom, front view, dark outline, isolated on solid magenta background"),
+    ("sporeling_idle", 32, "assets/textures/monsters/sporeling_idle.png", True,
+     "像素画怪物，16位复古游戏紫色孢子小怪，蘑菇头带斑点，愤怒表情，短腿，正面，深色描边，纯品红背景隔离。" + PALETTE +
+     " pixel art monster, 16-bit retro game purple spore imp, mushroom cap with spots, angry expression, stubby legs, front view, dark outline, isolated on solid magenta background"),
+    ("icon_sword", 16, "assets/textures/ui/icon_sword.png", True,
+     "像素画图标，16位复古游戏银色直剑竖立，棕色剑柄，金色护手，深色描边，纯品红背景隔离。" + PALETTE +
+     " pixel art icon, 16-bit retro game silver straight sword upright, brown hilt, gold crossguard, dark outline, isolated on solid magenta background"),
+    ("icon_attack", 16, "assets/textures/ui/icon_attack.png", True,
+     "像素画图标，16位复古游戏红色拳头或斩击符号，圆形红色底，白色斩击线，深色描边，纯品红背景隔离。" + PALETTE +
+     " pixel art icon, 16-bit retro game red slash attack symbol on round crimson badge, white slash lines, dark outline, isolated on solid magenta background"),
+    ("icon_roll", 16, "assets/textures/ui/icon_roll.png", True,
+     "像素画图标，16位复古游戏蓝色翻滚滚动符号，圆形蓝底，白色旋转箭头环绕，深色描边，纯品红背景隔离。" + PALETTE +
+     " pixel art icon, 16-bit retro game blue dodge roll symbol on round blue badge, white rotating arrows, dark outline, isolated on solid magenta background"),
+    ("icon_tower", 16, "assets/textures/ui/icon_tower.png", True,
+     "像素画图标，16位复古游戏防御塔，石制圆塔顶有绿色水晶，深色描边，纯品红背景隔离。" + PALETTE +
+     " pixel art icon, 16-bit retro game defense tower, stone round tower with green crystal on top, dark outline, isolated on solid magenta background"),
+    ("tower_pea", 32, "assets/textures/adventure/tower_pea.png", True,
+     "像素画防御塔，16位复古游戏豌豆射手塔，绿色植物炮台底座石制，顶部绿色豌豆荚炮口，正面，深色描边，纯品红背景隔离。" + PALETTE +
+     " pixel art defense tower, 16-bit retro game pea shooter plant turret on stone base, green pea pod muzzle on top, front view, dark outline, isolated on solid magenta background"),
+    ("dungeon_gate", 64, "assets/textures/adventure/dungeon_gate.png", True,
+     "像素画传送门，16位复古游戏紫色魔法漩涡传送门，石制拱门内紫粉色旋涡发光，正面，深色描边，纯品红背景隔离。" + PALETTE +
+     " pixel art portal, 16-bit retro game purple magic vortex inside stone archway, glowing purple pink swirl, front view, dark outline, isolated on solid magenta background"),
+    ("world_seal", 64, "assets/textures/adventure/world_seal.png", True,
+     "像素画封印祭坛，16位复古游戏石制圆祭坛，顶部金色发光符文圆盘，正面微俯视，深色描边，纯品红背景隔离。" + PALETTE +
+     " pixel art altar, 16-bit retro game stone round altar with glowing golden rune disc on top, slight top-down view, dark outline, isolated on solid magenta background"),
+    ("fish_bite", 32, "assets/textures/adventure/fish_bite.png", True,
+     "像素画钓鱼咬钩提示，16位复古游戏水面涟漪中央一条跃出的蓝色小鱼加黄色感叹号，正面，深色描边，纯品红背景隔离。" + PALETTE +
+     " pixel art fishing bite indicator, 16-bit retro game blue fish jumping out of water ripple with yellow exclamation mark, front view, dark outline, isolated on solid magenta background"),
 ]
 
 
