@@ -46,7 +46,24 @@
 | 中端 | 主流 Android | 全功能回归 |
 | iOS | iPhone SE 级 | 音频（AudioContext 解锁）、异形屏安全区 |
 
-## E. 已知非阻塞项
+## E. AI 素材视觉验收（0.0.5 新增，色块=失败）
+
+| # | 场景 | 验收点 |
+|---|---|---|
+| 1 | 世界·出生点附近 | 主角=草帽农夫贴图（行走时 down/up/right 三向切帧、左右翻转），不再是蓝黄圆 |
+| 2 | 世界·副本传送门 (112,10) | 紫色石门贴图（96px），非紫圆色块 |
+| 3 | 居住区·封印祭坛 (110,52) | world_seal 贴图（88px），非色块 |
+| 4 | 副本·竞技场 | 深绿对角棋盘格地板；主角/史莱姆/孢子贴图；受击闪白（scale 1.18） |
+| 5 | 副本·按钮 | 攻击/翻滚按钮有 icon_attack/icon_roll 图标 |
+| 6 | 防守·豌豆塔 | podgun 塔=tower_pea 贴图（48px），非绿圆 |
+| 7 | 钓鱼·咬钩瞬间 | 浮标旁出现 fish_bite 贴图（48px） |
+| 8 | NPC 对话 | 园艺师/守门人贴图头像（FarmHUD+DialogPanel+WorldLiving 三处） |
+| 9 | 背包/图鉴 | 图标全套 icon_sword/attack/roll/tower 及 13 作物鱼图标 |
+| 10 | 防守夜·怪物 | 夜战怪=slime/slime_elite/sporeling 贴图（非色圆） |
+
+任一验收点显示色块 → 查 SpriteLib CORE 是否含该键+磁盘 png 是否存在（先跑 `grep SpriteLib.inst.get` 核对键名）。
+
+## F. 已知非阻塞项
 
 - 编辑器场景进程与预览进程分离（MCP execute_component_method 不进预览）——不影响真机。
 - 预览页 `?scene=uuid` 直开=裸启动（无 GameApp）；验证走完整启动链。
