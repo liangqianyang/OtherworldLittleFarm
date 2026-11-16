@@ -7,6 +7,7 @@ import { DataManager } from '../core/DataManager';
 import { SaveManager, SaveDataV1 } from '../core/SaveManager';
 import { IPlatformAdapter } from '../platform/IPlatformAdapter';
 import { LocalAdapter } from '../platform/LocalAdapter';
+import { TapAdapter } from '../platform/taptap/TapAdapter';
 import { DebugPanel } from '../ui/DebugPanel';
 import { SfxLib } from '../core/SfxLib';
 import { FarmSystem } from '../gameplay/farm/FarmSystem';
@@ -152,8 +153,9 @@ export class GameApp extends Component {
     }
 
     private _initPlatform(): void {
-        // TODO 阶段 5：按运行时探测切换 TapAdapter（tap 全局对象存在且工程为 Tap 构建时）
-        this.adapter = new LocalAdapter();
+        // TapTap 小游戏容器会注入 tap 全局对象（platform/taptap/TapAdapter.detect 探测）；
+        // 编辑器预览/Web/浏览器等其余宿主走 Local（能力降级同引擎通用行为）
+        this.adapter = TapAdapter.detect() ? new TapAdapter() : new LocalAdapter();
         this.save = new SaveManager(this.adapter);
     }
 

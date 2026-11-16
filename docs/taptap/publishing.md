@@ -11,6 +11,7 @@
 - 整包大小上限 60MB（官方文档）；本项目自设 ≤30MB（微信口径）更严，继续执行。
 - 官方说明当前「暂不支持无网打开」：启动需网络。本地存档与离线推进设计不受影响，但对外文案不得承诺断网可玩。
 - 必接能力只有「添加到桌面」，提审前须接入；TapTap 登录/排行榜/好友分享/成就/多人联机/云存档/离线游玩均为可选生态与通用能力，单机首版不接。
+  → **已接入（2026-11-16，待真机验证）**：`TapAdapter.addToDesktop()` 走官方「桌面文件夹」开放能力——先 `tap.hasHomeScreenWidgetAndPinned` 查询（`isPinned=true` 免弹窗直接归「已在桌面」；iOS 无 isPinned 由创建分支的 1518002 归并），未置首则 `tap.createHomeScreenWidget` 创建（错误码 1518002 重复添加→already / 1518003 用户未授权→declined / 其余→fail）。UI 入口=世界 HUD 右上角 ⚙（`SettingsPanel`），运行时经 `IPlatformAdapter.canAddToDesktop` 能力探测，不支持的平台隐藏该行。⚠️ 该能力**开发者后台扫码自测测不了**（官方最佳实践：须后台创建小游戏+审核通过后在 Tap 线上版验证）；iOS 走跳 Safari 分享「添加到主屏幕」由系统完成。
 - 服务端 API（域名 cloud-miniapp.tapapis.cn）仅 TapTap 登录（jscode2session）与虚拟支付订单查询需要；本项目单机无内购，暂不需要任何服务端。
 - game.json 的 deviceOrientation 默认值即 landscape；subPackages 分包配置也写在此文件。
 

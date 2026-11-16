@@ -5,6 +5,7 @@ import { TerrainPoolRenderer } from './TerrainPoolRenderer';
 import { PlayerCharacter } from './PlayerCharacter';
 import { JoystickController, SCREEN_UI_LAYER } from './JoystickController';
 import { CompassHUD } from './CompassHUD';
+import { SettingsPanel } from './SettingsPanel';
 import { CameraFollow } from './CameraFollow';
 import { SpriteLib } from '../../core/SpriteLib';
 import { ClearingSystem } from './clearing/ClearingSystem';
@@ -139,6 +140,8 @@ export class WorldSpike extends Component {
 
         // M7 收尾 UX：指南针 HUD（屏幕边缘箭头指向 副本/封印祭坛/河岸）
         CompassHUD.create(this.node, playerNode, this._data!);
+        // M7 收尾 UX：设置入口（右上角 ⚙，承载 TapTap 必接「添加到桌面」；面板在摇杆/工具坞之后建=同触点优先）
+        SettingsPanel.create(this.node);
 
         // M5：探险副本传送门 + 全屏副本面板
         this._buildDungeonGate();
