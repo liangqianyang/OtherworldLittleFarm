@@ -62,7 +62,8 @@ export class DebugPanel extends Component {
     advDump(): void {
         const s = AdventureSystem.inst;
         const r = s.run;
-        console.log(`[Debug] adv run=${r ? `room=${r.roomIdx} bag=${JSON.stringify(r.bag)} cnt=${r.bagCount} hp=${r.playerHp}` : 'null'} battle=${s.battle ? `${s.battle.monsterName} hp=${s.battle.hp}` : 'null'} 场景=${director.getScene()?.name}`);
+        const c = s.combat;
+        console.log(`[Debug] adv run=${r ? `room=${r.roomIdx} bag=${JSON.stringify(r.bag)} cnt=${r.bagCount} hp=${r.playerHp}` : 'null'} combat=${c ? `${c.over ? 'over' : 'live'} php=${Math.round(c.player.hp)} mons=${c.monsters.length}` : 'null'} 场景=${director.getScene()?.name}`);
     }
 
     /** 出发探险（农场场景也可调：直接起 run，不切场景） */
@@ -93,16 +94,17 @@ export class DebugPanel extends Component {
     }
 
     /** 攻击一次（返回 hit/win/lose） */
-    advAttack(): void {
-        if (!AdventureSystem.inst.battle) AdventureSystem.inst.startBattle();
-        const r = AdventureSystem.inst.playerAttack();
-        console.log(`[Debug] attack → ${r}`);
+    /** 手动泵战斗 n 步（1/30s；hidden tab 下 update 不跑的主驱动） */
+    advTick(n: number = 30): void {
+        const s = AdventureSystem.inst;
+        if (!s.combat) { console.log('[Debug] no combat'); return; }
+        for (let i = 0; i < n && s.combat && !s.combat.over; i++) s.tickCombat(1 / 30);
         this.advDump();
     }
 
     /** 撤退（弃战） */
     advFlee(): void {
-        AdventureSystem.inst.battle = null;
+        AdventureSystem.inst.fleeCombat();
         console.log('[Debug] fled');
         this.advDump();
     }
