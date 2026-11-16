@@ -1,0 +1,105 @@
+import { _decorator, Component, Graphics, Color, Layers } from 'cc';
+import { TILE, TerrainData, TT } from './TerrainData';
+const { ccclass } = _decorator;
+
+/**
+ * 玩家角色（M1，灰盒）：动态摇杆驱动 + 脚底圆碰撞 + 轴分离贴墙滑行。
+ * 依据 character-control.md：脚底圆 r=20 art px、步行 4 格/s、移动读 TerrainData 阻挡。
+ * 坐标约定与世界一致：world px = (tileX*32, -tileY*32)，node.position = 脚底点。
+ */
+@ccclass('PlayerCharacter')
+export class PlayerCharacter extends Component {
+    private static _inst: PlayerCharacter | null = null;
+    static get inst(): PlayerCharacter | null { return PlayerCharacter._inst; }
+
+    private _terrain: TerrainData | null = null;
+    private _inX = 0;
+    private _inY = 0;
+    speed = 128;          // 4 格/s × 32px
+    radius = 20;          // 脚底碰撞圆（art px）
+    facing = 1;           // 1 右 / -1 左
+    walking = false;
+
+    private _g: Graphics | null = null;
+    private _faceDot: Graphics | null = null;
+
+    onLoad(): void {
+        this.node.layer = Layers.Enum.UI_2D;
+        PlayerCharacter._inst = this;
+    }
+
+    onDestroy(): void { if (PlayerCharacter._inst === this) PlayerCharacter._inst = null; }
+
+    init(terrain: TerrainData): void {
+        this._terrain = terrain;
+        this._g = this.node.addComponent(Graphics);
+        this._faceDot = this.node.addComponent(Graphics);
+        this._redraw();
+    }
+
+    /** 归一化输入（摇杆/调试写入）；模长>1 归一。 */
+    setInput(x: number, y: number): void {
+        const l = Math.hypot(x, y);
+        if (l > 1) { x /= l; y /= l; }
+        this._inX = x; this._inY = y;
+    }
+
+    update(dt: number): void {
+        if (!this._terrain) return;
+        this.walking = this._inX !== 0 || this._inY !== 0;
+        const p = this.node.position;
+        const dx = this._inX * this.speed * dt;
+        const dy = this._inY * this.speed * dt;
+        // 轴分离：先 x 后 y，撞则放弃该轴（贴墙滑行）
+        if (dx !== 0 && !this._collide(p.x + dx, p.y)) this.node.setPosition(p.x + dx, p.y, 0);
+        const p2 = this.node.position;
+        if (dy !== 0 && !this._collide(p2.x, p2.y + dy)) this.node.setPosition(p2.x, p2.y + dy, 0);
+        if (this._inX < -0.01 && this.facing !== -1) { this.facing = -1; this._redraw(); }
+        else if (this._inX > 0.01 && this.facing !== 1) { this.facing = 1; this._redraw(); }
+    }
+
+    tileX(): number { return Math.floor(this.node.position.x / TILE); }
+    tileY(): number { return Math.floor(-this.node.position.y / TILE); }
+
+    private _blocked(tx: number, ty: number): boolean {
+        if (!this._terrain) return true;
+        const t = this._terrain.get(tx, ty);
+        if (t === TT.Water) return true;
+        return this._terrain.heights[this._terrain.idx(tx, ty)] >= 1;
+    }
+
+    /** 脚底圆 vs 阻挡 tile 精确判（最近点距离）。 */
+    private _collide(x: number, y: number): boolean {
+        const r = this.radius;
+        const tx0 = Math.floor((x - r) / TILE), tx1 = Math.floor((x + r) / TILE);
+        const ty0 = Math.floor((-y - r) / TILE), ty1 = Math.floor((-y + r) / TILE);
+        for (let ty = ty0; ty <= ty1; ty++) {
+            for (let tx = tx0; tx <= tx1; tx++) {
+                if (!this._blocked(tx, ty)) continue;
+                const rx0 = tx * TILE, rx1 = rx0 + TILE;
+                const ry0 = -ty * TILE - TILE, ry1 = -ty * TILE;
+                const cx = Math.max(rx0, Math.min(x, rx1));
+                const cy = Math.max(ry0, Math.min(y, ry1));
+                const ddx = x - cx, ddy = y - cy;
+                if (ddx * ddx + ddy * ddy < r * r) return true;
+            }
+        }
+        return false;
+    }
+
+    private _redraw(): void {
+        if (!this._g || !this._faceDot) return;
+        this._g.clear();
+        this._faceDot.clear();
+        // 灰盒小人：脚底在 node.position；身体圆 + 头圆 + 朝向点
+        this._g.circle(0, -16, 11);
+        this._g.fillColor = new Color(74, 144, 217, 255);
+        this._g.fill();
+        this._g.circle(0, 8, 9);
+        this._g.fillColor = new Color(242, 193, 78, 255);
+        this._g.fill();
+        this._faceDot.circle(this.facing * 6, 9, 2.5);
+        this._faceDot.fillColor = new Color(42, 31, 22, 255);
+        this._faceDot.fill();
+    }
+}
