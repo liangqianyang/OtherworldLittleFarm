@@ -165,3 +165,17 @@
 - `spriteFrame.imageAsset = asset` 不触发纹理上传，渲染时报 "Cannot read properties of undefined (reading 'getHash')"（RenderData.updateRenderData 内部）。
 - 正规管线：`const tex = new Texture2D(); tex.image = asset; spriteFrame.texture = tex;`（动态 canvas 也要这么挂）。
 - 引擎会把 ImageAsset 纹理自动收进 DynamicAtlasTexture(2048) 动态图集——独立 png 也能合批。
+
+## 33. hidden 窗口的移动读数冻结假象（2026-11-16）
+- 症状：debugSetInput 按住后 position 不变、walking=false、delta=0——像是碰撞规则 bug。
+- 根因：窗口被用户窗口盖住→document.hidden=true→RAF 停转→Component.update 不执行，与游戏逻辑无关。
+- 解法：读数异常先查 `document.visibilityState`；**移动/碰撞逻辑验证优先用直接函数探针**（如 `pc._blocked(x,y)` 同步调用不吃 RAF），窗口可见期再做端到端走位验证。
+
+## 34. 台阶通行规则的两个设计坑（2026-11-16）
+- ①站格自阻挡：圆碰撞半径(20px)>半格(16px)时，角色圆恒跨到自己所站 tile——h≥1 规则下「自己 vs 自己」会判 blocked 冻结原地。`_blocked` 开头必须 `if (tx===this.tileX() && ty===this.tileY()) return false`。
+- ②同高平走：高原上 Δh=0 的相邻格要走（老规则「Δ≤1 且任一端是台阶」会挡住平顶行走）。三分规则：`dh===0 放行；dh===1 且任一端 Stairs 放行；其余拒`。
+- 调试笔误被 console 抓到：引用已删除变量 → ReferenceError 逐帧刷屏 → 全部移动冻结。console 错误流是行走类问题的第一现场。
+
+## 35. 编辑器打开场景期间别用 MCP 建/删节点（2026-11-16 补强 #31）
+- MCP 的场景操作作用于「编辑器当前打开的场景进程」，与预览进程无关；execute_component_method 的输出不会出现在预览页 console。
+- 预览进程驱动唯一可靠通道=组件 onLoad 里 `(window as any).__xxx = this` 挂桥 + bsk evaluate 直调 JS（合成 MouseEvent/PointerEvent 会被 input 层拦截）。
