@@ -65,6 +65,13 @@ Cocos Creator 3.8.8 的微信小游戏构建模板**硬编码 `deviceOrientation
 - 备案、内容介绍、软著权属、负责人核验、隐私说明及宣传物料均按后台实际要求提交。
 - 再次确认首包/分包大小、格式、版本号和资质状态，以提交时开发者后台要求为准。
 
+## 0.0.5 预检（2026-11-16 23:04 headless 核验）
+
+- **构建任务场景勾选完好**：`profiles/v2/packages/builder.json` taskMap + common 两处 scenes 均为全 4 场景（farm/launch/adventure/world）——直接在构建面板点构建即可，不会再触发 0.0.3 黑屏（缺 world 场景）。
+- **包体闸门预判**：上一包 `build/TapBuild/game.zip` 1.0MB（19:54 构建）；此后新增 AI 贴图共 ~528KB（全部 24 色量化小图，无 >100KB 单文件）+ 少量代码 → 预计 0.0.5 ≈1.2MB，远低于 20MB 红线与 5MB 目标。
+- **自上次构建（2776372 之后）的 12 个提交**将进入 0.0.5：指南针 HUD、设置面板 + 添加到桌面（TapAdapter）、AI 素材两批接入 + 取图键修复（1591944，此前素材静默不挂）、世界三处贴图升级（作物三阶段/床/掉落物图标）、谷仓地标。
+- 构建后按 `docs/testing/device-test-checklist.md` A/B/C/E/E+ 回归；E 节 13 项素材视觉色块=失败。
+
 ## 官方文档
 
 - [小游戏文档指引](https://developer.taptap.cn/minigameapidoc/quick-start/document-guide/)
