@@ -12,6 +12,7 @@ import { ContextButtonUI } from './interact/ContextButtonUI';
 import { TerrainEdit, ToolId } from './terrain/TerrainEdit';
 import { ToolDockUI } from './terrain/ToolDockUI';
 import { TerrainEditInput } from './TerrainEditInput';
+import { WorldLiving } from './living/WorldLiving';
 import { TimeSystem } from '../../core/TimeSystem';
 import { GameApp } from '../../app/GameApp';
 const { ccclass } = _decorator;
@@ -98,6 +99,9 @@ export class WorldSpike extends Component {
         // M2：情境交互按钮（SCREEN_UI 层，唯一常驻复用）
         ContextButtonUI.create(this.node);
 
+        // M3 收尾：生活设施（HUD/床/NPC/钓鱼情境化），依赖玩家与地形
+        WorldLiving.assemble(this.node, Layers.Enum.UI_2D, playerNode, this._data!);
+
         // M3：地形编辑（右半屏输入先建=底层，工具坞后建=同触点优先）
         this._edit = new TerrainEdit();
         this._edit.init(this._data);
@@ -160,6 +164,7 @@ export class WorldSpike extends Component {
         if (this._player) {
             const pp = this._player.node.position;
             InteractionManager.inst.tick(pp.x, pp.y);
+            if (WorldLiving.inst) WorldLiving.inst.tick(pp.x, pp.y);
         }
         if (this._player && this._camNode) {
             // 玩家模式：相机由 CameraFollow 驱动，这里只按实际相机位置补烘/回收块

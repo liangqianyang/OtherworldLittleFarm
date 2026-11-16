@@ -21,6 +21,8 @@ export class Interactable extends Component {
     hp = 1;
     cleared = false;
     row: Record<string, unknown> | null = null;
+    /** 非开荒类物件（床/NPC/钓鱼点）的自定义交互回调：设置后优先于 ClearingSystem.hit */
+    onUse: ((objId: string) => void) | null = null;
     private _sys: ClearingSystem | null = null;
     private _g: Graphics | null = null;
 
@@ -32,6 +34,20 @@ export class Interactable extends Component {
         this.range = Number(row['range'] ?? 64);
         this.maxHp = this.hp = Number(row['hp'] ?? 1);
         this._sys = sys;
+        this._wire();
+    }
+
+    /** 非目录物件（床/NPC/钓鱼点）简装注册：不走 ClearingSystem，交互走 onUse 回调，不画灰盒 */
+    setupSimple(objId: string, label: string, range: number, onUse: (objId: string) => void): void {
+        this.objId = objId;
+        this.label = label;
+        this.range = range;
+        this.onUse = onUse;
+        this._wire();
+        if (this._g) this._g.clear(); // _wire 里的 redraw() 会画默认 tree，简装物件自身负责视觉
+    }
+
+    private _wire(): void {
         this._g = this.node.getComponent(Graphics) || this.node.addComponent(Graphics);
         this.node.on(EventTouch.TOUCH_END, this._onTap, this);
         // ContextButtonUI → InteractionManager.dispatchCurrent → 本事件（情境按钮主通道）
@@ -41,6 +57,7 @@ export class Interactable extends Component {
     }
 
     private _onTap(): void {
+        if (this.onUse) { this.onUse(this.objId); return; }
         if (!this.cleared && this._sys) this._sys.hit(this.objId);
     }
 
