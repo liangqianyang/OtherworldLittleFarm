@@ -60,6 +60,9 @@
 | 8 | NPC 对话 | 园艺师/守门人贴图头像（FarmHUD+DialogPanel+WorldLiving 三处） |
 | 9 | 背包/图鉴 | 图标全套 icon_sword/attack/roll/tower 及 13 作物鱼图标 |
 | 10 | 防守夜·怪物 | 夜战怪=slime/slime_elite/sporeling 贴图（非色圆） |
+| 11 | 世界农场·地块 | 土地=plot_soil 贴图（浇水变深色 plot_soil_wet）；作物=三阶段贴图（种→发芽→成熟换图），非绿色进度条 |
+| 12 | 庭院·床 (74,24) | bed 贴图（56x44），非棕色块 |
+| 13 | 开荒·掉落物 | 砍树/采浆果掉落=wood_log/icon_berry 图标磁吸飞行（石头仍为灰圆=预期内） |
 
 任一验收点显示色块 → 查 SpriteLib CORE 是否含该键+磁盘 png 是否存在（先跑 `grep SpriteLib.inst.get` 核对键名）。
 
