@@ -149,3 +149,19 @@
 ## 29. 用旧 label 判断循环推进导致误收获/空地重种（2026-11-13）
 - 症状：`for d: if (lbl(p)!=='收获!') p._onTap()` 的条件读的是循环开头旧值；skipDay 后状态已变，旧'已浇'会让熟地被收获、空地被重种，把背包种子轮换耗尽。
 - 解法：skipDay 之后重读 label 再判断；涉及 spendItem 时数量用精确值（99 会被安全检查拒绝导致"清种子"静默失败——返回 false 要检查）。
+
+## 30. bsk_session noFocus=false 才能开出 visible 窗口（2026-11-16，修正 #27）
+- 坑 27 说「Agent Window 永远 hidden」不准确——bsk_session start **不传 noFocus（默认后台开窗）才是 hidden 根因**；`bsk_session start`（bsk CLI 层）配合 noFocus=false 开出的 tab document.hidden=false，引擎 Init 毫秒级、启动链正常跑。
+- 隐藏 tab 下 loadBundle/loadScene 等一切依赖 timer 的异步不可用（深度节流 1 次/分钟）；visible 下全部正常。自动化验证优先 visible 窗口。
+
+## 31. world.scene 直写 JSON 的三个渲染坑（2026-11-16）
+- ①cc.Canvas 相机引用字段名是 **`_cameraComponent`**（写成 _cameraComp 会让 Canvas.onEnable 崩 "Cannot read properties of undefined (reading 'on')"）；MCP set_component_property 对该字段不可用（节点 uuid 报 setWorldPosition undefined、组件 uuid 报 Target node not found）——唯一可靠=close 场景→python 直写 JSON→asset refresh，**不 open 不 save**（open 是 no-op 不重读磁盘，编辑器内存态会在下次 save 覆盖磁盘）。
+- ②直写 JSON 的节点 `_layer` 会是 DEFAULT(1073741824)，UI_2D 相机渲染不出——Canvas/Camera 节点都要显式 `"_layer": 33554432`。
+- ③SpriteFrame.texture.nativeUrl 是空字符串，native png 的 URL 要从 ImageAsset 主 uuid 取：`assetManager.assets.get(sf.uuid.split('@')[0]).nativeUrl`。
+- ④烘焙 chunk Sprite 与池化 tile Sprite 必须 setContentSize（只 addComponent(UITransform) 默认 100×100 会裁剪显示）。
+- 预览直开新场景：`http://localhost:7456/?scene=<场景uuid>`（场景名进不了 build settings 清单缓存，loadScene('world') 报 not in build settings）；uuid 直开后引擎自动加载该场景。
+
+## 32. Cocos 纹理上传必须走 Texture2D 管线（2026-11-16）
+- `spriteFrame.imageAsset = asset` 不触发纹理上传，渲染时报 "Cannot read properties of undefined (reading 'getHash')"（RenderData.updateRenderData 内部）。
+- 正规管线：`const tex = new Texture2D(); tex.image = asset; spriteFrame.texture = tex;`（动态 canvas 也要这么挂）。
+- 引擎会把 ImageAsset 纹理自动收进 DynamicAtlasTexture(2048) 动态图集——独立 png 也能合批。
