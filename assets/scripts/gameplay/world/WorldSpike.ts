@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Camera, view, ResolutionPolicy, SpriteFrame, Layers, assetManager, Asset, UITransform, Graphics, Color } from 'cc';
+import { _decorator, Component, Node, Camera, view, ResolutionPolicy, SpriteFrame, Layers, assetManager, ImageAsset, UITransform, Graphics, Color } from 'cc';
 import { MAP_W, MAP_H, TILE, SPAWN, TerrainData } from './TerrainData';
 import { TerrainBakeRenderer } from './TerrainBakeRenderer';
 import { TerrainPoolRenderer } from './TerrainPoolRenderer';
@@ -139,27 +139,24 @@ export class WorldSpike extends Component {
         this._buildDungeonGate();
         this._dungeon = DungeonOverlay.create(this.node);
 
-        // 烘焙源图（native png；SpriteFrame.texture 的 nativeUrl 为空，须回主 uuid 取 ImageAsset 的 nativeUrl）
+        // 烘焙源图：直接复用引擎已加载的 ImageAsset.data（web=HTMLImageElement，小游戏=运行时 image 对象，canvas 可直接 drawImage）。
+        // 0.0.3 真机实证：手动 new Image()+nativeUrl 相对路径在小游戏端加载失败 → 地面灰块降级，故弃用该路径。
         SpriteLib.inst.init().then(() => {
-            const nativeUrlOf = (sf: SpriteFrame | null): string | null => {
+            const srcOf = (sf: SpriteFrame | null): CanvasImageSource | null => {
                 if (!sf) return null;
                 const main = sf.uuid ? sf.uuid.split('@')[0] : null;
                 if (!main) return null;
-                const ia = assetManager.assets.get(main) as Asset | undefined;
-                return ia && ia.nativeUrl ? ia.nativeUrl : null;
+                const ia = assetManager.assets.get(main) as ImageAsset | undefined;
+                return ia && ia.data ? (ia.data as unknown as CanvasImageSource) : null;
             };
             const g = SpriteLib.inst.get('tiles/ground_grass');
             const fo = SpriteLib.inst.get('tiles/ground_forest');
             const so = SpriteLib.inst.get('tiles/plot_soil');
-            const urls: Record<number, string> = {};
-            const u0 = nativeUrlOf(g); if (u0) urls[0] = u0;
-            const u2 = nativeUrlOf(fo); if (u2) urls[2] = u2;
-            const u1 = nativeUrlOf(so); if (u1) urls[1] = u1;
-            this._bake!.loadSources(urls).then(() => {
-                this._applyVisible();
-                this._info = 'spike ready route=' + this._route;
-                console.log('[Spike] ready, ' + JSON.stringify(this.spikeInfo()));
-            });
+            const srcs: Record<number, CanvasImageSource | null> = { 0: srcOf(g), 2: srcOf(fo), 1: srcOf(so) };
+            this._bake!.setSources(srcs);
+            this._applyVisible();
+            this._info = 'spike ready route=' + this._route;
+            console.log('[Spike] ready, ' + JSON.stringify(this.spikeInfo()));
             // 池路线帧（water 用 grass 帧替代）
             const fr: Record<number, SpriteFrame | null> = { 0: g, 2: fo, 1: so, 3: g, 4: g };
             this._pool!.init(this._data, poolRoot, fr);

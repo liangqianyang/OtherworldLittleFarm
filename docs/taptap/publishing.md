@@ -30,6 +30,7 @@ Cocos Creator 3.8.8 的微信小游戏构建模板**硬编码 `deviceOrientation
 
 1. 扩展 → 扩展管理器 → 确认「TapTap小游戏构建工具」已启用（扩展菜单里没有它的独立菜单项，这是正常的——它只往构建面板注入勾选项）。
 2. 项目 → 构建发布 → 编辑微信小游戏任务 → ☑ 勾选「**转换为Tap小游戏**」→ 构建。
+   ⚠️ **「参与构建的场景」必须勾选全部 4 个场景**（launch / farm / world / adventure）。0.0.3 真机黑屏根因：任务建于 2026-11-13（当时只有 launch+farm），M6 起启动直进 world，包内缺 world 场景 → `GameApp.ts:88 loadScene('world')` 失败 → 停在启动屏黑屏（编辑器预览不走构建清单所以浏览器测不出来）。新建场景后务必回构建任务勾选，构建后抽查 `build/TapBuild/game/assets/main/config.json` 的 `scenes` 字段应含全部场景。
 3. 构建完成自动产出 `build/TapBuild/game.zip`（转换器 packGame：`TapBuild/game` 目录 → 同级 `game.zip`）。
 4. 抽查 `build/TapBuild/game/game.json` 确认 `deviceOrientation: landscape`（build-templates 生效时应自动就是）；再上传开发者中心真机试玩。
 
@@ -46,6 +47,9 @@ Cocos Creator 3.8.8 的微信小游戏构建模板**硬编码 `deviceOrientation
 - 控制台新平台事实：包体大小建议 **20MB 以下**（严于官方文档的 60MB 口径，以此为准做预算）；上传后自动读取「最低支持库版本」（实传读到 2.4.0）；上传页提示包体需正确接入 taplap 登录「以防 TapTap 用户无法正常游玩」——单机无登录包是否影响真机试玩，待本次扫码验证后回写结论。
 - 上传后自动跑「包体准入测试」（测试中→出结果）；操作栏「自测」入口提供真机试玩二维码。
 - ⚠️ 真机试玩有**自测用户白名单**：直接扫码会提示「当前该账号无测试资格」。须先在包体管理页点「设置自测用户」，把要扫码的 TapTap 账号（按 TapTap 号添加，App 个人主页可查）加入名单后再扫。开发者本人账号也要显式添加。
+- ⚠️ **0.0.3 真机黑屏复盘（2026-11-16）**：两个叠加根因——①构建任务场景清单缺 world/adventure（见上，主因）；②TerrainBakeRenderer 直接用 `new Image()`/`document.createElement('canvas')`，小游戏运行时无 DOM。②已修：`_createCanvas/_now` 平台兜底 + 单 chunk 烘焙 try/catch 降级。
+- ⚠️ **0.0.3 真机地面灰块复盘（2026-11-16 第二轮真机）**：主因修复后 world 正常加载（河流/角色/NPC 均渲染 ✓），但地面全灰 = 烘焙降级路径触发：手动 `new Image()` + `nativeUrl` 相对路径在小游戏端加载失败（web 预览正常，引擎自身加载同批贴图正常——树可见）。终修：`WorldSpike.srcOf` 直接传引擎已加载的 `ImageAsset.data` 给 `TerrainBakeRenderer.setSources`，弃用手动 URL 加载；降级配色改为分类型地形色（草绿/深林绿/土棕/沙黄/水蓝）。
+- ⚠️ **0.0.3 真机地面色块复盘（2026-11-16 第三轮真机）**：第二轮修复后地面变成纯色块（绿/棕）而非贴图 = `ImageAsset.data` 为 null。根因：构建 settings 含 `CLEANUP_IMAGE_CACHE: true`（引擎默认宏），贴图上传 GPU 后对 ImageAsset decRef → 销毁 → `.data` 空；web 预览读取时序早于上传而侥幸可用。终修：`GameApp.start` 最前 `macro.CLEANUP_IMAGE_CACHE = false`（任何贴图加载前设置），像素包 CPU 拷贝内存代价可忽略。**教训链：①别绕过引擎手动加载图像；②引擎图像数据可能被宏清理，启动即关 `CLEANUP_IMAGE_CACHE`。** 真机判定：地面出现草地/泥土像素纹理即修复成功。→ **2026-11-16 第三轮真机已验证通过**：贴图正常渲染（草地/泥路纹理与预览一致），0.0.3 真机包可玩。
 
 > 项目设计分辨率已配为 1280×720（fitHeight），`settings/v2/packages/project.json`；data Bundle（assets/data）已配置，预览 404 问题已修复。
 

@@ -2,6 +2,21 @@ import { _decorator, Component, Node, Sprite, SpriteFrame, ImageAsset, Texture2D
 import { MAP_W, MAP_H, TILE, CHUNK, CHUNK_W, CHUNK_H, TT, TerrainData } from './TerrainData';
 const { ccclass } = _decorator;
 
+/** 小游戏运行时无 DOM：web 走 document，小游戏走运行时适配（tap/wx 兼容层的 createCanvas/createImage）。 */
+function _createCanvas(w: number, h: number): HTMLCanvasElement {
+    const d = typeof document !== 'undefined' ? document : null;
+    if (d) { const c = d.createElement('canvas') as HTMLCanvasElement; c.width = w; c.height = h; return c; }
+    const g = globalThis as unknown as Record<string, unknown>;
+    const api = (g.wx || g.tap) as Record<string, (...a: unknown[]) => HTMLCanvasElement> | undefined;
+    const c = api && api.createCanvas ? api.createCanvas() : (g.createCanvas as (...a: unknown[]) => HTMLCanvasElement)();
+    c.width = w; c.height = h;
+    return c;
+}
+
+function _now(): number {
+    return typeof performance !== 'undefined' && performance.now ? performance.now() : Date.now();
+}
+
 /**
  * 烘焙路线渲染器（terrain-system.md §8.2 GroundLayer）：
  * 每 chunk(16×16 格) 1 节点 1 Sprite；离屏 canvas 逐格 drawImage → ImageAsset(canvas) → SpriteFrame。
@@ -13,8 +28,9 @@ export class TerrainBakeRenderer extends Component {
     private _data: TerrainData | null = null;
     private _root: Node | null = null;
     private _chunks: Map<number, { node: Node; sprite: Sprite; canvas: HTMLCanvasElement; ctx: CanvasRenderingContext2D; asset: ImageAsset | null; sf: SpriteFrame | null }> = new Map();
-    private _imgs: Record<number, HTMLImageElement> = {};
+    private _imgs: Record<number, CanvasImageSource> = {};
     private _ready = false;
+    private _bakeFailedOnce = false;
     lastBakeMs = 0;
     totalBakes = 0;
 
@@ -23,26 +39,24 @@ export class TerrainBakeRenderer extends Component {
 
     init(data: TerrainData, root: Node): void { this._data = data; this._root = root; }
 
-    /** 预载 tile 源图（web=SpriteLib 帧的 nativeUrl；此处独立加载避免依赖 bundle 就绪时序）。 */
-    loadSources(urls: Record<number, string>): Promise<void> {
-        const keys = Object.keys(urls).map(Number);
-        return Promise.all(keys.map(k => new Promise<void>(res => {
-            const img = new Image();
-            img.onload = () => { this._imgs[k] = img; res(); };
-            img.onerror = () => res();
-            img.src = urls[k];
-        }))).then(() => { this._ready = true; });
+    /** 注入 tile 源图（调用方传引擎已加载的 ImageAsset.data——web/小游戏端均可直接 drawImage；0.0.3 真机实证手动 new Image()+nativeUrl 相对路径在小游戏端加载失败）。 */
+    setSources(sources: Record<number, CanvasImageSource | null>): void {
+        for (const k of Object.keys(sources).map(Number)) {
+            const v = sources[k];
+            if (v) this._imgs[k] = v;
+        }
+        this._ready = true;
     }
 
-    private _tileSpec(t: number): { img: HTMLImageElement | null; tint: string | null } {
+    private _tileSpec(t: number): { img: CanvasImageSource | null; tint: string | null; fill: string } {
         switch (t) {
-            case TT.Grass: return { img: this._imgs[TT.Grass] || null, tint: null };
-            case TT.Forest: return { img: this._imgs[TT.Forest] || null, tint: null };
-            case TT.Dirt: return { img: this._imgs[TT.Dirt] || null, tint: null };
-            case TT.Sand: return { img: this._imgs[TT.Grass] || null, tint: 'rgba(214,183,110,0.55)' };
-            case TT.Water: return { img: null, tint: '#1e3c78' };
+            case TT.Grass: return { img: this._imgs[TT.Grass] || null, tint: null, fill: '#5da54b' };
+            case TT.Forest: return { img: this._imgs[TT.Forest] || null, tint: null, fill: '#3e7d3a' };
+            case TT.Dirt: return { img: this._imgs[TT.Dirt] || null, tint: null, fill: '#8b5e3c' };
+            case TT.Sand: return { img: this._imgs[TT.Grass] || null, tint: 'rgba(214,183,110,0.55)', fill: '#c9b26b' };
+            case TT.Water: return { img: null, tint: null, fill: '#1e3c78' };
         }
-        return { img: null, tint: '#333333' };
+        return { img: null, tint: null, fill: '#333333' };
     }
 
     /** 确保视口（chunk 坐标 cx0..cx1/cy0..cy1）内 chunk 已烘焙，出屏释放。 */
@@ -63,6 +77,17 @@ export class TerrainBakeRenderer extends Component {
     }
 
     private _bakeChunk(ci: number): void {
+        // 真机兜底：单 chunk 烘焙失败不崩整局（该 chunk 缺席，其余照常）
+        try { this._bakeChunkImpl(ci); }
+        catch (e) {
+            if (!this._bakeFailedOnce) {
+                this._bakeFailedOnce = true;
+                console.warn('[TerrainBake] chunk bake failed on this runtime:', e);
+            }
+        }
+    }
+
+    private _bakeChunkImpl(ci: number): void {
         const d = this._data!;
         const ccx = ci % CHUNK_W, ccy = (ci / CHUNK_W) | 0;
         let ch = this._chunks.get(ci);
@@ -75,14 +100,13 @@ export class TerrainBakeRenderer extends Component {
             spr.sizeMode = Sprite.SizeMode.CUSTOM;
             node.setPosition(ccx * CHUNK * TILE, -ccy * CHUNK * TILE, 0);
             this._root!.addChild(node);
-            const canvas = document.createElement('canvas');
-            canvas.width = CHUNK * TILE; canvas.height = CHUNK * TILE;
+            const canvas = _createCanvas(CHUNK * TILE, CHUNK * TILE);
             ch = { node, sprite: spr, canvas, ctx: canvas.getContext('2d')!, asset: null, sf: null };
             this._chunks.set(ci, ch);
         }
         const ctx = ch.ctx;
         ctx.clearRect(0, 0, ch.canvas.width, ch.canvas.height);
-        const t0 = (performance as unknown as { now(): number }).now();
+        const t0 = _now();
         for (let ly = 0; ly < CHUNK; ly++) {
             for (let lx = 0; lx < CHUNK; lx++) {
                 const cx = ccx * CHUNK + lx, cy = ccy * CHUNK + ly;
@@ -117,7 +141,7 @@ export class TerrainBakeRenderer extends Component {
                     ctx.drawImage(spec.img, px, py, TILE, TILE);
                     if (spec.tint) { ctx.fillStyle = spec.tint; ctx.fillRect(px, py, TILE, TILE); }
                 } else {
-                    ctx.fillStyle = spec.tint || '#333';
+                    ctx.fillStyle = spec.fill;
                     ctx.fillRect(px, py, TILE, TILE);
                 }
                 // 变体示意：bitmask 为 0 的孤格画深色描边（验证 16 变体数据通路）
@@ -137,7 +161,7 @@ export class TerrainBakeRenderer extends Component {
         ch.sf = new SpriteFrame();
         ch.sf.texture = tex;
         ch.sprite.spriteFrame = ch.sf;
-        this.lastBakeMs = (performance as unknown as { now(): number }).now() - t0;
+        this.lastBakeMs = _now() - t0;
         this.totalBakes++;
     }
 
@@ -160,13 +184,13 @@ export class TerrainBakeRenderer extends Component {
         if (!this._data) return -1;
         const d = this._data;
         const cxc = 74, cyc = 26;
-        const t0 = (performance as unknown as { now(): number }).now();
+        const t0 = _now();
         for (let k = 0; k < n; k++) {
             const x = cxc + (k % 12), y = cyc + ((k / 12) | 0);
             d.setCell(x, y, d.get(x, y) === TT.Dirt ? TT.Grass : TT.Dirt);
         }
         this.rebakeDirty();
-        return (performance as unknown as { now(): number }).now() - t0;
+        return _now() - t0;
     }
 
     /** 视口中心（tile 坐标）→ 需要的 chunk 范围（+1 chunk 裕量）。 */

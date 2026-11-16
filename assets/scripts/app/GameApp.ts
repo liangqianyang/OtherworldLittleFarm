@@ -1,4 +1,4 @@
-import { _decorator, Component, director, view, ResolutionPolicy } from 'cc';
+import { _decorator, Component, director, view, ResolutionPolicy, macro } from 'cc';
 const { ccclass } = _decorator;
 
 import { EventBus } from '../core/EventBus';
@@ -46,6 +46,11 @@ export class GameApp extends Component {
     }
 
     async start(): Promise<void> {
+        // 保留 CPU 侧图像数据（0.0.3 真机灰块复盘：宏默认 true，GPU 上传后释放 ImageAsset.data，
+        // 小游戏端烘焙渲染器 drawImage 拿到 null → 全图降级色块；web 预览因读取时序早于上传而侥幸可用）。
+        // 像素包体小，常驻 CPU 拷贝内存代价可忽略。必须在任何贴图加载前设置。
+        macro.CLEANUP_IMAGE_CACHE = false;
+
         this._initPlatform();
 
         await DataManager.inst.loadAll();
