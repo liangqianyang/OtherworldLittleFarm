@@ -1,9 +1,10 @@
-import { _decorator, Component, Graphics, Color, Label, Node, UITransform, Layers } from 'cc';
+import { _decorator, Component, Graphics, Color, Label, Node, UITransform, Layers, Sprite } from 'cc';
 import { FarmSystem, GRID_COLS, GRID_ROWS, PlotSave } from '../../farm/FarmSystem';
 import { TimeSystem } from '../../../core/TimeSystem';
 import { DataManager } from '../../../core/DataManager';
 import { EventBus } from '../../../core/EventBus';
 import { GameApp } from '../../../app/GameApp';
+import { SpriteLib } from '../../../core/SpriteLib';
 import { Interactable } from '../interact/Interactable';
 
 const { ccclass } = _decorator;
@@ -31,6 +32,8 @@ export class PlotWorldView extends Component {
     private _it: Interactable | null = null;
     private _label: Label | null = null;
     private _g: Graphics | null = null;
+    private _soil: Sprite | null = null; // 地块底图（干土/湿土贴图）
+    private _crop: Sprite | null = null; // 作物精灵（三阶段，来自 crops 表 stages）
     private _hint = ''; // 缺种子/非当季等瞬时反馈，下次 refresh 清空
 
     setup(parent: Node, layer: number, index: number, ox: number, oy: number): void {
@@ -39,6 +42,24 @@ export class PlotWorldView extends Component {
         this.node.addComponent(UITransform).setContentSize(PLOT_PX, PLOT_PX);
         this.node.setPosition(ox * 32 + (PLOT_TILES * 16), -(oy * 32 + (PLOT_TILES * 16)));
         this._g = this.node.addComponent(Graphics);
+
+        // 素材节点（32px × 3 = 96 整数倍缩放，像素不变形；SpriteLib 未就绪时隐藏走占位）
+        const soilNode = new Node('soilSpr');
+        soilNode.layer = this.node.layer;
+        soilNode.addComponent(UITransform).setContentSize(PLOT_PX, PLOT_PX);
+        this._soil = soilNode.addComponent(Sprite);
+        // 必须在赋 spriteFrame 之前设 CUSTOM：TRIMMED 模式赋图会把 UITransform 重置回原始 32px
+        this._soil.sizeMode = Sprite.SizeMode.CUSTOM;
+        soilNode.setPosition(0, 0);
+        this.node.addChild(soilNode);
+
+        const cropNode = new Node('cropSpr');
+        cropNode.layer = this.node.layer;
+        cropNode.addComponent(UITransform).setContentSize(PLOT_PX, PLOT_PX);
+        this._crop = cropNode.addComponent(Sprite);
+        this._crop.sizeMode = Sprite.SizeMode.CUSTOM;
+        cropNode.setPosition(0, 6); // 作物略上移，露出土里的根
+        this.node.addChild(cropNode);
 
         const tag = new Node('tag');
         tag.layer = this.node.layer;
@@ -88,9 +109,62 @@ export class PlotWorldView extends Component {
         if (!this._g || this.index < 0) return;
         const farm = FarmSystem.inst;
         const p = farm.getPlot(this.index);
+        const lib = SpriteLib.inst;
+        this._g.clear();
+        if (lib.ready) this._drawSprites(p, lib);
+        else this._drawPlaceholder(p);
+        let text = '种植';
+        if (p) {
+            if (farm.isMature(p)) text = '收获！';
+            else text = this._hint || (p.wateredOnDay === TimeSystem.inst.dayIndex ? `生长中` : '浇水');
+        } else if (this._hint) {
+            text = this._hint;
+        }
+        if (this._label && this._label.isValid) this._label.string = text;
+        if (this._it) this._it.label = text;
+    }
+
+    /** 像素素材模式：干/湿土底图 + 作物三阶段精灵，Graphics 只画描边 */
+    private _drawSprites(p: PlotSave | null, lib: SpriteLib): void {
+        const g = this._g!;
         const wet = !!p && p.wateredOnDay === TimeSystem.inst.dayIndex;
-        const g = this._g;
-        g.clear();
+        const soilFrame = lib.get(wet ? 'tiles/plot_soil_wet' : 'tiles/plot_soil');
+        if (soilFrame && this._soil) {
+            this._soil.spriteFrame = soilFrame;
+            this._soil.node.active = true;
+        }
+        g.lineWidth = 3;
+        g.strokeColor = OUTLINE;
+        g.roundRect(-PLOT_PX / 2, -PLOT_PX / 2, PLOT_PX, PLOT_PX, 10);
+        g.stroke();
+        if (p && this._crop) {
+            // 作物阶段图来自 crops 表 stages 关键帧（growth>=day 的最后一帧）
+            const crop = DataManager.inst.getRow('catalogs/crops', p.cropId);
+            let spritePath: string | null = null;
+            if (crop && Array.isArray(crop['stages'])) {
+                for (const st of crop['stages'] as { day: number; sprite: string }[]) {
+                    if (p.growth >= st.day && st.sprite) spritePath = st.sprite;
+                }
+            }
+            const cropFrame = spritePath ? lib.get(spritePath) : null;
+            if (cropFrame) {
+                this._crop.spriteFrame = cropFrame;
+                this._crop.node.active = true;
+            } else {
+                this._crop.node.active = false;
+            }
+        } else if (this._crop) {
+            this._crop.node.active = false;
+        }
+    }
+
+    /** 占位模式（SpriteLib 未就绪时的 Graphics 渲染）：土块 + 生长进度条 */
+    private _drawPlaceholder(p: PlotSave | null): void {
+        const g = this._g!;
+        const farm = FarmSystem.inst;
+        if (this._soil) this._soil.node.active = false;
+        if (this._crop) this._crop.node.active = false;
+        const wet = !!p && p.wateredOnDay === TimeSystem.inst.dayIndex;
         g.fillColor = wet ? WET : DRY;
         g.roundRect(-PLOT_PX / 2, -PLOT_PX / 2, PLOT_PX, PLOT_PX, 10);
         g.fill();
@@ -109,15 +183,6 @@ export class PlotWorldView extends Component {
             g.roundRect(-16, -44, 32, h, 6);
             g.stroke();
         }
-        let text = '种植';
-        if (p) {
-            if (farm.isMature(p)) text = '收获！';
-            else text = this._hint || (wet ? `生长中` : '浇水');
-        } else if (this._hint) {
-            text = this._hint;
-        }
-        if (this._label && this._label.isValid) this._label.string = text;
-        if (this._it) this._it.label = text;
     }
 
     /** 从背包挑一颗可种且当季的种子（同 PlotView._pickSeed） */

@@ -194,10 +194,26 @@ export class WorldLiving extends Component {
         });
     }
 
-    /** 床：家门口固定点位（出生点 (74,26) 北侧一格），情境按钮「睡觉」 */
+    /** 床：家门口固定点位（出生点 (74,26) 北侧一格），情境按钮「睡觉」；decor/bed 贴图化（同 NPC tryArt 策略） */
     private _buildBed(layer: number): void {
+        void layer;
         const bx = 74, by = 24;
         const n = this._makePointNode('world_bed', bx, by, new Color(122, 84, 52, 255), 34, 22);
+        const tryArt = (): void => {
+            const sf = SpriteLib.inst.get('decor/bed');
+            if (!sf) { this.scheduleOnce(tryArt, 1.2); return; }
+            const sprN = new Node('art');
+            sprN.layer = n.layer;
+            sprN.addComponent(UITransform).setContentSize(56, 44);
+            sprN.setPosition(0, 8);
+            n.addChild(sprN);
+            const sp = sprN.addComponent(Sprite);
+            sp.sizeMode = Sprite.SizeMode.CUSTOM;
+            sp.spriteFrame = sf;
+            const g = n.getComponent(Graphics);
+            if (g && g.isValid) g.clear();
+        };
+        this.scheduleOnce(tryArt, 0.5);
         const it = n.addComponent(Interactable);
         it.setupSimple('world_bed', '睡觉', 80, () => {
             this._bedtime!.open();
