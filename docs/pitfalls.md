@@ -189,3 +189,8 @@
 ## 37. ui/ 目录 import 层级速查（2026-11-16，两次踩）
 - assets/scripts/ui/X.ts 里：cc 核心/自研 core → `../core/...`；gameplay 下的系统 → `../gameplay/<sub>/...`；`../../` 会越到 assets/ 上层（报「以 X.ts 为起点找不到模块」）。
 - 反向（gameplay/world → ui）：`../../ui/X`。编译错误真源：temp/logs/project.log grep「找不到模块」。
+
+## 38. 同源多标签页 localStorage 互踩（2026-11-16 观察项）
+- 症状：自动化链在 main 存档读到「倒退」的快照（day32 覆盖 day37，bak=37）。内存状态始终正确，probe 强制 persist 后恢复。
+- 根因：多个预览标签页同 origin 共享 localStorage；前一会话的残留页 onHide 时把陈旧内存快照写回（最后写者胜）。玩家单设备单标签无此问题。
+- 自动化守则：断言前后各 persist 一次（probe 强制写当前内存），跨会话验证前先关干净旧会话（bsk_session stop 确认 tab 已关）。

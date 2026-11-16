@@ -91,11 +91,13 @@ export class TerrainData extends Component {
         const roadH = (x0: number, x1: number, y: number) => { for (let x = Math.min(x0, x1); x <= Math.max(x0, x1); x++) { t[this.idx(x, y)] = TT.Dirt; t[this.idx(x, y + 1)] = TT.Dirt; } };
         const roadV = (x: number, y0: number, y1: number) => { for (let y = Math.min(y0, y1); y <= Math.max(y0, y1); y++) { t[this.idx(x, y)] = TT.Dirt; t[this.idx(x + 1, y)] = TT.Dirt; } };
         roadV(74, 26, 42);            // 家门→农场北门（居住→农场主干）
-        roadV(74, 42, 73);            // 农场内部纵路→南门
-        roadH(44, 74, 55);            // 西门路（开荒→农场）
+        roadH(74, 78, 42);            // 北门向东拐接农场纵路（M6：纵路东移让位地块区）
+        roadV(78, 42, 73);            // 农场内部纵路→南门（M6 x74→x78）
+        roadH(44, 78, 55);            // 西门路（开荒→农场，延伸至新纵路）
+        roadH(78, 87, 55);            // 纵路→农场东门→封印防守区
         roadH(87, 96, 55);            // 农场东门→封印防守区
         roadV(87, 34, 55);            // 防守区内部支路
-        roadH(58, 74, 73);            // 南门→湖边
+        roadH(58, 78, 73);            // 南门→湖边（延至新纵路）
         roadV(58, 73, 79);            // →栈桥码头
 
         // 河流（世界脊线）：北界(64,0)→纵穿居住段→谷地→东南拐→入湖

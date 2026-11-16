@@ -17,6 +17,7 @@ import { AdventureSystem } from '../adventure/AdventureSystem';
 import { Interactable } from './interact/Interactable';
 import { DungeonOverlay } from '../../ui/DungeonOverlay';
 import { TimeSystem } from '../../core/TimeSystem';
+import { EventBus } from '../../core/EventBus';
 import { GameApp } from '../../app/GameApp';
 const { ccclass } = _decorator;
 
@@ -408,6 +409,27 @@ export class WorldSpike extends Component {
     }
 
     dbgGive(itemId: string, n: number): void { GameApp.inst?.giveItem(itemId, n); }
+
+    /** M6 调试：瞬移玩家到 tile（旁路碰撞，自动化测试用） */
+    dbgWalkTo(tx: number, ty: number): void {
+        if (!this._player) return;
+        this._player.node.setPosition(tx * 32 + 16, -(ty * 32 + 16));
+    }
+
+    /** M6 调试：直接触发第 i 块世界地块的情境操作（种植/浇水/收获） */
+    dbgFarm(i: number): void {
+        const node = this.node.getChildByName(`farm_plot_${i}`);
+        if (!node) { console.log(`[Debug] farm_plot_${i} 不存在`); return; }
+        const view = node.getComponent('PlotWorldView') as { onUse(): void } | null;
+        if (view) view.onUse();
+    }
+
+    /** M6 调试：手动推天数（跳过 bedtime 弹窗，自动化用：emit dayAdvanced 触发生长/防守） */
+    dbgDay(n: number): void {
+        const ts = TimeSystem.inst;
+        ts.dayIndex = n;
+        EventBus.inst.emit('dayAdvanced', { dayIndex: n });
+    }
 
     /** 地形快照：工具/撤销深度/人造格计数/玩家所在区 */
     terrainDump(): Record<string, unknown> {

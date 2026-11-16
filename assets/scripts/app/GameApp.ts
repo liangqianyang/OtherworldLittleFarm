@@ -84,7 +84,8 @@ export class GameApp extends Component {
 
         // 引导流程完成后进入农场（后续在 launch 加主菜单/加载画面）
         if (director.getScene()?.name === 'launch') {
-            director.loadScene('farm');
+            // M6：启动直进世界大地图（farm.scene 冻结保留为旧农场木牌过渡入口）
+            director.loadScene('world');
         }
     }
 

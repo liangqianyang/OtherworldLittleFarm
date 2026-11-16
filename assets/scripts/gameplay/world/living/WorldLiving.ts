@@ -9,6 +9,12 @@ import { DefenseOverlay } from '../../../ui/DefenseOverlay';
 import { BuildPanel } from '../../../ui/BuildPanel';
 import { DialogPanel } from '../../../ui/DialogPanel';
 import { FishingPanel } from '../../../ui/FishingPanel';
+import { BackpackPanel } from '../../../ui/BackpackPanel';
+import { CodexPanel } from '../../../ui/CodexPanel';
+import { TutorialGuide } from '../../../ui/TutorialGuide';
+import { DebugPanel } from '../../../ui/DebugPanel';
+import { EconomySystem } from '../../../systems/EconomySystem';
+import { FarmWorldBinder } from '../farm/FarmWorldBinder';
 import { InteractionManager } from '../interact/InteractionManager';
 import { Interactable } from '../interact/Interactable';
 import { TerrainData, TT } from '../TerrainData';
@@ -38,6 +44,10 @@ export class WorldLiving extends Component {
     private _fishing: FishingPanel | null = null;
     private _build: BuildPanel | null = null;
     private _fishProbe: Interactable | null = null;
+    private _backpack: BackpackPanel | null = null;
+    private _codex: CodexPanel | null = null;
+    private _sellLabel: Label | null = null;
+    private _buyLabel: Label | null = null;
     private _player: Node | null = null;
     private _terrain: TerrainData | null = null;
 
@@ -56,6 +66,11 @@ export class WorldLiving extends Component {
         comp._buildNpcs(layer);
         comp._buildFishingProbe(layer);
         comp._buildSeal(layer);
+        comp._buildFarm(layer);
+        comp._buildShops(canvas, layer);
+        TutorialGuide.maybeStart(canvas, layer);
+        // DebugPanel 挂到世界场景（window.__debug 自动化通道；键盘调试入口同样可用）
+        root.addComponent(DebugPanel);
         WorldLiving._inst = comp;
     }
 
@@ -79,6 +94,74 @@ export class WorldLiving extends Component {
         const inv = GameApp.inst?.inventory ?? {};
         const gold = inv['gold'] ?? 0;
         this._hud.string = `第 ${ts.dayIndex} 天·${ts.seasonName}·金币 ${gold}`;
+    }
+
+    /** M6 农场区搬迁：3×3 地块世界化装配（旧档 plots 确定性映射，同档双入口） */
+    private _buildFarm(layer: number): void {
+        const root = this.node.getParent();
+        if (!root) return;
+        FarmWorldBinder.bind(root, layer);
+        EventBus.inst.on('farmChanged', this._onFarmEvt, this);
+    }
+
+    private _onFarmEvt(): void {
+        this._refreshHud();
+        this._refreshShops();
+    }
+
+    /** 右侧流程按钮：卖粮/买种子/背包/图鉴（farm HUD 迁移） */
+    private _buildShops(canvas: Node, layer: number): void {
+        void layer;
+        this._backpack = BackpackPanel.create(canvas, this.node.layer);
+        this._codex = CodexPanel.create(canvas, this.node.layer);
+        this._sellLabel = this._mkBtn('卖粮(0)', 560, 0, () => {
+            const app = GameApp.inst; if (!app) return;
+            EconomySystem.inst.sellAllProducts(app.inventory);
+        });
+        this._buyLabel = this._mkBtn('买种子', 560, -64, () => {
+            const app = GameApp.inst; if (!app) return;
+            if (!EconomySystem.inst.buySeed('carrot_seed', app.inventory) && this._buyLabel) {
+                const prev = this._buyLabel.string;
+                this._buyLabel.string = '钱不够';
+                this.scheduleOnce(() => { if (this._buyLabel && this._buyLabel.isValid) this._buyLabel.string = prev; }, 0.8);
+            }
+        });
+        this._mkBtn('背包', 560, -128, () => {
+            if (!this._backpack) return;
+            if (this._backpack.node.active) this._backpack.close(); else this._backpack.open();
+        });
+        this._mkBtn('图鉴', 560, -192, () => this._codex?.open());
+        this._refreshShops();
+    }
+
+    private _mkBtn(text: string, x: number, y: number, onTap: () => void): Label {
+        const node = new Node(`wbtn_${text}`);
+        node.layer = this.node.layer;
+        node.addComponent(UITransform).setContentSize(110, 52);
+        node.setPosition(x, y);
+        const g = node.addComponent(Graphics)!;
+        g.fillColor = new Color(60, 48, 38, 255);
+        g.strokeColor = new Color(255, 255, 255, 90);
+        g.lineWidth = 2;
+        g.roundRect(-55, -26, 110, 52, 10);
+        g.fill(); g.stroke();
+        const ln = new Node('label');
+        ln.layer = this.node.layer;
+        ln.addComponent(UITransform);
+        const l = ln.addComponent(Label)!;
+        l.fontSize = 22; l.string = text;
+        node.addChild(ln);
+        node.on(Node.EventType.TOUCH_END, onTap, this);
+        this.node.addChild(node);
+        return l;
+    }
+
+    private _refreshShops(): void {
+        const inv = GameApp.inst?.inventory ?? {};
+        const kinds = EconomySystem.inst.sellableKinds(inv);
+        if (this._sellLabel?.isValid) this._sellLabel.string = `卖粮(${kinds})`;
+        const price = EconomySystem.inst.getBuyPrice('carrot_seed');
+        if (this._buyLabel?.isValid && price !== null) this._buyLabel.string = `买种子${price}金`;
     }
 
     private _buildPanels(canvas: Node, layer: number): void {
@@ -232,6 +315,7 @@ export class WorldLiving extends Component {
     }
 
     protected onDestroy(): void {
+        EventBus.inst.off('farmChanged', this._onFarmEvt, this);
         EventBus.inst.off('farmChanged', this._refreshHud, this);
         EventBus.inst.off('dayAdvanced', this._refreshHud, this);
         EventBus.inst.off('itemGained', this._refreshHud, this);
