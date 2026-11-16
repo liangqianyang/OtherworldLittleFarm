@@ -4,6 +4,7 @@ import { TerrainBakeRenderer } from './TerrainBakeRenderer';
 import { TerrainPoolRenderer } from './TerrainPoolRenderer';
 import { PlayerCharacter } from './PlayerCharacter';
 import { JoystickController, SCREEN_UI_LAYER } from './JoystickController';
+import { CompassHUD } from './CompassHUD';
 import { CameraFollow } from './CameraFollow';
 import { SpriteLib } from '../../core/SpriteLib';
 import { ClearingSystem } from './clearing/ClearingSystem';
@@ -135,6 +136,9 @@ export class WorldSpike extends Component {
         const joyNode = new Node('Joystick');
         this.node.addChild(joyNode);
         joyNode.addComponent(JoystickController);
+
+        // M7 收尾 UX：指南针 HUD（屏幕边缘箭头指向 副本/封印祭坛/河岸）
+        CompassHUD.create(this.node, playerNode, this._data!);
 
         // M5：探险副本传送门 + 全屏副本面板
         this._buildDungeonGate();
