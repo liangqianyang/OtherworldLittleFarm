@@ -126,11 +126,12 @@ export class WorldSpike extends Component {
         cam2Node.layer = Layers.Enum.UI_2D;
         this.node.addChild(cam2Node);
         const cam2 = cam2Node.addComponent(Camera);
-        cam2.projection = 1;                     // ORTHO（Camera.ProjectionType.ORTHO，规避运行时枚举绑定）
+        cam2.projection = 0;                     // ORTHO —— 3.8 枚举 ORTHO=0/PERSPECTIVE=1，旧注释把值写反；透视相机导致 UI 层不渲染、触摸 hit-test 全落空（真机+web 均无法移动的根因）
         cam2.orthoHeight = 360;
         cam2.clearFlags = 6;                     // DEPTH_ONLY = DEPTH|STENCIL（引擎源码 camera-component.ts，UI 相机标准用法）
         cam2.visibility = SCREEN_UI_LAYER;       // 1<<24 只渲染屏幕 UI
         cam2.priority = 1073741825;              // 主相机(1073741824)之后
+        cam2Node.setPosition(0, 0, 1000);        // 正交相机置于 UI 平面（z=0）前方 1000，默认 near=1/far=1100 才能覆盖到 UI
         const joyNode = new Node('Joystick');
         this.node.addChild(joyNode);
         joyNode.addComponent(JoystickController);

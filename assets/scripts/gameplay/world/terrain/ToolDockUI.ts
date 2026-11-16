@@ -108,7 +108,7 @@ export class ToolDockUI extends Component {
         l.overflow = Label.Overflow.SHRINK;
         l.string = tool.label;
         this._labels.push(l);
-        slot.on(Node.TOUCH_END, () => {
+        slot.on(Node.EventType.TOUCH_END, () => {
             if (tool.id === '__undo' as ToolId) {
                 const inv = this._invRef!;
                 if (this._edit!.undo(inv)) {

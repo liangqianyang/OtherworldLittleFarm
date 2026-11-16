@@ -41,18 +41,18 @@ export class TerrainEditInput extends Component {
         c._ghost = gh;
         c._gg = gh.addComponent(Graphics);
         gh.setPosition(0, -99999, 0);
-        root.on(Node.TOUCH_START, c._onStart, c);
-        root.on(Node.TOUCH_MOVE, c._onMove, c);
-        root.on(Node.TOUCH_END, c._onEnd, c);
-        root.on(Node.TOUCH_CANCEL, c._onEnd, c);
+        root.on(Node.EventType.TOUCH_START, c._onStart, c);
+        root.on(Node.EventType.TOUCH_MOVE, c._onMove, c);
+        root.on(Node.EventType.TOUCH_END, c._onEnd, c);
+        root.on(Node.EventType.TOUCH_CANCEL, c._onEnd, c);
         return c;
     }
 
     protected onDestroy(): void {
-        this.node.off(Node.TOUCH_START, this._onStart, this);
-        this.node.off(Node.TOUCH_MOVE, this._onMove, this);
-        this.node.off(Node.TOUCH_END, this._onEnd, this);
-        this.node.off(Node.TOUCH_CANCEL, this._onEnd, this);
+        this.node.off(Node.EventType.TOUCH_START, this._onStart, this);
+        this.node.off(Node.EventType.TOUCH_MOVE, this._onMove, this);
+        this.node.off(Node.EventType.TOUCH_END, this._onEnd, this);
+        this.node.off(Node.EventType.TOUCH_CANCEL, this._onEnd, this);
     }
 
     /** 工具未选时不拦截：本组件 active=false（WorldSpike 按工具态驱动）。 */

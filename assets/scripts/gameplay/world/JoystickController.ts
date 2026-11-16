@@ -30,18 +30,18 @@ export class JoystickController extends Component {
         this.node.setPosition(-320, 0, 0);      // 左半屏（1280×720 中心系）
         this._g = this.node.addComponent(Graphics);
         JoystickController._inst = this;
-        this.node.on(Node.TOUCH_START, this._onStart, this);
-        this.node.on(Node.TOUCH_MOVE, this._onMove, this);
-        this.node.on(Node.TOUCH_END, this._onEnd, this);
-        this.node.on(Node.TOUCH_CANCEL, this._onEnd, this);
+        this.node.on(Node.EventType.TOUCH_START, this._onStart, this);
+        this.node.on(Node.EventType.TOUCH_MOVE, this._onMove, this);
+        this.node.on(Node.EventType.TOUCH_END, this._onEnd, this);
+        this.node.on(Node.EventType.TOUCH_CANCEL, this._onEnd, this);
     }
 
     onDestroy(): void {
         if (JoystickController._inst === this) JoystickController._inst = null;
-        this.node.off(Node.TOUCH_START, this._onStart, this);
-        this.node.off(Node.TOUCH_MOVE, this._onMove, this);
-        this.node.off(Node.TOUCH_END, this._onEnd, this);
-        this.node.off(Node.TOUCH_CANCEL, this._onEnd, this);
+        this.node.off(Node.EventType.TOUCH_START, this._onStart, this);
+        this.node.off(Node.EventType.TOUCH_MOVE, this._onMove, this);
+        this.node.off(Node.EventType.TOUCH_END, this._onEnd, this);
+        this.node.off(Node.EventType.TOUCH_CANCEL, this._onEnd, this);
     }
 
     private _uiPos(e: EventTouch): { x: number; y: number } {
