@@ -96,12 +96,30 @@ export class WorldLiving extends Component {
         this._hud.string = `第 ${ts.dayIndex} 天·${ts.seasonName}·金币 ${gold}`;
     }
 
-    /** M6 农场区搬迁：3×3 地块世界化装配（旧档 plots 确定性映射，同档双入口） */
+    /** M6 农场区搬迁：3×3 地块世界化装配（旧档 plots 确定性映射，同档双入口）+ 谷仓地标 */
     private _buildFarm(layer: number): void {
         const root = this.node.getParent();
         if (!root) return;
+        this._buildBarn(root, layer); // 先建谷仓=渲染在地块之下
         FarmWorldBinder.bind(root, layer);
         EventBus.inst.on('farmChanged', this._onFarmEvt, this);
+    }
+
+    /** 谷仓地标：地块群 (67,58)-(75,66) 北侧 (71,56)，纯装饰无交互；SpriteLib 就绪前隐藏 */
+    private _buildBarn(root: Node, layer: number): void {
+        const n = new Node('farm_barn');
+        n.layer = layer;
+        n.addComponent(UITransform).setContentSize(96, 96);
+        n.setPosition((71 + 0.5) * 32, -(56.5) * 32 - 16, 0);
+        root.addChild(n);
+        const tryArt = (): void => {
+            const sf = SpriteLib.inst.get('adventure/barn');
+            if (!sf) { this.scheduleOnce(tryArt, 1.2); return; }
+            const sp = n.addComponent(Sprite);
+            sp.sizeMode = Sprite.SizeMode.CUSTOM;
+            sp.spriteFrame = sf;
+        };
+        this.scheduleOnce(tryArt, 0.5);
     }
 
     private _onFarmEvt(): void {

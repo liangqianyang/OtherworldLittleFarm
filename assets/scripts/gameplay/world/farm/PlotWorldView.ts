@@ -74,6 +74,8 @@ export class PlotWorldView extends Component {
 
         EventBus.inst.on('farmChanged', this.refresh, this);
         this.refresh();
+        // SpriteLib 异步就绪后重绘一次：否则就绪前进场会一直停留占位色块（无 farmChanged 触发）
+        SpriteLib.inst.init().then(() => this.refresh()).catch(() => { /* 重绘失败保持占位 */ });
     }
 
     protected onDestroy(): void {
