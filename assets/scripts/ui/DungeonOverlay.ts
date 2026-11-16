@@ -42,14 +42,9 @@ class DungeonOverlayComp extends Component {
     private _playerSpr: Sprite | null = null;
     private _tryArtT = 0;
 
-    /** 从 assetManager 直取已加载 SpriteFrame（SpriteLib 并行加载的核心素材；缺省返回 null 由调用方走色块兜底） */
+    /** 从 SpriteLib 取已加载 SpriteFrame（Bundle 路径键=完整相对路径；缺省返回 null 由调用方走色块兜底） */
     private _frameOf(rel: string): SpriteFrame | null {
-        const main = rel.split('/').pop()!;
-        for (const suf of ['spriteFrame', 'texture']) {
-            const a = assetManager.assets.get(`${main}@${suf}`);
-            if (a) return a as SpriteFrame;
-        }
-        return null;
+        return SpriteLib.inst.get(rel);
     }
 
     onLoad(): void {

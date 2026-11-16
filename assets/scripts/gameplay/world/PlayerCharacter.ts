@@ -1,5 +1,6 @@
-import { _decorator, Component, Graphics, Color, Layers, Sprite, SpriteFrame, assetManager, UITransform } from 'cc';
+import { _decorator, Component, Graphics, Color, Layers, Sprite, SpriteFrame, assetManager, UITransform, Node } from 'cc';
 import { TILE, TerrainData, TT } from './TerrainData';
+import { SpriteLib } from '../../core/SpriteLib';
 const { ccclass } = _decorator;
 
 /**
@@ -23,7 +24,9 @@ export class PlayerCharacter extends Component {
 
     private _g: Graphics | null = null;
     private _faceDot: Graphics | null = null;
+    private _artNode: Node | null = null;
     private _spr: Sprite | null = null;
+    private _artTries = 0;
 
     onLoad(): void {
         this.node.layer = Layers.Enum.UI_2D;
@@ -40,17 +43,38 @@ export class PlayerCharacter extends Component {
         this._trySprite();
     }
 
-    /** AI 素材接入：assetManager 里已有 characters/player_down 时挂 Sprite 并隐藏色块。 */
+    /** AI 素材接入：SpriteLib 就绪后在子节点挂贴图（根节点 position=脚底碰撞点，不可挪动）。未就绪轮询重试（~20s 放弃走色块）。 */
     private _trySprite(): void {
-        const f = assetManager.assets.get('player_down@spriteFrame') as SpriteFrame | null;
-        if (!f) return;
-        this._spr = this.node.addComponent(Sprite);
-        this._spr.sizeMode = Sprite.SizeMode.RAW;
-        this._spr.spriteFrame = f;
-        this.node.getComponent(UITransform)!.setContentSize(44, 44);
-        this.node.setPosition(this.node.position.x, this.node.position.y + 20, 0); // 贴图锚点中心≈身体，脚底偏移
+        if (this._artNode) return;
+        const f = SpriteLib.inst.get('characters/player_down');
+        if (!f) {
+            if (++this._artTries <= 40) this.scheduleOnce(() => this._trySprite(), 0.5);
+            return;
+        }
+        const n = new Node('player_art');
+        n.layer = this.node.layer;
+        n.addComponent(UITransform).setContentSize(44, 44);
+        const sp = n.addComponent(Sprite);
+        sp.sizeMode = Sprite.SizeMode.RAW;
+        sp.spriteFrame = f;
+        n.setPosition(0, 24, 0);            // 脚底点→身体中心
+        this.node.addChild(n);
+        this._artNode = n;
+        this._spr = sp;
         if (this._g) this._g.clear();
         if (this._faceDot) this._faceDot.clear();
+    }
+
+    /** 行走朝向切帧（down 常驻 / up 上行 / right 水平±翻转） */
+    private _artFrame(): void {
+        if (!this._spr) return;
+        let key = 'characters/player_down';
+        let fx = 1;
+        if (this._inY > 0.05) key = 'characters/player_up';
+        else if (Math.abs(this._inX) > 0.05) { key = 'characters/player_right'; fx = this._inX > 0 ? 1 : -1; }
+        const f = SpriteLib.inst.get(key);
+        if (f && f !== this._spr.spriteFrame) this._spr.spriteFrame = f;
+        this._artNode!.setScale(fx, 1, 1);
     }
 
     /** 归一化输入（摇杆/调试写入）；模长>1 归一。 */
@@ -72,6 +96,7 @@ export class PlayerCharacter extends Component {
         if (dy !== 0 && !this._collide(p2.x, p2.y + dy)) this.node.setPosition(p2.x, p2.y + dy, 0);
         if (this._inX < -0.01 && this.facing !== -1) { this.facing = -1; this._redraw(); }
         else if (this._inX > 0.01 && this.facing !== 1) { this.facing = 1; this._redraw(); }
+        this._artFrame();
     }
 
     tileX(): number { return Math.floor(this.node.position.x / TILE); }
