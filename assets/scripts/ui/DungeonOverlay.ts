@@ -2,6 +2,7 @@ import { _decorator, Component, Node, Graphics, Label, Color, UITransform, Sprit
 import { EventBus } from '../core/EventBus';
 import { AdventureSystem } from '../gameplay/adventure/AdventureSystem';
 import { SfxLib } from '../core/SfxLib';
+import { SpriteLib } from '../core/SpriteLib';
 
 const { ccclass } = _decorator;
 
@@ -364,20 +365,37 @@ class DungeonOverlayComp extends Component {
         this.node.addChild(root);
         this._actionRoot = root;
         const sys = this._sys();
-        // 攻击（按住）
-        this._holdButton(root, 500, -180, 130, 130, '攻 击', new Color(170, 60, 50), (down) => {
+        // 攻击（按住）——icon_attack 贴图 + 文字
+        const atkBtn = this._holdButton(root, 500, -180, 130, 130, '攻 击', new Color(170, 60, 50), (down) => {
             sys.combatInput.attack = down;
         });
-        // 翻滚（点按）
-        this._button(root, 330, -270, 120, 66, '翻 滚', new Color(60, 120, 150), () => {
+        this._iconOn(atkBtn, 'ui/icon_attack', 0, 34, 56);
+        // 翻滚（点按）——icon_roll 贴图 + 文字
+        const rollBtn = this._button(root, 330, -270, 120, 66, '翻 滚', new Color(60, 120, 150), () => {
             sys.combatInput.roll = true;
             this.scheduleOnce(() => { sys.combatInput.roll = false; }, 0.1);
         });
+        this._iconOn(rollBtn, 'ui/icon_roll', -38, 0, 36);
         // 撤退
-        this._button(root, -500, -280, 170, 60, '撤 退', new Color(120, 120, 125), () => {
+        const retBtn = this._button(root, -500, -280, 170, 60, '撤 退', new Color(120, 120, 125), () => {
             sys.fleeCombat();
             SfxLib.inst.play('deny');
         });
+        void retBtn;
+    }
+
+    /** 挂 AI 图标 Sprite（SpriteLib 世界场景初始化时已 ready；无素材静默跳过走纯文字） */
+    private _iconOn(parent: Node, key: string, x: number, y: number, size: number): void {
+        const sf = SpriteLib.inst.get(key);
+        if (!sf) return;
+        const n = new Node('icon');
+        n.layer = parent.layer;
+        n.addComponent(UITransform).setContentSize(size, size);
+        n.setPosition(x, y);
+        parent.addChild(n);
+        const sp = n.addComponent(Sprite);
+        sp.sizeMode = Sprite.SizeMode.CUSTOM;
+        sp.spriteFrame = sf;
     }
 
     private _drawHud(): void {

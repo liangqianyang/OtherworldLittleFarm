@@ -72,6 +72,16 @@ export class FishingPanel extends Component {
         mark.name = 'mark';
         float.addChild(mark);
 
+        // 咬钩提示贴图（AI 素材 fish_bite；咬钩时显示在浮标上方）
+        const biteArt = new Node('biteArt');
+        biteArt.layer = layer;
+        biteArt.addComponent(UITransform).setContentSize(48, 48);
+        biteArt.setPosition(0, 40);
+        biteArt.active = false;
+        float.addChild(biteArt);
+        const bsp = biteArt.addComponent(Sprite)!;
+        bsp.sizeMode = Sprite.SizeMode.CUSTOM;
+
         // 状态行
         const state = FishingPanel._labelNode('点击水塘开始钓鱼', 24, new Color(240, 235, 220), 0, 140, layer);
         state.name = 'state';
@@ -115,6 +125,13 @@ export class FishingPanel extends Component {
         comp._state = state.getComponent(Label)!;
         comp._float = float;
         comp._mark = mark.getComponent(Label)!;
+        // AI 素材异步补挂（SpriteLib 就绪后 biteArt 贴图）
+        const tryBiteArt = (): void => {
+            const sf = SpriteLib.inst.get('adventure/fish_bite');
+            if (!sf) { comp.scheduleOnce(tryBiteArt, 1.5); return; }
+            bsp.spriteFrame = sf;
+        };
+        comp.scheduleOnce(tryBiteArt, 1.0);
         return comp;
     }
 
@@ -149,11 +166,14 @@ export class FishingPanel extends Component {
             this._wasBiting = true;
             this._state.string = '咬钩了！！点击提竿！';
             this._float.setPosition(0, 2); // 下沉
+            this._float.getChildByName('biteArt')!.active = true;
             this._mark.string = '!';
         } else {
             this._wasBiting = false;
             this._state.string = '等待咬钩…';
             this._float.setPosition(0, 10 + Math.sin(this._elapsed * 3) * 4); // 浮动
+            const art = this._float.getChildByName('biteArt');
+            if (art && art.active) art.active = false;
             this._mark.string = '';
         }
     }

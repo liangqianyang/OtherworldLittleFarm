@@ -173,10 +173,21 @@ export class WorldLiving extends Component {
         this._build = BuildPanel.create(canvas, layer);
     }
 
-    /** 封印祭坛：防守区入口 (110,52)，白天布置塔防（BuildPanel） */
+    /** 封印祭坛：防守区入口 (110,52)，白天布置塔防（BuildPanel）；AI 素材 world_seal 贴图化 */
     private _buildSeal(layer: number): void {
         void layer;
         const n = this._makePointNode('world_seal', 110, 52, new Color(196, 164, 84, 255), 44, 30);
+        const g = n.getComponent(Graphics);
+        const tryArt = (): void => {
+            const sf = SpriteLib.inst.get('adventure/world_seal');
+            if (!sf) { this.scheduleOnce(tryArt, 1.2); return; }
+            if (g && g.isValid) { g.clear(); }
+            const sp = n.getComponent(Sprite) ?? n.addComponent(Sprite);
+            sp.sizeMode = Sprite.SizeMode.CUSTOM;
+            n.getComponent(UITransform)!.setContentSize(88, 88);
+            sp.spriteFrame = sf;
+        };
+        this.scheduleOnce(tryArt, 0.5);
         const it = n.addComponent(Interactable);
         it.setupSimple('world_seal', '布置封印', 96, () => {
             this._build?.open();
