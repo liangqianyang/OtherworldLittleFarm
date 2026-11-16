@@ -28,14 +28,20 @@ const CORE = [
     'crops/moonflower_0', 'crops/moonflower_1', 'crops/moonflower_2',
     // 怪物 + NPC
     'monsters/slime', 'monsters/slime_elite', 'monsters/sporeling',
+    'monsters/slime_idle', 'monsters/sporeling_idle',
     'npc/npc_gardener', 'npc/npc_gatekeeper',
+    // 主角（1.0 AI 素材）
+    'characters/player_down', 'characters/player_up', 'characters/player_right',
     // 探险物件（副本/防守 Overlay 用）
     'adventure/bush_berry', 'adventure/herb_patch', 'adventure/wood_log', 'adventure/barn',
+    'adventure/tower_pea', 'adventure/dungeon_gate', 'adventure/world_seal', 'adventure/fish_bite',
     // 图标全套（背包/图鉴/HUD）
     'ui/icon_gold', 'ui/icon_seed', 'ui/icon_carrot',
     'ui/icon_berry', 'ui/icon_herb', 'ui/icon_wood', 'ui/icon_gel',
     'ui/icon_tomato', 'ui/icon_pumpkin', 'ui/icon_moonflower',
     'ui/icon_crucian', 'ui/icon_perch', 'ui/icon_moonfish',
+    // 战斗/塔防图标（1.0 AI 素材）
+    'ui/icon_sword', 'ui/icon_attack', 'ui/icon_roll', 'ui/icon_tower',
 ];
 const DECOR = [
     'decor/bed', 'decor/table', 'decor/chair', 'decor/cabinet',

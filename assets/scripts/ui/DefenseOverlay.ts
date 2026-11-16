@@ -196,14 +196,22 @@ export class DefenseOverlay extends Component {
                 : t.kind === 'attract' ? new Color(240, 200, 90, 255)
                 : t.kind === 'spike' ? new Color(230, 140, 70, 255)
                 : new Color(140, 210, 140, 255);
-            // 光环圈
             g.strokeColor = new Color(col.r, col.g, col.b, 70);
             g.lineWidth = 2;
             g.circle(0, 0, t.rPx); g.stroke();
-            g.fillColor = col;
-            g.circle(0, 0, t.lv >= 2 ? 26 : 20); g.fill();
-            g.strokeColor = new Color(0, 0, 0, 120); g.lineWidth = 2;
-            g.circle(0, 0, t.lv >= 2 ? 26 : 20); g.stroke();
+            // 豌豆射手塔用 AI 素材贴图，其余 kind 暂色块（后续批次补齐）
+            const tf = t.cropId === 'podgun' ? SpriteLib.inst.get('adventure/tower_pea') : null;
+            if (tf) {
+                const sp = n.addComponent(Sprite);
+                sp.sizeMode = Sprite.SizeMode.CUSTOM;
+                sp.spriteFrame = tf;
+                n.getComponent(UITransform)!.setContentSize(48, 48);
+            } else {
+                g.fillColor = col;
+                g.circle(0, 0, t.lv >= 2 ? 26 : 20); g.fill();
+                g.strokeColor = new Color(0, 0, 0, 120); g.lineWidth = 2;
+                g.circle(0, 0, t.lv >= 2 ? 26 : 20); g.stroke();
+            }
             // 等级标记（子节点，避免与 Graphics 同节点渲染冲突）
             if (t.lv >= 2) {
                 const ln = new Node('lv');

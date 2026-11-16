@@ -282,14 +282,16 @@ def gen_image(key: str, prompt: str, out_tmp: str, model: str) -> None:
     _poll(key, task_id, out_tmp)
 
 
-def chroma_key(img, tol=90):  # 以左上角点取样背景色 → 按色距抠透明（模型不画纯品红也能适配）
+def chroma_key(img, tol=90):  # 左上角取样 + 全局高饱和品红兜底（模型偶尔把品红画进画面中部/带边框时也能抠净）
     px = img.load()
     w, h = img.size
     ref = px[2, 2][:3]
     for y in range(h):
         for x in range(w):
             r, g_, b, a = px[x, y]
-            if (r - ref[0]) ** 2 + (g_ - ref[1]) ** 2 + (b - ref[2]) ** 2 < tol * tol:
+            d = (r - ref[0]) ** 2 + (g_ - ref[1]) ** 2 + (b - ref[2]) ** 2
+            magenta = r > 140 and b > 80 and g_ < r * 0.55  # 品红系（255,0,255 至 (176,54,114) 区间）
+            if d < tol * tol or magenta:
                 px[x, y] = (r, g_, b, 0)
     return img
 

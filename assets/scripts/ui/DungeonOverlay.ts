@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Graphics, Label, Color, UITransform } from 'cc';
+import { _decorator, Component, Node, Graphics, Label, Color, UITransform, Sprite, SpriteFrame, assetManager } from 'cc';
 import { EventBus } from '../core/EventBus';
 import { AdventureSystem } from '../gameplay/adventure/AdventureSystem';
 import { SfxLib } from '../core/SfxLib';
@@ -33,12 +33,23 @@ const VIEW_W = 900, VIEW_H = 540;
 class DungeonOverlayComp extends Component {
     private _g: Graphics | null = null;
     private _monRoot: Node | null = null;
-    private _monNodes = new Map<number, { n: Node; g: Graphics; hp: Graphics }>();
+    private _monNodes = new Map<number, { n: Node; g: Graphics; hp: Graphics; spr: Sprite | null }>();
     private _actionRoot: Node | null = null;
     private _banner: Label | null = null;
     private _hud: Label | null = null;
     private _arenaG: Graphics | null = null;
+    private _playerSpr: Sprite | null = null;
     private _tryArtT = 0;
+
+    /** 从 assetManager 直取已加载 SpriteFrame（SpriteLib 并行加载的核心素材；缺省返回 null 由调用方走色块兜底） */
+    private _frameOf(rel: string): SpriteFrame | null {
+        const main = rel.split('/').pop()!;
+        for (const suf of ['spriteFrame', 'texture']) {
+            const a = assetManager.assets.get(`${main}@${suf}`);
+            if (a) return a as SpriteFrame;
+        }
+        return null;
+    }
 
     onLoad(): void {
         this.node.on(Node.EventType.TOUCH_END, this._onTap, this);
@@ -209,22 +220,55 @@ class DungeonOverlayComp extends Component {
         const g = this._arenaG!;
         g.clear();
         if (!c) return;
-        // 竞技场地板
-        g.fillColor = new Color(26, 32, 28, 255);
+        // 竞技场地板：暗底 + 复古对角棋盘格（17×10 格，深绿双色，元气骑士地牢感）
+        g.fillColor = new Color(24, 30, 26, 255);
         g.roundRect(-VIEW_W / 2, -VIEW_H / 2, VIEW_W, VIEW_H, 10);
         g.fill();
+        const CELL = 54;
+        for (let iy = 0; iy < Math.ceil(VIEW_H / CELL); iy++) {
+            for (let ix = 0; ix < Math.ceil(VIEW_W / CELL); ix++) {
+                if ((ix + iy) % 2 === 0) continue;
+                g.fillColor = new Color(34, 44, 36, 255);
+                g.roundRect(-VIEW_W / 2 + ix * CELL, -VIEW_H / 2 + iy * CELL, CELL, CELL, 4);
+                g.fill();
+            }
+        }
         g.strokeColor = new Color(90, 100, 90, 255);
         g.lineWidth = 2;
         g.roundRect(-VIEW_W / 2, -VIEW_H / 2, VIEW_W, VIEW_H, 10);
         g.stroke();
-        // 玩家（灰盒小人：蓝身黄头）
+        // 玩家：AI 素材贴图（缺失时色块兜底）；翻滚=压扁+白色残影圈
         const px = this._ax(c.player.x), py = this._ay(c.player.y);
-        g.fillColor = new Color(70, 130, 200, 255);
-        g.circle(px, py, 13);
-        g.fill();
-        g.fillColor = new Color(240, 200, 90, 255);
-        g.circle(px + c.player.facingX * 14, py + c.player.facingY * 14 - 12, 9);
-        g.fill();
+        if (!this._playerSpr) {
+            const f = this._frameOf('characters/player_down');
+            if (f) {
+                const pn = this._monRoot!.children.find((ch) => ch.name === 'player') ?? (() => {
+                    const n = new Node('player');
+                    n.layer = (this._monRoot as Node).layer;
+                    n.addComponent(UITransform).setContentSize(52, 52);
+                    this._monRoot!.addChild(n);
+                    return n;
+                })();
+                let sp = pn.getComponent(Sprite);
+                if (!sp) { sp = pn.addComponent(Sprite); sp.sizeMode = Sprite.SizeMode.RAW; }
+                sp.spriteFrame = f;
+                this._playerSpr = sp;
+            }
+        }
+        if (this._playerSpr && this._playerSpr.isValid && this._playerSpr.spriteFrame) {
+            const n = this._playerSpr.node;
+            n.setPosition(px, py - 6, 0);
+            n.setScale(c.player.rollT > 0 ? 0.7 : 1, c.player.rollT > 0 ? 0.7 : 1, 1);
+            n.angle = c.player.rollT > 0 ? (n.angle + 24) % 360 : 0;
+        } else {
+            // 兜底：色块小人（素材未加载/加载失败）
+            g.fillColor = new Color(70, 130, 200, 255);
+            g.circle(px, py, 13);
+            g.fill();
+            g.fillColor = new Color(240, 200, 90, 255);
+            g.circle(px + c.player.facingX * 14, py + c.player.facingY * 14 - 12, 9);
+            g.fill();
+        }
         if (c.player.rollT > 0) {
             g.strokeColor = new Color(255, 255, 255, 200);
             g.lineWidth = 3;
@@ -263,7 +307,7 @@ class DungeonOverlayComp extends Component {
                 n.addChild(hpN);
                 const hpG = hpN.addComponent(Graphics);
                 hpN.setPosition(0, -26);
-                entry = { n, g, hp: hpG };
+                entry = { n, g, hp: hpG, spr: null };
                 this._monNodes.set(m.uid, entry);
             }
             entry.n.setPosition(this._ax(m.x), this._ay(m.y) + 16);
@@ -271,13 +315,31 @@ class DungeonOverlayComp extends Component {
             g.clear();
             const col = m.spec.mid.includes('elite') ? new Color(160, 90, 200) : m.spec.mid.includes('spore') ? new Color(150, 110, 70) : new Color(110, 190, 90);
             const r = m.spec.radius * (VIEW_W / 960);
-            g.fillColor = m.hitT > 0 ? Color.WHITE : col;
-            g.circle(0, 0, r);
-            g.fill();
-            g.strokeColor = new Color(20, 26, 20, 255);
-            g.lineWidth = 2;
-            g.circle(0, 0, r);
-            g.stroke();
+            // 怪物：优先 AI 素材贴图（slime/sporeling），色块兜底；受击闪白
+            const rel = m.spec.mid.includes('spore') ? 'monsters/sporeling_idle' : 'monsters/slime_idle';
+            if (!entry.spr) {
+                const f = this._frameOf(rel);
+                if (f) {
+                    let sp = entry.n.getComponent(Sprite);
+                    if (!sp) { sp = entry.n.addComponent(Sprite); sp.sizeMode = Sprite.SizeMode.RAW; }
+                    sp.spriteFrame = f;
+                    entry.spr = sp;
+                }
+            } else if (entry.spr.spriteFrame && !entry.spr.spriteFrame.name.includes(rel.split('/').pop()!)) {
+                const f = this._frameOf(rel);
+                if (f && f !== entry.spr.spriteFrame) entry.spr.spriteFrame = f;
+            }
+            if (entry.spr && entry.spr.spriteFrame) {
+                entry.n.setScale(m.hitT > 0 ? 1.18 : 1, m.hitT > 0 ? 1.18 : 1, 1);
+            } else {
+                g.fillColor = m.hitT > 0 ? Color.WHITE : col;
+                g.circle(0, 0, r);
+                g.fill();
+                g.strokeColor = new Color(20, 26, 20, 255);
+                g.lineWidth = 2;
+                g.circle(0, 0, r);
+                g.stroke();
+            }
             const hpG = entry.hp;
             hpG.clear();
             const ratio = Math.max(0, m.hp / m.spec.hp);

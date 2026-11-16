@@ -1,11 +1,12 @@
-import { _decorator, Component, Graphics, Color, Layers } from 'cc';
+import { _decorator, Component, Graphics, Color, Layers, Sprite, SpriteFrame, assetManager, UITransform } from 'cc';
 import { TILE, TerrainData, TT } from './TerrainData';
 const { ccclass } = _decorator;
 
 /**
- * 玩家角色（M1，灰盒）：动态摇杆驱动 + 脚底圆碰撞 + 轴分离贴墙滑行。
+ * 玩家角色（M1，灰盒→1.0 AI 素材）：动态摇杆驱动 + 脚底圆碰撞 + 轴分离贴墙滑行。
  * 依据 character-control.md：脚底圆 r=20 art px、步行 4 格/s、移动读 TerrainData 阻挡。
  * 坐标约定与世界一致：world px = (tileX*32, -tileY*32)，node.position = 脚底点。
+ * 表现：SpriteLib 就绪后挂 characters/player_down 贴图（四向帧素材后续接入），色块兜底。
  */
 @ccclass('PlayerCharacter')
 export class PlayerCharacter extends Component {
@@ -22,6 +23,7 @@ export class PlayerCharacter extends Component {
 
     private _g: Graphics | null = null;
     private _faceDot: Graphics | null = null;
+    private _spr: Sprite | null = null;
 
     onLoad(): void {
         this.node.layer = Layers.Enum.UI_2D;
@@ -35,6 +37,20 @@ export class PlayerCharacter extends Component {
         this._g = this.node.addComponent(Graphics);
         this._faceDot = this.node.addComponent(Graphics);
         this._redraw();
+        this._trySprite();
+    }
+
+    /** AI 素材接入：assetManager 里已有 characters/player_down 时挂 Sprite 并隐藏色块。 */
+    private _trySprite(): void {
+        const f = assetManager.assets.get('player_down@spriteFrame') as SpriteFrame | null;
+        if (!f) return;
+        this._spr = this.node.addComponent(Sprite);
+        this._spr.sizeMode = Sprite.SizeMode.RAW;
+        this._spr.spriteFrame = f;
+        this.node.getComponent(UITransform)!.setContentSize(44, 44);
+        this.node.setPosition(this.node.position.x, this.node.position.y + 20, 0); // 贴图锚点中心≈身体，脚底偏移
+        if (this._g) this._g.clear();
+        if (this._faceDot) this._faceDot.clear();
     }
 
     /** 归一化输入（摇杆/调试写入）；模长>1 归一。 */

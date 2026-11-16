@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Camera, view, ResolutionPolicy, SpriteFrame, Layers, assetManager, ImageAsset, UITransform, Graphics, Color } from 'cc';
+import { _decorator, Component, Node, Camera, view, ResolutionPolicy, SpriteFrame, Layers, assetManager, ImageAsset, UITransform, Graphics, Color, Sprite } from 'cc';
 import { MAP_W, MAP_H, TILE, SPAWN, TerrainData } from './TerrainData';
 import { TerrainBakeRenderer } from './TerrainBakeRenderer';
 import { TerrainPoolRenderer } from './TerrainPoolRenderer';
@@ -298,20 +298,38 @@ export class WorldSpike extends Component {
 
     private _buildDungeonGate(): void {
         const adv = AdventureSystem.inst;
-        // 传送门视觉（advGate 区中心附近 (112,10)）
+        // 传送门视觉（advGate 区中心附近 (112,10)）：AI 素材贴图（64px 图 → 96px 显示），色块兜底
         const gNode = new Node('dungeon_gate');
         gNode.layer = this.node.layer;
         gNode.addComponent(UITransform).setContentSize(96, 96);
         gNode.setPosition((112 + 0.5) * TILE, -(10 + 0.5) * TILE, 0);
         this.node.addChild(gNode);
-        const g = gNode.addComponent(Graphics);
-        g.fillColor = new Color(120, 70, 170, 230);
-        g.circle(0, 0, 30);
-        g.fill();
-        g.strokeColor = new Color(220, 190, 255, 255);
-        g.lineWidth = 4;
-        g.circle(0, 0, 30);
-        g.stroke();
+        const frame = SpriteLib.inst.get('adventure/dungeon_gate');
+        if (frame) {
+            const sp = gNode.addComponent(Sprite);
+            sp.sizeMode = Sprite.SizeMode.CUSTOM;
+            sp.spriteFrame = frame;
+        } else {
+            const g = gNode.addComponent(Graphics);
+            g.fillColor = new Color(120, 70, 170, 230);
+            g.circle(0, 0, 30);
+            g.fill();
+            g.strokeColor = new Color(220, 190, 255, 255);
+            g.lineWidth = 4;
+            g.circle(0, 0, 30);
+            g.stroke();
+            // SpriteLib 就绪后升级贴图（一次性）
+            SpriteLib.inst.init().then(() => {
+                const f2 = SpriteLib.inst.get('adventure/dungeon_gate');
+                if (f2 && g.isValid) {
+                    g.clear();
+                    g.destroy();
+                    const sp = gNode.addComponent(Sprite);
+                    sp.sizeMode = Sprite.SizeMode.CUSTOM;
+                    sp.spriteFrame = f2;
+                }
+            });
+        }
         const it = gNode.addComponent(Interactable);
         it.setupSimple('dungeon_gate', '进入旧林地', 96, () => {
             if (!adv.inRun) adv.start('old_wood');
@@ -377,11 +395,10 @@ export class WorldSpike extends Component {
         };
     }
 
-    /** 快进 n 天（复活/季节调试） */
-    dbgDay(n: number): number {
-        for (let i = 0; i < n; i++) TimeSystem.inst.endDay();
-        GameApp.inst?.persist('dbg_day');
-        return TimeSystem.inst.dayIndex;
+    /** 快进 n 天（复活/季节调试）——直接推 dayIndex 并广播（M6 起：跳过 bedtime 弹窗，自动化用） */
+    dbgDay(n: number): void {
+        const ts = TimeSystem.inst;
+        for (let i = 0; i < n; i++) { ts.dayIndex += 1; EventBus.inst.emit('dayAdvanced', { dayIndex: ts.dayIndex }); }
     }
 
     // ===== M3 地形改造调试 =====
@@ -426,12 +443,6 @@ export class WorldSpike extends Component {
         if (view) view.onUse();
     }
 
-    /** M6 调试：手动推天数（跳过 bedtime 弹窗，自动化用：emit dayAdvanced 触发生长/防守） */
-    dbgDay(n: number): void {
-        const ts = TimeSystem.inst;
-        ts.dayIndex = n;
-        EventBus.inst.emit('dayAdvanced', { dayIndex: n });
-    }
 
     /** 地形快照：工具/撤销深度/人造格计数/玩家所在区 */
     terrainDump(): Record<string, unknown> {
