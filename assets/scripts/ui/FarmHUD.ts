@@ -157,10 +157,10 @@ export class FarmHUD extends Component {
                 this._dialog?.openNpc(d.id);
             });
 
-            // 素材就绪 → 立绘覆盖色块
+            // 素材就绪 → 立绘覆盖色块（scheduleOnce 只能挂在 Component 上，不能挂 Node）
             const tryArt = (): void => {
                 const lib = SpriteLib.inst;
-                if (!lib.ready) { n.scheduleOnce(tryArt, 1); return; }
+                if (!lib.ready) { this.scheduleOnce(tryArt, 1); return; }
                 const sf = lib.get(d.art);
                 if (!sf) return;
                 let sprNode = n.getChildByName('spr');
@@ -177,7 +177,7 @@ export class FarmHUD extends Component {
                 sprNode.active = true;
                 body.clear();
             };
-            n.scheduleOnce(tryArt, 0.5);
+            this.scheduleOnce(tryArt, 0.5);
         }
     }
 

@@ -3,7 +3,18 @@ import { IPlatformAdapter } from '../platform/IPlatformAdapter';
 
 const SAVE_KEY = 'save_main';
 const BAK_KEY = 'save_main.bak';
-const SAVE_VERSION = 2;
+const SAVE_VERSION = 3;
+
+/** 世界切片（大地图重构 v3 新增，纯加字段；缺字段走迁移链补默认值） */
+export interface WorldSave {
+    /** 永久清除的世界物件 id（respawnDays=0 的岩石等） */
+    clearedIds?: string[];
+    /** 待复活物件：objId → 复活日 dayIndex */
+    regrowAt?: Record<string, number>;
+    /** 玩家世界坐标（tile，M3 起存） */
+    playerX?: number;
+    playerY?: number;
+}
 
 /**
  * 存档顶层结构——只存纯数据（id/坐标/数值/时间戳），绝不序列化节点引用。
@@ -21,6 +32,8 @@ export interface SaveDataV1 {
     farm?: import('../gameplay/farm/FarmSystem').FarmSave;
     /** 图鉴：已收集条目 id（作物 id / 鱼 id），v2 新增 */
     codex?: string[];
+    /** 世界切片：开荒/复活/玩家位置/地形差量（v3 新增） */
+    world?: WorldSave;
 }
 
 type AnyRecord = Record<string, unknown>;
@@ -28,6 +41,7 @@ type AnyRecord = Record<string, unknown>;
 /** 版本迁移链：v(n-1) → v(n)，按序执行；只加字段不删字段 */
 const migrations: Record<number, (data: AnyRecord) => AnyRecord> = {
     2: (d) => ({ ...d, codex: Array.isArray(d['codex']) ? d['codex'] : [] }),
+    3: (d) => ({ ...d, world: d['world'] && typeof d['world'] === 'object' ? d['world'] : { clearedIds: [], regrowAt: {} } }),
 };
 
 export class SaveManager {

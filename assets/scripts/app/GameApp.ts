@@ -55,6 +55,8 @@ export class GameApp extends Component {
         // 农场切片：旧档补 farm 字段，FarmSystem 接管地块状态（订阅 dayAdvanced）
         if (!this.saveData.farm) this.saveData.farm = { plots: [] };
         FarmSystem.inst.init(this.saveData.farm);
+        // 世界切片：v3 起（ClearingSystem 在 world 场景装配时吃这份数据）
+        if (!this.saveData.world) this.saveData.world = { clearedIds: [], regrowAt: {} };
 
         // 旧档补发初始种子（undefined=从未拥有过；显式 0=已种完，不补）
         if (this.saveData.inventory['carrot_seed'] === undefined) {
@@ -145,12 +147,13 @@ export class GameApp extends Component {
 
     private _newGame(): SaveDataV1 {
         return {
-            version: 2,
+            version: 3,
             dayIndex: 1,
             savedRealTimeMs: this.adapter!.time.nowMs(),
             inventory: { carrot_seed: 5 }, // 切片引导：开局 5 包胡萝卜种子
             farm: { plots: [] },
             codex: [],
+            world: { clearedIds: [], regrowAt: {} },
         };
     }
 }

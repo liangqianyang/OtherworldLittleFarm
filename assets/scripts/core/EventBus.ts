@@ -24,6 +24,8 @@ export interface GameEvents {
     weatherRolled: { weather: string };
     /** 农场地块变化（种植/浇水/收获/生长推进） */
     farmChanged: { action: string };
+    /** 世界情境交互提示变化（M2 交互框架；null=提示消失） */
+    interactPromptChanged: { objId: string; label: string; wx: number; wy: number } | null;
 }
 
 type Handler<T> = (payload: T) => void;

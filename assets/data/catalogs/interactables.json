@@ -1,0 +1,23 @@
+[
+  { "id": "pioneer_tree_01", "region": "pioneer", "type": "tree", "tx": 20, "ty": 15, "hp": 3, "range": 72, "drops": [ { "itemId": "wood", "min": 1, "max": 2 } ], "respawnDays": 3, "label": "砍伐" },
+  { "id": "pioneer_tree_02", "region": "pioneer", "type": "tree", "tx": 24, "ty": 18, "hp": 3, "range": 72, "drops": [ { "itemId": "wood", "min": 1, "max": 2 } ], "respawnDays": 3, "label": "砍伐" },
+  { "id": "pioneer_tree_03", "region": "pioneer", "type": "tree", "tx": 30, "ty": 12, "hp": 3, "range": 72, "drops": [ { "itemId": "wood", "min": 1, "max": 2 } ], "respawnDays": 3, "label": "砍伐" },
+  { "id": "pioneer_tree_04", "region": "pioneer", "type": "tree", "tx": 36, "ty": 20, "hp": 3, "range": 72, "drops": [ { "itemId": "wood", "min": 1, "max": 2 } ], "respawnDays": 3, "label": "砍伐" },
+  { "id": "pioneer_tree_05", "region": "pioneer", "type": "tree", "tx": 15, "ty": 25, "hp": 3, "range": 72, "drops": [ { "itemId": "wood", "min": 1, "max": 2 } ], "respawnDays": 3, "label": "砍伐" },
+  { "id": "pioneer_tree_06", "region": "pioneer", "type": "tree", "tx": 28, "ty": 30, "hp": 3, "range": 72, "drops": [ { "itemId": "wood", "min": 1, "max": 2 } ], "respawnDays": 3, "label": "砍伐" },
+  { "id": "pioneer_tree_07", "region": "pioneer", "type": "tree", "tx": 40, "ty": 15, "hp": 3, "range": 72, "drops": [ { "itemId": "wood", "min": 1, "max": 2 } ], "respawnDays": 3, "label": "砍伐" },
+  { "id": "pioneer_tree_08", "region": "pioneer", "type": "tree", "tx": 45, "ty": 28, "hp": 3, "range": 72, "drops": [ { "itemId": "wood", "min": 1, "max": 2 } ], "respawnDays": 3, "label": "砍伐" },
+  { "id": "pioneer_tree_09", "region": "pioneer", "type": "tree", "tx": 50, "ty": 20, "hp": 3, "range": 72, "drops": [ { "itemId": "wood", "min": 1, "max": 2 } ], "respawnDays": 3, "label": "砍伐" },
+  { "id": "pioneer_tree_10", "region": "pioneer", "type": "tree", "tx": 22, "ty": 35, "hp": 3, "range": 72, "drops": [ { "itemId": "wood", "min": 1, "max": 2 } ], "respawnDays": 3, "label": "砍伐" },
+  { "id": "pioneer_tree_11", "region": "pioneer", "type": "tree", "tx": 33, "ty": 40, "hp": 3, "range": 72, "drops": [ { "itemId": "wood", "min": 1, "max": 2 } ], "respawnDays": 3, "label": "砍伐" },
+  { "id": "pioneer_tree_12", "region": "pioneer", "type": "tree", "tx": 48, "ty": 38, "hp": 3, "range": 72, "drops": [ { "itemId": "wood", "min": 1, "max": 2 } ], "respawnDays": 3, "label": "砍伐" },
+  { "id": "pioneer_rock_01", "region": "pioneer", "type": "rock", "tx": 18, "ty": 20, "hp": 5, "range": 64, "drops": [ { "itemId": "stone", "min": 1, "max": 2 } ], "respawnDays": 0, "label": "开采" },
+  { "id": "pioneer_rock_02", "region": "pioneer", "type": "rock", "tx": 26, "ty": 22, "hp": 5, "range": 64, "drops": [ { "itemId": "stone", "min": 1, "max": 2 } ], "respawnDays": 0, "label": "开采" },
+  { "id": "pioneer_rock_03", "region": "pioneer", "type": "rock", "tx": 38, "ty": 25, "hp": 5, "range": 64, "drops": [ { "itemId": "stone", "min": 1, "max": 2 } ], "respawnDays": 0, "label": "开采" },
+  { "id": "pioneer_rock_04", "region": "pioneer", "type": "rock", "tx": 48, "ty": 32, "hp": 5, "range": 64, "drops": [ { "itemId": "stone", "min": 1, "max": 2 } ], "respawnDays": 0, "label": "开采" },
+  { "id": "pioneer_rock_05", "region": "pioneer", "type": "rock", "tx": 44, "ty": 10, "hp": 5, "range": 64, "drops": [ { "itemId": "stone", "min": 1, "max": 2 } ], "respawnDays": 0, "label": "开采" },
+  { "id": "pioneer_rock_06", "region": "pioneer", "type": "rock", "tx": 12, "ty": 12, "hp": 5, "range": 64, "drops": [ { "itemId": "stone", "min": 1, "max": 2 } ], "respawnDays": 0, "label": "开采" },
+  { "id": "pioneer_bush_01", "region": "pioneer", "type": "bush", "tx": 12, "ty": 30, "hp": 1, "range": 64, "drops": [ { "itemId": "berry", "min": 1, "max": 2 } ], "respawnDays": 2, "label": "采集" },
+  { "id": "pioneer_bush_02", "region": "pioneer", "type": "bush", "tx": 35, "ty": 35, "hp": 1, "range": 64, "drops": [ { "itemId": "berry", "min": 1, "max": 2 } ], "respawnDays": 2, "label": "采集" },
+  { "id": "pioneer_bush_03", "region": "pioneer", "type": "bush", "tx": 50, "ty": 40, "hp": 1, "range": 64, "drops": [ { "itemId": "berry", "min": 1, "max": 2 } ], "respawnDays": 2, "label": "采集" }
+]

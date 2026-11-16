@@ -6,6 +6,11 @@ import { PlayerCharacter } from './PlayerCharacter';
 import { JoystickController, SCREEN_UI_LAYER } from './JoystickController';
 import { CameraFollow } from './CameraFollow';
 import { SpriteLib } from '../../core/SpriteLib';
+import { ClearingSystem } from './clearing/ClearingSystem';
+import { InteractionManager } from './interact/InteractionManager';
+import { ContextButtonUI } from './interact/ContextButtonUI';
+import { TimeSystem } from '../../core/TimeSystem';
+import { GameApp } from '../../app/GameApp';
 const { ccclass } = _decorator;
 
 /**
@@ -59,6 +64,12 @@ export class WorldSpike extends Component {
         this._bake.init(this._data, ground);
         this._pool = poolRoot.addComponent(TerrainPoolRenderer);
 
+        // M2：世界物件（开荒树/石/丛）——在地面容器之后、玩家之前装配（玩家渲染压顶）
+        const objRoot = new Node('WorldObjects');
+        objRoot.layer = Layers.Enum.UI_2D;
+        this.node.addChild(objRoot);
+        ClearingSystem.inst.init(objRoot);
+
         // M1：玩家（出生点 tile 中心；必须在地面容器之后 addChild 才能渲染在其上）
         const playerNode = new Node('Player');
         playerNode.layer = Layers.Enum.UI_2D;
@@ -66,6 +77,10 @@ export class WorldSpike extends Component {
         this.node.addChild(playerNode);
         this._player = playerNode.addComponent(PlayerCharacter);
         this._player.init(this._data!);
+        ClearingSystem.inst.attachPlayer(playerNode); // 掉落物磁吸目标
+
+        // M2：情境交互按钮（SCREEN_UI 层，唯一常驻复用）
+        ContextButtonUI.create(this.node);
 
         // M1：相机跟随
         if (this._camNode) {
@@ -116,6 +131,11 @@ export class WorldSpike extends Component {
     }
 
     update(): void {
+        // M2：情境交互每帧判定（范围内最近物件 → 提示）
+        if (this._player) {
+            const pp = this._player.node.position;
+            InteractionManager.inst.tick(pp.x, pp.y);
+        }
         if (this._player && this._camNode) {
             // 玩家模式：相机由 CameraFollow 驱动，这里只按实际相机位置补烘/回收块
             const cp = this._camNode.position;
@@ -128,6 +148,8 @@ export class WorldSpike extends Component {
                 this._pool!.syncVisible(this._camX - 10, this._camY - 6, this._camX + 10, this._camY + 6);
             }
         }
+        // M2：物件占格/解锁后的脏块重烘（dirty=0 时零开销）
+        this._bake?.rebakeDirty();
     }
 
     private _applyVisible(): void {
@@ -188,5 +210,38 @@ export class WorldSpike extends Component {
 
     debugSetInput(x: number, y: number): void {
         PlayerCharacter.inst?.setInput(x, y);
+    }
+
+    // ===== M2 开荒调试（真机无键盘的主调试手段，migration-plan M2 验收） =====
+
+    /** 传送（tile 坐标） */
+    dbgTp(tx: number, ty: number): void {
+        if (!this._player) return;
+        this._player.node.setPosition((tx + 0.5) * TILE, -(ty + 0.5) * TILE, 0);
+        this._player.setInput(0, 0);
+    }
+
+    /** 触发当前情境交互（等价点情境按钮） */
+    dbgHit(): string {
+        const cur = InteractionManager.inst.current;
+        InteractionManager.inst.dispatchCurrent();
+        return cur ? cur.objId : '';
+    }
+
+    /** 开荒状态快照（物件/存档切片/当前提示） */
+    worldDump(): Record<string, unknown> {
+        const cur = InteractionManager.inst.current;
+        return {
+            objects: ClearingSystem.inst.dump(),
+            prompt: cur ? { objId: cur.objId, label: cur.promptText() } : null,
+            day: TimeSystem.inst.dayIndex,
+        };
+    }
+
+    /** 快进 n 天（复活/季节调试） */
+    dbgDay(n: number): number {
+        for (let i = 0; i < n; i++) TimeSystem.inst.endDay();
+        GameApp.inst?.persist('dbg_day');
+        return TimeSystem.inst.dayIndex;
     }
 }
