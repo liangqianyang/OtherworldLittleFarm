@@ -12,6 +12,7 @@ import { EventBus } from './EventBus';
  */
 const NEED = [
     'tiles/plot_soil',
+    'tiles/ground_grass',
     'tiles/plot_soil_wet',
     'crops/carrot_0',
     'crops/carrot_1',
