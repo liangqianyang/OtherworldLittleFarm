@@ -23,6 +23,7 @@ const TABLE_MANIFEST: readonly string[] = [
     'catalogs/defense_waves',
     'catalogs/npc_dialogs',
     'catalogs/interactables',
+    'catalogs/terrain_ops',
 ];
 
 type AnyRow = Record<string, unknown>;

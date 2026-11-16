@@ -90,7 +90,30 @@ export class TerrainBakeRenderer extends Component {
                 const t = d.types[gi];
                 const spec = this._tileSpec(t);
                 const px = lx * TILE, py = (CHUNK - 1 - ly) * TILE; // canvas y 向下，tile y 向上
-                if (spec.img) {
+                if (t === TT.StonePath) {
+                    // 石板：灰底+砖缝十字
+                    ctx.fillStyle = '#8a8a92'; ctx.fillRect(px, py, TILE, TILE);
+                    ctx.strokeStyle = 'rgba(60,60,66,0.8)';
+                    ctx.strokeRect(px + 0.5, py + 0.5, TILE - 1, TILE - 1);
+                    ctx.beginPath(); ctx.moveTo(px + TILE / 2, py); ctx.lineTo(px + TILE / 2, py + TILE); ctx.stroke();
+                } else if (t === TT.Bridge) {
+                    // 木桥：棕底+横板条
+                    ctx.fillStyle = '#7a5a38'; ctx.fillRect(px, py, TILE, TILE);
+                    ctx.fillStyle = 'rgba(52,38,24,0.6)';
+                    ctx.fillRect(px, py + 10, TILE, 2); ctx.fillRect(px, py + 21, TILE, 2);
+                } else if (t === TT.Stairs) {
+                    // 台阶：土底+斜坡纹（一眼是坡）
+                    ctx.fillStyle = '#6b4a2e'; ctx.fillRect(px, py, TILE, TILE);
+                    ctx.fillStyle = 'rgba(242,193,78,0.5)';
+                    ctx.fillRect(px, py, TILE, 3);
+                    ctx.strokeStyle = 'rgba(0,0,0,0.45)';
+                    ctx.beginPath(); ctx.moveTo(px + 4, py + TILE - 4); ctx.lineTo(px + TILE - 8, py + 6); ctx.stroke();
+                } else if (t === TT.Deck) {
+                    // 木平台：浅棕+纵板条
+                    ctx.fillStyle = '#96744c'; ctx.fillRect(px, py, TILE, TILE);
+                    ctx.fillStyle = 'rgba(52,38,24,0.5)';
+                    ctx.fillRect(px + 10, py, 2, TILE); ctx.fillRect(px + 21, py, 2, TILE);
+                } else if (spec.img) {
                     ctx.drawImage(spec.img, px, py, TILE, TILE);
                     if (spec.tint) { ctx.fillStyle = spec.tint; ctx.fillRect(px, py, TILE, TILE); }
                 } else {

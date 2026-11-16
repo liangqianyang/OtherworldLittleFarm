@@ -61,12 +61,25 @@ export class TerrainPoolRenderer extends Component {
             const t = d.types[gi];
             const spr = node.getComponent(Sprite)!;
             spr.spriteFrame = this._frames[t] || this._frames[TT.Grass] || null;
-            spr.color = t === TT.Water ? new Color(30, 60, 120, 255) : (t === TT.Sand ? new Color(214, 183, 110, 255) : Color.WHITE);
+            spr.color = this._tint(t);
             node.active = true;
             this._active.set(gi, node);
         }
         this.lastSyncMs = (performance as unknown as { now(): number }).now() - t0;
         this.totalSyncs++;
+    }
+
+    /** 人造地形 tint（M3，灰盒可辨）；源图类型用原色/水蓝/沙黄。 */
+    private _tint(t: number): Color {
+        switch (t) {
+            case TT.Water: return new Color(30, 60, 120, 255);
+            case TT.Sand: return new Color(214, 183, 110, 255);
+            case TT.StonePath: return new Color(138, 138, 146, 255);
+            case TT.Bridge: return new Color(122, 90, 56, 255);
+            case TT.Stairs: return new Color(107, 74, 46, 255);
+            case TT.Deck: return new Color(150, 116, 76, 255);
+            default: return Color.WHITE;
+        }
     }
 
     /** 基准测试：编辑 n 格（标脏）+ 全屏重排，返回耗时 ms。 */

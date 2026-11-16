@@ -10,6 +10,7 @@ import { LocalAdapter } from '../platform/LocalAdapter';
 import { DebugPanel } from '../ui/DebugPanel';
 import { SfxLib } from '../core/SfxLib';
 import { FarmSystem } from '../gameplay/farm/FarmSystem';
+import { TerrainData } from '../gameplay/world/TerrainData';
 
 /** 设计分辨率（§17：1280×720 横屏，锁定高度——竖向安全区恒定 ±360） */
 const DESIGN_WIDTH = 1280;
@@ -91,6 +92,11 @@ export class GameApp extends Component {
     persist(reason: string): void {
         if (!this.saveData) this.saveData = this._newGame();
         this.saveData.dayIndex = TimeSystem.inst.dayIndex;
+        // 世界地形捎带落盘（terrain-system §7.2：既有存档点捎带，不打断编辑）
+        const td = TerrainData.inst;
+        if (td && this.saveData.world) {
+            this.saveData.world.terrain = TerrainData.encodeRLE(td);
+        }
         this.save!.save(this.saveData, reason);
     }
 

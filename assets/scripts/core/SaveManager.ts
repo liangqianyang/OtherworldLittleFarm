@@ -14,6 +14,8 @@ export interface WorldSave {
     /** 玩家世界坐标（tile，M3 起存） */
     playerX?: number;
     playerY?: number;
+    /** 家园地形全量 RLE+base64（terrain-system §7.2：[u16 run][u8 (type<<4|height)]，M3 起存；缺省=基线地图） */
+    terrain?: string;
 }
 
 /**

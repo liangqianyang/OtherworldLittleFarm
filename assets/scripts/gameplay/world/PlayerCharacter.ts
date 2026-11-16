@@ -63,9 +63,20 @@ export class PlayerCharacter extends Component {
 
     private _blocked(tx: number, ty: number): boolean {
         if (!this._terrain) return true;
+        if (tx === this.tileX() && ty === this.tileY()) return false;   // 所站格永不阻挡自己（圆恒跨到自己 tile）
         const t = this._terrain.get(tx, ty);
-        if (t === TT.Water) return true;
-        return this._terrain.heights[this._terrain.idx(tx, ty)] >= 1;
+        if (t === TT.Water) return true;          // 裸水不可走（Bridge 是可行走人造格）
+        if (t === TT.Bridge) return false;
+        // 台阶通行规则（terrain-system §4.2）：Δh=0 平走 / Δh=1 需任一端 Stairs / Δh≥2 拒绝
+        const h = this._terrain.heights[this._terrain.idx(tx, ty)];
+        const ph = this._terrain.heights[this._terrain.idx(this.tileX(), this.tileY())];
+        if (h >= 1 || ph >= 1) {
+            const dh = Math.abs(h - ph);
+            if (dh === 0) return false;
+            if (dh === 1 && (t === TT.Stairs || this._terrain.get(this.tileX(), this.tileY()) === TT.Stairs)) return false;
+            return true;
+        }
+        return false;
     }
 
     /** 脚底圆 vs 阻挡 tile 精确判（最近点距离）。 */

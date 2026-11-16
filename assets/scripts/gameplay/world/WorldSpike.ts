@@ -9,6 +9,9 @@ import { SpriteLib } from '../../core/SpriteLib';
 import { ClearingSystem } from './clearing/ClearingSystem';
 import { InteractionManager } from './interact/InteractionManager';
 import { ContextButtonUI } from './interact/ContextButtonUI';
+import { TerrainEdit, ToolId } from './terrain/TerrainEdit';
+import { ToolDockUI } from './terrain/ToolDockUI';
+import { TerrainEditInput } from './TerrainEditInput';
 import { TimeSystem } from '../../core/TimeSystem';
 import { GameApp } from '../../app/GameApp';
 const { ccclass } = _decorator;
@@ -36,6 +39,10 @@ export class WorldSpike extends Component {
     private _camNode: Node | null = null;
     private _player: PlayerCharacter | null = null;
     private _info: string = '';
+    private _edit: TerrainEdit | null = null;
+    private _dock: ToolDockUI | null = null;
+    private _editInput: TerrainEditInput | null = null;
+    private _statusTimer = 0;
 
     start(): void {
         (window as unknown as Record<string, unknown>).__spike = this;
@@ -45,6 +52,15 @@ export class WorldSpike extends Component {
         this.node.addChild(dataNode);
         this._data = dataNode.addComponent(TerrainData);
         this._data.generateBaseline();
+        // M3：存档地形还原（老档/新档缺 terrain → 保持基线）
+        const worldSave = GameApp.inst?.saveData?.world;
+        if (worldSave?.terrain) {
+            if (TerrainData.decodeRLE(this._data, worldSave.terrain)) {
+                console.log('[M3] terrain restored from save');
+            } else {
+                this._data.generateBaseline();   // 解码失败回基线，防坏档卡死
+            }
+        }
 
         // 相机 2×（orthoHeight 360 → 视口世界 640×360，屏上 64px/tile）
         this._camNode = this.node.getChildByName('Camera');
@@ -81,6 +97,15 @@ export class WorldSpike extends Component {
 
         // M2：情境交互按钮（SCREEN_UI 层，唯一常驻复用）
         ContextButtonUI.create(this.node);
+
+        // M3：地形编辑（右半屏输入先建=底层，工具坞后建=同触点优先）
+        this._edit = new TerrainEdit();
+        this._edit.init(this._data);
+        const inv = GameApp.inst ? GameApp.inst.inventory : {};
+        this._editInput = TerrainEditInput.create(this.node, this._edit, inv, ground, this._camNode!);
+        this._editInput.node.active = false;   // 选工具才启用（与摇杆互不干扰）
+        this._dock = ToolDockUI.create(this.node, this._edit, inv);
+        this._dock.setVisible(false);
 
         // M1：相机跟随
         if (this._camNode) {
@@ -150,6 +175,16 @@ export class WorldSpike extends Component {
         }
         // M2：物件占格/解锁后的脏块重烘（dirty=0 时零开销）
         this._bake?.rebakeDirty();
+
+        // M3：庭院区进出 → 工具坞显隐；编辑输入随工具态启用
+        if (this._player && this._dock && this._editInput && this._edit) {
+            const inLiving = this._data!.inLiving(this._player.tileX(), this._player.tileY());
+            this._dock.setVisible(inLiving);
+            const editing = inLiving && !!this._edit.tool;
+            this._editInput.node.active = editing;
+            this._statusTimer += 1 / 60;
+            if (this._statusTimer > 1) { this._statusTimer = 0; this._dock.refreshStatus(); }
+        }
     }
 
     private _applyVisible(): void {
@@ -243,5 +278,52 @@ export class WorldSpike extends Component {
         for (let i = 0; i < n; i++) TimeSystem.inst.endDay();
         GameApp.inst?.persist('dbg_day');
         return TimeSystem.inst.dayIndex;
+    }
+
+    // ===== M3 地形改造调试 =====
+
+    /** 选/取消工具（'hoe'|'shovel'|'paver'|'hammer'|'stairs'|null） */
+    dbgTool(t: ToolId | null): string | null {
+        if (!this._edit) return null;
+        this._edit.selectTool(t);
+        this._dock?.refreshStatus();
+        return this._edit.tool;
+    }
+
+    /** 落一格（含完整校验+扣料，自动化用）；返回 {ok,reason} */
+    dbgEdit(tx: number, ty: number): { ok: boolean; reason?: string } {
+        if (!this._edit) return { ok: false, reason: 'no edit' };
+        this._edit.beginStroke();
+        const r = this._edit.applyAt(tx, ty, GameApp.inst!.inventory);
+        this._edit.endStroke();
+        GameApp.inst?.persist('dbg_edit');
+        return r;
+    }
+
+    dbgUndo(): boolean {
+        const r = this._edit ? this._edit.undo(GameApp.inst!.inventory) : false;
+        if (r) GameApp.inst?.persist('dbg_undo');
+        return r;
+    }
+
+    dbgGive(itemId: string, n: number): void { GameApp.inst?.giveItem(itemId, n); }
+
+    /** 地形快照：工具/撤销深度/人造格计数/玩家所在区 */
+    terrainDump(): Record<string, unknown> {
+        const d = this._data!;
+        const counts: Record<string, number> = {};
+        for (let i = 0; i < d.types.length; i++) {
+            const t = d.types[i];
+            if (t >= 5) counts['t' + t] = (counts['t' + t] ?? 0) + 1;
+        }
+        const tx = this._player ? this._player.tileX() : -1;
+        const ty = this._player ? this._player.tileY() : -1;
+        return {
+            tool: this._edit?.tool ?? null,
+            undoDepth: this._edit?.undoDepth ?? 0,
+            built: counts,
+            inLiving: this._data!.inLiving(tx, ty),
+            player: [tx, ty],
+        };
     }
 }

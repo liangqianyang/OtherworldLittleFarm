@@ -67,6 +67,32 @@ export class EconomySystem {
         return true;
     }
 
+    /**
+     * 通用消耗结算（terrain-system §6.2，M3 地形改造用）：
+     * 全部够才扣，任一不足返回 false 并发 fail 事件（禁止静默失败，坑 #16/#29）。
+     */
+    spendCost(inv: Record<string, number>, costs: { itemId: string; count: number }[]): boolean {
+        for (const c of costs) if ((inv[c.itemId] ?? 0) < c.count) {
+            EventBus.inst.emit('itemSpent', { itemId: c.itemId, count: 0, fail: true });
+            return false;
+        }
+        for (const c of costs) {
+            inv[c.itemId] = (inv[c.itemId] ?? 0) - c.count;
+            EventBus.inst.emit('itemSpent', { itemId: c.itemId, count: c.count });
+        }
+        return true;
+    }
+
+    /** 返还（拆除返还 50% 建材，向下取整） */
+    refund(inv: Record<string, number>, costs: { itemId: string; count: number }[]): void {
+        for (const c of costs) {
+            const back = Math.floor(c.count * 0.5);
+            if (back <= 0) continue;
+            inv[c.itemId] = (inv[c.itemId] ?? 0) + back;
+            EventBus.inst.emit('itemGained', { itemId: c.itemId, count: back });
+        }
+    }
+
     private _price(itemId: string, field: 'sellPrice' | 'buyPrice'): number | null {
         const row = DataManager.inst.getRow('catalogs/items', itemId);
         if (!row) return null;

@@ -15,7 +15,10 @@ export const CHUNK = 16;           // 16×16 格 = 512×512 art px
 export const CHUNK_W = MAP_W / CHUNK;   // 8
 export const CHUNK_H = MAP_H / CHUNK;   // 6
 
-export const TT = { Grass: 0, Dirt: 1, Forest: 2, Water: 3, Sand: 4 } as const;
+export const TT = { Grass: 0, Dirt: 1, Forest: 2, Water: 3, Sand: 4, StonePath: 5, Bridge: 6, Stairs: 7, Deck: 8 } as const;
+
+/** 玩家编辑产生的人造地形（铲子可还原） */
+export const BUILT_TYPES: readonly number[] = [TT.StonePath, TT.Bridge, TT.Stairs, TT.Deck];
 
 /** 区域矩形（world-design.md §2.1 冻结坐标） */
 export const REGIONS = {
@@ -36,6 +39,8 @@ export class TerrainData extends Component {
 
     types: Uint8Array = new Uint8Array(MAP_W * MAP_H);
     heights: Uint8Array = new Uint8Array(MAP_W * MAP_H);
+    /** 基线快照（generateBaseline 后固化，铲子还原目标） */
+    baseline: Uint8Array | null = null;
     /** 脏格集合（渲染器帧末消费） */
     dirty: Set<number> = new Set();
 
@@ -66,8 +71,7 @@ export class TerrainData extends Component {
     }
 
     /** 程序化基线地图（world-design §2.1/§2.4）。 */
-    generateBaseline(): void {
-        const t = this.types;
+    generateBaseline(): void {        const t = this.types;
         t.fill(TT.Grass);
 
         const rect = (r: { x0: number; y0: number; x1: number; y1: number }, type: number) => {
@@ -125,6 +129,7 @@ export class TerrainData extends Component {
 
         this.dirty.clear();
         for (let i = 0; i < t.length; i++) this.dirty.add(i);
+        this.baseline = new Uint8Array(t);   // 铲子还原目标快照
     }
 
     /** 16 变体 bitmask：上1 右2 下4 左8（同类邻接）。水/沙按自身类型计算。 */
@@ -144,5 +149,49 @@ export class TerrainData extends Component {
         let s = 0;
         for (let i = 0; i < this.types.length; i++) s += this.types[i];
         return s;
+    }
+
+    /** 是否在可编辑庭院区（工具坞/编辑操作生效范围，terrain-system §2.2） */
+    inLiving(cx: number, cy: number): boolean {
+        const r = REGIONS.living;
+        return cx >= r.x0 && cx <= r.x1 && cy >= r.y0 && cy <= r.y1;
+    }
+
+    /**
+     * RLE 序列化（terrain-system §7.2）：[u16 run][u8 ((type<<4)|height)] 小端序 → base64。
+     * 全量存不做增量（MVP 稳态 <5KB，远低于存档红线）。
+     */
+    static encodeRLE(d: TerrainData): string {
+        const words: number[] = [];
+        const n = d.types.length;
+        let i = 0;
+        while (i < n) {
+            const v = (d.types[i] << 4) | d.heights[i];
+            let run = 1;
+            while (i + run < n && run < 0xffff && ((d.types[i + run] << 4) | d.heights[i + run]) === v) run++;
+            words.push(run & 0xff, (run >> 8) & 0xff, v);
+            i += run;
+        }
+        let bin = '';
+        for (const w of words) bin += String.fromCharCode(w);
+        return btoa(bin);
+    }
+
+    static decodeRLE(d: TerrainData, b64: string): boolean {
+        try {
+            const bin = atob(b64);
+            let p = 0, i = 0;
+            const n = d.types.length;
+            while (p + 2 < bin.length + 1 && i < n) {
+                const run = bin.charCodeAt(p) | (bin.charCodeAt(p + 1) << 8);
+                const v = bin.charCodeAt(p + 2);
+                p += 3;
+                const t = (v >> 4) & 0x0f, h = v & 0x0f;
+                for (let k = 0; k < run && i < n; k++, i++) { d.types[i] = t; d.heights[i] = h; }
+            }
+            d.dirty.clear();
+            for (let k = 0; k < n; k++) d.dirty.add(k);
+            return i >= n;
+        } catch { return false; }
     }
 }

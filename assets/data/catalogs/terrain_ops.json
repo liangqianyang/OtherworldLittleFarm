@@ -1,0 +1,5 @@
+[
+  { "id": "pave_stone", "name": "铺石板", "tool": "paver", "target": "StonePath", "cost": [ { "itemId": "stone", "count": 1 }, { "itemId": "gold", "count": 1 } ] },
+  { "id": "pave_deck", "name": "铺木平台", "tool": "paver", "target": "Deck", "cost": [ { "itemId": "wood", "count": 1 } ] },  { "id": "build_bridge", "name": "造桥", "tool": "hammer", "target": "Bridge", "cost": [ { "itemId": "wood", "count": 3 }, { "itemId": "gold", "count": 10 } ] },
+  { "id": "build_stairs", "name": "造台阶", "tool": "stairs", "target": "Stairs", "cost": [ { "itemId": "stone", "count": 2 } ] }
+]
