@@ -17,6 +17,8 @@ export interface RoomDef {
     spots?: { itemId: string; max: number }[];
     monster?: string;
     treasure?: { itemId: string; min: number; max: number }[];
+    /** 胜利宝箱附赠武器（自动装备） */
+    treasureWeapon?: string;
     next: number[];
 }
 
@@ -48,6 +50,8 @@ export class AdventureSystem {
         bag: Record<string, number>;
         bagCount: number;
         playerHp: number;
+        /** 当前武器（缺省 wood_sword；精英宝箱可升级） */
+        weaponId?: string;
         /** 采集点已采次数（key=roomIdx:spotIdx，对照 spot.max） */
         emptied: Map<string, number>;
     } | null = null;
@@ -201,6 +205,12 @@ export class AdventureSystem {
                     const n = t.min + Math.floor(Math.random() * (t.max - t.min + 1));
                     this.run.bag[t.itemId] = (this.run.bag[t.itemId] ?? 0) + n;
                 }
+            }
+            // 宝箱武器拾取（treasureWeapon → 自动装备，run 级换枪）
+            const tw = room?.treasureWeapon;
+            if (tw) {
+                this.run.weaponId = tw;
+                EventBus.inst.emit('farmChanged', { action: 'weapon_upgraded', itemId: tw });
             }
             this.combat = null;
             EventBus.inst.emit('farmChanged', { action: 'adventure_win' });

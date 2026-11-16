@@ -8,7 +8,7 @@
       { "idx": 2, "kind": "fork", "name": "岔路：倒木前", "desc": "巨大的倒木挡路，两侧分岔。", "next": [3, 4] },
       { "idx": 3, "kind": "gather", "name": "东：药草坡", "desc": "向阳的坡地长满草药。", "spots": [{ "itemId": "herb", "max": 3 }, { "itemId": "wood", "max": 1 }], "next": [5] },
       { "idx": 4, "kind": "battle", "name": "西：粘怪领地", "desc": "一团粘怪在腐木间蠕动。", "monster": "slime", "next": [5] },
-      { "idx": 5, "kind": "elite", "name": "林心空地", "desc": "巨粘怪盘踞于此，传说它守着宝物。", "monster": "slime_elite", "treasure": [{ "itemId": "carrot_seed", "min": 2, "max": 3 }], "next": [6] },
+      { "idx": 5, "kind": "elite", "name": "林心空地", "desc": "巨粘怪盘踞于此，传说它守着宝物。", "monster": "slime_elite", "treasure": [{ "itemId": "carrot_seed", "min": 2, "max": 3 }], "treasureWeapon": "iron_sword", "next": [6] },
       { "idx": 6, "kind": "exit", "name": "归途", "desc": "顺着记忆中的小径撤回农场。", "next": [] }
     ]
   }

@@ -1,6 +1,6 @@
 import { _decorator, Component, Node, Graphics, Label, Color, UITransform } from 'cc';
 import { EventBus } from '../core/EventBus';
-import { AdventureSystem } from '../adventure/AdventureSystem';
+import { AdventureSystem } from '../gameplay/adventure/AdventureSystem';
 import { SfxLib } from '../core/SfxLib';
 
 const { ccclass } = _decorator;
