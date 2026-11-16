@@ -51,6 +51,8 @@ Cocos Creator 3.8.8 的微信小游戏构建模板**硬编码 `deviceOrientation
 - ⚠️ **0.0.3 真机地面灰块复盘（2026-11-16 第二轮真机）**：主因修复后 world 正常加载（河流/角色/NPC 均渲染 ✓），但地面全灰 = 烘焙降级路径触发：手动 `new Image()` + `nativeUrl` 相对路径在小游戏端加载失败（web 预览正常，引擎自身加载同批贴图正常——树可见）。终修：`WorldSpike.srcOf` 直接传引擎已加载的 `ImageAsset.data` 给 `TerrainBakeRenderer.setSources`，弃用手动 URL 加载；降级配色改为分类型地形色（草绿/深林绿/土棕/沙黄/水蓝）。
 - ⚠️ **0.0.3 真机地面色块复盘（2026-11-16 第三轮真机）**：第二轮修复后地面变成纯色块（绿/棕）而非贴图 = `ImageAsset.data` 为 null。根因：构建 settings 含 `CLEANUP_IMAGE_CACHE: true`（引擎默认宏），贴图上传 GPU 后对 ImageAsset decRef → 销毁 → `.data` 空；web 预览读取时序早于上传而侥幸可用。终修：`GameApp.start` 最前 `macro.CLEANUP_IMAGE_CACHE = false`（任何贴图加载前设置），像素包 CPU 拷贝内存代价可忽略。**教训链：①别绕过引擎手动加载图像；②引擎图像数据可能被宏清理，启动即关 `CLEANUP_IMAGE_CACHE`。** 真机判定：地面出现草地/泥土像素纹理即修复成功。→ **2026-11-16 第三轮真机已验证通过**：贴图正常渲染（草地/泥路纹理与预览一致），0.0.3 真机包可玩。
 
+- ⚠️ **输入失效双根因复盘（2026-11-16 第四轮，web+真机通杀）**：用户报告「只能加载地图，不能移动/操作」。两个叠加根因——①`WorldSpike` 的 UICamera 误设 `projection=PERSPECTIVE(1)` 且节点在 z=0，透视近裁剪面把 SCREEN_UI 层整体裁掉 → UI 不渲染+触摸 hit-test 全落空（修：`projection=0` ORTHO + `cam2Node.setPosition(0,0,1000)`）；②**CC 3.8.8 运行时不存在 `Node.TOUCH_*` 静态别名**（只有 `Node.EventType.TOUCH_*`），摇杆/工具坞/编辑输入 17 处监听器全部注册到 `undefined` 事件键 → 事件到了节点但处理器永不触发。②是 M1 以来的隐形 bug：TS 类型声明里有这些静态所以编译通过，真实触摸从未工作过（此前所有"验证"都走 dbg API 或 mock）。终修：全量替换为 `Node.EventType.TOUCH_*`（提交 70fdecf）。**验证基线：真实拖拽左半屏玩家位移 ≈ duration×128px/s；点按槽位 `_edit.tool` 翻转。0.0.3 真机包同时带①②两 bug，必须重建 0.0.4+。**
+
 > 项目设计分辨率已配为 1280×720（fitHeight），`settings/v2/packages/project.json`；data Bundle（assets/data）已配置，预览 404 问题已修复。
 
 ## 发布前核对
