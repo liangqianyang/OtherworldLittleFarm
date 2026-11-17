@@ -49,6 +49,7 @@
 2. 玩家贴图 sizeMode=RAW 覆写 44px→32px（412ff9e 改 CUSTOM）。
 3. SpriteLib.init 并发重复加载/广播（412ff9e 去重）。
 4. bed/NPC/谷仓 tryArt 轮询链在冻结期死亡→改事件驱动 `_applyArt`+`sprites_ready`（cf57728）。
+5. 副本怪/夜战怪/咬钩贴图挂载静态审计（round10）：五处消费端（DungeonOverlay:47/384、DefenseOverlay:203/264、FishingPanel:130）全部走 `SpriteLib.inst.get(rel)` 正确键路径，无遗留 `assets.get('别名')` 误用；隐藏页未挂帧=其 scheduleOnce 在标签页冻结期不跑，前台/真机正常（同模式世界项 cf57728 后已自动挂载实证）。
 
 ## C. 触屏专项（character-control.md 验收）
 
