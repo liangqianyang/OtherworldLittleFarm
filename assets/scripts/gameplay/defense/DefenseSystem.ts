@@ -315,7 +315,7 @@ export class DefenseSystem {
         const chk = canPlace(map, towers, cell, Number(mapRow['cols']));
         if (!chk.ok) return { ok: false, reason: chk.reason };
         const gold = Number(d['buildGold'] ?? 0);
-        if (!EconomySystem.inst.spendCost(GameApp.inst.inventory, { gold })) return { ok: false, reason: 'poor' };
+        if (!EconomySystem.inst.spendCost(GameApp.inst.inventory, [{ itemId: 'gold', count: gold }])) return { ok: false, reason: 'poor' };
         seal.towers.push({ cropId, cx, cy, lv: 1 });
         this.persistSeal('seal_place');
         return { ok: true };
@@ -333,7 +333,7 @@ export class DefenseSystem {
         const d = crop?.['defense'] as AnyRow | undefined;
         if (!d || !d['lv2']) return { ok: false, reason: 'no_lv2' };
         const gold = Number((d['lv2'] as AnyRow)['upgradeGold'] ?? 0);
-        if (!EconomySystem.inst.spendCost(GameApp.inst.inventory, { gold })) return { ok: false, reason: 'poor' };
+        if (!EconomySystem.inst.spendCost(GameApp.inst.inventory, [{ itemId: 'gold', count: gold }])) return { ok: false, reason: 'poor' };
         t.lv = 2;
         this.persistSeal('seal_upgrade');
         return { ok: true };
@@ -361,7 +361,7 @@ export class DefenseSystem {
         if (this.night) return { ok: false, reason: 'night' };
         const seal = this.seal();
         if (seal.altarHp >= 100) return { ok: false, reason: 'full' };
-        if (!EconomySystem.inst.spendCost(GameApp.inst.inventory, { gold: DefenseSystem.ALTAR_REPAIR_GOLD })) return { ok: false, reason: 'poor' };
+        if (!EconomySystem.inst.spendCost(GameApp.inst.inventory, [{ itemId: 'gold', count: DefenseSystem.ALTAR_REPAIR_GOLD }])) return { ok: false, reason: 'poor' };
         seal.altarHp = 100;
         this.persistSeal('seal_repair');
         return { ok: true };
