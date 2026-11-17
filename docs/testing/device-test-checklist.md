@@ -124,6 +124,24 @@
 CLI 构建会改写 `~/.CocosCreator/editor/{window,layout}.json`，编辑器 GUI 启动异常时优先检查该两文件。
 
 
+### E++ 增补（2026-11-17 下午）：「点击没反应」第 4 根因 + 横屏触摸回归
+
+4. **预览启动场景跳过数据引导**（横屏预览「进入旧林地」点击无反应、冒险/塔防永远开不了局的根因）。
+   `profiles/v2/packages/preview.json` 的 `start_scene` 曾指向 **world.scene**（88f6402a…），
+   预览直接进世界场景 → 绕过 launch.scene 的 GameApp → `DataManager.loadAll()` 未执行 →
+   `adv.start('old_wood')` 报「找不到地图」→ `DungeonOverlay._refresh()` 见 `!sys.inRun` 立即 `close()`
+   → 面板开了又瞬间关 = **肉眼看起来点击没反应**；塔防/冒险同理永远无法开局。
+   修复：`start_scene` 改回 **launch**（b5cf3ede-659f-4eec-9103-ecfa268ac4df）。
+   ⚠️ 预览服务器把默认场景缓存进 HTML：改 preview.json 后需 **编辑器 开发者→重新加载** 重启预览才生效；
+   临时验证可用 `http://localhost:7456/?scene=<uuid>` 动态指定。
+
+**横屏运行时实证**（Chrome iPhone 仿真 横屏 2560×1163，用户截图同场景）：
+- `?scene=launch` 启动：`[Data] 已加载 13/13 张数据表`，存档正常读入（第32天→33天·秋·金币178），商店种子价格正常显示。
+- 玩家临时传送到传送门右侧 2 格 (3664,-336)：「进入旧林地」按钮落在**左半屏**（摇杆拾取区内）+ 右半屏空洞，完全复现用户截图。
+- 真实触摸点击按钮 → **副本面板打开**（HP 20/20·林缘小径·负重0/10·前进：莓果灌木丛，portal_adventure_success.png）；点「放弃探险」干净关闭。
+- 面板打开时右半屏拖动 → 玩家不移动（模态遮罩吞触摸，摇杆不抢）；防守情报行正常出现（守门人来报：第34天夜里有怪物来袭）。
+- 临时 DBG/传送钩子已全部移除，清理后复测通过。
+
 ## F. 已知非阻塞项
 
 - 编辑器场景进程与预览进程分离（MCP execute_component_method 不进预览）——不影响真机。
@@ -132,3 +150,4 @@ CLI 构建会改写 `~/.CocosCreator/editor/{window,layout}.json`，编辑器 GU
 
 —— 生成于 2026-11-16，由 bsk 自动断言链+无头单测结论汇总；构建与真机步骤需用户手动执行。
 —— 2026-11-17 增补 E++：三根因运行时实证修复（浏览器 E2E，截图存 /private/tmp/proof_*.png）。
+—— 2026-11-17 下午增补 E++ 第4根因：预览 start_scene 误指 world 跳过数据引导；改回 launch + 横屏触摸回归实证（/private/tmp/portal_adventure_success.png）。
