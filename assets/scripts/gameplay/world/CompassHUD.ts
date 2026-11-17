@@ -8,19 +8,21 @@ const { ccclass } = _decorator;
  * 指南针 HUD（M7 收尾 UX）：
  * - 屏幕边缘 3 枚箭头指向 副本传送门(112,10)/封印祭坛(110,52)/庭院河岸(66,26)，
  *   解决「入口全在地图角落、没有任何引导」的发现性问题。
+ * - 标签=全名+直线距离（如「防守·11格」），fontSize 20；隐藏半径 8×4 格 < 视口半宽，杜绝死区。
  * - 挂 SCREEN_UI 层（1<<24）由 overlay 相机渲染，固定屏幕坐标不随世界滚动；
  *   目标进入可视范围（约 12×6.5 格）时隐藏对应箭头（情境按钮已可见）。
  * - 「桥」箭头在庭院区出现第一座桥后永久隐藏（造桥引导完成）。
  */
 const POIS: { key: string; label: string; color: Color; tx: number; ty: number }[] = [
-    { key: 'dungeon', label: '副', color: new Color(178, 122, 255, 220), tx: 112, ty: 10 },
-    { key: 'seal', label: '封', color: new Color(255, 200, 90, 220), tx: 110, ty: 52 },
-    { key: 'river', label: '桥', color: new Color(96, 168, 255, 220), tx: 66, ty: 26 },
+    { key: 'dungeon', label: '副本', color: new Color(178, 122, 255, 220), tx: 112, ty: 10 },
+    { key: 'seal', label: '防守', color: new Color(255, 200, 90, 220), tx: 110, ty: 52 },
+    { key: 'river', label: '河岸', color: new Color(96, 168, 255, 220), tx: 66, ty: 26 },
 ];
 
 const HALF_W = 640, HALF_H = 360;      // UI 中心系半宽/半高（1280×720）
 const EDGE = 46;                        // 箭头距屏幕边缘的内缩
-const VIEW_W = 12 * TILE, VIEW_H = 6.5 * TILE;   // 目标大致入屏即隐藏的判定半径
+// 隐藏半径必须小于视口半宽(10×5.625格)，否则出现「目标还在屏外、箭头已隐藏」的死区
+const VIEW_W = 8 * TILE, VIEW_H = 4 * TILE;
 
 @ccclass('CompassHUD')
 export class CompassHUD extends Component {
@@ -29,7 +31,7 @@ export class CompassHUD extends Component {
 
     private _player: Node | null = null;
     private _data: TerrainData | null = null;
-    private _arrows: { key: string; node: Node; lbNode: Node; color: Color; tx: number; ty: number }[] = [];
+    private _arrows: { key: string; label: string; node: Node; lbNode: Node; lb: Label; color: Color; tx: number; ty: number; lastText: string }[] = [];
     private _frame = 0;
     private _bridged = false;
 
@@ -64,9 +66,9 @@ export class CompassHUD extends Component {
             ln.setPosition(0, -30, 0);
             const lb = ln.addComponent(Label);
             lb.string = p.label;
-            lb.fontSize = 18;
+            lb.fontSize = 20;
             lb.color = new Color(p.color.r, p.color.g, p.color.b, 255);
-            this._arrows.push({ key: p.key, node: an, lbNode: ln, color: p.color, tx: p.tx, ty: p.ty });
+            this._arrows.push({ key: p.key, label: p.label, node: an, lbNode: ln, lb, color: p.color, tx: p.tx, ty: p.ty, lastText: p.label });
         }
     }
 
@@ -96,6 +98,14 @@ export class CompassHUD extends Component {
             a.node.setPosition(dx * k, dy * k, 0);
             a.node.angle = Math.atan2(-dx, dy) * 180 / Math.PI;   // 默认指上 → 指向 (dx,dy)
             a.lbNode.angle = -a.node.angle;                       // 文字始终正立（抵消箭头旋转）
+            // 标签屏幕位置：箭头在屏幕下半时放箭头上方，其余放下方（偏移需反旋转回局部系）
+            const below = dy >= 0;
+            const oy = below ? -34 : 34;
+            const rad = -a.node.angle * Math.PI / 180;
+            a.lbNode.setPosition(-oy * Math.sin(rad), oy * Math.cos(rad), 0);
+            // 文案带直线距离（格），让玩家对「还要走多远」有预期；仅变化时写 string
+            const text = a.label + '·' + Math.round(Math.hypot(dx, dy) / TILE) + '格';
+            if (text !== a.lastText) { a.lastText = text; a.lb.string = text; }
         }
     }
 }

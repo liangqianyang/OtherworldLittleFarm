@@ -38,7 +38,12 @@ export class PlayerCharacter extends Component {
     init(terrain: TerrainData): void {
         this._terrain = terrain;
         this._g = this.node.addComponent(Graphics);
-        this._faceDot = this.node.addComponent(Graphics);
+        // 朝向点挂子节点：同节点第二个 Graphics 会被引擎拒绝（warn 12002），
+        // 导致 _faceDot 与 _g 指向同一组件，clear() 互相抹掉占位绘制
+        const dotN = new Node('face_dot');
+        dotN.layer = this.node.layer;
+        this.node.addChild(dotN);
+        this._faceDot = dotN.addComponent(Graphics);
         this._redraw();
         this._trySprite();
     }
@@ -142,6 +147,8 @@ export class PlayerCharacter extends Component {
 
     private _redraw(): void {
         if (!this._g || !this._faceDot) return;
+        // AI 贴图已挂载后不再重绘灰盒占位（修：朝向切换时 _redraw 把蓝圆身体画回贴图脚底）
+        if (this._artNode) { this._g.clear(); this._faceDot.clear(); return; }
         this._g.clear();
         this._faceDot.clear();
         // 灰盒小人：脚底在 node.position；身体圆 + 头圆 + 朝向点
