@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Camera, view, ResolutionPolicy, SpriteFrame, Layers, assetManager, ImageAsset, UITransform, Graphics, Color, Sprite } from 'cc';
+import { _decorator, Component, Node, Camera, view, ResolutionPolicy, SpriteFrame, Layers, assetManager, ImageAsset, UITransform, Graphics, Color, Sprite, Label } from 'cc';
 import { MAP_W, MAP_H, TILE, SPAWN, TerrainData } from './TerrainData';
 import { TerrainBakeRenderer } from './TerrainBakeRenderer';
 import { TerrainPoolRenderer } from './TerrainPoolRenderer';
@@ -16,6 +16,7 @@ import { ToolDockUI } from './terrain/ToolDockUI';
 import { TerrainEditInput } from './TerrainEditInput';
 import { WorldLiving } from './living/WorldLiving';
 import { AdventureSystem } from '../adventure/AdventureSystem';
+import { DefenseSystem } from '../defense/DefenseSystem';
 import { Interactable } from './interact/Interactable';
 import { DungeonOverlay } from '../../ui/DungeonOverlay';
 import { TimeSystem } from '../../core/TimeSystem';
@@ -50,6 +51,7 @@ export class WorldSpike extends Component {
     private _dock: ToolDockUI | null = null;
     private _editInput: TerrainEditInput | null = null;
     private _statusTimer = 0;
+    private _intelLabel: Label | null = null;   // B12 情报行：守门人夜袭预告
     private _dungeon: Node | null = null;
 
     start(): void {
@@ -142,6 +144,9 @@ export class WorldSpike extends Component {
         CompassHUD.create(this.node, playerNode, this._data!);
         // M7 收尾 UX：设置入口（右上角 ⚙，承载 TapTap 必接「添加到桌面」；面板在摇杆/工具坞之后建=同触点优先）
         SettingsPanel.create(this.node);
+        // M7 收尾 UX：守门人情报行（B12：今晚有防守=红字警报，否则预告下一波日期）
+        this._intelLabel = this._buildIntel();
+        this._refreshIntel();
 
         // M5：探险副本传送门 + 全屏副本面板
         this._buildDungeonGate();
@@ -217,12 +222,40 @@ export class WorldSpike extends Component {
             const editing = inLiving && !!this._edit.tool;
             this._editInput.node.active = editing;
             this._statusTimer += 1 / 60;
-            if (this._statusTimer > 1) { this._statusTimer = 0; this._dock.refreshStatus(); }
+            if (this._statusTimer > 1) { this._statusTimer = 0; this._dock.refreshStatus(); this._refreshIntel(); }
         }
     }
 
-    private _applyVisible(): void {
-        if (this._route === 'bake') {
+    /** B12 情报行：SCREEN_UI 居中顶部；今晚有防守=红字警报，否则灰白预告下一波日期（与 FarmHUD 同源逻辑） */
+    private _buildIntel(): Label {
+        const n = new Node('IntelLabel');
+        n.layer = SCREEN_UI_LAYER;
+        n.addComponent(UITransform).setContentSize(640, 44);
+        n.setPosition(0, 306, 0);
+        this.node.addChild(n);
+        const l = n.addComponent(Label)!;
+        l.fontSize = 20;
+        l.lineHeight = 26;
+        l.horizontalAlign = Label.HorizontalAlign.CENTER;   // 3.x 枚举是 HorizontalAlign（2.x 的 Label.Align 在 3.8 为 undefined，会抛错中断 start）
+        return l;
+    }
+
+    private _refreshIntel(): void {
+        if (!this._intelLabel) return;
+        const sys = DefenseSystem.inst;
+        if (sys && sys.hasNightTonight()) {
+            const intel = sys.intelTonight();
+            const brief = intel ? intel.comp.map((i) => `${i.monsterName}×${i.count}`).join('、') : '';
+            this._intelLabel.string = `⚠ 今晚防守：${brief}！睡前做好准备`;
+            this._intelLabel.color = new Color(255, 96, 96, 255);
+        } else if (sys) {
+            const next = sys.nextNightDay();
+            this._intelLabel.string = next !== null ? `守门人来报：第 ${next} 天夜里有怪物来袭` : '';
+            this._intelLabel.color = new Color(232, 222, 200, 255);
+        }
+    }
+
+    private _applyVisible(): void {        if (this._route === 'bake') {
             const [x0, y0, x1, y1] = TerrainBakeRenderer.chunkRangeOf(this._camX, this._camY);
             this._bake!.ensureVisible(x0, y0, x1, y1);
         } else {

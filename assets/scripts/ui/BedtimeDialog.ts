@@ -5,6 +5,7 @@ import { EventBus } from '../core/EventBus';
 import { TimeSystem } from '../core/TimeSystem';
 import { GameApp } from '../app/GameApp';
 import { FarmSystem } from '../gameplay/farm/FarmSystem';
+import { DefenseSystem } from '../gameplay/defense/DefenseSystem';
 
 /**
  * BedtimeDialog —— 结束一天确认弹窗（阶段 2.3）。
@@ -78,6 +79,17 @@ export class BedtimeDialog extends Component {
         }
 
         const lines: string[] = [];
+        // B12 睡前情报：今晚有防守必须醒目告知（塔是白天布置的，睡前才提示就晚了）；
+        // 明晚有防守也预告一句，让玩家提前一天准备。
+        const ds = DefenseSystem.inst;
+        if (ds && ds.hasNightTonight()) {
+            const intel = ds.intelTonight();
+            const brief = intel ? intel.comp.map((i) => `${i.monsterName}×${i.count}`).join('、') : '';
+            lines.unshift(`⚠ 今晚防守：${brief}！确认塔位与祭坛再睡`);
+        } else if (ds) {
+            const next = ds.nextNightDay();
+            if (next !== null && next - TimeSystem.inst.dayIndex <= 1) lines.push(`守门人来报：第 ${next} 天夜里有怪物来袭。`);
+        }
         if (this._pendingMature > 0) lines.push(`有 ${this._pendingMature} 块作物熟了没收！`);
         if (unwatered > 0) lines.push(`有 ${unwatered} 块苗今天还没浇水。`);
         this._infoLabel.string = lines.length > 0 ? lines.join('\n') : '今天辛劳了，好好休息吧。';
