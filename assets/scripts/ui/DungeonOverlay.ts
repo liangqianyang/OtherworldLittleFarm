@@ -6,7 +6,9 @@ import { SpriteLib } from '../core/SpriteLib';
 
 const { ccclass } = _decorator;
 
-const UI_2D = 1 << 25;
+// 屏幕 UI 层（1<<24，overlay 相机）：副本面板是屏幕空间全屏 UI，不能用 SCREEN_UI 世界层
+// （世界层锚定原点，主相机跟随玩家远离原点时整块面板渲染到屏外）
+const SCREEN_UI = 1 << 24;
 
 /**
  * DungeonOverlay —— 世界场景内的全屏副本界面（M5 探险副本化）。
@@ -18,7 +20,7 @@ const UI_2D = 1 << 25;
 export class DungeonOverlay {
     static create(parent: Node): Node {
         const root = new Node('DungeonOverlay');
-        root.layer = UI_2D;
+        root.layer = SCREEN_UI;
         root.addComponent(UITransform).setContentSize(1280, 720);
         parent.addChild(root);
         root.addComponent(DungeonOverlayComp);
@@ -103,28 +105,28 @@ class DungeonOverlayComp extends Component {
     private _drawFrame(): void {
         if (!this._g) {
             const gNode = new Node('dlg');
-            gNode.layer = UI_2D;
+            gNode.layer = SCREEN_UI;
             gNode.addComponent(UITransform).setContentSize(1280, 720);
             this.node.addChild(gNode);
             this._g = gNode.addComponent(Graphics);
             // 战场底
             const aNode = new Node('arenaBg');
-            aNode.layer = UI_2D;
+            aNode.layer = SCREEN_UI;
             aNode.addComponent(UITransform).setContentSize(900, 540);
             this.node.addChild(aNode);
             this._arenaG = aNode.addComponent(Graphics);
             this._monRoot = new Node('monsters');
-            this._monRoot.layer = UI_2D;
+            this._monRoot.layer = SCREEN_UI;
             this._monRoot.addComponent(UITransform).setContentSize(900, 540);
             this.node.addChild(this._monRoot);
             const hudNode = new Node('hud');
-            hudNode.layer = UI_2D;
+            hudNode.layer = SCREEN_UI;
             hudNode.addComponent(UITransform).setContentSize(700, 30);
             hudNode.setPosition(0, 344);
             this.node.addChild(hudNode);
             this._hud = this._makeLabel(hudNode, 26, Color.WHITE, 0, 0, 700, 30);
             const bn = new Node('banner');
-            bn.layer = UI_2D;
+            bn.layer = SCREEN_UI;
             bn.addComponent(UITransform).setContentSize(900, 60);
             bn.setPosition(0, 300);
             this.node.addChild(bn);
@@ -148,7 +150,7 @@ class DungeonOverlayComp extends Component {
         this._banner!.string = room.name;
         if (this._actionRoot) this._actionRoot.destroy();
         const root = new Node('actions');
-        root.layer = UI_2D;
+        root.layer = SCREEN_UI;
         root.addComponent(UITransform).setContentSize(1280, 720);
         this.node.addChild(root);
         this._actionRoot = root;
@@ -157,7 +159,7 @@ class DungeonOverlayComp extends Component {
 
         // desc
         const dn = new Node('desc');
-        dn.layer = UI_2D;
+        dn.layer = SCREEN_UI;
         dn.addComponent(UITransform).setContentSize(820, 44);
         dn.setPosition(0, 240);
         root.addChild(dn);
@@ -293,12 +295,12 @@ class DungeonOverlayComp extends Component {
             let entry = this._monNodes.get(m.uid);
             if (!entry) {
                 const n = new Node(`mo_${m.uid}`);
-                n.layer = UI_2D;
+                n.layer = SCREEN_UI;
                 n.addComponent(UITransform).setContentSize(80, 80);
                 this._monRoot.addChild(n);
                 const g = n.addComponent(Graphics);
                 const hpN = new Node('hp');
-                hpN.layer = UI_2D;
+                hpN.layer = SCREEN_UI;
                 hpN.addComponent(UITransform).setContentSize(44, 6);
                 n.addChild(hpN);
                 const hpG = hpN.addComponent(Graphics);
@@ -316,8 +318,16 @@ class DungeonOverlayComp extends Component {
             if (!entry.spr) {
                 const f = this._frameOf(rel);
                 if (f) {
-                    let sp = entry.n.getComponent(Sprite);
-                    if (!sp) { sp = entry.n.addComponent(Sprite); sp.sizeMode = Sprite.SizeMode.RAW; }
+                    // 怪物贴图挂 art 子节点：entry.n 已有 Graphics（色块兜底），同节点 Sprite 会被引擎拒绝（warn 12002）
+                    let artN = entry.n.getChildByName('art');
+                    if (!artN) {
+                        artN = new Node('art');
+                        artN.layer = SCREEN_UI;
+                        artN.addComponent(UITransform).setContentSize(80, 80);
+                        entry.n.addChild(artN);
+                    }
+                    let sp = artN.getComponent(Sprite);
+                    if (!sp) { sp = artN.addComponent(Sprite); sp.sizeMode = Sprite.SizeMode.RAW; }
                     sp.spriteFrame = f;
                     entry.spr = sp;
                 }
@@ -326,7 +336,7 @@ class DungeonOverlayComp extends Component {
                 if (f && f !== entry.spr.spriteFrame) entry.spr.spriteFrame = f;
             }
             if (entry.spr && entry.spr.spriteFrame) {
-                entry.n.setScale(m.hitT > 0 ? 1.18 : 1, m.hitT > 0 ? 1.18 : 1, 1);
+                entry.spr.node.setScale(m.hitT > 0 ? 1.18 : 1, m.hitT > 0 ? 1.18 : 1, 1);
             } else {
                 g.fillColor = m.hitT > 0 ? Color.WHITE : col;
                 g.circle(0, 0, r);
@@ -355,7 +365,7 @@ class DungeonOverlayComp extends Component {
     private _drawActionButtons(): void {
         if (this._actionRoot) this._actionRoot.destroy();
         const root = new Node('actions');
-        root.layer = UI_2D;
+        root.layer = SCREEN_UI;
         root.addComponent(UITransform).setContentSize(1280, 720);
         this.node.addChild(root);
         this._actionRoot = root;

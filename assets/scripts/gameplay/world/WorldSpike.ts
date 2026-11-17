@@ -176,6 +176,49 @@ export class WorldSpike extends Component {
         }).catch(() => { this._info = 'spike init error'; });
 
         this._applyVisible();
+        // 屏幕 UI 归层：面板/HUD 建在 UI_2D 世界层且锚定世界原点，主相机跟随玩家远离原点时
+        // 整块面板渲染到屏外（「看不到塔防/冒险」根因之二）。统一收进 SCREEN_UI 子树。
+        this._collectScreenUI();
+    }
+
+    /**
+     * 把屏幕空间 UI（全屏面板/顶栏 HUD/流程按钮）收进 SCREEN_UI 层子树：
+     * - 这些节点全部以屏幕中心坐标建模（1280×720），但建在 UI_2D 世界层、父节点在世界原点，
+     *   主相机 zoom 2× 跟随玩家 → 玩家不在原点附近时面板整体在视口外（隐形）。
+     * - overlay 相机（cam2, visibility=SCREEN_UI）固定屏幕坐标渲染，与摇杆/指南针同层。
+     * - ScreenUI 作为 canvas 最后一个子节点：渲染与触摸优先级最高（同 SettingsPanel 约定）。
+     * - 递归改层：已建子节点逐一修正；面板 onLoad 延迟构建的子节点用 this.node.layer 自动继承。
+     *   （DungeonOverlay 例外：其子节点硬编码层常量，已在该文件内改为 SCREEN_UI。）
+     */
+    private _collectScreenUI(): void {
+        const NAMES = ['WorldHUD', 'IntelLabel', 'BedtimeDialog', 'DefenseOverlay', 'DialogPanel',
+            'FishingPanel', 'BuildPanel', 'BackpackPanel', 'CodexPanel', 'DungeonOverlay', 'TutorialGuide'];
+        const screenRoot = new Node('ScreenUI');
+        screenRoot.layer = SCREEN_UI_LAYER;
+        this.node.addChild(screenRoot);
+        const found: Node[] = [];
+        const walk = (n: Node): void => {
+            if (NAMES.includes(n.name) || n.name.startsWith('wbtn_')) { found.push(n); return; }
+            for (const c of n.children) walk(c);
+        };
+        for (const c of this.node.children) { if (c !== screenRoot) walk(c); }
+        const setLayer = (n: Node): void => {
+            n.layer = SCREEN_UI_LAYER;
+            for (const c of n.children) setLayer(c);
+        };
+        for (const n of found) {
+            setLayer(n);
+            screenRoot.addChild(n);   // reparent 保留局部坐标（根节点皆屏幕中心系，父链原在世界原点）
+        }
+        // 触摸优先级修复：ContextButton/ToolDock 建在 Joystick 之前 → 同 overlay 相机下 sibling 序低于摇杆，
+        // 左半屏（摇杆 640×720 拾取区）内的点击被摇杆 TOUCH_START claim+swallow，TOUCH_END 永远到不了按钮
+        // （「布置封印」点不开 BuildPanel 的根因，引擎 pointer-event-dispatcher 只向 claim 者派发 END）。
+        // 插到 ScreenUI 头部：高于摇杆，但低于后收进的全屏面板（模态遮罩仍正确吞触摸）。
+        for (const name of ['ContextButton', 'ToolDock']) {
+            const n = this.node.getChildByName(name);
+            if (n) { setLayer(n); screenRoot.insertChild(n, 0); }
+        }
+        console.log(`[ScreenUI] ${found.length} 个屏幕空间 UI 节点归入 SCREEN_UI 层: ${found.map(n => n.name).join(', ')}`);
     }
 
     update(): void {
@@ -341,11 +384,21 @@ export class WorldSpike extends Component {
         gNode.addComponent(UITransform).setContentSize(96, 96);
         gNode.setPosition((112 + 0.5) * TILE, -(10 + 0.5) * TILE, 0);
         this.node.addChild(gNode);
+        // 贴图统一挂 art 子节点：gNode 随后会被 Interactable._wire 挂 Graphics，
+        // 同节点 Sprite+Graphics 会触发引擎 warn 12002 且 Sprite 不渲染（传送门隐形根因）
+        const mountGate = (f: SpriteFrame): void => {
+            if (gNode.getChildByName('art')) return;
+            const sprN = new Node('art');
+            sprN.layer = gNode.layer;
+            sprN.addComponent(UITransform).setContentSize(96, 96);
+            const sp = sprN.addComponent(Sprite);
+            sp.sizeMode = Sprite.SizeMode.CUSTOM;
+            sp.spriteFrame = f;
+            gNode.addChild(sprN);
+        };
         const frame = SpriteLib.inst.get('adventure/dungeon_gate');
         if (frame) {
-            const sp = gNode.addComponent(Sprite);
-            sp.sizeMode = Sprite.SizeMode.CUSTOM;
-            sp.spriteFrame = frame;
+            mountGate(frame);
         } else {
             const g = gNode.addComponent(Graphics);
             g.fillColor = new Color(120, 70, 170, 230);
@@ -355,15 +408,12 @@ export class WorldSpike extends Component {
             g.lineWidth = 4;
             g.circle(0, 0, 30);
             g.stroke();
-            // SpriteLib 就绪后升级贴图（一次性）
+            // SpriteLib 就绪后升级贴图（一次性）：清占位 Graphics + 挂 art 子节点
             SpriteLib.inst.init().then(() => {
                 const f2 = SpriteLib.inst.get('adventure/dungeon_gate');
                 if (f2 && g.isValid) {
                     g.clear();
-                    g.destroy();
-                    const sp = gNode.addComponent(Sprite);
-                    sp.sizeMode = Sprite.SizeMode.CUSTOM;
-                    sp.spriteFrame = f2;
+                    mountGate(f2);
                 }
             });
         }

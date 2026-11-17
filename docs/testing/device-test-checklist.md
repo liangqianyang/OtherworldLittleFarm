@@ -96,6 +96,34 @@
 | 3 | 设置面板·Tap 运行时 | 「添加到桌面」绿色行显示；点击后反馈行按五态变化（已添加✓/已在桌面/未授权/不支持/失败） |
 | 4 | 添加到桌面·完整链路 | ⚠️ 仅线上包可完整验证（官方规则：开发者后台扫码自测触发不了桌面小组件）：Tap App 内点击→授权→桌面出现文件夹组件且游戏置首 |
 
+## E++. 「看不到塔防/冒险」三根因（2026-11-17 浏览器运行时实证修复）
+
+用户反馈「看不到塔防、看不到冒险」+ 截图只有世界没有 UI。排查出三个叠加 bug，均已修复并运行时验证：
+
+1. **warn-12002 同节点 Sprite+Graphics → Sprite 静默不渲染**（祭坛/传送门隐形根因）。
+   引擎拒绝同节点第二个渲染组件且只 warn 不抛错：`world_seal`/`dungeon_gate`/豌豆塔/副本怪/玩家朝向点
+   全部改为 **art 子节点挂贴图**（WorldLiving/WorldSpike/DefenseOverlay/DungeonOverlay/PlayerCharacter）。
+2. **屏幕 UI 建在 UI_2D 世界层、锚定世界原点**（面板/HUD/商店按钮隐形根因）。
+   主相机 zoom=2 跟随玩家远离原点 → 整块屏幕空间 UI 渲染到视口外。
+   修复：`WorldSpike._collectScreenUI()` 把 15 个命名节点 + `wbtn_*` 收进 `ScreenUI` 子树
+   （SCREEN_UI 层 1<<24，canvas 最后子节点，overlay 相机固定屏幕坐标渲染）；DungeonOverlay 硬编码层常量同步改 SCREEN_UI。
+3. **触摸优先级：摇杆吞掉左半屏点击**（「布置封印」点不开根因）。
+   ContextButton/ToolDock 建在 Joystick 之前 → 同 overlay 相机下 sibling 序低于摇杆；
+   引擎 pointer-event-dispatcher TOUCH_START 按优先级 claim+swallow，TOUCH_END 只派发给 claim 者 →
+   左半屏（摇杆 640×720 拾取区）内按钮永远收不到 END。修复：两节点 `insertChild(ScreenUI, 0)`（高于摇杆、低于模态面板）。
+
+**运行时实证**（web-mobile Chrome 2560×1163，60fps，临时日志验证后已移除）：
+- 出生点：HUD/睡觉按钮/工具坞/商店/指南针距离标签/新手引导全部可见（proof_final_spawn.png）。
+- 走到祭坛 (110,52)：world_seal 贴图 + 「布置封印」按钮渲染；**点击 → 封印布置面板居中打开**（4 塔列表，proof_altar_button.png / proof_buildpanel.png）。
+- 走到传送门 (112,10)：dungeon_gate 紫色石门贴图 + 「进入旧林地」按钮；**点击 → 副本面板打开**（HP/房间名/行动钮，proof_portal.png / proof_dungeon.png）。
+- 指南针死区修复：隐藏半径 12×6.5 格 → 8×4 格（< 视口半宽 10×5.625 格），标签改全名+直线距离（如「防守·44格」）。
+
+**web-mobile CLI 构建备注**（浏览器 E2E 用）：
+`CocosCreator --project <proj> --build "platform=web-mobile;debug=true;startScene=<launch场景UUID>"`
+—— startScene 必须传 UUID（路径无效）；进程退出码 36 为正常（构建日志 Finished 即成功）；
+CLI 构建会改写 `~/.CocosCreator/editor/{window,layout}.json`，编辑器 GUI 启动异常时优先检查该两文件。
+
+
 ## F. 已知非阻塞项
 
 - 编辑器场景进程与预览进程分离（MCP execute_component_method 不进预览）——不影响真机。
@@ -103,3 +131,4 @@
 - BGM 未加（用户拍板暂无）；SFX 为 WebAudio 合成，真机首次交互后解锁。
 
 —— 生成于 2026-11-16，由 bsk 自动断言链+无头单测结论汇总；构建与真机步骤需用户手动执行。
+—— 2026-11-17 增补 E++：三根因运行时实证修复（浏览器 E2E，截图存 /private/tmp/proof_*.png）。

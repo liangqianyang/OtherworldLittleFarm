@@ -202,10 +202,14 @@ export class DefenseOverlay extends Component {
             // 豌豆射手塔用 AI 素材贴图，其余 kind 暂色块（后续批次补齐）
             const tf = t.cropId === 'podgun' ? SpriteLib.inst.get('adventure/tower_pea') : null;
             if (tf) {
-                const sp = n.addComponent(Sprite);
+                // 塔身贴图挂 art 子节点：n 已有 Graphics（射程圈），同节点 Sprite 会被引擎拒绝（warn 12002）
+                const artN = new Node('art');
+                artN.layer = n.layer;
+                artN.addComponent(UITransform).setContentSize(48, 48);
+                const sp = artN.addComponent(Sprite);
                 sp.sizeMode = Sprite.SizeMode.CUSTOM;
                 sp.spriteFrame = tf;
-                n.getComponent(UITransform)!.setContentSize(48, 48);
+                n.addChild(artN);
             } else {
                 g.fillColor = col;
                 g.circle(0, 0, t.lv >= 2 ? 26 : 20); g.fill();

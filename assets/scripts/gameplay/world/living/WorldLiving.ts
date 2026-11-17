@@ -166,16 +166,10 @@ export class WorldLiving extends Component {
             if (npc) mount(npc, id === 'gardener' ? 'npc/npc_gardener' : 'npc/npc_gatekeeper', 64, 88, 0, 18);
         }
         const seal = this.node.getChildByName('world_seal');
-        if (seal && !seal.getComponent(Sprite)) {
-            const sf = lib.get('adventure/world_seal');
-            if (sf) {
-                const g = seal.getComponent(Graphics);
-                if (g && g.isValid) g.clear();
-                const sp = seal.addComponent(Sprite);
-                sp.sizeMode = Sprite.SizeMode.CUSTOM;
-                sp.spriteFrame = sf;
-                seal.getComponent(UITransform)!.setContentSize(88, 88);
-            }
+        // 贴图挂 art 子节点：seal 节点已有 Graphics（_makePointNode），同节点再 addComponent(Sprite)
+        // 会被引擎拒绝（warn 12002 "already have one"）导致祭坛隐形；mount 走子节点并清掉占位 Graphics
+        if (seal && mount(seal, 'adventure/world_seal', 88, 88)) {
+            seal.getComponent(UITransform)!.setContentSize(88, 88);
         }
     }
 
