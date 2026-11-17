@@ -113,18 +113,70 @@ export class WorldLiving extends Component {
         n.setPosition((71 + 0.5) * 32, -(56.5) * 32 - 16, 0);
         root.addChild(n);
         const tryArt = (): void => {
-            const sf = SpriteLib.inst.get('adventure/barn');
-            if (!sf) { this.scheduleOnce(tryArt, 1.2); return; }
-            const sp = n.addComponent(Sprite);
-            sp.sizeMode = Sprite.SizeMode.CUSTOM;
-            sp.spriteFrame = sf;
+            this._applyArt();
+            if (!SpriteLib.inst.ready) this.scheduleOnce(tryArt, 1.2); // 未就绪才续查；就绪后由 sprites_ready 事件兜底
         };
         this.scheduleOnce(tryArt, 0.5);
     }
 
-    private _onFarmEvt(): void {
+    private _onFarmEvt(action?: { action?: string }): void {
+        // 素材就绪事件：幂等重挂所有贴图（轮询链在冻结页会被掐断，事件驱动兜底）
+        if (action && action.action === 'sprites_ready') this._applyArt();
         this._refreshHud();
         this._refreshShops();
+    }
+
+    /** 幂等应用全部 AI 贴图：barn/bed/npc×2/seal（有 art 子节点即跳过）；sprites_ready 与轮询双通道调用 */
+    private _applyArt(): void {
+        const lib = SpriteLib.inst;
+        if (!lib.ready) return;
+        const mount = (n: Node, key: string, w: number, h: number, ox = 0, oy = 0): boolean => {
+            const sf = lib.get(key);
+            if (!sf) return false;
+            if (!n.getChildByName('art')) {
+                const sprN = new Node('art');
+                sprN.layer = n.layer;
+                sprN.addComponent(UITransform).setContentSize(w, h);
+                sprN.setPosition(ox, oy);
+                const sp = sprN.addComponent(Sprite);
+                sp.sizeMode = Sprite.SizeMode.CUSTOM;
+                sp.spriteFrame = sf;
+                n.addChild(sprN);
+            }
+            const g = n.getComponent(Graphics);
+            if (g && g.isValid) g.clear();
+            return true;
+        };
+        const root = this.node.getParent();
+        if (root) {
+            const barn = root.getChildByName('farm_barn');
+            if (barn && !barn.getComponent(Sprite)) {
+                const sf = lib.get('adventure/barn');
+                if (sf) {
+                    const sp = barn.addComponent(Sprite);
+                    sp.sizeMode = Sprite.SizeMode.CUSTOM;
+                    sp.spriteFrame = sf;
+                }
+            }
+        }
+        const bed = this.node.getChildByName('world_bed');
+        if (bed) mount(bed, 'decor/bed', 56, 44, 0, 8);
+        for (const id of ['gardener', 'gatekeeper']) {
+            const npc = this.node.getChildByName('npc_' + id);
+            if (npc) mount(npc, id === 'gardener' ? 'npc/npc_gardener' : 'npc/npc_gatekeeper', 64, 88, 0, 18);
+        }
+        const seal = this.node.getChildByName('world_seal');
+        if (seal && !seal.getComponent(Sprite)) {
+            const sf = lib.get('adventure/world_seal');
+            if (sf) {
+                const g = seal.getComponent(Graphics);
+                if (g && g.isValid) g.clear();
+                const sp = seal.addComponent(Sprite);
+                sp.sizeMode = Sprite.SizeMode.CUSTOM;
+                sp.spriteFrame = sf;
+                seal.getComponent(UITransform)!.setContentSize(88, 88);
+            }
+        }
     }
 
     /** 右侧流程按钮：卖粮/买种子/背包/图鉴（farm HUD 迁移） */
@@ -195,15 +247,9 @@ export class WorldLiving extends Component {
     private _buildSeal(layer: number): void {
         void layer;
         const n = this._makePointNode('world_seal', 110, 52, new Color(196, 164, 84, 255), 44, 30);
-        const g = n.getComponent(Graphics);
         const tryArt = (): void => {
-            const sf = SpriteLib.inst.get('adventure/world_seal');
-            if (!sf) { this.scheduleOnce(tryArt, 1.2); return; }
-            if (g && g.isValid) { g.clear(); }
-            const sp = n.getComponent(Sprite) ?? n.addComponent(Sprite);
-            sp.sizeMode = Sprite.SizeMode.CUSTOM;
-            n.getComponent(UITransform)!.setContentSize(88, 88);
-            sp.spriteFrame = sf;
+            this._applyArt();
+            if (!SpriteLib.inst.ready) this.scheduleOnce(tryArt, 1.2);
         };
         this.scheduleOnce(tryArt, 0.5);
         const it = n.addComponent(Interactable);
@@ -218,18 +264,8 @@ export class WorldLiving extends Component {
         const bx = 74, by = 24;
         const n = this._makePointNode('world_bed', bx, by, new Color(122, 84, 52, 255), 34, 22);
         const tryArt = (): void => {
-            const sf = SpriteLib.inst.get('decor/bed');
-            if (!sf) { this.scheduleOnce(tryArt, 1.2); return; }
-            const sprN = new Node('art');
-            sprN.layer = n.layer;
-            sprN.addComponent(UITransform).setContentSize(56, 44);
-            sprN.setPosition(0, 8);
-            n.addChild(sprN);
-            const sp = sprN.addComponent(Sprite);
-            sp.sizeMode = Sprite.SizeMode.CUSTOM;
-            sp.spriteFrame = sf;
-            const g = n.getComponent(Graphics);
-            if (g && g.isValid) g.clear();
+            this._applyArt();
+            if (!SpriteLib.inst.ready) this.scheduleOnce(tryArt, 1.2);
         };
         this.scheduleOnce(tryArt, 0.5);
         const it = n.addComponent(Interactable);
@@ -263,19 +299,10 @@ export class WorldLiving extends Component {
             nl.fontSize = 16; nl.lineHeight = 20;
             nl.color = new Color(255, 244, 214, 255);
             nl.string = d.name;
-            // 素材就绪后换立绘（SpriteLib 异步，同 FarmHUD._makeNpcs 策略）
+            // 素材就绪后换立绘：统一走 _applyArt（sprites_ready 事件 + 轮询兜底）
             const tryArt = (): void => {
-                if (!SpriteLib.inst.ready) { this.scheduleOnce(tryArt, 1.2); return; }
-                const sf: SpriteFrame | null = SpriteLib.inst.get(d.sprite);
-                if (!sf) return;
-                const sprN = new Node('art');
-                sprN.layer = this.node.layer;
-                sprN.addComponent(UITransform).setContentSize(64, 88);
-                n.addChild(sprN);
-                const sp = sprN.addComponent(Sprite);
-                sp.sizeMode = Sprite.SizeMode.CUSTOM;
-                sp.spriteFrame = sf;
-                g.clear();
+                this._applyArt();
+                if (!SpriteLib.inst.ready) this.scheduleOnce(tryArt, 1.2);
             };
             this.scheduleOnce(tryArt, 0.5);
             const it = n.addComponent(Interactable);
