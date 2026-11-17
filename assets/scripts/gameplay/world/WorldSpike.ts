@@ -230,8 +230,9 @@ export class WorldSpike extends Component {
     private _buildIntel(): Label {
         const n = new Node('IntelLabel');
         n.layer = SCREEN_UI_LAYER;
-        n.addComponent(UITransform).setContentSize(640, 44);
-        n.setPosition(0, 306, 0);
+        n.addComponent(UITransform).setContentSize(420, 44);
+        // 顶部偏左：新手引导提示框（TutorialGuide）常驻顶部中央偏右，居中会被遮住右半
+        n.setPosition(-150, 306, 0);
         this.node.addChild(n);
         const l = n.addComponent(Label)!;
         l.fontSize = 20;
