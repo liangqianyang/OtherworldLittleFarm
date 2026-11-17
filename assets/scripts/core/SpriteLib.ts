@@ -57,9 +57,22 @@ export class SpriteLib {
 
     private _frames = new Map<string, SpriteFrame>();
     private _bundle: Bundle | null = null;
+    private _initing: Promise<void> | null = null;
     ready = false;
 
     async init(): Promise<void> {
+        if (this.ready) return;
+        // 并发去重：多个视图同帧调用 init 共享同一次加载（否则重复加载+重复广播）
+        if (this._initing) return this._initing;
+        this._initing = this._doInit();
+        try {
+            await this._initing;
+        } finally {
+            this._initing = null;
+        }
+    }
+
+    private async _doInit(): Promise<void> {
         if (this.ready) return;
         const bundle = await new Promise<Bundle | null>((res) =>
             assetManager.loadBundle('texture', (err, b) => res(err ? null : b)));

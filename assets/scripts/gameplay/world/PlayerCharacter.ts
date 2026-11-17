@@ -55,8 +55,9 @@ export class PlayerCharacter extends Component {
         n.layer = this.node.layer;
         n.addComponent(UITransform).setContentSize(44, 44);
         const sp = n.addComponent(Sprite);
-        sp.sizeMode = Sprite.SizeMode.RAW;
+        sp.sizeMode = Sprite.SizeMode.CUSTOM; // 必须先 CUSTOM：RAW/TRIMMED 赋帧会把 UITransform 重置回图片原始 32px
         sp.spriteFrame = f;
+        n.getComponent(UITransform)!.setContentSize(44, 44);
         n.setPosition(0, 24, 0);            // 脚底点→身体中心
         this.node.addChild(n);
         this._artNode = n;
