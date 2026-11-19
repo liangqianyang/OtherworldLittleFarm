@@ -5,6 +5,7 @@ import { EventBus } from '../core/EventBus';
 import { GameApp } from '../app/GameApp';
 import { TimeSystem } from '../core/TimeSystem';
 import { FarmSystem } from '../gameplay/farm/FarmSystem';
+import { ToolDockUI } from '../gameplay/world/terrain/ToolDockUI';
 
 /**
  * TutorialGuide —— 十分钟引导链（阶段 2.4，§13 MVP 清单）。
@@ -21,6 +22,7 @@ export class TutorialGuide extends Component {
     private _label: Label = null!;
     private _badgeLabel: Label = null!;
     private _arrow: Node = null!;
+    private _banner: Node = null!;
     private _step = 0;
 
     onLoad(): void {
@@ -48,12 +50,19 @@ export class TutorialGuide extends Component {
     }
 
     start(): void {
-        // 底部横幅（不挡地块与顶栏）
+        // 底部横幅（ui-notes 4.6：上移到 (0,-210) 避开摇杆动态区；与工具坞互斥显隐——
+        // 注意 deactivated 节点 update 停转，故根节点常驻 active，只切换 banner 子节点）
         const W = 620, H = 74;
         this.node.addComponent(UITransform).setContentSize(W, H);
-        this.node.setPosition(0, -300);
+        this.node.setPosition(0, -210);
 
-        const g = this.node.addComponent(Graphics)!;
+        const banner = new Node('banner');
+        banner.layer = this.node.layer;
+        banner.addComponent(UITransform).setContentSize(W, H);
+        this.node.addChild(banner);
+        this._banner = banner;
+
+        const g = banner.addComponent(Graphics)!;
         g.fillColor = new Color(30, 26, 22, 220);
         g.strokeColor = new Color(255, 214, 90, 200); // 金色描边=任务感
         g.lineWidth = 3;
@@ -62,25 +71,25 @@ export class TutorialGuide extends Component {
         g.stroke();
 
         const lblNode = new Node('lbl');
-        lblNode.layer = this.node.layer;
+        lblNode.layer = banner.layer;
         lblNode.addComponent(UITransform);
         this._label = lblNode.addComponent(Label)!;
         this._label.fontSize = 24;
         this._label.lineHeight = 30;
         lblNode.setPosition(0, 0);
-        this.node.addChild(lblNode);
+        banner.addChild(lblNode);
 
         const badge = new Node('badge');
-        badge.layer = this.node.layer;
+        badge.layer = banner.layer;
         badge.addComponent(UITransform);
         badge.setPosition(W / 2 - 52, H / 2 - 20);
         this._badgeLabel = badge.addComponent(Label)!;
         this._badgeLabel.fontSize = 18;
-        this.node.addChild(badge);
+        banner.addChild(badge);
 
         // 指示箭头（横幅上方，指向上方目标区域）
         this._arrow = new Node('arrow');
-        this._arrow.layer = this.node.layer;
+        this._arrow.layer = banner.layer;
         this._arrow.addComponent(UITransform);
         const ag = this._arrow.addComponent(Graphics)!;
         ag.fillColor = new Color(255, 214, 90, 230);
@@ -89,10 +98,17 @@ export class TutorialGuide extends Component {
         ag.lineTo(0, 22);
         ag.close();
         ag.fill();
-        this._arrow.setPosition(0, -255);
-        this.node.parent!.addChild(this._arrow);
+        this._arrow.setPosition(0, 45);
+        banner.addChild(this._arrow);
 
         this._refresh();
+    }
+
+    /** 世界场景里工具坞可见时让位（互斥，防几何重叠） */
+    protected update(): void {
+        if (this._banner && this._banner.active === ToolDockUI.screenVisible) {
+            this._banner.active = !ToolDockUI.screenVisible;
+        }
     }
 
     private _onFarmChanged({ action }: { action: string }): void {
@@ -144,8 +160,8 @@ export class TutorialGuide extends Component {
     private static readonly STEP_TEXTS: readonly string[] = [
         '点击一块空地，种下种子',
         '点击种好的地块，浇水',
-        '点右上角「跳一天」，睡一觉',
+        '走回屋前床边，点「睡觉」睡到第二天',
         '作物金黄后，点击地块收获',
-        '点左上角「卖粮」，把萝卜换成金币',
+        '走近谷仓点「卖粮」（或开背包-商店），把萝卜换成金币',
     ];
 }

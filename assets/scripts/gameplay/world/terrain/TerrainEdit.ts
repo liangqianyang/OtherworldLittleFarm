@@ -53,9 +53,13 @@ export class TerrainEdit {
         switch (this._tool) {
             case 'hoe':
                 return t === TT.Grass ? null : (t === TT.Dirt ? '已是泥地' : '此格不能开垦');
-            case 'shovel':
+            case 'shovel': {
                 if (!BUILT_TYPES.includes(t)) return '没有可拆除的建造';
+                // V3：基线本身含石板台/预置桥/Deck（广场/码头台/主干 y40），铲到基线同类=拆不动（防刷返还）
+                const b = d.baseline ? d.baseline[d.idx(tx, ty)] : -1;
+                if (b === t) return '基线铺装不可拆除';
                 return null;
+            }
             case 'paver': {
                 if (t === TT.Water) {
                     // 木平台：至少一格邻接非水（否则孤岛）
@@ -69,6 +73,8 @@ export class TerrainEdit {
             }
             case 'hammer': {
                 if (t !== TT.Water) return '只能在水面造桥';
+                // V3：造桥限定庭院桥区 BRIDGE_ZONE(39,38)-(42,42)，河面其余段保持景观连续
+                if (!d.inBridgeZone(tx, ty)) return '只能在此河段造桥';
                 if (!this._hasLandNeighbor(tx, ty) && !this._hasBridgeNeighbor(tx, ty)) return '桥需邻接岸或桥';
                 return null;
             }
@@ -114,7 +120,8 @@ export class TerrainEdit {
             }
             case 'shovel': {
                 nt = d.baseline ? d.baseline[i] : TT.Grass;
-                if (nt === TT.Bridge || nt === TT.Deck || nt === TT.Stairs || nt === TT.StonePath) nt = TT.Grass; // 基线不会有人造格，防御
+                nh = d.baselineHeights ? d.baselineHeights[i] : 0;   // 高度一并还原（R-A 幽灵高度：台阶铲除后 h≥1 孤格固化）
+                // V3 基线即权威（含石板台/预置桥/Deck），直接还原；validate 已挡基线同类格
                 const back = this._shovelRefund(prevType);
                 EconomySystem.inst.refund(inv, back);
                 for (const b of back) rec.refunds.push({ ...b });   // 撤销拆除=收回返还
@@ -137,31 +144,42 @@ export class TerrainEdit {
         this._stroke = null;
     }
 
-    /** 撤销最近一笔：还原格子+全额返还建造消耗/收回拆除返还。 */
+    /** 撤销最近一笔：还原格子+全额返还建造消耗/收回拆除返还。
+     *  预检：撤销拆除需收回此前返还的材料；若玩家已花掉则拒绝（避免负库存/凭空吞材料），记录留在栈上。 */
     undo(inv: Record<string, number>): boolean {
         const d = this._data;
-        const rec = this._undo.pop();
+        const rec = this._undo[this._undo.length - 1];
         if (!d || !rec) return false;
+        const need: Record<string, number> = {};
+        for (const r of rec.refunds) need[r.itemId] = (need[r.itemId] ?? 0) + r.count;
+        for (const k of Object.keys(need)) {
+            if ((inv[k] ?? 0) < need[k]) return false;
+        }
+        this._undo.pop();
         for (let k = rec.cells.length - 1; k >= 0; k--) {
             const c = rec.cells[k];
             d.setCell(d.cx(c.i), d.cy(c.i), c.prevType, c.prevHeight);
         }
         for (const c of rec.costs) inv[c.itemId] = (inv[c.itemId] ?? 0) + c.count;
-        for (const r of rec.refunds) inv[r.itemId] = Math.max(0, (inv[r.itemId] ?? 0) - r.count);
+        for (const r of rec.refunds) inv[r.itemId] = (inv[r.itemId] ?? 0) - r.count;
         return true;
     }
 
     get undoDepth(): number { return this._undo.length; }
 
-    /** 铲子无 cost 记录时的返还表（按拆除对象）。 */
+    /** 铲子返还 = 原建造 cost 的 50%（向下取整），读 terrain_ops 表（terrain-system.md §6，与 UI 文案一致）。 */
     private _shovelRefund(prevType: number): { itemId: string; count: number }[] {
-        switch (prevType) {
-            case TT.StonePath: return [{ itemId: 'stone', count: 1 }, { itemId: 'gold', count: 1 }];
-            case TT.Deck: return [{ itemId: 'wood', count: 1 }];
-            case TT.Bridge: return [{ itemId: 'wood', count: 3 }, { itemId: 'gold', count: 10 }];
-            case TT.Stairs: return [{ itemId: 'stone', count: 2 }];
-            default: return [];
-        }
+        let opId = '';
+        if (prevType === TT.StonePath) opId = 'pave_stone';
+        else if (prevType === TT.Deck) opId = 'pave_deck';
+        else if (prevType === TT.Bridge) opId = 'build_bridge';
+        else if (prevType === TT.Stairs) opId = 'build_stairs';
+        if (!opId) return [];
+        const row = DataManager.inst.getRow('catalogs/terrain_ops', opId) as AnyRow | null;
+        if (!row || !Array.isArray(row['cost'])) return [];
+        return (row['cost'] as { itemId: string; count: number }[])
+            .map(c => ({ itemId: String(c.itemId), count: Math.floor(Number(c.count) * 0.5) }))
+            .filter(c => c.count > 0);
     }
 
     private _neighbors(tx: number, ty: number): [number, number][] {

@@ -40,16 +40,17 @@ export class FishingSystem {
     lastFishId = '';
 
     /** 权重随机选鱼；鱼表缺失返回 null */
-    private _rollFish(): { id: string; def: any } | null {
+    private _rollFish(): { id: string; def: Record<string, unknown> } | null {
         const table = DataManager.inst.getRows('catalogs/fish');
         if (!table || table.length === 0) return null;
-        const total = table.reduce((s: number, r: any) => s + (r['weight'] ?? 1), 0);
+        const total = table.reduce((s: number, r) => s + Number(r['weight'] ?? 1), 0);
         let roll = Math.random() * total;
         for (const row of table) {
-            roll -= (row['weight'] ?? 1);
-            if (roll <= 0) return { id: row['id'], def: row };
+            roll -= Number(row['weight'] ?? 1);
+            if (roll <= 0) return { id: String(row['id']), def: row };
         }
-        return { id: table[table.length - 1]['id'], def: table[table.length - 1] };
+        const last = table[table.length - 1];
+        return { id: String(last['id']), def: last };
     }
 
     /** 抛竿。返回 false=没有鱼表（异常） */
@@ -59,7 +60,7 @@ export class FishingSystem {
         if (!pick) return false;
         const [wMin, wMax] = (pick.def['waitSec'] ?? [1.5, 4]) as [number, number];
         const wait = wMin + Math.random() * (wMax - wMin);
-        const window = pick.def['catchWindowSec'] ?? 0.6;
+        const window = Number(pick.def['catchWindowSec'] ?? 0.6);
         this.cast = {
             fishId: pick.id,
             biteAt: wait,
@@ -101,14 +102,20 @@ export class FishingSystem {
             EventBus.inst.emit('farmChanged', { action: 'fish_early' });
             return 'early';
         }
-        const fishDef: any = DataManager.inst.getRow('catalogs/fish', s.fishId);
+        if (s.elapsed > s.biteDeadline) {
+            // 与 tick 同帧边界：窗口已过按 miss 判，杜绝超时后仍能钓到
+            this.lastResult = 'miss';
+            this.cast = null;
+            EventBus.inst.emit('farmChanged', { action: 'fish_miss' });
+            return 'miss';
+        }
         GameApp.inst.giveItem(s.fishId, 1);
         GameApp.inst.collectCodex(s.fishId); // 图鉴登记（去重在 App 层）
+        GameApp.inst.persist('fish_caught');
         this.lastResult = 'caught';
         this.lastFishId = s.fishId;
         this.cast = null;
         EventBus.inst.emit('farmChanged', { action: 'fish_caught', fishId: s.fishId });
-        void fishDef;
         return 'caught';
     }
 

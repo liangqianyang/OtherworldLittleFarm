@@ -46,12 +46,17 @@ export class DataManager {
             console.warn('[Data] 未找到 data Bundle（assets/data 尚未建表或未设为 Bundle），以空表运行');
             return;
         }
-        for (const path of TABLE_MANIFEST) {
-            const json = await this._loadJson(bundle, path);
-            if (json === null) continue; // 未建的表静默跳过
+        // 小表并行加载（串行 await 拖慢启动首屏）
+        const jsons = await Promise.all(TABLE_MANIFEST.map((path) => this._loadJson(bundle, path)));
+        TABLE_MANIFEST.forEach((path, i) => {
+            const json = jsons[i];
+            if (json === null) {
+                console.warn(`[Data] 表加载失败（bundle 中缺资源或 json 为空）: ${path}`);
+                return; // 单表失败不连坐，其余表照常加载
+            }
             const rows = Array.isArray(json) ? (json as AnyRow[]) : [json as AnyRow];
             this._tables.set(path, rows);
-        }
+        });
         this._validate();
         console.log(`[Data] 已加载 ${this._tables.size}/${TABLE_MANIFEST.length} 张数据表`);
     }

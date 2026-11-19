@@ -121,7 +121,7 @@ export class DialogPanel extends Component {
     }
 
     private _applyArt(npcId: string): void {
-        const map: Record<string, string> = { gardener: 'npc/npc_gardener', gatekeeper: 'npc/npc_gatekeeper' };
+        const map: Record<string, string> = { gardener: 'npc/npc_gardener', gatekeeper: 'npc/npc_gatekeeper', fisher: 'npc/npc_fisher' };
         const path = map[npcId];
         if (!path) return;
         const lib = SpriteLib.inst;

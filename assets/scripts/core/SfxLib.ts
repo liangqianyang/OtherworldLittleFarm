@@ -5,7 +5,7 @@ import { EventBus } from './EventBus';
  *
  * 零素材成本：Web Audio 振荡器+噪声实时合成，与像素画风天然契合。
  * 不依赖平台私有 API：AudioContext 从全局取（Tap/微信环境注入同名全局即可适配）。
- * 音量设置面板二期（§18）；masterGain 先固定 0.5。
+ * 音量设置面板二期（§18）；masterGain 默认 0.5，可经 setMasterGain 调整。
  */
 export class SfxLib {
     private static _instance: SfxLib | null = null;
@@ -38,6 +38,12 @@ export class SfxLib {
 
     setMuted(m: boolean): void {
         this._muted = m;
+    }
+
+    /** 主音量（0~1）；AudioContext 已创建时立即生效 */
+    setMasterGain(v: number): void {
+        this.masterGain = Math.max(0, Math.min(1, v));
+        if (this._master) this._master.gain.value = this.masterGain;
     }
 
     get muted(): boolean {
@@ -132,8 +138,8 @@ export class SfxLib {
         EventBus.inst.on('itemGained', (p: { itemId: string }) => {
             if (p.itemId === 'gold') this.play('coin');
         }, null);
-        EventBus.inst.on('itemSpent', (p: { itemId: string }) => {
-            if (p.itemId === 'gold') this.play('deny');
+        EventBus.inst.on('itemSpent', (p: { itemId: string; fail?: boolean }) => {
+            if (p.fail === true) this.play('deny'); // 仅消费失败响拒绝音；正常花钱不打扰
         }, null);
     }
 }

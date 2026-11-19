@@ -7,7 +7,7 @@
  * 波次 HUD（第 X/Y 波 · 场上怪 · 波间倒计时），终局归因面板。
  * 帧驱动：update(dt) 由引擎调用；Automation 可手动调 update 推进（RAF 停转兼容）。
  */
-import { _decorator, Component, Node, Graphics, Label, Color, UITransform, Sprite, SpriteFrame } from 'cc';
+import { _decorator, Component, Node, Graphics, Label, Color, UITransform, Sprite, SpriteFrame, EventTouch } from 'cc';
 import { EventBus } from '../core/EventBus';
 import { TimeSystem } from '../core/TimeSystem';
 import { GameApp } from '../app/GameApp';
@@ -138,7 +138,7 @@ export class DefenseOverlay extends Component {
         }
         g.fill();
         // 路径带
-        g.strokeColor = COL_PATH; g.lineWidth = 44; g.lineJoin = 'round'; g.lineCap = 'round';
+        g.strokeColor = COL_PATH; g.lineWidth = 44; g.lineJoin = Graphics.LineJoin.ROUND; g.lineCap = Graphics.LineCap.ROUND;
         for (const line of Object.keys(def.paths)) {
             const wps = m.pathPx[line];
             g.moveTo(wps[0][0], wps[0][1]);
@@ -156,11 +156,17 @@ export class DefenseOverlay extends Component {
             const [px, py] = cellToPx(def, cx, cy);
             g.circle(px, py, 20); g.fill();
         }
-        // 祭坛 2×2：cells (12,3)(13,3)(12,4)(13,4) → 区块 x∈[288,416] y∈[-32,96]
+        // 祭坛区块：由 altarCells 包围盒推导（不写死格坐标）
+        const ac = def.altarCells;
+        const minCx = Math.min(...ac.map((c) => c[0])), maxCx = Math.max(...ac.map((c) => c[0]));
+        const minCy = Math.min(...ac.map((c) => c[1])), maxCy = Math.max(...ac.map((c) => c[1]));
+        const ax = def.originX + minCx * def.cellPx;
+        const ay = def.originY - (maxCy + 1) * def.cellPx;
+        const aw = (maxCx - minCx + 1) * def.cellPx, ah = (maxCy - minCy + 1) * def.cellPx;
         g.fillColor = COL_ALTAR;
-        g.rect(288, -32, 128, 128); g.fill();
+        g.rect(ax, ay, aw, ah); g.fill();
         g.strokeColor = GOLD; g.lineWidth = 4;
-        g.rect(288, -32, 128, 128); g.stroke();
+        g.rect(ax, ay, aw, ah); g.stroke();
         // 裂口标记
         g.fillColor = new Color(200, 80, 80, 255);
         const [wax, way] = m.pathPx['A'][0];
@@ -248,11 +254,13 @@ export class DefenseOverlay extends Component {
         g.fillColor = col; g.circle(0, 0, r); g.fill();
         g.strokeColor = new Color(0, 0, 0, 140); g.lineWidth = 3;
         g.circle(0, 0, r); g.stroke();
-        // 血条
-        g.fillColor = new Color(0, 0, 0, 160);
-        g.rect(-r, r + 8, r * 2, 6); g.fill();
-        g.fillColor = new Color(110, 220, 110, 255);
-        g.rect(-r + 1, r + 9, r * 2 - 2, 4); g.fill();
+        // 血条挂独立子节点（tryArt 清主 Graphics 时不连带擦掉；update 每帧按比例重画）
+        const hpN = new Node('hp');
+        hpN.layer = n.layer;
+        hpN.addComponent(UITransform).setContentSize(r * 2, 6);
+        hpN.setPosition(0, r + 11);
+        n.addChild(hpN);
+        this._drawMoHp(hpN.addComponent(Graphics), r, 1);
         // 名字
         const ln = new Node('nm');
         ln.layer = n.layer;
@@ -280,13 +288,21 @@ export class DefenseOverlay extends Component {
             return true;
         };
         if (!tryArt()) this.scheduleOnce(tryArt, 0.6);
-        n.on(Node.EventType.TOUCH_END, () => {
-            const r = DefenseSystem.inst.playerHit(uid);
-            if (r !== 'miss') {
-                // 命中反馈：闪白由 update 同步血条体现
-            }
+        n.on(Node.EventType.TOUCH_START, (ev: EventTouch) => { ev.propagationStopped = true; });
+        n.on(Node.EventType.TOUCH_END, (ev: EventTouch) => {
+            ev.propagationStopped = true;
+            DefenseSystem.inst.playerHit(uid);   // 命中反馈由 update 血条体现
         });
         return n;
+    }
+
+    private _drawMoHp(g: Graphics, r: number, ratio: number): void {
+        g.clear();
+        g.fillColor = new Color(0, 0, 0, 160);
+        g.rect(-r, -3, r * 2, 6); g.fill();
+        const rt = Math.max(0, Math.min(1, ratio));
+        g.fillColor = rt > 0.5 ? new Color(110, 220, 110, 255) : rt > 0.25 ? GOLD : new Color(220, 90, 90, 255);
+        g.rect(-r + 1, -2, (r * 2 - 2) * rt, 4); g.fill();
     }
 
     // ---------- 帧驱动 ----------
@@ -306,12 +322,10 @@ export class DefenseOverlay extends Component {
             let n = this._moNodes.get(m.uid);
             if (!n) { n = this._makeMonsterNode(m.uid, m.mid, m.name); this._moNodes.set(m.uid, n); }
             n.setPosition(m.x, m.y);
-            // 血条比例
-            const g = n.getComponent(Graphics);
-            if (g && m.hp < m.maxHp) {
-                const r = (m.mid === 'slime_elite' ? 26 : 20);
-                // 重画名字外的血条（简单方案：不重画，用透明度示意）
-            }
+            // 血条比例（独立子节点，每帧同步）
+            const hpN = n.getChildByName('hp');
+            const hg = hpN ? hpN.getComponent(Graphics) : null;
+            if (hg) this._drawMoHp(hg, m.mid === 'slime_elite' ? 26 : 20, m.hp / m.maxHp);
         }
         for (const [uid, n] of this._moNodes) {
             if (!alive.has(uid)) { n.destroy(); this._moNodes.delete(uid); }
@@ -391,6 +405,7 @@ export class DefenseOverlay extends Component {
         bl.string = '天 亮 了'; bl.fontSize = 30; bl.lineHeight = 34;
         bl.color = new Color(255, 245, 220, 255);
         bl.overflow = Label.Overflow.SHRINK;
+        btn.on(Node.EventType.TOUCH_START, (ev: EventTouch) => { ev.propagationStopped = true; });
         btn.on(Node.EventType.TOUCH_END, () => {
             this.node.active = false;
             root.destroy();

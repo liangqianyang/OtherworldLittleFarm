@@ -1,4 +1,5 @@
 import { _decorator, Component, director, view, ResolutionPolicy, macro } from 'cc';
+import { EDITOR, PREVIEW } from 'cc/env';
 const { ccclass } = _decorator;
 
 import { EventBus } from '../core/EventBus';
@@ -11,7 +12,7 @@ import { TapAdapter } from '../platform/taptap/TapAdapter';
 import { DebugPanel } from '../ui/DebugPanel';
 import { SfxLib } from '../core/SfxLib';
 import { FarmSystem } from '../gameplay/farm/FarmSystem';
-import { TerrainData } from '../gameplay/world/TerrainData';
+import { TerrainData, MAP_W, MAP_H } from '../gameplay/world/TerrainData';
 
 /** 设计分辨率（§17：1280×720 横屏，锁定高度——竖向安全区恒定 ±360） */
 const DESIGN_WIDTH = 1280;
@@ -30,8 +31,9 @@ export class GameApp extends Component {
     /** 供 DebugPanel 等取用（单例常驻） */
     static inst: GameApp | null = null;
 
-    /** 发布前置 false */
-    readonly DEBUG = true;
+    /** 调试开关：仅编辑器/预览开启；正式构建（TapTap/微信/Web 发布）自动关闭，
+     *  DebugPanel 与 window 自动化桥全部随此门控（旧实现硬编码 true 会把作弊指令带进正式版） */
+    readonly DEBUG = EDITOR || PREVIEW;
 
     adapter: IPlatformAdapter | null = null;
     save: SaveManager | null = null;
@@ -44,14 +46,13 @@ export class GameApp extends Component {
         view.setDesignResolutionSize(DESIGN_WIDTH, DESIGN_HEIGHT, ResolutionPolicy.FIXED_HEIGHT);
         // GameRoot 是场景根节点 → 常驻，跨场景存活
         director.addPersistRootNode(this.node);
+        // 保留 CPU 侧图像数据（0.0.3 真机灰块复盘：宏默认 true，GPU 上传后释放 ImageAsset.data，
+        // 小游戏端烘焙渲染器 drawImage 拿到 null → 全图降级色块；web 预览因读取时序早于上传而侥幸可用）。
+        // 像素包体小，常驻 CPU 拷贝内存代价可忽略。必须在任何贴图加载前设置（onLoad 早于一切 start）。
+        macro.CLEANUP_IMAGE_CACHE = false;
     }
 
     async start(): Promise<void> {
-        // 保留 CPU 侧图像数据（0.0.3 真机灰块复盘：宏默认 true，GPU 上传后释放 ImageAsset.data，
-        // 小游戏端烘焙渲染器 drawImage 拿到 null → 全图降级色块；web 预览因读取时序早于上传而侥幸可用）。
-        // 像素包体小，常驻 CPU 拷贝内存代价可忽略。必须在任何贴图加载前设置。
-        macro.CLEANUP_IMAGE_CACHE = false;
-
         this._initPlatform();
 
         await DataManager.inst.loadAll();
@@ -103,6 +104,8 @@ export class GameApp extends Component {
         const td = TerrainData.inst;
         if (td && this.saveData.world) {
             this.saveData.world.terrain = TerrainData.encodeRLE(td);
+            // V2 迁移守卫（migration §3.2）：尺寸不符时加载端直接重发基线，防 RLE 截断解码出垃圾
+            this.saveData.world.terrainSize = MAP_W * MAP_H;
         }
         this.save!.save(this.saveData, reason);
     }
@@ -134,13 +137,9 @@ export class GameApp extends Component {
         return this.saveData?.codex ?? [];
     }
 
-    /** 场景切换样板：农场 ⇄ 探险（AdventureHUD 出口/放弃、FarmHUD 出发按钮共用） */
+    /** 场景切换样板：回到农场场景（旧 adventure 场景已删除，探险改为 world 场景内副本） */
     loadFarm(): void {
         director.loadScene('farm');
-    }
-
-    loadAdventure(): void {
-        director.loadScene('adventure');
     }
 
     /** 扣减背包（播种等），数量不足返回 false */

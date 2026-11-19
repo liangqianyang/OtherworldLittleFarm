@@ -57,7 +57,8 @@ export class TerrainPoolRenderer extends Component {
         for (const gi of need) if (!this._active.has(gi)) {
             const node = this._acquire();
             const cx = d.cx(gi), cy = d.cy(gi);
-            node.setPosition(cx * TILE, -cy * TILE, 0);
+            // 锚点 (0.5,0.5)：落 tile 几何中心（与烘焙路线同款 T0 遗留半格偏移修正）
+            node.setPosition((cx + 0.5) * TILE, -(cy + 0.5) * TILE, 0);
             const t = d.types[gi];
             const spr = node.getComponent(Sprite)!;
             spr.spriteFrame = this._frames[t] || this._frames[TT.Grass] || null;

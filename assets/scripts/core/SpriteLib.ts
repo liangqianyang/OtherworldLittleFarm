@@ -1,4 +1,4 @@
-import { assetManager, SpriteFrame, Bundle } from 'cc';
+import { assetManager, AssetManager, SpriteFrame } from 'cc';
 import { EventBus } from './EventBus';
 
 /**
@@ -21,6 +21,8 @@ const CORE = [
     'tiles/ground_grass',
     'tiles/plot_soil_wet',
     'tiles/ground_forest',
+    // V2 世界地形 tile（AI 素材；未就绪时渲染器回退纯色/程序画）
+    'tiles/ground_water', 'tiles/ground_sand', 'tiles/ground_stone',
     // 作物三阶段
     'crops/carrot_0', 'crops/carrot_1', 'crops/carrot_2',
     'crops/tomato_0', 'crops/tomato_1', 'crops/tomato_2',
@@ -29,7 +31,10 @@ const CORE = [
     // 怪物 + NPC
     'monsters/slime', 'monsters/slime_elite', 'monsters/sporeling',
     'monsters/slime_idle', 'monsters/sporeling_idle',
-    'npc/npc_gardener', 'npc/npc_gatekeeper',
+    'npc/npc_gardener', 'npc/npc_gatekeeper', 'npc/npc_fisher',
+    // V4 参考图对齐（世界层视觉）：农舍/防守布置场/散布物（未生成时 get 返 null 走 Graphics 占位）
+    'world/house', 'world/defense_flytrap', 'world/defense_glow', 'world/fence', 'world/spike_trap',
+    'world/flower_patch', 'world/mushroom', 'world/grass_tuft', 'world/butterfly', 'world/fish_shadow',
     // 主角（1.0 AI 素材）
     'characters/player_down', 'characters/player_up', 'characters/player_right',
     // 探险物件（副本/防守 Overlay 用）
@@ -56,7 +61,7 @@ export class SpriteLib {
     }
 
     private _frames = new Map<string, SpriteFrame>();
-    private _bundle: Bundle | null = null;
+    private _bundle: AssetManager.Bundle | null = null;
     private _initing: Promise<void> | null = null;
     ready = false;
 
@@ -74,7 +79,7 @@ export class SpriteLib {
 
     private async _doInit(): Promise<void> {
         if (this.ready) return;
-        const bundle = await new Promise<Bundle | null>((res) =>
+        const bundle = await new Promise<AssetManager.Bundle | null>((res) =>
             assetManager.loadBundle('texture', (err, b) => res(err ? null : b)));
         if (!bundle) {
             console.warn('[SpriteLib] texture Bundle 不存在，使用 Graphics 占位');

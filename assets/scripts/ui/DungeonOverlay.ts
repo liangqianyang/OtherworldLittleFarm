@@ -1,5 +1,6 @@
-import { _decorator, Component, Node, Graphics, Label, Color, UITransform, Sprite, SpriteFrame, assetManager } from 'cc';
+import { _decorator, Component, Node, Graphics, Label, Color, UITransform, Sprite, SpriteFrame, EventTouch, assetManager } from 'cc';
 import { EventBus } from '../core/EventBus';
+import { DataManager } from '../core/DataManager';
 import { AdventureSystem } from '../gameplay/adventure/AdventureSystem';
 import { SfxLib } from '../core/SfxLib';
 import { SpriteLib } from '../core/SpriteLib';
@@ -33,7 +34,7 @@ export class DungeonOverlay {
 const VIEW_W = 900, VIEW_H = 540;
 
 @ccclass('DungeonOverlayComp')
-class DungeonOverlayComp extends Component {
+export class DungeonOverlayComp extends Component {
     private _g: Graphics | null = null;
     private _monRoot: Node | null = null;
     private _monNodes = new Map<number, { n: Node; g: Graphics; hp: Graphics; spr: Sprite | null }>();
@@ -43,6 +44,7 @@ class DungeonOverlayComp extends Component {
     private _arenaG: Graphics | null = null;
     private _playerSpr: Sprite | null = null;
     private _tryArtT = 0;
+    private _lastKey = '';
 
     /** 从 SpriteLib 取已加载 SpriteFrame（Bundle 路径键=完整相对路径；缺省返回 null 由调用方走色块兜底） */
     private _frameOf(rel: string): SpriteFrame | null {
@@ -70,8 +72,23 @@ class DungeonOverlayComp extends Component {
 
     private _sys(): AdventureSystem { return AdventureSystem.inst; }
 
-    private _onTap(ev: Event): void {
-        ev.propagationStopping = true;
+    /** 房链状态指纹：仅变化时重建 UI（周期重建会把按压中的按钮销毁，导致点击无响应） */
+    private _stateKey(): string {
+        const sys = this._sys();
+        const run = sys.run;
+        if (!run) return 'out';
+        const emptied = Array.from(run.emptied.entries()).map(([k, v]) => `${k}=${v}`).join(',');
+        return `${sys.inCombat ? 1 : 0}|${run.roomIdx}|${run.bagCount}|${run.playerHp}|${SpriteLib.inst.ready ? 1 : 0}|${emptied}`;
+    }
+
+    /** 物品 id → 显示名（items 表缺失回退 id） */
+    private _itemName(id: string): string {
+        const name = DataManager.inst.getRow('catalogs/items', id)?.['name'];
+        return typeof name === 'string' && name ? name : id;
+    }
+
+    private _onTap(ev: EventTouch): void {
+        ev.propagationStopped = true;
     }
 
     /** 面板内点击路由：战斗中点战场=无操作（攻击用按钮），房链按钮走子节点事件 */
@@ -83,7 +100,10 @@ class DungeonOverlayComp extends Component {
             this._syncBattle();
         } else {
             this._tryArtT += dt;
-            if (this._tryArtT > 0.6) { this._tryArtT = 0; this._refresh(); }
+            if (this._tryArtT > 0.6) {
+                this._tryArtT = 0;
+                if (this._stateKey() !== this._lastKey) this._refresh();
+            }
         }
     }
 
@@ -100,6 +120,7 @@ class DungeonOverlayComp extends Component {
             this._drawRoomUI();
         }
         this._drawHud();
+        this._lastKey = this._stateKey();
     }
 
     private _drawFrame(): void {
@@ -172,7 +193,7 @@ class DungeonOverlayComp extends Component {
             const emptied = sys.spotEmptied(run.roomIdx, i);
             const taken = run.emptied.get(`${run.roomIdx}:${i}`) ?? 0;
             const max = Number(spot.max ?? 1);
-            const label = emptied ? `${spot.itemId} 已采完` : `采集 ${spot.itemId}（${taken}/${max}）`;
+            const label = emptied ? `${this._itemName(spot.itemId)} 已采完` : `采集 ${this._itemName(spot.itemId)}（${taken}/${max}）`;
             const btn = this._button(root, (i - (spots.length - 1) / 2) * 240, 120, 200, 60, label, emptied ? new Color(90, 90, 95) : new Color(70, 110, 70), () => {
                 sys.gather(run.roomIdx, i);
             });
@@ -408,7 +429,7 @@ class DungeonOverlayComp extends Component {
         const run = sys.run;
         if (!run) return;
         const items = Object.entries(run.bag).filter(([, n]) => n > 0)
-            .map(([id, n]) => `${id}×${n}`).join(' ') || '空';
+            .map(([id, n]) => `${this._itemName(id)}×${n}`).join(' ') || '空';
         this._banner!.string = sys.inCombat ? this._banner!.string : `${sys.room()?.name ?? ''} · 负重 ${run.bagCount}/${AdventureSystem.BAG_CAP}`;
         this._hud!.string = `HP ${run.playerHp}/${AdventureSystem.PLAYER_MAX_HP} · 背包: ${items}`;
     }
@@ -446,8 +467,9 @@ class DungeonOverlayComp extends Component {
         g.roundRect(-w / 2, -h / 2, w, h, 10);
         g.stroke();
         this._makeLabel(n, Math.round(h * 0.38), Color.WHITE, 0, 0, w - 12, h - 8).string = text;
-        n.on(Node.EventType.TOUCH_END, (ev: Event) => {
-            ev.propagationStopping = true;
+        n.on(Node.EventType.TOUCH_START, (ev: EventTouch) => { ev.propagationStopped = true; });
+        n.on(Node.EventType.TOUCH_END, (ev: EventTouch) => {
+            ev.propagationStopped = true;
             if (!this._sys().inRun) return;
             SfxLib.inst.play('bite');
             onTap();
@@ -458,8 +480,8 @@ class DungeonOverlayComp extends Component {
     private _holdButton(parent: Node, x: number, y: number, w: number, h: number, text: string, color: Color, onHold: (down: boolean) => void): Node {
         const n = this._button(parent, x, y, w, h, text, color, () => {});
         n.off(Node.EventType.TOUCH_END);
-        n.on(Node.EventType.TOUCH_START, (ev: Event) => { ev.propagationStopping = true; onHold(true); });
-        n.on(Node.EventType.TOUCH_END, (ev: Event) => { ev.propagationStopping = true; onHold(false); });
+        n.on(Node.EventType.TOUCH_START, (ev: EventTouch) => { ev.propagationStopped = true; onHold(true); });
+        n.on(Node.EventType.TOUCH_END, (ev: EventTouch) => { ev.propagationStopped = true; onHold(false); });
         n.on(Node.EventType.TOUCH_CANCEL, () => onHold(false));
         return n;
     }

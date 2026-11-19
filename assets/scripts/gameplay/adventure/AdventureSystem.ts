@@ -130,6 +130,8 @@ export class AdventureSystem {
         if (!this.run || !room?.monster || this.combat) return;
         const def = DataManager.inst.getRow('catalogs/monsters', room.monster);
         if (!def) return;
+        // 精英判定数据驱动：monsters 表 elite 字段优先；缺字段才退回 id 启发式（兼容旧表）
+        const isElite = def['elite'] !== undefined ? def['elite'] === true : String(def['id']).includes('elite');
         const spec: CombatMonsterSpec = {
             mid: String(def['id']),
             name: String(def['name'] ?? def['id']),
@@ -139,8 +141,8 @@ export class AdventureSystem {
             behavior: (String(def['dungeonBehavior'] ?? def['behavior']) as CombatMonsterSpec['behavior']),
             fireInterval: def['fireInterval'] !== undefined ? Number(def['fireInterval']) : undefined,
             bulletSpeed: def['bulletSpeed'] !== undefined ? Number(def['bulletSpeed']) : undefined,
-            radius: Number(def['radius'] ?? (String(def['id']).includes('elite') ? 26 : 20)),
-            elite: String(def['id']).includes('elite'),
+            radius: Number(def['radius'] ?? (isElite ? 26 : 20)),
+            elite: isElite,
         };
         const weapon = this._weapon();
         this.combat = startCombat(960, 576, weapon, this.run.playerHp, AdventureSystem.PLAYER_MAX_HP);
@@ -201,9 +203,15 @@ export class AdventureSystem {
                 }
             }
             if (room?.treasure) {
+                // 宝箱与战利品同一套负重规则：逐件入包 + BAG_CAP 检查 + bagCount 计数
+                // （旧实现整批塞入不计数，负重 UI 失真且可无限超 cap）
                 for (const t of room.treasure) {
                     const n = t.min + Math.floor(Math.random() * (t.max - t.min + 1));
-                    this.run.bag[t.itemId] = (this.run.bag[t.itemId] ?? 0) + n;
+                    for (let i = 0; i < n; i++) {
+                        if (this.run.bagCount >= AdventureSystem.BAG_CAP) break;
+                        this.run.bag[t.itemId] = (this.run.bag[t.itemId] ?? 0) + 1;
+                        this.run.bagCount += 1;
+                    }
                 }
             }
             // 宝箱武器拾取（treasureWeapon → 自动装备，run 级换枪）

@@ -71,16 +71,18 @@ export class JoystickController extends Component {
     }
 
     private _apply(px: number, py: number): void {
-        let dx = px - this._ox, dy = py - this._oy;
+        const dx = px - this._ox, dy = py - this._oy;
         const d = Math.hypot(dx, dy);
         const g = this._g!;
         g.clear();
-        // 基环 + 玩家拖动的杆头
-        g.circle(0, 0, this.MAX);
+        // 基环画在触摸起点（动态摇杆）：node 定位左半屏中心 (-320,0)，local = canvas 中心系 + 320。
+        // 旧实现把环画死在 (0,0)，触点不在左半屏中心时杆头与环错位。
+        const ox = this._ox + 320, oy = this._oy;
+        g.circle(ox, oy, this.MAX);
         g.lineWidth = 3;
         g.strokeColor = new Color(255, 255, 255, 70);
         g.stroke();
-        g.circle(0, 0, this.DEAD);
+        g.circle(ox, oy, this.DEAD);
         g.lineWidth = 2;
         g.strokeColor = new Color(255, 255, 255, 40);
         g.stroke();
@@ -90,12 +92,12 @@ export class JoystickController extends Component {
             this.dirY = (dy / d) * m;
             const kx = (dx / d) * Math.min(d, this.MAX);
             const ky = (dy / d) * Math.min(d, this.MAX);
-            g.circle(kx, ky, 18);
+            g.circle(ox + kx, oy + ky, 18);
             g.fillColor = new Color(255, 255, 255, 110);
             g.fill();
         } else {
             this.dirX = 0; this.dirY = 0;
-            g.circle(0, 0, 18);
+            g.circle(ox, oy, 18);
             g.fillColor = new Color(255, 255, 255, 90);
             g.fill();
         }

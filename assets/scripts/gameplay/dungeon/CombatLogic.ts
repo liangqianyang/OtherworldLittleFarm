@@ -355,7 +355,8 @@ function enemyBulletCount(s: CombatSession): number {
 }
 
 function dist2(m: CombatMonster, p: CombatSession['player']): number {
-    return Math.sqrt((m.x - p.x) ** 2 + (m.y - p.y) ** 2);
+    // 平方距离（调用方与 (range*1.5)^2 比较）。旧实现误返回欧氏距离，导致锁定距离判断恒真。
+    return (m.x - p.x) ** 2 + (m.y - p.y) ** 2;
 }
 
 function nearest(list: CombatMonster[], p: CombatSession['player']): CombatMonster | null {
@@ -377,7 +378,7 @@ export function hurtMonster(_s: CombatSession, m: CombatMonster, dmg: number, cb
 
 export function hurtPlayer(s: CombatSession, dmg: number, cb: (ev: string, p?: Record<string, unknown>) => void): void {
     const p = s.player;
-    if (p.hurtInvuln > 0 || p.rollT > 0) return;   // 无敌帧（受击/翻滚）
+    if (p.hurtInvuln > 0 || p.rollT > ROLL_TIME - ROLL_INVULN) return;   // 无敌帧（受击 0.8s / 翻滚前 0.22s）
     p.hp -= dmg;
     p.hurtInvuln = HURT_INVULN;
     cb('hurt_p', { hp: Math.max(0, p.hp) });

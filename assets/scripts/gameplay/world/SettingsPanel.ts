@@ -14,7 +14,6 @@ const { ccclass } = _decorator;
  * 铁律遵守：本文件不 import 任何 tap.* API，一律走平台适配层。
  */
 const HALF_W = 640, HALF_H = 360;   // UI 中心系半宽/半高（1280×720，原点=屏幕中心）
-const EDGE = 46;                     // 与 CompassHUD 一致的边缘内缩
 
 @ccclass('SettingsPanel')
 export class SettingsPanel extends Component {
@@ -38,12 +37,12 @@ export class SettingsPanel extends Component {
         this.node.addComponent(UITransform).setContentSize(1280, 720);
         SettingsPanel._inst = this;
 
-        // 右上角 ⚙ 圆钮（44px 热区略小但远超可点性下限；与状态栏/指南针无重叠）
+        // 右上角 ⚙（V2 ui-notes：热区 88×88 触屏达标，视觉 Ø56 中心 (572,292)，距边缘 68px 不压顶栏）
         const btn = new Node('gearBtn');
         btn.layer = SCREEN_UI_LAYER;
-        btn.addComponent(UITransform).setContentSize(44, 44);
+        btn.addComponent(UITransform).setContentSize(88, 88);
         const g = btn.addComponent(Graphics);
-        g.circle(0, 0, 22);
+        g.circle(0, 0, 28);
         g.fillColor = new Color(28, 32, 48, 210);
         g.fill();
         g.lineWidth = 2;
@@ -51,12 +50,12 @@ export class SettingsPanel extends Component {
         g.stroke();
         // 齿轮简画：三横一竖（点阵避免字体差异）
         g.strokeColor = new Color(242, 230, 200, 255);
-        g.lineWidth = 2;
-        g.moveTo(-9, 5); g.lineTo(9, 5);
-        g.moveTo(-9, 0); g.lineTo(9, 0);
-        g.moveTo(-9, -5); g.lineTo(9, -5);
+        g.lineWidth = 3;
+        g.moveTo(-12, 7); g.lineTo(12, 7);
+        g.moveTo(-12, 0); g.lineTo(12, 0);
+        g.moveTo(-12, -7); g.lineTo(12, -7);
         g.stroke();
-        btn.setPosition(HALF_W - EDGE - 22, HALF_H - EDGE - 22);
+        btn.setPosition(HALF_W - 68, HALF_H - 68);
         btn.on(Node.EventType.TOUCH_END, this._toggle, this);
         this.node.addChild(btn);
 

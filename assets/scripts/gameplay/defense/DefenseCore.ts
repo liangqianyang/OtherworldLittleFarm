@@ -90,7 +90,13 @@ export interface CoreNight {
     won: boolean;
     perfect: boolean;
     uidSeq: number;
+    /** 诱饵批量吸引计时（每 0.25s 一批；随夜战实例走，不挂模块全局） */
+    baitT: number;
+    /** 怪物元数据查询（DefenseSystem 注入；随夜战实例走） */
+    metaLookup: MonsterMetaLookup | null;
 }
+
+export type MonsterMetaLookup = (mid: string) => { hp: number; damage: number; speed: number; name: string; slowResist: number; baitImmune: boolean } | null;
 
 /** 已解析地图：waypoint px 化 + 不可建造格集合 + 建造格列表 */
 export interface ResolvedMap {
@@ -113,9 +119,13 @@ export function resolveMap(def: CoreMapDef): ResolvedMap {
         const wps = def.paths[line];
         for (let i = 0; i + 1 < wps.length; i++) {
             const [x0, y0] = wps[i], [x1, y1] = wps[i + 1];
-            const dx = Math.sign(x1 - x0), dy = Math.sign(y1 - y0);
-            let x = x0, y = y0;
-            while (x !== x1 || y !== y1) { x += dx; y += dy; blocked.add(cell(x, y)); }
+            // 有界步进：轴对齐逐格；斜线段按长轴取整覆盖（旧 while 在非 45° 段会死循环）
+            const steps = Math.max(Math.abs(x1 - x0), Math.abs(y1 - y0));
+            for (let s = 1; s <= steps; s++) {
+                const x = Math.round(x0 + ((x1 - x0) * s) / steps);
+                const y = Math.round(y0 + ((y1 - y0) * s) / steps);
+                blocked.add(cell(x, y));
+            }
         }
     }
     for (const [cx, cy] of def.altarCells) blocked.add(cell(cx, cy));
@@ -181,7 +191,7 @@ export function towerStatsAt(t: CoreTower, d: Record<string, unknown>, cellPx: n
 export function startCoreNight(
     map: ResolvedMap,
     tableRow: Record<string, unknown>,
-    monstersMeta: Record<string, { hp: number; damage: number; speed: number; name: string; slowResist: number; baitImmune: boolean }>,
+    metaLookup: MonsterMetaLookup | null,
     towers: CoreTower[],
     altarHp: number,
     uidSeq = 0,
@@ -199,6 +209,7 @@ export function startCoreNight(
         altarHp, altarMax: altarHp,
         leakA: 0, leakB: 0,
         elapsed: 0, over: false, won: false, perfect: false, uidSeq,
+        baitT: 0, metaLookup,
     };
     return n;
 }
@@ -211,8 +222,8 @@ export function beginWave(n: CoreNight, i: number): void {
     n.breakActive = false;
     n.breakT = 0;
     n.wavePlan = [];
-    for (const g of n.waves[i]) {
-        const meta = n.map ? metaOf(n, g.monsterId) : null;
+    for (const g of n.waves[i] ?? []) {
+        const meta = metaOf(n, g.monsterId);
         const count = Number(g.count ?? 1);
         const interval = Number(g.interval ?? 1.5);
         const delay = Number(g.delay ?? 1.0);
@@ -231,13 +242,8 @@ export function beginWave(n: CoreNight, i: number): void {
     n.wavePlan.sort((a, b) => a.t - b.t);
 }
 
-// monstersMeta 挂在 n 上太重，用闭包注入：DefenseSystem 负责
-let _metaLookup: ((mid: string) => { hp: number; damage: number; speed: number; name: string; slowResist: number; baitImmune: boolean } | null) | null = null;
-export function setMonsterMetaLookup(fn: (mid: string) => { hp: number; damage: number; speed: number; name: string; slowResist: number; baitImmune: boolean } | null): void {
-    _metaLookup = fn;
-}
-function metaOf(_n: CoreNight, mid: string) {
-    return _metaLookup ? _metaLookup(mid) : null;
+function metaOf(n: CoreNight, mid: string) {
+    return n.metaLookup ? n.metaLookup(mid) : null;
 }
 
 // ---------- 生成与推进 ----------
@@ -274,7 +280,8 @@ export function tickCoreNight(
     n.towers = n.towers.filter((t) => t.hp > 0 || t.kind !== 'attract');
 
     // 逐波门控：当前波生成完 + 场上无怪 → 波间或终局
-    if (!n.breakActive && n.waveIdx >= 0 && n.wavePlan.length === 0 && n.spawnedInWave > 0) {
+    // 空波（表缺 waves/组为空）也视为已清，避免夜战永不结束
+    if (!n.breakActive && n.waveIdx >= 0 && n.wavePlan.length === 0 && (n.spawnedInWave > 0 || (n.waves[n.waveIdx]?.length ?? 0) === 0)) {
         const anyAlive = n.monsters.some((m) => m.hp > 0);
         if (!anyAlive) {
             if (n.waveIdx + 1 < n.waves.length) {
@@ -395,11 +402,10 @@ export function slowFactor(n: CoreNight, m: CoreMonster): number {
 }
 
 /** 诱饵吸引：每 0.25s 一批，只对 Walk 怪、跳过 baitImmune */
-let _baitBatch = 0;
 function tickBaits(n: CoreNight, dt: number, cb: (ev: string, payload?: Record<string, unknown>) => void): void {
-    _baitBatch += dt;
-    if (_baitBatch < 0.25) return;
-    _baitBatch = 0;
+    n.baitT += dt;
+    if (n.baitT < 0.25) return;
+    n.baitT = 0;
     const baits = n.towers.filter((t) => t.kind === 'attract' && t.hp > 0);
     if (baits.length === 0) return;
     for (const m of n.monsters) {

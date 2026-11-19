@@ -30,7 +30,9 @@ export interface FarmSave {
 
 export const GRID_COLS = 3;
 export const GRID_ROWS = 3;
-export const GRID_SIZE = GRID_COLS * GRID_ROWS;
+/** V3：主阵 3×3 + 宅旁块（index 9，FarmWorldBinder 单源映射）；旧 9 格档 init 自动补空位 */
+export const GRID_SIZE = GRID_COLS * GRID_ROWS + 1;
+export const HOME_PLOT_INDEX = 9;
 
 type CropDef = { id: string; growDays: number; harvest: { itemId: string; min: number; max: number } };
 

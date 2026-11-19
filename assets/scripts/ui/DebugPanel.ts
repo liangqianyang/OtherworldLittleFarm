@@ -23,7 +23,8 @@ export class DebugPanel extends Component {
         input.on(Input.EventType.KEY_DOWN, this._onKey, this);
         // 自动化桥：把实例挂到 window，供浏览器自动化（bsk evaluate）直接调用
         // （预览页 input 层拦截合成事件，但 JS 直调组件方法不经过 input 层）
-        (window as any).__debug = this;
+        // 小游戏宿主（微信/TapTap）没有 window——必须守卫，否则 ReferenceError 炸掉整个场景装配
+        if (typeof window !== 'undefined') (window as any).__debug = this;
     }
 
     onDestroy(): void {
@@ -212,16 +213,16 @@ export class DebugPanel extends Component {
 
     private _onKey(event: EventKeyboard): void {
         switch (event.keyCode) {
-            case KeyCode.DIGIT1:
+            case KeyCode.DIGIT_1:
                 this.skipDay();
                 break;
-            case KeyCode.DIGIT2:
+            case KeyCode.DIGIT_2:
                 this.addTestItem();
                 break;
-            case KeyCode.DIGIT3:
+            case KeyCode.DIGIT_3:
                 this.dumpSave();
                 break;
-            case KeyCode.DIGIT0:
+            case KeyCode.DIGIT_0:
                 this.persistNow();
                 break;
             default:

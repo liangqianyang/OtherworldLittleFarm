@@ -111,21 +111,30 @@ export class TapAdapter implements IPlatformAdapter {
         if (!tap?.createHomeScreenWidget) return Promise.resolve('unsupported');
 
         return new Promise<AddToDesktopResult>((resolve) => {
+            // SDK 可能永不回调：settled 守卫 + 10s 超时兜底，避免 Promise 悬挂卡死调用方
+            let settled = false;
+            const timer = setTimeout(() => { if (!settled) { settled = true; resolve('fail'); } }, 10000);
+            const finish = (r: AddToDesktopResult): void => {
+                if (settled) return;
+                settled = true;
+                clearTimeout(timer);
+                resolve(r);
+            };
             // 先查询：已置首（Android 明确状态）直接免弹窗；iOS 无 isPinned，会走创建分支由 1518002 归并
             const query = tap.hasHomeScreenWidgetAndPinned;
             if (typeof query === 'function') {
                 try {
                     query({
                         success: (res) => {
-                            if (res.isPinned === true) { resolve('already'); return; }
-                            this._create(tap, resolve);
+                            if (res.isPinned === true) { finish('already'); return; }
+                            this._create(tap, finish);
                         },
-                        fail: () => this._create(tap, resolve), // 查询失败不拦截，直接尝试创建
+                        fail: () => this._create(tap, finish), // 查询失败不拦截，直接尝试创建
                     });
                     return;
                 } catch { /* 查询异常降级为直接创建 */ }
             }
-            this._create(tap, resolve);
+            this._create(tap, finish);
         });
     }
 

@@ -1,5 +1,5 @@
 import { _decorator, Component, Node, Camera, view, ResolutionPolicy, SpriteFrame, Layers, assetManager, ImageAsset, UITransform, Graphics, Color, Sprite, Label } from 'cc';
-import { MAP_W, MAP_H, TILE, SPAWN, TerrainData } from './TerrainData';
+import { MAP_W, MAP_H, TILE, SPAWN, LANDMARKS, TerrainData } from './TerrainData';
 import { TerrainBakeRenderer } from './TerrainBakeRenderer';
 import { TerrainPoolRenderer } from './TerrainPoolRenderer';
 import { PlayerCharacter } from './PlayerCharacter';
@@ -18,7 +18,8 @@ import { WorldLiving } from './living/WorldLiving';
 import { AdventureSystem } from '../adventure/AdventureSystem';
 import { DefenseSystem } from '../defense/DefenseSystem';
 import { Interactable } from './interact/Interactable';
-import { DungeonOverlay } from '../../ui/DungeonOverlay';
+import { DungeonOverlay, DungeonOverlayComp } from '../../ui/DungeonOverlay';
+import { PlotWorldView } from './farm/PlotWorldView';
 import { TimeSystem } from '../../core/TimeSystem';
 import { EventBus } from '../../core/EventBus';
 import { GameApp } from '../../app/GameApp';
@@ -55,7 +56,10 @@ export class WorldSpike extends Component {
     private _dungeon: Node | null = null;
 
     start(): void {
-        (window as unknown as Record<string, unknown>).__spike = this;
+        // 自动化桥仅调试态挂载（GameApp.DEBUG 门控）；微信/TapTap 宿主没有 window，必须守卫
+        if (typeof window !== 'undefined' && GameApp.inst?.DEBUG) {
+            (window as unknown as Record<string, unknown>).__spike = this;
+        }
         view.setDesignResolutionSize(1280, 720, ResolutionPolicy.FIXED_HEIGHT);
 
         const dataNode = new Node('__terrainData');
@@ -63,8 +67,10 @@ export class WorldSpike extends Component {
         this._data = dataNode.addComponent(TerrainData);
         this._data.generateBaseline();
         // M3：存档地形还原（老档/新档缺 terrain → 保持基线）
+        // V2 关键守卫：老档 RLE 是 128×96=12288 格，新图 96×80=7680 格，decodeRLE 按 i<n 截断
+        // 会解出垃圾而不报错 → terrainSize 不等直接重发基线。
         const worldSave = GameApp.inst?.saveData?.world;
-        if (worldSave?.terrain) {
+        if (worldSave?.terrain && worldSave.terrainSize === MAP_W * MAP_H) {
             if (TerrainData.decodeRLE(this._data, worldSave.terrain)) {
                 console.log('[M3] terrain restored from save');
             } else {
@@ -72,10 +78,11 @@ export class WorldSpike extends Component {
             }
         }
 
-        // 相机 2×（orthoHeight 360 → 视口世界 640×360，屏上 64px/tile）
+        // 相机 2×：orthoHeight=180 → 视口世界 640×360（屏上 64px/tile），与 CameraFollow 钳制半宽 320/半高 180 一致。
+        // 旧实现写 cam.zoomFactor=2 —— Camera 无此属性，静默失效导致视口实际 1×、边界钳制失配。
         this._camNode = this.node.getChildByName('Camera');
         this._cam = this._camNode?.getComponent(Camera) || this.getComponent(Camera) || null;
-        if (this._cam) { this._cam.zoomFactor = 2; }
+        if (this._cam) { this._cam.orthoHeight = 180; }
 
         // 渲染容器（先建，保证后建的角色渲染在其上）
         const ground = new Node('GroundBake');
@@ -165,13 +172,16 @@ export class WorldSpike extends Component {
             const g = SpriteLib.inst.get('tiles/ground_grass');
             const fo = SpriteLib.inst.get('tiles/ground_forest');
             const so = SpriteLib.inst.get('tiles/plot_soil');
-            const srcs: Record<number, CanvasImageSource | null> = { 0: srcOf(g), 2: srcOf(fo), 1: srcOf(so) };
+            const wa = SpriteLib.inst.get('tiles/ground_water');     // V2：AI 水面 tile（未就绪时 null→渲染器 fallback 纯色）
+            const sa = SpriteLib.inst.get('tiles/ground_sand');      // V2：AI 沙滩 tile
+            const st = SpriteLib.inst.get('tiles/ground_stone');     // V2：AI 石板 tile
+            const srcs: Record<number, CanvasImageSource | null> = { 0: srcOf(g), 2: srcOf(fo), 1: srcOf(so), 3: srcOf(wa), 4: srcOf(sa), 5: srcOf(st) };
             this._bake!.setSources(srcs);
             this._applyVisible();
             this._info = 'spike ready route=' + this._route;
             console.log('[Spike] ready, ' + JSON.stringify(this.spikeInfo()));
-            // 池路线帧（water 用 grass 帧替代）
-            const fr: Record<number, SpriteFrame | null> = { 0: g, 2: fo, 1: so, 3: g, 4: g };
+            // 池路线帧（3/4/5 未就绪时用 grass 帧兜底）
+            const fr: Record<number, SpriteFrame | null> = { 0: g, 2: fo, 1: so, 3: wa || g, 4: sa || g, 5: st || g };
             this._pool!.init(this._data, poolRoot, fr);
         }).catch(() => { this._info = 'spike init error'; });
 
@@ -221,7 +231,7 @@ export class WorldSpike extends Component {
         console.log(`[ScreenUI] ${found.length} 个屏幕空间 UI 节点归入 SCREEN_UI 层: ${found.map(n => n.name).join(', ')}`);
     }
 
-    update(): void {
+    update(dt: number): void {
         // M5：摇杆路由——战斗中喂 CombatInput；副本面板打开时冻结世界移动
         const adv = AdventureSystem.inst;
         const joy = JoystickController.inst;
@@ -264,22 +274,21 @@ export class WorldSpike extends Component {
             this._dock.setVisible(inLiving);
             const editing = inLiving && !!this._edit.tool;
             this._editInput.node.active = editing;
-            this._statusTimer += 1 / 60;
+            this._statusTimer += dt;
             if (this._statusTimer > 1) { this._statusTimer = 0; this._dock.refreshStatus(); this._refreshIntel(); }
         }
     }
 
-    /** B12 情报行：SCREEN_UI 居中顶部；今晚有防守=红字警报，否则灰白预告下一波日期（与 FarmHUD 同源逻辑） */
+    /** B12 情报行（U2 toast 化）：只在今晚有防守时显示红色警报，平时静默（v3-clarity-ui-ux U2/U5 铬预算） */
     private _buildIntel(): Label {
         const n = new Node('IntelLabel');
         n.layer = SCREEN_UI_LAYER;
-        n.addComponent(UITransform).setContentSize(420, 44);
-        // 顶部偏左：新手引导提示框（TutorialGuide）常驻顶部中央偏右，居中会被遮住右半
-        n.setPosition(-150, 306, 0);
+        n.addComponent(UITransform).setContentSize(520, 36);
+        n.setPosition(0, 286, 0);   // 左上芯片下方一线（芯片 y316），居中不与右列任何元素重叠
         this.node.addChild(n);
         const l = n.addComponent(Label)!;
-        l.fontSize = 20;
-        l.lineHeight = 26;
+        l.fontSize = 18;
+        l.lineHeight = 24;
         l.horizontalAlign = Label.HorizontalAlign.CENTER;   // 3.x 枚举是 HorizontalAlign（2.x 的 Label.Align 在 3.8 为 undefined，会抛错中断 start）
         return l;
     }
@@ -290,12 +299,11 @@ export class WorldSpike extends Component {
         if (sys && sys.hasNightTonight()) {
             const intel = sys.intelTonight();
             const brief = intel ? intel.comp.map((i) => `${i.monsterName}×${i.count}`).join('、') : '';
+            this._intelLabel.node.active = true;
             this._intelLabel.string = `⚠ 今晚防守：${brief}！睡前做好准备`;
             this._intelLabel.color = new Color(255, 96, 96, 255);
-        } else if (sys) {
-            const next = sys.nextNightDay();
-            this._intelLabel.string = next !== null ? `守门人来报：第 ${next} 天夜里有怪物来袭` : '';
-            this._intelLabel.color = new Color(232, 222, 200, 255);
+        } else {
+            this._intelLabel.node.active = false;   // U2：预告文案撤除，只保留紧急警报
         }
     }
 
@@ -378,11 +386,11 @@ export class WorldSpike extends Component {
 
     private _buildDungeonGate(): void {
         const adv = AdventureSystem.inst;
-        // 传送门视觉（advGate 区中心附近 (112,10)）：AI 素材贴图（64px 图 → 96px 显示），色块兜底
+        // 传送门视觉（V3：(48,23) 北支路轴顶端=LANDMARKS.gate 单源，出广场即见；v3-clarity-geometry §5）
         const gNode = new Node('dungeon_gate');
         gNode.layer = this.node.layer;
         gNode.addComponent(UITransform).setContentSize(96, 96);
-        gNode.setPosition((112 + 0.5) * TILE, -(10 + 0.5) * TILE, 0);
+        gNode.setPosition((LANDMARKS.gate.x + 0.5) * TILE, -(LANDMARKS.gate.y + 0.5) * TILE, 0);
         this.node.addChild(gNode);
         // 贴图统一挂 art 子节点：gNode 随后会被 Interactable._wire 挂 Graphics，
         // 同节点 Sprite+Graphics 会触发引擎 warn 12002 且 Sprite 不渲染（传送门隐形根因）
@@ -426,11 +434,11 @@ export class WorldSpike extends Component {
 
     /** 打开副本面板（不自动开局，开局走 start/dbgAdvStart） */
     advOpen(): void {
-        if (this._dungeon) (this._dungeon.getComponent('DungeonOverlayComp') as { open(): void }).open();
+        this._dungeon?.getComponent(DungeonOverlayComp)?.open();
     }
 
     advClose(): void {
-        if (this._dungeon) (this._dungeon.getComponent('DungeonOverlayComp') as { close(): void }).close();
+        this._dungeon?.getComponent(DungeonOverlayComp)?.close();
     }
 
     /** 开局+开面板 */
@@ -519,15 +527,14 @@ export class WorldSpike extends Component {
     /** M6 调试：瞬移玩家到 tile（旁路碰撞，自动化测试用） */
     dbgWalkTo(tx: number, ty: number): void {
         if (!this._player) return;
-        this._player.node.setPosition(tx * 32 + 16, -(ty * 32 + 16));
+        this._player.node.setPosition((tx + 0.5) * TILE, -(ty + 0.5) * TILE, 0);
     }
 
     /** M6 调试：直接触发第 i 块世界地块的情境操作（种植/浇水/收获） */
     dbgFarm(i: number): void {
         const node = this.node.getChildByName(`farm_plot_${i}`);
         if (!node) { console.log(`[Debug] farm_plot_${i} 不存在`); return; }
-        const view = node.getComponent('PlotWorldView') as { onUse(): void } | null;
-        if (view) view.onUse();
+        node.getComponent(PlotWorldView)?.onUse();
     }
 
 

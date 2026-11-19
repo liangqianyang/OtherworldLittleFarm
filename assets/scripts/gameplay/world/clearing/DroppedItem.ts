@@ -86,6 +86,7 @@ export class DroppedItem extends Component {
         if (this._collected) return;
         this._collected = true;
         GameApp.inst?.giveItem(this._itemId, this._count);
+        GameApp.inst?.persist('world_pickup');
         EventBus.inst.emit('farmChanged', { action: 'world_pickup' });
         this.node.destroy();
     }

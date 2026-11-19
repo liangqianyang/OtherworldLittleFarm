@@ -29,6 +29,7 @@
       }
     ],
     "codexId": "slime",
+    "elite": true,
     "slowResist": 0.5,
     "attackInterval": 1.5
   },

@@ -1,6 +1,7 @@
 import { _decorator, Component, Node, Graphics, Color, UITransform, EventTouch } from 'cc';
 import { TILE, TerrainData } from './TerrainData';
-import { TerrainEdit } from '../terrain/TerrainEdit';
+import { TerrainEdit } from './terrain/TerrainEdit';
+import { GameApp } from '../../app/GameApp';
 const { ccclass } = _decorator;
 
 /**
@@ -76,6 +77,7 @@ export class TerrainEditInput extends Component {
         this._pressing = false;
         this._edit?.endStroke();
         this._hideGhost();
+        GameApp.inst?.persist('terrain_edit');
     }
 
     /** UI 坐标 → 世界 tile（zoom=2：world = cam + (ui-屏幕中心)/2；getUILocation 原点=屏幕左下）。 */

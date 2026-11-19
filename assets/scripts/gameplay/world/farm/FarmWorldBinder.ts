@@ -1,37 +1,41 @@
 import { Node } from 'cc';
-import { GRID_COLS, GRID_ROWS } from '../../farm/FarmSystem';
+import { GRID_COLS, GRID_ROWS, GRID_SIZE, HOME_PLOT_INDEX } from '../../farm/FarmSystem';
+import { FARM_ORIGIN, FARM_HOME_PLOT } from '../TerrainData';
 import { PlotWorldView } from './PlotWorldView';
 
-/** 农场区地块装配基点（tile）：区 (40,42)-(87,73) 内，避开 河 x62-66@y35-50 / 西门路 y55 / 纵路 x78 */
-export const FARM_PLOT_ORIGIN = { tx: 67, ty: 58, pitch: 4 };
-
 /**
- * FarmWorldBinder —— FarmSystem.plots index → 农场区 tile 坐标确定性映射（M6，migration-plan §3.x）。
- * index = row*3+col：origin=(tx+col*pitch, ty+row*pitch)；旧档 plots 数组顺序不变=搬迁零数据损失。
+ * FarmWorldBinder —— FarmSystem.plots index → 农场区 tile 坐标确定性映射（M6；V3 几何单源 TerrainData）。
+ * index 0-8 = 主阵 3×3（FARM_ORIGIN (62,42) pitch4）；index 9 = 宅旁块（FARM_HOME_PLOT (44,46)-(46,48)）。
+ * 旧档 plots 数组顺序不变（init 自动在尾部补 index 9 的空位）= 搬迁零数据损失。
  */
 export class FarmWorldBinder {
+    /** 地块 index → tile 左上角坐标 */
+    static plotOrigin(index: number): { tx: number; ty: number } {
+        if (index === HOME_PLOT_INDEX) return { tx: FARM_HOME_PLOT.x0, ty: FARM_HOME_PLOT.y0 };
+        const col = index % GRID_COLS, row = Math.floor(index / GRID_COLS);
+        return { tx: FARM_ORIGIN.x + col * FARM_ORIGIN.pitch, ty: FARM_ORIGIN.y + row * FARM_ORIGIN.pitch };
+    }
+
     /** 世界坐标 → 地块 index（情境按钮/调试用）；不在任何地块内返回 -1 */
     static plotIndexAt(tx: number, ty: number): number {
         const rel = (v: number, o: number) => v - o;
-        for (let i = 0; i < GRID_COLS * GRID_ROWS; i++) {
-            const col = i % GRID_COLS, row = Math.floor(i / GRID_COLS);
-            const ox = FARM_PLOT_ORIGIN.tx + col * FARM_PLOT_ORIGIN.pitch;
-            const oy = FARM_PLOT_ORIGIN.ty + row * FARM_PLOT_ORIGIN.pitch;
-            if (rel(tx, ox) >= 0 && rel(tx, ox) < 3 && rel(ty, oy) >= 0 && rel(ty, oy) < 3) return i;
+        for (let i = 0; i < GRID_SIZE; i++) {
+            const o = FarmWorldBinder.plotOrigin(i);
+            if (rel(tx, o.tx) >= 0 && rel(tx, o.tx) < 3 && rel(ty, o.ty) >= 0 && rel(ty, o.ty) < 3) return i;
         }
         return -1;
     }
 
-    /** 在世界场景装配全部地块视图 */
+    /** 在世界场景装配全部地块视图（V3：主阵 3×3 + 宅旁第10块） */
     static bind(parent: Node, layer: number): PlotWorldView[] {
         const out: PlotWorldView[] = [];
-        for (let i = 0; i < GRID_COLS * GRID_ROWS; i++) {
-            const col = i % GRID_COLS, row = Math.floor(i / GRID_COLS);
+        for (let i = 0; i < GRID_SIZE; i++) {
+            const o = FarmWorldBinder.plotOrigin(i);
             const node = new Node(`farm_plot_${i}`);
             node.layer = layer;
             parent.addChild(node);
             const v = node.addComponent(PlotWorldView);
-            v.setup(parent, layer, i, FARM_PLOT_ORIGIN.tx + col * FARM_PLOT_ORIGIN.pitch, FARM_PLOT_ORIGIN.ty + row * FARM_PLOT_ORIGIN.pitch);
+            v.setup(parent, layer, i, o.tx, o.ty);
             out.push(v);
         }
         return out;

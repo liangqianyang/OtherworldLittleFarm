@@ -15,7 +15,9 @@ export class CameraFollow extends Component {
     update(dt: number): void {
         if (!this.target) return;
         const halfW = 320, halfH = 180;
-        const px = this.target.position.x, py = this.target.position.y;
+        // V2（ui-notes F2）：目标点=角色上方 60 世界px → 角色稳定在屏幕 (0,-120)，
+        // 下方视野更大，正中不被 UI/角色占据。钳制必须先加偏移再 clamp，防下边缘露黑边。
+        const px = this.target.position.x, py = this.target.position.y + 60;
         const tx = Math.max(halfW, Math.min(MAP_W * TILE - halfW, px));
         const ty = Math.max(-(MAP_H * TILE - halfH), Math.min(-halfH, py));
         const a = 1 - Math.exp(-this.k * dt);

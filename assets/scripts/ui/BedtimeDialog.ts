@@ -109,6 +109,10 @@ export class BedtimeDialog extends Component {
         this.close();
         // §8.1/§12 红线：防守只挂在睡觉在线流程上；打完夜战由 DefenseOverlay._onDawn 过夜
         if (this.defenseOverlay && this.defenseOverlay.open()) return;
+        if (DefenseSystem.inst.hasNightTonight()) {
+            // 今晚有防守但 overlay 打不开（已结算/数据缺失）：降级普通睡眠并留痕，不静默吞掉夜战
+            console.warn('[Bedtime] 今晚有防守但 DefenseOverlay.open() 未开启，降级为普通睡眠');
+        }
         TimeSystem.inst.endDay();
         GameApp.inst?.persist('bedtime');
         EventBus.inst.emit('farmChanged', { action: 'bedtime' });

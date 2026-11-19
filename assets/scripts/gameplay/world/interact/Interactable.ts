@@ -1,4 +1,4 @@
-import { _decorator, Component, Graphics, Color, EventTouch } from 'cc';
+import { _decorator, Component, Graphics, Color, Node } from 'cc';
 import type { ClearingSystem } from '../clearing/ClearingSystem';
 import { InteractionManager } from './InteractionManager';
 const { ccclass } = _decorator;
@@ -7,8 +7,8 @@ const { ccclass } = _decorator;
  * Interactable —— 世界物件交互组件（M2 交互框架，migration-plan §3.6）。
  *
  * 灰盒视觉：tree=棕干+绿冠 / rock=灰石 / bush=绿丛红果；受击后按 hp 比例缩小重绘。
- * 交互入口：情境按钮 ContextButtonUI（唯一入口，走近才出现）；节点自身 TOUCH_END
- * 作为桌面调试的直达通道（真机触屏走按钮）。
+ * 交互入口：情境按钮 ContextButtonUI（主通道，走近才出现）；节点自身 TOUCH_END
+ * 直达点按（同样做距离校验，超出 range 不响应）。
  * 碰撞：由 ClearingSystem 写 TerrainData.heights=1 实现（格级阻挡，复活/清除自动还原）。
  */
 @ccclass('Interactable')
@@ -49,7 +49,7 @@ export class Interactable extends Component {
 
     private _wire(): void {
         this._g = this.node.getComponent(Graphics) || this.node.addComponent(Graphics);
-        this.node.on(EventTouch.TOUCH_END, this._onTap, this);
+        this.node.on(Node.EventType.TOUCH_END, this._onTap, this);
         // ContextButtonUI → InteractionManager.dispatchCurrent → 本事件（情境按钮主通道）
         this.node.on('interact_use', this._onTap, this);
         InteractionManager.inst.register(this);
@@ -57,8 +57,16 @@ export class Interactable extends Component {
     }
 
     private _onTap(): void {
+        // 直达点按也走距离校验（情境按钮通道已由 InteractionManager.tick 筛过，双保险）
+        if (!InteractionManager.inst.inRange(this)) return;
         if (this.onUse) { this.onUse(this.objId); return; }
         if (!this.cleared && this._sys) this._sys.hit(this.objId);
+    }
+
+    protected onDestroy(): void {
+        // 场景重入不泄漏：反注册 + 解绑本节点全部监听
+        InteractionManager.inst.unregister(this);
+        this.node.targetOff(this);
     }
 
     /** hp 变化后重绘（ratio 0..1） */

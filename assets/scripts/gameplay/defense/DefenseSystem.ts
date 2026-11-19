@@ -16,15 +16,11 @@ import { EconomySystem } from '../../systems/EconomySystem';
 import {
     CoreNight, CoreTower, ResolvedMap,
     resolveMap, makeTower, towerStatsAt, startCoreNight, beginWave, tickCoreNight,
-    damageMonster, canPlace, setMonsterMetaLookup,
+    damageMonster, canPlace,
 } from './DefenseCore';
+import { SealSave } from '../../core/SaveManager';
 
 type AnyRow = Record<string, unknown>;
-
-export interface SealSave {
-    towers: { cropId: string; cx: number; cy: number; lv: number }[];
-    altarHp: number;
-}
 
 export interface NightState {
     core: CoreNight;
@@ -54,7 +50,9 @@ export class DefenseSystem {
 
     /** 今晚防守战实时态（null=不在防守） */
     night: NightState | null = null;
-    private _metaBound = false;
+    /** 固定步长累加器（防后台切回大 dt 穿透） */
+    private _acc = 0;
+    private static readonly STEP = 1 / 30;
 
     get inNight(): boolean {
         return this.night !== null && !this.night.core.over;
@@ -63,12 +61,15 @@ export class DefenseSystem {
     // ---------- 存档 seal 段 ----------
 
     seal(): SealSave {
-        const sd = GameApp.inst?.saveData as Record<string, unknown> | undefined;
-        const s = sd?.['seal'] as SealSave | undefined;
-        if (s && Array.isArray(s.towers)) return s;
-        const fresh: SealSave = { towers: [], altarHp: 100 };
-        if (sd) sd['seal'] = fresh;
-        return fresh;
+        const sd = GameApp.inst?.saveData;
+        if (!sd) return { towers: [], altarHp: 100 };
+        let s = sd.seal;
+        if (!s || !Array.isArray(s.towers)) {
+            s = { towers: [], altarHp: 100 };
+            sd.seal = s;
+        }
+        if (typeof s.altarHp !== 'number' || !Number.isFinite(s.altarHp)) s.altarHp = 100;
+        return s;
     }
 
     persistSeal(action: string): void {
@@ -82,7 +83,7 @@ export class DefenseSystem {
         const nights = DataManager.inst.getRows('catalogs/defense_waves');
         const hits = nights.filter((row) => {
             const first = Number(row['firstDay'] ?? 4);
-            const every = Number(row['everyDays'] ?? 4);
+            const every = Math.max(1, Number(row['everyDays'] ?? 4) || 1);
             return dayIndex >= first && (dayIndex - first) % every === 0;
         });
         return hits.length
@@ -101,13 +102,11 @@ export class DefenseSystem {
         let best: number | null = null;
         for (const n of nights) {
             const first = Number(n['firstDay'] ?? 4);
-            const every = Number(n['everyDays'] ?? 4);
-            for (let d = Math.max(dayIndex, first); ; d++) {
-                if (d >= first && (d - first) % every === 0) {
-                    if (best === null || d < best) best = d;
-                    break;
-                }
-            }
+            const every = Math.max(1, Number(n['everyDays'] ?? 4) || 1);
+            // 闭式求 >= start 的首个命中日（旧 for(;;) 在 everyDays<=0 时死循环）
+            const start = Math.max(dayIndex, first);
+            const d = first + Math.ceil((start - first) / every) * every;
+            if (best === null || d < best) best = d;
         }
         return best;
     }
@@ -136,31 +135,30 @@ export class DefenseSystem {
     /** 开战（BedtimeDialog 确认后调用；打完由 UI 调 settle 走真正过夜） */
     startNight(): boolean {
         if (this.night && !this.night.core.over) return false;
+        const seal = this.seal();
+        // 当天已结算过（含结果面板强退重进）：拒绝重打防重复刷奖励；BedtimeDialog 回落普通睡觉
+        if (seal.lastSettledDay === TimeSystem.inst.dayIndex) return false;
         const tableRow = this._pickTableRow();
         if (!tableRow) return false;
         const maps = DataManager.inst.getRows('catalogs/defense_maps');
         const mapRow = maps.find((x) => x['id'] === tableRow['mapId']);
         if (!mapRow) return false;
 
-        if (!this._metaBound) {
-            setMonsterMetaLookup((mid) => {
-                const m = DataManager.inst.getRows('catalogs/monsters').find((x) => x['id'] === mid);
-                if (!m) return null;
-                return {
-                    hp: Number(m['hp'] ?? 10),
-                    damage: Number(m['damage'] ?? 3),
-                    speed: String(m['behavior']) === 'tank' ? 38 : 60,
-                    name: String(m['name'] ?? mid),
-                    slowResist: Number(m['slowResist'] ?? 0),
-                    baitImmune: m['baitImmune'] === true,
-                };
-            });
-            this._metaBound = true;
-        }
+        const metaLookup = (mid: string) => {
+            const m = DataManager.inst.getRows('catalogs/monsters').find((x) => x['id'] === mid);
+            if (!m) return null;
+            return {
+                hp: Number(m['hp'] ?? 10),
+                damage: Number(m['damage'] ?? 3),
+                speed: String(m['behavior']) === 'tank' ? 38 : 60,
+                name: String(m['name'] ?? mid),
+                slowResist: Number(m['slowResist'] ?? 0),
+                baitImmune: m['baitImmune'] === true,
+            };
+        };
 
         const map = resolveMap(mapRow as unknown as Parameters<typeof resolveMap>[0]);
         const crops = DataManager.inst.getRows('catalogs/crops');
-        const seal = this.seal();
         const towers: CoreTower[] = [];
         for (const t of seal.towers) {
             const crop = crops.find((x) => x['id'] === t.cropId);
@@ -171,8 +169,9 @@ export class DefenseSystem {
             towers.push(tw);
         }
 
-        const real = startCoreNight(map, tableRow, {}, towers, seal.altarHp);
+        const real = startCoreNight(map, tableRow, metaLookup, towers, seal.altarHp);
         this.night = { core: real, mapRow: mapRow as AnyRow, tableRow, map, killed: 0, hook: null };
+        this._acc = 0;
         beginWave(real, 0);
         EventBus.inst.emit('farmChanged', { action: 'defense_start' });
         return true;
@@ -182,7 +181,11 @@ export class DefenseSystem {
     tick(dt: number): void {
         const s = this.night;
         if (!s || s.core.over) return;
-        tickCoreNight(s.core, dt, (ev, p) => this._onCoreEvent(ev, p));
+        this._acc = Math.min(this._acc + Math.max(0, dt), 0.25);
+        while (this._acc >= DefenseSystem.STEP && !s.core.over) {
+            tickCoreNight(s.core, DefenseSystem.STEP, (ev, p) => this._onCoreEvent(ev, p));
+            this._acc -= DefenseSystem.STEP;
+        }
     }
 
     private _onCoreEvent(ev: string, p?: Record<string, unknown>): void {
@@ -198,13 +201,8 @@ export class DefenseSystem {
                 break;
             case 'kill': {
                 s.killed++;
-                const by = String(p?.['by'] ?? 'player');
-                if (by !== 'player') {
-                    // 塔击杀也有战利品（归玩家，塔防区设计：掉落归玩家）
-                    this._grantRewards(String(p?.['mid'] ?? ''));
-                } else {
-                    this._grantRewards(String(p?.['mid'] ?? ''));
-                }
+                // 塔/玩家击杀战利品都归玩家（塔防区设计：掉落归玩家）
+                this._grantRewards(String(p?.['mid'] ?? ''));
                 EventBus.inst.emit('farmChanged', { action: 'defense_kill' });
                 break;
             }
@@ -289,6 +287,7 @@ export class DefenseSystem {
             }
         }
         const seal = this.seal();
+        seal.lastSettledDay = TimeSystem.inst.dayIndex;
         seal.altarHp = c.won ? c.altarHp : DefenseSystem.ALTAR_LOST_HP;
         seal.towers = c.towers.map((t) => ({ cropId: t.cropId, cx: t.cx, cy: t.cy, lv: t.lv }));
         const out = { won: c.won, perfect: c.perfect, killed: s.killed, leakA: c.leakA, leakB: c.leakB, altarHp: seal.altarHp };
@@ -310,7 +309,11 @@ export class DefenseSystem {
         if (!mapRow) return { ok: false, reason: 'no_map' };
         const map = resolveMap(mapRow as unknown as Parameters<typeof resolveMap>[0]);
         const seal = this.seal();
-        const towers: CoreTower[] = seal.towers.map((t) => ({ cropId: t.cropId, cx: t.cx, cy: t.cy, lv: t.lv, x: 0, y: 0, rPx: 0, power: 0, interval: 0, hp: 0, cd: 0 }));
+        const cropRows = DataManager.inst.getRows('catalogs/crops');
+        const towers: CoreTower[] = seal.towers.map((t) => {
+            const d = cropRows.find((x) => x['id'] === t.cropId)?.['defense'] as AnyRow | undefined;
+            return { cropId: t.cropId, kind: String(d?.['kind'] ?? 'slow') as CoreTower['kind'], cx: t.cx, cy: t.cy, lv: t.lv, x: 0, y: 0, rPx: 0, power: 0, interval: 0, hp: 0, cd: 0 };
+        });
         const cell = cy * Number(mapRow['cols']) + cx;
         const chk = canPlace(map, towers, cell, Number(mapRow['cols']));
         if (!chk.ok) return { ok: false, reason: chk.reason };

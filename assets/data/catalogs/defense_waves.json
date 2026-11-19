@@ -3,7 +3,7 @@
     "id": "seal_slime_1",
     "mapId": "seal_1",
     "firstDay": 4,
-    "everyDays": 4,
+    "everyDays": 12,
     "waveBreak": 25,
     "waves": [
       [
@@ -18,7 +18,7 @@
     "id": "seal_pack_2",
     "mapId": "seal_1",
     "firstDay": 10,
-    "everyDays": 4,
+    "everyDays": 12,
     "waveBreak": 25,
     "waves": [
       [
@@ -39,8 +39,8 @@
   {
     "id": "seal_spore_3",
     "mapId": "seal_1",
-    "firstDay": 20,
-    "everyDays": 4,
+    "firstDay": 16,
+    "everyDays": 12,
     "waveBreak": 25,
     "waves": [
       [

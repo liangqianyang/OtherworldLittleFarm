@@ -61,11 +61,6 @@ export class FarmHUD extends Component {
             GameApp.inst?.persist('manual');
             this._flash(saveLabel, '已存档✓', '存档');
         });
-        // 探险入口（阶段 3）：存档后切探险场景
-        this._makeButton('出发探险', 560, -192, () => {
-            GameApp.inst?.persist('adventure_start');
-            GameApp.inst?.loadAdventure();
-        });
         // 钓鱼入口（阶段 5）：开关小面板
         this._makeButton('钓鱼', -560, -128, () => {
             if (!this._fishing) return;
@@ -209,7 +204,7 @@ export class FarmHUD extends Component {
         }
     }
 
-    private _refresh(_p: { dayIndex: number }): void {
+    private _refresh(_p?: unknown): void {
         const inv = GameApp.inst?.inventory ?? {};
         const label = this.getComponent(Label);
         const term = this._todayTerm();
@@ -235,7 +230,7 @@ export class FarmHUD extends Component {
         const sys = DefenseSystem.inst;
         if (sys.hasNightTonight()) {
             const intel = sys.intelTonight();
-            const brief = intel.map((i) => `${i.monsterName}×${i.count}`).join('、');
+            const brief = intel ? intel.comp.map((i) => `${i.monsterName}×${i.count}`).join('、') : '';
             this._intelLabel.string = `⚠ 今晚防守：${brief}！睡前做好准备`;
         } else {
             const next = sys.nextNightDay();

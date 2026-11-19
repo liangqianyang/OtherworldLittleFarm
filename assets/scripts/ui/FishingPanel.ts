@@ -126,12 +126,12 @@ export class FishingPanel extends Component {
         comp._float = float;
         comp._mark = mark.getComponent(Label)!;
         // AI 素材异步补挂（SpriteLib 就绪后 biteArt 贴图）
-        const tryBiteArt = (): void => {
+        const tryBiteArt = (tries = 0): void => {
             const sf = SpriteLib.inst.get('adventure/fish_bite');
-            if (!sf) { comp.scheduleOnce(tryBiteArt, 1.5); return; }
+            if (!sf) { if (tries < 40) comp.scheduleOnce(() => tryBiteArt(tries + 1), 1.5); return; }
             bsp.spriteFrame = sf;
         };
-        comp.scheduleOnce(tryBiteArt, 1.0);
+        comp.scheduleOnce(() => tryBiteArt(), 1.0);
         return comp;
     }
 
@@ -144,7 +144,7 @@ export class FishingPanel extends Component {
         if (!s) {
             // 空闲：显示最近一次结果
             if (sys.lastResult === 'caught') {
-                const def: any = DataManager.inst.getRow('catalogs/fish', sys.lastFishId);
+                const def = DataManager.inst.getRow('catalogs/fish', sys.lastFishId);
                 this._state.string = `钓到了！${def?.['name'] ?? '鱼'} 入包`;
                 if (!this._resultPlayed) { SfxLib.inst.play('harvest'); this._resultPlayed = true; }
             } else if (sys.lastResult === 'early') {

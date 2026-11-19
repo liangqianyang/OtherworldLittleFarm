@@ -10,14 +10,14 @@ const t3 = waves.find(w => w.id === 'seal_spore_3');
 let pass = 0, fail = 0;
 const ok = (cond, name) => { if (cond) { pass++; console.log('  ✓', name); } else { fail++; console.log('  ✗ FAIL', name); } };
 
-// 怪物元数据（与 monsters.json 一致的测试值）
+// 怪物元数据（与 monsters.json 一致的测试值；经 startCoreNight 第 3 参注入夜战实例）
 const meta = {
     slime:       { hp: 12, damage: 3, speed: 60, name: '林地粘怪', slowResist: 0, baitImmune: false },
     slime_elite: { hp: 18, damage: 4, speed: 38, name: '粘怪精英', slowResist: 0.5, baitImmune: false },
     sporeling:   { hp: 22, damage: 3, speed: 38, name: '孢子菇', slowResist: 0, baitImmune: true },
 };
-core.setMonsterMetaLookup(mid => meta[mid] ?? null);
-
+// 查询函数包装（旧全局注册 setMonsterMetaLookup 已移除，改为经 startCoreNight 第 3 参注入夜战实例）
+const metaLookup = (mid) => meta[mid] ?? null;
 // ---------- 地图解析 ----------
 const m = core.resolveMap(mapRow);
 ok(m.buildable.length === 15 * 9 - 21 - 4 - 10, `建造格 100（实际 ${m.buildable.length}）`);
@@ -32,7 +32,7 @@ ok(core.pxToCell(m, px, py) === 3 * 15 + 12, 'px→cell 往返一致');
 
 // ---------- 场景1：裸奔（无塔 3 粘怪）—— 必失守 ----------
 {
-    const n = core.startCoreNight(m, t1, meta, [], mapRow.altarHp);
+    const n = core.startCoreNight(m, t1, metaLookup,[], mapRow.altarHp);
     const evs = [];
     const cb = (e, p) => evs.push([e, p]);
     let guard = 0;
@@ -47,7 +47,7 @@ ok(core.pxToCell(m, px, py) === 3 * 15 + 12, 'px→cell 往返一致');
 {
     const d = { kind: 'slow', buildGold: 20, radiusCells: 1.5, power: 0.4 };
     const tw = core.makeTower('frostbell', d, 3, 4, mapRow.cellPx, mapRow.originX, mapRow.originY);
-    const n = core.startCoreNight(m, t1, meta, [tw], mapRow.altarHp);
+    const n = core.startCoreNight(m, t1, metaLookup,[tw], mapRow.altarHp);
     const cb = () => {};
     let guard = 0;
     while (!n.over && guard++ < 3000) core.tickCoreNight(n, 0.1, cb);
@@ -61,7 +61,7 @@ ok(core.pxToCell(m, px, py) === 3 * 15 + 12, 'px→cell 往返一致');
 {
     const d = { kind: 'slow', radiusCells: 1.5, power: 0.4 };
     const tw = core.makeTower('frostbell', d, 3, 4, mapRow.cellPx, mapRow.originX, mapRow.originY);
-    const n = core.startCoreNight(m, t1, meta, [tw], mapRow.altarHp);
+    const n = core.startCoreNight(m, t1, metaLookup,[tw], mapRow.altarHp);
     // 手动造一只精英在霜铃环里
     n.monsters.push({
         uid: 99, mid: 'slime_elite', name: '粘怪精英', hp: 18, maxHp: 18, damage: 4, speed: 38,
@@ -76,7 +76,7 @@ ok(core.pxToCell(m, px, py) === 3 * 15 + 12, 'px→cell 往返一致');
 {
     const baitD = { kind: 'attract', radiusCells: 2.5, hp: 18 };
     const bait = core.makeTower('honeyplot', baitD, 7, 4, mapRow.cellPx, mapRow.originX, mapRow.originY);
-    const n = core.startCoreNight(m, t1, meta, [bait], mapRow.altarHp);
+    const n = core.startCoreNight(m, t1, metaLookup,[bait], mapRow.altarHp);
     core.beginWave(n, 0);
     // 灌两只怪：粘怪（会被吸）+ 孢子菇（免疫）
     const mk = (uid, mid) => ({
@@ -103,7 +103,7 @@ ok(core.pxToCell(m, px, py) === 3 * 15 + 12, 'px→cell 往返一致');
 {
     const podD = { kind: 'pod', radiusCells: 3.0, power: 6, interval: 1.5 };
     const pod = core.makeTower('podgun', podD, 8, 4, mapRow.cellPx, mapRow.originX, mapRow.originY);
-    const n = core.startCoreNight(m, t1, meta, [pod], mapRow.altarHp);
+    const n = core.startCoreNight(m, t1, metaLookup,[pod], mapRow.altarHp);
     let shots = 0, kills = 0;
     const cb = (e) => { if (e === 'pod_shot') shots++; if (e === 'kill') kills++; };
     let guard = 0;
@@ -115,7 +115,7 @@ ok(core.pxToCell(m, px, py) === 3 * 15 + 12, 'px→cell 往返一致');
 
 // ---------- 场景6：逐波门控（T3 四波）----------
 {
-    const n = core.startCoreNight(m, t3, meta, [], mapRow.altarHp);
+    const n = core.startCoreNight(m, t3, metaLookup,[], mapRow.altarHp);
     // 给足火力让它打完四波：豆荚炮阵
     const pods = [[7, 4], [7, 5], [8, 4], [8, 5], [9, 6], [9, 3]].map(([cx, cy]) =>
         core.makeTower('podgun', { kind: 'pod', radiusCells: 3.5, power: 10, interval: 1.2 }, cx, cy, mapRow.cellPx, mapRow.originX, mapRow.originY));
@@ -132,7 +132,7 @@ ok(core.pxToCell(m, px, py) === 3 * 15 + 12, 'px→cell 往返一致');
 
 // ---------- 场景7：祭坛打穿即时终局 ----------
 {
-    const n = core.startCoreNight(m, t1, meta, [], mapRow.altarHp);
+    const n = core.startCoreNight(m, t1, metaLookup,[], mapRow.altarHp);
     core.beginWave(n, 0);
     n.spawnedInWave = 1;
     n.monsters.push({

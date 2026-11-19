@@ -18,6 +18,8 @@ export class InteractionManager {
 
     private _objs: Interactable[] = [];
     private _current: Interactable | null = null;
+    private _px = 0;
+    private _py = 0;
     private _suppressed = false;
     private _lastKey = '';
 
@@ -44,8 +46,16 @@ export class InteractionManager {
         return this._suppressed ? null : this._current;
     }
 
+    /** 范围校验（直达点按通道用；与 tick 的判定一致） */
+    inRange(o: Interactable): boolean {
+        const p = o.node.position;
+        const dx = p.x - this._px, dy = p.y - this._py;
+        return dx * dx + dy * dy <= o.range * o.range;
+    }
+
     /** 每帧：找范围内最近可交互物件 */
     tick(px: number, py: number): void {
+        this._px = px; this._py = py;
         if (this._suppressed) return;
         let best: Interactable | null = null;
         let bestD = Infinity;

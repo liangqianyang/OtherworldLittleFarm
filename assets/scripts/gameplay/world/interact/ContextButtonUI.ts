@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Graphics, Color, Label, UITransform, director, Camera } from 'cc';
+import { _decorator, Component, Node, Graphics, Color, Label, UITransform, EventTouch, director, Camera } from 'cc';
 import { SCREEN_UI_LAYER } from '../JoystickController';
 import { EventBus } from '../../../core/EventBus';
 import { InteractionManager } from './InteractionManager';
@@ -55,11 +55,14 @@ export class ContextButtonUI extends Component {
         this._label.overflow = Label.Overflow.SHRINK;
         this._labelNode.setPosition(0, 0);
 
+        this.node.on(Node.EventType.TOUCH_START, this._onDown, this);
         this.node.on(Node.EventType.TOUCH_END, this._onTap, this);
         EventBus.inst.on('interactPromptChanged', this._onPrompt, this);
     }
 
     onDestroy(): void {
+        this.node.off(Node.EventType.TOUCH_START, this._onDown, this);
+        this.node.off(Node.EventType.TOUCH_END, this._onTap, this);
         EventBus.inst.off('interactPromptChanged', this._onPrompt, this);
         if (ContextButtonUI._inst === this) ContextButtonUI._inst = null;
     }
@@ -70,7 +73,12 @@ export class ContextButtonUI extends Component {
         if (!payload) this.node.setPosition(0, -9999);
     }
 
-    private _onTap(): void {
+    private _onDown(ev: EventTouch): void {
+        ev.propagationStopped = true;   // 吞掉按压，防止穿透到世界/摇杆
+    }
+
+    private _onTap(ev: EventTouch): void {
+        ev.propagationStopped = true;
         if (this._shown) InteractionManager.inst.dispatchCurrent();
     }
 
