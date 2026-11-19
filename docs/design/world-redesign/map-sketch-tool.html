@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>异界小农场 · 地图构想画板</title>
+<style>
+  body{margin:0;background:#16181f;color:#ddd;font-family:system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;height:100vh;overflow:hidden}
+  #bar{width:252px;padding:12px;box-sizing:border-box;overflow-y:auto;background:#1d2029;flex-shrink:0}
+  h1{font-size:15px;color:#f2c14e;margin:4px 0 10px}
+  .sec{font-size:12px;color:#8a93a6;margin:12px 0 6px;border-bottom:1px solid #2e3342;padding-bottom:3px}
+  .pal{display:flex;flex-wrap:wrap;gap:6px}
+  .sw{width:62px;padding:5px 0;font-size:11px;text-align:center;border-radius:6px;cursor:pointer;border:2px solid transparent;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.65);user-select:none}
+  .sw.on{border-color:#f2c14e;box-shadow:0 0 6px #f2c14e88}
+  .bs{display:inline-block;width:34px;padding:5px 0;text-align:center;border-radius:6px;background:#2a2f3e;border:1px solid #3a4152;cursor:pointer;margin-right:4px;user-select:none}
+  .bs.on{background:#f2c14e;color:#222;font-weight:bold}
+  .btn{display:block;width:100%;margin:5px 0;padding:7px;background:#2a2f3e;border:1px solid #3a4152;color:#ddd;border-radius:6px;cursor:pointer;font-size:13px}
+  .btn:hover{background:#343b4f}
+  #wrap{position:relative;margin:auto;width:960px;height:800px}
+  canvas{position:absolute;left:0;top:0;image-rendering:pixelated}
+  #ov{cursor:crosshair}
+  #hud{position:fixed;right:12px;bottom:10px;background:#000c;padding:6px 10px;border-radius:6px;font-size:12px;color:#9fd}
+  .leg{font-size:11px;color:#9aa3b5;line-height:1.7}
+</style>
+</head>
+<body>
+<div id="bar">
+  <h1>🗺 地图构想画板</h1>
+  <div class="leg">底图 = 当前 V2 布局。直接在上面画你的想法：<b>涂色改区域、画河画路、盖章地标、钉数字</b>标出想说的问题点。画完点「导出 PNG」把图发回对话（或直接喊我看）。</div>
+  <div class="sec">区域画笔</div>
+  <div class="pal" id="pal"></div>
+  <div class="sec">笔刷大小（格）</div>
+  <div id="brush"></div>
+  <div class="sec">地标印章（点一下放一个）</div>
+  <div class="pal" id="stamps"></div>
+  <div class="sec">操作</div>
+  <button class="btn" onclick="undo()">↩ 撤销</button>
+  <button class="btn" onclick="clearOv()">🧹 清空我的涂画</button>
+  <button class="btn" id="tgb" onclick="toggleBase()">👁 隐藏/显示底图</button>
+  <button class="btn" style="background:#f2c14e;color:#222;font-weight:bold" onclick="exportPNG()">📸 导出 PNG</button>
+  <div class="sec" style="margin-top:14px">底图图例</div>
+  <div class="leg">床=床 · 仓=谷仓 · 祭=封印祭坛 · 门=副本门 · 码=码头 · 温=园艺师 · 布=守门人<br>棕块=9 块农田 · 深蓝=河/湖 · 灰=石板广场</div>
+</div>
+<div id="wrap"><canvas id="base" width="960" height="800"></canvas><canvas id="ov" width="960" height="800"></canvas></div>
+<div id="hud"></div>
+<script>
+const W=96,H=80,S=10;
+const base=document.getElementById('base'),ov=document.getElementById('ov');
+const bx=base.getContext('2d'),g=ov.getContext('2d');
+function R(ctx,x0,y0,x1,y1,c,a){ctx.fillStyle=c;if(a!==undefined)ctx.globalAlpha=a;ctx.fillRect(x0*S,y0*S,(x1-x0+1)*S,(y1-y0+1)*S);ctx.globalAlpha=1;}
+/* ---- 当前 V2 底图 ---- */
+R(bx,4,4,40,32,'#3a7d44');        // 开荒林地
+R(bx,34,32,56,48,'#7fb069');      // 居住区
+R(bx,56,34,84,62,'#e0c34d');      // 农田区
+R(bx,18,56,44,73,'#d9b45b');      // 钓鱼区沙环
+R(bx,20,58,42,71,'#2e86ab');      // 湖体
+R(bx,58,6,90,32,'#c1554e');       // 封印防守区
+R(bx,48,14,56,26,'#8e5aa8');      // 副本门区
+for(let gy=0;gy<3;gy++)for(let gx=0;gx<3;gx++)R(bx,58+gx*4,42+gy*4,61+gx*4,45+gy*4,'#6b4a2e',.9); // 9 农田块
+[[50,20,51,34],[50,26,61,27],[20,40,40,41],[38,31,39,41],[52,40,74,41],[72,40,73,58],[46,58,74,59],[48,44,49,54],[42,54,49,55]].forEach(r=>R(bx,r[0],r[1],r[2],r[3],'#8a6a4f')); // 土路网
+[[32,36,0,16],[30,34,16,30],[32,36,30,44],[30,34,44,52],[32,36,52,57]].forEach(r=>R(bx,r[0],r[2],r[1],r[3],'#1e3c78')); // 河（元组序 x0,x1,y0,y1）
+R(bx,31,39,37,42,'#7d7d85');      // 桥
+R(bx,40,36,52,46,'#b9b9b9');      // 枢纽广场
+R(bx,58,26,62,30,'#b9b9b9');      // 祭坛台
+R(bx,48,20,52,24,'#b9b9b9');      // 副本门台
+R(bx,42,57,42,58,'#7a5230');      // 码头木平台
+/* 网格 */
+bx.globalAlpha=.10;bx.strokeStyle='#000';bx.lineWidth=1;
+for(let x=0;x<=W;x++){bx.beginPath();bx.moveTo(x*S+.5,0);bx.lineTo(x*S+.5,H*S);bx.stroke();}
+for(let y=0;y<=H;y++){bx.beginPath();bx.moveTo(0,y*S+.5);bx.lineTo(W*S,y*S+.5);bx.stroke();}
+bx.globalAlpha=.22;
+for(let x=0;x<=W;x+=8){bx.beginPath();bx.moveTo(x*S+.5,0);bx.lineTo(x*S+.5,H*S);bx.stroke();}
+for(let y=0;y<=H;y+=8){bx.beginPath();bx.moveTo(0,y*S+.5);bx.lineTo(W*S,y*S+.5);bx.stroke();}
+bx.globalAlpha=1;
+/* 区域名 */
+bx.font='bold 22px sans-serif';bx.textAlign='center';bx.globalAlpha=.4;bx.fillStyle='#000';
+[['居住区',45,40],['农田区',70,49],['开荒林地',22,18],['钓鱼湖',31,65],['封印防守区',74,19],['副本门',52,20]].forEach(l=>bx.fillText(l[0],l[1]*S,l[2]*S));
+bx.globalAlpha=1;
+/* 底图地标 */
+function mark(ctx,ch,tx,ty,n){ctx.beginPath();ctx.arc(tx*S+S/2,ty*S+S/2,9,0,7);ctx.fillStyle=n?'#e5484d':'#fff';ctx.fill();ctx.lineWidth=2;ctx.strokeStyle='#222';ctx.stroke();ctx.fillStyle='#111';ctx.font='bold 11px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(n!==undefined?n:ch,tx*S+S/2,ty*S+S/2+1);}
+[['床',50,38],['仓',65,38],['祭',60,28],['门',50,22],['码',42,56],['温',46,42],['布',54,36]].forEach(m=>mark(bx,m[0],m[1],m[2]));
+/* ---- 工具 ---- */
+const PAL={living:['#7fb069','居住'],farm:['#e0c34d','农田'],forest:['#3a7d44','开荒林'],lake:['#2e86ab','湖'],sand:['#d9b45b','沙滩'],defense:['#c1554e','封印防'],gate:['#8e5aa8','副本门'],river:['#1e3c78','河流'],road:['#8a6a4f','土路'],stone:['#b9b9b9','石板'],bridge:['#7d7d85','桥'],erase:['#333','擦除']};
+const STAMPS=[['床'],['仓'],['祭'],['门'],['码'],['箱'],['旗'],['温'],['布'],['#']];
+let pal='living',brush=2,stamp=null,down=false,last=null,undoStack=[],pinN=1;
+function buildPal(){const el=document.getElementById('pal');el.innerHTML='';Object.keys(PAL).forEach(k=>{const d=document.createElement('div');d.className='sw'+(k===pal&&!stamp?' on':'');d.style.background=k==='erase'?'repeating-linear-gradient(45deg,#555,#555 4px,#333 4px,#333 8px)':PAL[k][0];d.textContent=PAL[k][1];d.onclick=()=>{pal=k;stamp=null;buildPal();buildStamps();};el.appendChild(d);});}
+function buildStamps(){const el=document.getElementById('stamps');el.innerHTML='';STAMPS.forEach(s=>{const d=document.createElement('div');d.className='sw'+(stamp===s[0]?' on':'');d.style.background=stamp===s[0]?'#f2c14e':'#2a2f3e';d.style.color=stamp===s[0]?'#222':'#ddd';d.textContent=s[0]==='#'?'序号':s[0];d.onclick=()=>{stamp=s[0];buildStamps();buildPal();};el.appendChild(d);});}
+function buildBrush(){const el=document.getElementById('brush');el.innerHTML='';[1,2,4,8].forEach(b=>{const d=document.createElement('div');d.className='bs'+(b===brush?' on':'');d.textContent=b;d.onclick=()=>{brush=b;buildBrush();};el.appendChild(d);});}
+buildPal();buildStamps();buildBrush();
+function pushUndo(){undoStack.push(g.getImageData(0,0,ov.width,ov.height));if(undoStack.length>25)undoStack.shift();}
+function undo(){const im=undoStack.pop();if(im)g.putImageData(im,0,0);}
+function clearOv(){pushUndo();g.clearRect(0,0,ov.width,ov.height);pinN=1;}
+function toggleBase(){const v=base.style.visibility==='hidden';base.style.visibility=v?'visible':'hidden';}
+function tile(e){const r=ov.getBoundingClientRect();return[Math.floor((e.clientX-r.left)/r.width*W),Math.floor((e.clientY-r.top)/r.height*H)];}
+function dot(tx,ty){if(stamp){if(stamp==='#'){mark(g,'',tx,ty,pinN++);}else{mark(g,stamp,tx,ty);}return;}
+ const h=brush*S;if(pal==='erase'){g.save();g.globalCompositeOperation='destination-out';g.fillRect(tx*S+S/2-h/2,ty*S+S/2-h/2,h,h);g.restore();}else{g.fillStyle=PAL[pal][0];g.fillRect(tx*S+S/2-h/2,ty*S+S/2-h/2,h,h);}}
+ov.addEventListener('pointerdown',e=>{e.preventDefault();ov.setPointerCapture(e.pointerId);pushUndo();const t=tile(e);down=true;last=t;dot(t[0],t[1]);});
+ov.addEventListener('pointermove',e=>{const t=tile(e);document.getElementById('hud').textContent='格 ('+t[0]+', '+t[1]+')';
+ if(!down)return;const dx=t[0]-last[0],dy=t[1]-last[1],n=Math.max(Math.abs(dx),Math.abs(dy));
+ for(let i=1;i<=n;i++)dot(last[0]+Math.round(dx*i/n),last[1]+Math.round(dy*i/n));last=t;});
+window.addEventListener('pointerup',()=>{down=false;});
+function exportPNG(){const c=document.createElement('canvas');c.width=ov.width;c.height=ov.height;const cx=c.getContext('2d');if(base.style.visibility!=='hidden')cx.drawImage(base,0,0);cx.drawImage(ov,0,0);const a=document.createElement('a');a.download='farm-map-idea-'+Date.now()+'.png';a.href=c.toDataURL('image/png');a.click();}
+</script>
+</body>
+</html>

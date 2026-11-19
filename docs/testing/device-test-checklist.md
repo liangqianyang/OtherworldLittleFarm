@@ -148,6 +148,34 @@ CLI 构建会改写 `~/.CocosCreator/editor/{window,layout}.json`，编辑器 GU
 - 预览页 `?scene=uuid` 直开=裸启动（无 GameApp）；验证走完整启动链。
 - BGM 未加（用户拍板暂无）；SFX 为 WebAudio 合成，真机首次交互后解锁。
 
+## G. 存档/跨天红线（0.0.5 起发布闸门，Code Reviewer 2026-11-18 增补）
+
+> 上游：docs/testing/world-v2-code-review.md（R1-R10）、docs/testing/v2-boundary-test-cases.md（TC 编号对应）。与 docs/taptap/publishing.md「每次构建后的固定步骤」配套：构建后先跑本节 4 条红线，再过 A/B/C/E。
+
+| # | 红线 | 真机测法 | 失败判据 |
+|---|---|---|---|
+| G-1 | 存档损坏恢复：杀进程重进后可玩 | 正常玩 1 天→杀进程→重进两次 | 黑屏/卡启动屏/天数回跳=失败；清 App 缓存（非卸载）后应能开新档 |
+| G-2 | 防守失败不清档：不放塔睡过 d4 夜 | 失守结算后检查：农场 9 格/背包/金币仍在，祭坛可 20 金修复，次日可再睡 | 农场被清/背包归零/无法再睡=失败（P0，对应 TC-DEF-01） |
+| G-3 | 跨天作物：浇水→+13h 离线→重进 | 作物长 1 天不枯、防守顺延不判负、系统时间倒拨不产生负天数 | 枯死/双倍生长/防守被判失守=失败 |
+| G-4 | 地形跨会话还原：铺石+造桥+台阶→重进 | 三处地形原样（含台阶高度位）；工具坞改造在庭院外被拒 | 地形回基线/庭院外可改造=失败 |
+
+### G 补充：分辨率 / 触控 / 音频对齐（publishing.md 已核事实）
+
+- 分辨率：设计 1280×720 fitHeight；`game.json` 构建后抽查 `deviceOrientation` 应为横屏（转换器落 `landscapeRight`）；异形屏安全区按 E+ ⚙ 钮 EDGE 内缩不遮挡为准。
+- 触控：C 节专项外，回归基线=「真实拖拽左半屏位移≈duration×128px/s」（0.0.3 第四轮教训：`Node.EventType.TOUCH_*` 才有效，静态别名 `Node.TOUCH_*` 在 CC 3.8.8 运行时不存在）。
+- 音频：SFX 为 WebAudio 合成，**真机首次触摸后解锁**；iOS（AudioContext 解锁）列设备矩阵 D 节；BGM 暂无（用户拍板）。静音开关设置项在 ⚙ 面板。
+- 存储：Tap 容器 localStorage 配额与「清缓存 vs 卸载」语义**未实测**（TapAdapter.info/flush TODO）——提审前补一次实测并回写 publishing.md。
+
+### G 已知测试资产状态（2026-11-18 实跑，发布前必须复跑）
+
+| 资产 | 状态 |
+|---|---|
+| tools/test-defense-core.mjs | 🔴 **启动即崩（`setMonsterMetaLookup` API 已漂移），0 断言**——修复并全绿前不得发版（B5「逻辑 24 测」声明暂失效） |
+| tools/test_rle.mjs | 🟡 14/14 绿但常数 128×96 过期（生产 96×80），需修正后复跑 |
+| tools/test-combat-core.mjs | 🟢 17/17 绿 |
+| tools/validate-layout-v2.py | 🟢 ALL PASS（冻结几何未漂移） |
+
 —— 生成于 2026-11-16，由 bsk 自动断言链+无头单测结论汇总；构建与真机步骤需用户手动执行。
 —— 2026-11-17 增补 E++：三根因运行时实证修复（浏览器 E2E，截图存 /private/tmp/proof_*.png）。
 —— 2026-11-17 下午增补 E++ 第4根因：预览 start_scene 误指 world 跳过数据引导；改回 launch + 横屏触摸回归实证（/private/tmp/portal_adventure_success.png）。
+—— 2026-11-18 增补 G 节（Code Reviewer）：存档/跨天/防守失败四条真机红线 + 测试资产当日实跑状态（defense-core 套件当前红）。
