@@ -5,4 +5,8 @@
         serverName: cocos-creator
         transport: streamable-http
         url: http://127.0.0.1:3000/mcp
-        failOnStartupError: true
+        # 编辑器未启动时不报「异常」，改为后台自动重连，Cocos 打开后自动同步工具
+        failOnStartupError: false
+        reconnect:
+          enabled: true
+          maxAttempts: 1000000
