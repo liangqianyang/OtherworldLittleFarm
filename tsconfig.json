@@ -4,6 +4,9 @@
 
   /* Add your custom configuration here. */
   "compilerOptions": {
-    "strict": false
+    "strict": false,
+    /* 引擎基线 target ES2015 的默认 lib 缺 Object.entries/Array.includes 等 ES2016/17 API；
+       运行时（V8/JSC 小游戏宿主）均支持，这里只补类型声明 */
+    "lib": ["ES2017", "DOM"]
   }
 }
