@@ -1,0 +1,387 @@
+{
+  "__type__": "cc.JsonAsset",
+  "_name": "fish",
+  "_objFlags": 0,
+  "__editorExtras__": {},
+  "_native": "",
+  "json": {
+    "$schema_version": "2.0.0",
+    "river_segments": [
+      {
+        "id": "upstream_brook",
+        "name": "上游寒溪",
+        "theme": "竹林清泉，急流高敏鱼种，主产战斗机动类鱼汤"
+      },
+      {
+        "id": "midstream_lotus",
+        "name": "中游荷塘",
+        "theme": "庭院南侧静水，主产防守诱饵与室内观赏锦鲤"
+      },
+      {
+        "id": "downstream_estuary",
+        "name": "下游入海口",
+        "theme": "南岸咸淡交汇，主产减耗蓝灵膳与航海补给"
+      }
+    ],
+    "fish": [
+      {
+        "id": "jade_minnow",
+        "name": "青玉溪鱼",
+        "riverSegments": [
+          "upstream_brook"
+        ],
+        "seasons": [
+          "spring",
+          "summer",
+          "autumn",
+          "winter"
+        ],
+        "solarTerms": [],
+        "weather": [
+          "sunny",
+          "rainy"
+        ],
+        "rarity": "common",
+        "difficulty": 1,
+        "catchWindowMs": 520,
+        "sellPrice": 14,
+        "aquariumComfort": 2,
+        "defenseBait": null,
+        "soupBuff": {
+          "stat": "moveSpeedMult",
+          "value": 1.08,
+          "durationRuns": 1
+        },
+        "description": "上游竹溪最常见的小银鱼，肉质鲜甜，清炖后可令步履轻快。"
+      },
+      {
+        "id": "silver_trout",
+        "name": "银鳞溪鳟",
+        "riverSegments": [
+          "upstream_brook"
+        ],
+        "seasons": [
+          "spring",
+          "summer"
+        ],
+        "solarTerms": [],
+        "weather": [
+          "sunny",
+          "rainy"
+        ],
+        "rarity": "uncommon",
+        "difficulty": 2,
+        "catchWindowMs": 450,
+        "sellPrice": 32,
+        "aquariumComfort": 4,
+        "defenseBait": null,
+        "soupBuff": {
+          "stat": "dodgeInvulnBonusSec",
+          "value": 0.08,
+          "durationRuns": 1
+        },
+        "description": "逆流而上的敏捷溪鳟，熬成鲜汤能让地牢翻滚的无敌时间更从容。"
+      },
+      {
+        "id": "thunder_eel",
+        "name": "惊蛰雷鳗",
+        "riverSegments": [
+          "upstream_brook"
+        ],
+        "seasons": [
+          "spring"
+        ],
+        "solarTerms": [
+          "jingzhe",
+          "chunfen"
+        ],
+        "weather": [
+          "rainy"
+        ],
+        "rarity": "solar_limited",
+        "difficulty": 4,
+        "catchWindowMs": 360,
+        "sellPrice": 98,
+        "aquariumComfort": 10,
+        "defenseBait": {
+          "attractsTag": "armored",
+          "holdSec": 5
+        },
+        "soupBuff": {
+          "stat": "lightningDmgMult",
+          "value": 1.3,
+          "durationRuns": 1
+        },
+        "description": "仅在惊蛰春雨夜浮出寒溪的稀有雷鳗，可大幅增幅雷系与激光法器。"
+      },
+      {
+        "id": "frost_char",
+        "name": "寒泉雪鳟",
+        "riverSegments": [
+          "upstream_brook"
+        ],
+        "seasons": [
+          "winter"
+        ],
+        "solarTerms": [
+          "daxue",
+          "dongzhi"
+        ],
+        "weather": [
+          "sunny",
+          "snowy"
+        ],
+        "rarity": "rare",
+        "difficulty": 3,
+        "catchWindowMs": 400,
+        "sellPrice": 68,
+        "aquariumComfort": 8,
+        "defenseBait": null,
+        "soupBuff": {
+          "stat": "heatResist",
+          "value": 1,
+          "durationRuns": 1
+        },
+        "description": "栖息于冬日寒潭深处的冰鳞鱼，是日后前往赤焰礁火山岛的必备冰镇汤料。"
+      },
+      {
+        "id": "amber_loach",
+        "name": "琥珀泥鳅",
+        "riverSegments": [
+          "midstream_lotus"
+        ],
+        "seasons": [
+          "spring",
+          "summer",
+          "autumn",
+          "winter"
+        ],
+        "solarTerms": [],
+        "weather": [
+          "sunny",
+          "rainy"
+        ],
+        "rarity": "common",
+        "difficulty": 1,
+        "catchWindowMs": 540,
+        "sellPrice": 12,
+        "aquariumComfort": 2,
+        "defenseBait": {
+          "attractsTag": "cropeater",
+          "holdSec": 3.5
+        },
+        "soupBuff": {
+          "stat": "maxHpBonus",
+          "value": 15,
+          "durationRuns": 1
+        },
+        "description": "性情温顺的荷塘底栖鱼，做成简易诱饵即可把贪吃庄稼的小怪引向防线陷阱。"
+      },
+      {
+        "id": "crimson_koi",
+        "name": "胭脂锦鲤",
+        "riverSegments": [
+          "midstream_lotus"
+        ],
+        "seasons": [
+          "spring",
+          "summer"
+        ],
+        "solarTerms": [],
+        "weather": [
+          "sunny"
+        ],
+        "rarity": "rare",
+        "difficulty": 3,
+        "catchWindowMs": 420,
+        "sellPrice": 75,
+        "aquariumComfort": 12,
+        "defenseBait": null,
+        "soupBuff": {
+          "stat": "dungeonBonusChest",
+          "value": 1,
+          "durationRuns": 1
+        },
+        "description": "尾鳍如晚霞染红的祥瑞锦鲤，放入室内瓷缸可大幅提升居室舒心度。"
+      },
+      {
+        "id": "lotus_crucian",
+        "name": "白露莲鲫",
+        "riverSegments": [
+          "midstream_lotus"
+        ],
+        "seasons": [
+          "autumn"
+        ],
+        "solarTerms": [
+          "bailu",
+          "qiufen"
+        ],
+        "weather": [
+          "sunny",
+          "rainy"
+        ],
+        "rarity": "uncommon",
+        "difficulty": 2,
+        "catchWindowMs": 440,
+        "sellPrice": 38,
+        "aquariumComfort": 5,
+        "defenseBait": {
+          "attractsTag": "all",
+          "holdSec": 6
+        },
+        "soupBuff": {
+          "stat": "hpRegenPerRoom",
+          "value": 8,
+          "durationRuns": 1
+        },
+        "description": "常年食荷花露水的肥美鲫鱼，香气极浓，制成的防守诱饵几乎所有异界怪都无法抗拒。"
+      },
+      {
+        "id": "moon_carp",
+        "name": "望月灵鲤",
+        "riverSegments": [
+          "midstream_lotus"
+        ],
+        "seasons": [
+          "autumn"
+        ],
+        "solarTerms": [
+          "qiufen",
+          "hanlu"
+        ],
+        "weather": [
+          "sunny"
+        ],
+        "rarity": "solar_limited",
+        "difficulty": 4,
+        "catchWindowMs": 360,
+        "sellPrice": 115,
+        "aquariumComfort": 16,
+        "defenseBait": null,
+        "soupBuff": {
+          "stat": "critChanceBonus",
+          "value": 0.15,
+          "durationRuns": 1
+        },
+        "description": "秋分月圆时现身荷塘的月白灵鲤，活养于室内可为全屋带来长久的吉兆祝福。"
+      },
+      {
+        "id": "silver_whitebait",
+        "name": "河口银鱼",
+        "riverSegments": [
+          "downstream_estuary"
+        ],
+        "seasons": [
+          "spring",
+          "winter"
+        ],
+        "solarTerms": [],
+        "weather": [
+          "sunny",
+          "rainy"
+        ],
+        "rarity": "common",
+        "difficulty": 2,
+        "catchWindowMs": 480,
+        "sellPrice": 20,
+        "aquariumComfort": 3,
+        "defenseBait": null,
+        "soupBuff": {
+          "stat": "dodgeCooldownMult",
+          "value": 0.85,
+          "durationRuns": 1
+        },
+        "description": "成群游弋在咸淡水交界处的透明小鱼，煮成银鱼羹能缩短地牢翻滚冷却。"
+      },
+      {
+        "id": "tide_grouper",
+        "name": "潮汐石斑",
+        "riverSegments": [
+          "downstream_estuary"
+        ],
+        "seasons": [
+          "summer",
+          "autumn"
+        ],
+        "solarTerms": [],
+        "weather": [
+          "sunny",
+          "rainy"
+        ],
+        "rarity": "uncommon",
+        "difficulty": 3,
+        "catchWindowMs": 410,
+        "sellPrice": 46,
+        "aquariumComfort": 6,
+        "defenseBait": {
+          "attractsTag": "ranged",
+          "holdSec": 4.5
+        },
+        "soupBuff": {
+          "stat": "manaCostMult",
+          "value": 0.75,
+          "durationRuns": 1
+        },
+        "description": "随潮汐涨落出没南岸码头的厚实海鱼，烹汤最适合激光与法器流派续航。"
+      },
+      {
+        "id": "moon_jelly",
+        "name": "月光水母",
+        "riverSegments": [
+          "downstream_estuary"
+        ],
+        "seasons": [
+          "summer",
+          "autumn",
+          "winter"
+        ],
+        "solarTerms": [],
+        "weather": [
+          "sunny"
+        ],
+        "rarity": "rare",
+        "difficulty": 3,
+        "catchWindowMs": 390,
+        "sellPrice": 72,
+        "aquariumComfort": 14,
+        "defenseBait": null,
+        "soupBuff": {
+          "stat": "manaRegenPerSec",
+          "value": 4,
+          "durationRuns": 1
+        },
+        "description": "伞盖散发青白幽光的入海口水母，入缸观赏绝美，入膳则提供持续灵力回复。"
+      },
+      {
+        "id": "storm_bass",
+        "name": "惊涛灵鲈",
+        "riverSegments": [
+          "downstream_estuary"
+        ],
+        "seasons": [
+          "summer"
+        ],
+        "solarTerms": [
+          "xiaoshu",
+          "dashu"
+        ],
+        "weather": [
+          "rainy"
+        ],
+        "rarity": "solar_limited",
+        "difficulty": 4,
+        "catchWindowMs": 350,
+        "sellPrice": 110,
+        "aquariumComfort": 10,
+        "defenseBait": null,
+        "soupBuff": {
+          "stat": "weaponDmgMult",
+          "value": 1.2,
+          "durationRuns": 1
+        },
+        "description": "大暑雷雨季闯入河口的猛鱼，力道十足，制成的灵鲈炙可令全武器伤害显著提升。"
+      }
+    ]
+  }
+}

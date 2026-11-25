@@ -1,0 +1,2173 @@
+{
+  "910fc8d7-df0f-47d0-a627-b6d7a8fe88f8": {
+    "url": "db://assets/bundles",
+    "value": {},
+    "versionCode": 1
+  },
+  "0a7c4f28-c360-4dfd-abb6-b86fe377f265": {
+    "url": "db://assets/resources",
+    "value": {},
+    "versionCode": 1
+  },
+  "6e81b6a2-c7a2-4bb4-9f5c-26638772bead": {
+    "url": "db://assets/scenes",
+    "value": {},
+    "versionCode": 1
+  },
+  "1fc4bdb2-20b3-4fa2-a86e-68aaa859f578": {
+    "url": "db://assets/scripts",
+    "value": {},
+    "versionCode": 1
+  },
+  "c12900ef-67b2-4299-a15d-b433cd4b414d": {
+    "url": "db://assets/bundles/bundle_audio",
+    "value": {},
+    "versionCode": 1
+  },
+  "3a765ac8-200e-4e19-af27-587a3193623c": {
+    "url": "db://assets/bundles/bundle_decor",
+    "value": {},
+    "versionCode": 1
+  },
+  "5210a0b7-e929-4501-bc5d-1cbc97260fad": {
+    "url": "db://assets/bundles/bundle_dungeon",
+    "value": {},
+    "versionCode": 1
+  },
+  "73efaa81-477e-4823-b4e3-2b07e38deab3": {
+    "url": "db://assets/bundles/bundle_islands",
+    "value": {},
+    "versionCode": 1
+  },
+  "e17c2199-e31e-4acd-a428-5e2a3df3197e": {
+    "url": "db://assets/resources/art",
+    "value": {},
+    "versionCode": 1
+  },
+  "02524088-edd9-4d55-81d9-0d4aaf289ca2": {
+    "url": "db://assets/resources/catalogs",
+    "value": {},
+    "versionCode": 1
+  },
+  "f490c417-5732-4a10-b77d-fb49411216c5": {
+    "url": "db://assets/scripts/app",
+    "value": {},
+    "versionCode": 1
+  },
+  "e1848817-89ce-4f52-be5d-34d8d55ee150": {
+    "url": "db://assets/scripts/core",
+    "value": {},
+    "versionCode": 1
+  },
+  "62e717db-8344-4ac3-8527-c4d70ddfc4c7": {
+    "url": "db://assets/scripts/gameplay",
+    "value": {},
+    "versionCode": 1
+  },
+  "e6b912d8-f901-4c15-b9be-ca7d28c11070": {
+    "url": "db://assets/scripts/platform",
+    "value": {},
+    "versionCode": 1
+  },
+  "10856e6a-8cdd-4607-86b3-b47ade86fdfd": {
+    "url": "db://assets/scripts/ui",
+    "value": {},
+    "versionCode": 1
+  },
+  "2259912d-f56c-4a27-bb1c-b734378cc678": {
+    "url": "db://assets/scripts/gameplay/dungeon",
+    "value": {},
+    "versionCode": 1
+  },
+  "09594940-4fa7-407a-88f1-ce551b1f66c5": {
+    "url": "db://assets/scripts/gameplay/farm",
+    "value": {},
+    "versionCode": 1
+  },
+  "40fc8cda-02d9-4e44-a470-e9626706be70": {
+    "url": "db://assets/scripts/gameplay/overworld",
+    "value": {},
+    "versionCode": 1
+  },
+  "da154b84-9e02-4bcf-8ae1-f5cbb0af8e5f": {
+    "url": "db://assets/scripts/app/GameApp.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "0e1a21c3-303a-47df-b5e2-c49708122257": {
+    "url": "db://assets/scripts/core/ArtLoader.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "78dea8e7-6fdf-44a2-ac89-31236379d201": {
+    "url": "db://assets/scripts/core/AudioManager.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "59482d15-44ab-41ca-834f-d39ee8aa941e": {
+    "url": "db://assets/scripts/core/DataManager.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "71ce354b-c6c2-4919-9928-415640698293": {
+    "url": "db://assets/scripts/core/EventBus.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "ea4e42a0-87a2-414c-ac84-bd8787b4896c": {
+    "url": "db://assets/scripts/core/GameTypes.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "f7e77c39-256d-4f94-abd5-aca5b75abd5d": {
+    "url": "db://assets/scripts/core/SaveManager.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "c2fe56b4-75e6-4c36-a143-0319e42c6f01": {
+    "url": "db://assets/scripts/core/TimeSystem.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "ea373efd-e530-4a94-824b-30a074da8533": {
+    "url": "db://assets/scripts/platform/TapAdapter.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "347bb8d1-774b-438d-8ff5-3b41e1a9413c": {
+    "url": "db://assets/scripts/ui/DebugPanel.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "7e59d360-9a32-4f9c-87b2-4c5e74d9a954": {
+    "url": "db://assets/scripts/ui/DefenseOverlay.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "5d48c250-7f21-4e8b-96a1-2b4d63c8f843": {
+    "url": "db://assets/scripts/ui/DungeonOverlay.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "4b19d720-6c44-4a8e-91c3-8f0a21e7b410": {
+    "url": "db://assets/scripts/ui/FishingOverlay.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "6e28a930-5d12-4c7f-83b5-1a9c42f8d621": {
+    "url": "db://assets/scripts/ui/IndoorOverlay.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "8f37b140-2e61-4b9a-94d6-3c7e53a9e732": {
+    "url": "db://assets/scripts/ui/NpcDialogOverlay.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "9c82e450-3a19-4d71-8f22-5e1b74a2c831": {
+    "url": "db://assets/scripts/ui/OverworldHUD.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "9a61e470-4b53-4d8e-91c4-6f8a21b3c765": {
+    "url": "db://assets/scripts/ui/SettingsOverlay.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "de2f4654-b4dd-4e0c-80c2-5d93090e1c4c": {
+    "url": "db://assets/scripts/ui/VoyageOverlay.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "1d343373-2223-49b1-82ff-f58b25c1774f": {
+    "url": "db://assets/scripts/gameplay/dungeon/DungeonConfig.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "d95fc174-9d34-41bf-977d-550b46ccc39c": {
+    "url": "db://assets/scripts/gameplay/farm/FarmSystem.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "7a41c210-8e31-4f92-9b14-2c6a91d0e512": {
+    "url": "db://assets/scripts/gameplay/overworld/OverworldController.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "b5cf3ede-659f-4eec-9103-ecfa268ac4df": {
+    "url": "db://assets/scenes/launch.scene",
+    "value": {
+      "depends": [],
+      "dependScripts": [
+        "7a41c210-8e31-4f92-9b14-2c6a91d0e512",
+        "9c82e450-3a19-4d71-8f22-5e1b74a2c831",
+        "4b19d720-6c44-4a8e-91c3-8f0a21e7b410",
+        "6e28a930-5d12-4c7f-83b5-1a9c42f8d621",
+        "8f37b140-2e61-4b9a-94d6-3c7e53a9e732",
+        "5d48c250-7f21-4e8b-96a1-2b4d63c8f843",
+        "7e59d360-9a32-4f9c-87b2-4c5e74d9a954",
+        "9a61e470-4b53-4d8e-91c4-6f8a21b3c765",
+        "347bb8d1-774b-438d-8ff5-3b41e1a9413c",
+        "da154b84-9e02-4bcf-8ae1-f5cbb0af8e5f"
+      ]
+    },
+    "versionCode": 2
+  },
+  "c1d77b31-8c70-4d67-8412-f96bfb57e49d": {
+    "url": "db://assets/resources/art/bg_dungeon_bamboo.jpg",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "01c22e69-f75e-4a73-bb79-2f8254648c40": {
+    "url": "db://assets/resources/art/bg_dungeon_frost.jpg",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "a303cf7e-0534-43df-ad91-c6ea2919122f": {
+    "url": "db://assets/resources/art/bg_dungeon_magma.jpg",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "37f9aa6e-4c7d-4505-8ecb-22c266211079": {
+    "url": "db://assets/resources/art/bg_dungeon_mist.jpg",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "6bcbf3ff-20d3-4cd4-a72b-6f512d92ce51": {
+    "url": "db://assets/resources/art/bg_dungeon_rift.jpg",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "01c22e69-f75e-4a73-bb79-2f8254648c40@6c48a": {
+    "url": "db://assets/resources/art/bg_dungeon_frost.jpg@6c48a",
+    "value": {
+      "depends": [
+        "01c22e69-f75e-4a73-bb79-2f8254648c40"
+      ]
+    },
+    "versionCode": 1
+  },
+  "a303cf7e-0534-43df-ad91-c6ea2919122f@6c48a": {
+    "url": "db://assets/resources/art/bg_dungeon_magma.jpg@6c48a",
+    "value": {
+      "depends": [
+        "a303cf7e-0534-43df-ad91-c6ea2919122f"
+      ]
+    },
+    "versionCode": 1
+  },
+  "a910e0e9-3aab-46ac-a49d-d5f72fc8d0a9": {
+    "url": "db://assets/resources/art/bg_dungeon_thunder.jpg",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "b5247a19-2098-4997-955d-875cff5e50b1": {
+    "url": "db://assets/resources/art/bg_indoor_room.jpg",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "c1d77b31-8c70-4d67-8412-f96bfb57e49d@6c48a": {
+    "url": "db://assets/resources/art/bg_dungeon_bamboo.jpg@6c48a",
+    "value": {
+      "depends": [
+        "c1d77b31-8c70-4d67-8412-f96bfb57e49d"
+      ]
+    },
+    "versionCode": 1
+  },
+  "c544e683-9fb1-4c57-abda-5afc67f427e0": {
+    "url": "db://assets/resources/art/bg_island_ember.jpg",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "37f9aa6e-4c7d-4505-8ecb-22c266211079@6c48a": {
+    "url": "db://assets/resources/art/bg_dungeon_mist.jpg@6c48a",
+    "value": {
+      "depends": [
+        "37f9aa6e-4c7d-4505-8ecb-22c266211079"
+      ]
+    },
+    "versionCode": 1
+  },
+  "d654aa0b-01a9-4e62-af1c-8b0fa752f659": {
+    "url": "db://assets/resources/art/bg_island_frost.jpg",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "6bcbf3ff-20d3-4cd4-a72b-6f512d92ce51@6c48a": {
+    "url": "db://assets/resources/art/bg_dungeon_rift.jpg@6c48a",
+    "value": {
+      "depends": [
+        "6bcbf3ff-20d3-4cd4-a72b-6f512d92ce51"
+      ]
+    },
+    "versionCode": 1
+  },
+  "c34ca110-103b-427a-b0b7-fdf4e1a4cfb1": {
+    "url": "db://assets/resources/art/bg_island_mist.jpg",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "a910e0e9-3aab-46ac-a49d-d5f72fc8d0a9@6c48a": {
+    "url": "db://assets/resources/art/bg_dungeon_thunder.jpg@6c48a",
+    "value": {
+      "depends": [
+        "a910e0e9-3aab-46ac-a49d-d5f72fc8d0a9"
+      ]
+    },
+    "versionCode": 1
+  },
+  "b5621b67-2ef4-435a-92a7-60f8544770d8": {
+    "url": "db://assets/resources/art/bg_overworld_map.jpg",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "b5247a19-2098-4997-955d-875cff5e50b1@6c48a": {
+    "url": "db://assets/resources/art/bg_indoor_room.jpg@6c48a",
+    "value": {
+      "depends": [
+        "b5247a19-2098-4997-955d-875cff5e50b1"
+      ]
+    },
+    "versionCode": 1
+  },
+  "67fade7c-4cab-461e-865c-4f638cf5f609": {
+    "url": "db://assets/resources/art/bg_title_cover.jpg",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "c544e683-9fb1-4c57-abda-5afc67f427e0@6c48a": {
+    "url": "db://assets/resources/art/bg_island_ember.jpg@6c48a",
+    "value": {
+      "depends": [
+        "c544e683-9fb1-4c57-abda-5afc67f427e0"
+      ]
+    },
+    "versionCode": 1
+  },
+  "2a3e9385-370f-4614-80fb-ec4e85a75097": {
+    "url": "db://assets/resources/art/bld_cottage.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "d654aa0b-01a9-4e62-af1c-8b0fa752f659@6c48a": {
+    "url": "db://assets/resources/art/bg_island_frost.jpg@6c48a",
+    "value": {
+      "depends": [
+        "d654aa0b-01a9-4e62-af1c-8b0fa752f659"
+      ]
+    },
+    "versionCode": 1
+  },
+  "16ca6476-f2e1-43b9-93c0-acf083bf1b32": {
+    "url": "db://assets/resources/art/bld_dungeon_portal.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "c34ca110-103b-427a-b0b7-fdf4e1a4cfb1@6c48a": {
+    "url": "db://assets/resources/art/bg_island_mist.jpg@6c48a",
+    "value": {
+      "depends": [
+        "c34ca110-103b-427a-b0b7-fdf4e1a4cfb1"
+      ]
+    },
+    "versionCode": 1
+  },
+  "1ba8068a-d465-41d1-902a-f06583fe4bb2": {
+    "url": "db://assets/resources/art/bld_kitchen_shed.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "67fade7c-4cab-461e-865c-4f638cf5f609@6c48a": {
+    "url": "db://assets/resources/art/bg_title_cover.jpg@6c48a",
+    "value": {
+      "depends": [
+        "67fade7c-4cab-461e-865c-4f638cf5f609"
+      ]
+    },
+    "versionCode": 1
+  },
+  "3ff535c1-1765-447d-87a1-e45a3c308d4c": {
+    "url": "db://assets/resources/art/bld_seal_arch.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "1ba8068a-d465-41d1-902a-f06583fe4bb2@6c48a": {
+    "url": "db://assets/resources/art/bld_kitchen_shed.png@6c48a",
+    "value": {
+      "depends": [
+        "1ba8068a-d465-41d1-902a-f06583fe4bb2"
+      ]
+    },
+    "versionCode": 1
+  },
+  "929f5517-ead3-426d-b5be-06c6021a4029": {
+    "url": "db://assets/resources/art/char_player.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "2a3e9385-370f-4614-80fb-ec4e85a75097@6c48a": {
+    "url": "db://assets/resources/art/bld_cottage.png@6c48a",
+    "value": {
+      "depends": [
+        "2a3e9385-370f-4614-80fb-ec4e85a75097"
+      ]
+    },
+    "versionCode": 1
+  },
+  "ccf7e646-c8c0-436a-b2ab-96842bfb979a": {
+    "url": "db://assets/resources/art/char_player_back.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "16ca6476-f2e1-43b9-93c0-acf083bf1b32@6c48a": {
+    "url": "db://assets/resources/art/bld_dungeon_portal.png@6c48a",
+    "value": {
+      "depends": [
+        "16ca6476-f2e1-43b9-93c0-acf083bf1b32"
+      ]
+    },
+    "versionCode": 1
+  },
+  "5a388785-31cd-4e21-8f7a-8bce66edeb82": {
+    "url": "db://assets/resources/art/char_player_front.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "b5621b67-2ef4-435a-92a7-60f8544770d8@6c48a": {
+    "url": "db://assets/resources/art/bg_overworld_map.jpg@6c48a",
+    "value": {
+      "depends": [
+        "b5621b67-2ef4-435a-92a7-60f8544770d8"
+      ]
+    },
+    "versionCode": 1
+  },
+  "a227df20-b2e4-43bf-8132-ec982b4a0f75": {
+    "url": "db://assets/resources/art/char_player_side.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "3ff535c1-1765-447d-87a1-e45a3c308d4c@6c48a": {
+    "url": "db://assets/resources/art/bld_seal_arch.png@6c48a",
+    "value": {
+      "depends": [
+        "3ff535c1-1765-447d-87a1-e45a3c308d4c"
+      ]
+    },
+    "versionCode": 1
+  },
+  "93f43781-7f3c-4fa9-884d-512f5baae62b": {
+    "url": "db://assets/resources/art/char_walk_back_0.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "929f5517-ead3-426d-b5be-06c6021a4029@6c48a": {
+    "url": "db://assets/resources/art/char_player.png@6c48a",
+    "value": {
+      "depends": [
+        "929f5517-ead3-426d-b5be-06c6021a4029"
+      ]
+    },
+    "versionCode": 1
+  },
+  "98f9a4d1-bbfa-4ab8-a4b4-216ab06ec85c": {
+    "url": "db://assets/resources/art/char_walk_back_1.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "ccf7e646-c8c0-436a-b2ab-96842bfb979a@6c48a": {
+    "url": "db://assets/resources/art/char_player_back.png@6c48a",
+    "value": {
+      "depends": [
+        "ccf7e646-c8c0-436a-b2ab-96842bfb979a"
+      ]
+    },
+    "versionCode": 1
+  },
+  "07a28a2e-6fcd-4e61-af90-fb6f42bd0430": {
+    "url": "db://assets/resources/art/char_walk_back_2.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "5a388785-31cd-4e21-8f7a-8bce66edeb82@6c48a": {
+    "url": "db://assets/resources/art/char_player_front.png@6c48a",
+    "value": {
+      "depends": [
+        "5a388785-31cd-4e21-8f7a-8bce66edeb82"
+      ]
+    },
+    "versionCode": 1
+  },
+  "a227df20-b2e4-43bf-8132-ec982b4a0f75@6c48a": {
+    "url": "db://assets/resources/art/char_player_side.png@6c48a",
+    "value": {
+      "depends": [
+        "a227df20-b2e4-43bf-8132-ec982b4a0f75"
+      ]
+    },
+    "versionCode": 1
+  },
+  "9ab40a27-2b74-4bb3-819b-d0f567221729": {
+    "url": "db://assets/resources/art/char_walk_back_3.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "46061172-296f-43c9-bb85-4fb6dd7545ea": {
+    "url": "db://assets/resources/art/char_walk_front_0.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "93f43781-7f3c-4fa9-884d-512f5baae62b@6c48a": {
+    "url": "db://assets/resources/art/char_walk_back_0.png@6c48a",
+    "value": {
+      "depends": [
+        "93f43781-7f3c-4fa9-884d-512f5baae62b"
+      ]
+    },
+    "versionCode": 1
+  },
+  "e566fa5c-cd13-4223-ac6d-85c201ba41a3": {
+    "url": "db://assets/resources/art/char_walk_front_1.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "98f9a4d1-bbfa-4ab8-a4b4-216ab06ec85c@6c48a": {
+    "url": "db://assets/resources/art/char_walk_back_1.png@6c48a",
+    "value": {
+      "depends": [
+        "98f9a4d1-bbfa-4ab8-a4b4-216ab06ec85c"
+      ]
+    },
+    "versionCode": 1
+  },
+  "2d6cfce2-801c-461b-8564-dc70f20edbfe": {
+    "url": "db://assets/resources/art/char_walk_front_2.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "46061172-296f-43c9-bb85-4fb6dd7545ea@6c48a": {
+    "url": "db://assets/resources/art/char_walk_front_0.png@6c48a",
+    "value": {
+      "depends": [
+        "46061172-296f-43c9-bb85-4fb6dd7545ea"
+      ]
+    },
+    "versionCode": 1
+  },
+  "ad5a5314-054f-422d-bd6d-64f8f4becc58": {
+    "url": "db://assets/resources/art/char_walk_front_3.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "07a28a2e-6fcd-4e61-af90-fb6f42bd0430@6c48a": {
+    "url": "db://assets/resources/art/char_walk_back_2.png@6c48a",
+    "value": {
+      "depends": [
+        "07a28a2e-6fcd-4e61-af90-fb6f42bd0430"
+      ]
+    },
+    "versionCode": 1
+  },
+  "9ab40a27-2b74-4bb3-819b-d0f567221729@6c48a": {
+    "url": "db://assets/resources/art/char_walk_back_3.png@6c48a",
+    "value": {
+      "depends": [
+        "9ab40a27-2b74-4bb3-819b-d0f567221729"
+      ]
+    },
+    "versionCode": 1
+  },
+  "9c541c85-012b-43e4-8a02-3aeb4d5d28fa": {
+    "url": "db://assets/resources/art/char_walk_side_0.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "ad4451af-22c0-4a8d-a45c-ff35976ac2c5": {
+    "url": "db://assets/resources/art/char_walk_side_1.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "e566fa5c-cd13-4223-ac6d-85c201ba41a3@6c48a": {
+    "url": "db://assets/resources/art/char_walk_front_1.png@6c48a",
+    "value": {
+      "depends": [
+        "e566fa5c-cd13-4223-ac6d-85c201ba41a3"
+      ]
+    },
+    "versionCode": 1
+  },
+  "9c1c9b79-904b-4f6a-9cd1-78592f26b00c": {
+    "url": "db://assets/resources/art/char_walk_side_2.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "2d6cfce2-801c-461b-8564-dc70f20edbfe@6c48a": {
+    "url": "db://assets/resources/art/char_walk_front_2.png@6c48a",
+    "value": {
+      "depends": [
+        "2d6cfce2-801c-461b-8564-dc70f20edbfe"
+      ]
+    },
+    "versionCode": 1
+  },
+  "5f2e03b5-e760-403d-a9f4-0334fb542655": {
+    "url": "db://assets/resources/art/char_walk_side_3.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "9c541c85-012b-43e4-8a02-3aeb4d5d28fa@6c48a": {
+    "url": "db://assets/resources/art/char_walk_side_0.png@6c48a",
+    "value": {
+      "depends": [
+        "9c541c85-012b-43e4-8a02-3aeb4d5d28fa"
+      ]
+    },
+    "versionCode": 1
+  },
+  "ad4451af-22c0-4a8d-a45c-ff35976ac2c5@6c48a": {
+    "url": "db://assets/resources/art/char_walk_side_1.png@6c48a",
+    "value": {
+      "depends": [
+        "ad4451af-22c0-4a8d-a45c-ff35976ac2c5"
+      ]
+    },
+    "versionCode": 1
+  },
+  "ca889896-6b12-4784-9580-e5be569f5f94": {
+    "url": "db://assets/resources/art/crop_spring_greens.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "f086e7ab-4140-4e38-b6b8-12c9fa975acb": {
+    "url": "db://assets/resources/art/def_cloud_shoot.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "ad5a5314-054f-422d-bd6d-64f8f4becc58@6c48a": {
+    "url": "db://assets/resources/art/char_walk_front_3.png@6c48a",
+    "value": {
+      "depends": [
+        "ad5a5314-054f-422d-bd6d-64f8f4becc58"
+      ]
+    },
+    "versionCode": 1
+  },
+  "ae1e9ce9-54eb-416a-88bc-ecdc577441af": {
+    "url": "db://assets/resources/art/def_flame_vine.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "9c1c9b79-904b-4f6a-9cd1-78592f26b00c@6c48a": {
+    "url": "db://assets/resources/art/char_walk_side_2.png@6c48a",
+    "value": {
+      "depends": [
+        "9c1c9b79-904b-4f6a-9cd1-78592f26b00c"
+      ]
+    },
+    "versionCode": 1
+  },
+  "33d36473-3530-4fab-925e-2c2fada334a8": {
+    "url": "db://assets/resources/art/def_iron_melon.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "5f2e03b5-e760-403d-a9f4-0334fb542655@6c48a": {
+    "url": "db://assets/resources/art/char_walk_side_3.png@6c48a",
+    "value": {
+      "depends": [
+        "5f2e03b5-e760-403d-a9f4-0334fb542655"
+      ]
+    },
+    "versionCode": 1
+  },
+  "89b9bfef-62de-4cb6-96b4-21fa6ecaacf6": {
+    "url": "db://assets/resources/art/def_lotus_pad.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "f086e7ab-4140-4e38-b6b8-12c9fa975acb@6c48a": {
+    "url": "db://assets/resources/art/def_cloud_shoot.png@6c48a",
+    "value": {
+      "depends": [
+        "f086e7ab-4140-4e38-b6b8-12c9fa975acb"
+      ]
+    },
+    "versionCode": 1
+  },
+  "2899f460-f72a-48ce-abc5-ec1dfb5ecd66": {
+    "url": "db://assets/resources/art/def_rain_tea.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "33d36473-3530-4fab-925e-2c2fada334a8@6c48a": {
+    "url": "db://assets/resources/art/def_iron_melon.png@6c48a",
+    "value": {
+      "depends": [
+        "33d36473-3530-4fab-925e-2c2fada334a8"
+      ]
+    },
+    "versionCode": 1
+  },
+  "ca889896-6b12-4784-9580-e5be569f5f94@6c48a": {
+    "url": "db://assets/resources/art/crop_spring_greens.png@6c48a",
+    "value": {
+      "depends": [
+        "ca889896-6b12-4784-9580-e5be569f5f94"
+      ]
+    },
+    "versionCode": 1
+  },
+  "678953be-6bcb-4b03-aded-52a8611a8d3f": {
+    "url": "db://assets/resources/art/def_sky_bamboo.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "245b295d-66ae-4d28-9f89-cc09a4a86ce5": {
+    "url": "db://assets/resources/art/dng_ancient_lantern.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "89b9bfef-62de-4cb6-96b4-21fa6ecaacf6@6c48a": {
+    "url": "db://assets/resources/art/def_lotus_pad.png@6c48a",
+    "value": {
+      "depends": [
+        "89b9bfef-62de-4cb6-96b4-21fa6ecaacf6"
+      ]
+    },
+    "versionCode": 1
+  },
+  "758bd05c-b52f-4391-99ad-6a451824fcb3": {
+    "url": "db://assets/resources/art/dng_chest_closed.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "ae1e9ce9-54eb-416a-88bc-ecdc577441af@6c48a": {
+    "url": "db://assets/resources/art/def_flame_vine.png@6c48a",
+    "value": {
+      "depends": [
+        "ae1e9ce9-54eb-416a-88bc-ecdc577441af"
+      ]
+    },
+    "versionCode": 1
+  },
+  "5bf3058c-dc06-4fd3-9b0d-65d8eb38ad2e": {
+    "url": "db://assets/resources/art/dng_chest_open.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "2899f460-f72a-48ce-abc5-ec1dfb5ecd66@6c48a": {
+    "url": "db://assets/resources/art/def_rain_tea.png@6c48a",
+    "value": {
+      "depends": [
+        "2899f460-f72a-48ce-abc5-ec1dfb5ecd66"
+      ]
+    },
+    "versionCode": 1
+  },
+  "a2e1acb3-6650-44c2-8be7-9a21dcec6e0d": {
+    "url": "db://assets/resources/art/dng_copper_pillar.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "245b295d-66ae-4d28-9f89-cc09a4a86ce5@6c48a": {
+    "url": "db://assets/resources/art/dng_ancient_lantern.png@6c48a",
+    "value": {
+      "depends": [
+        "245b295d-66ae-4d28-9f89-cc09a4a86ce5"
+      ]
+    },
+    "versionCode": 1
+  },
+  "43946c4a-78d6-4cbf-9da9-661ea30eecda": {
+    "url": "db://assets/resources/art/dng_cracked_wall.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "758bd05c-b52f-4391-99ad-6a451824fcb3@6c48a": {
+    "url": "db://assets/resources/art/dng_chest_closed.png@6c48a",
+    "value": {
+      "depends": [
+        "758bd05c-b52f-4391-99ad-6a451824fcb3"
+      ]
+    },
+    "versionCode": 1
+  },
+  "be1b7bfc-f091-46aa-9ec3-7a6c5b08e6ec": {
+    "url": "db://assets/resources/art/dng_door.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "678953be-6bcb-4b03-aded-52a8611a8d3f@6c48a": {
+    "url": "db://assets/resources/art/def_sky_bamboo.png@6c48a",
+    "value": {
+      "depends": [
+        "678953be-6bcb-4b03-aded-52a8611a8d3f"
+      ]
+    },
+    "versionCode": 1
+  },
+  "a911d4d7-1119-4d32-8a18-dba0bb5e4d09": {
+    "url": "db://assets/resources/art/dng_ice_wall.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "5bf3058c-dc06-4fd3-9b0d-65d8eb38ad2e@6c48a": {
+    "url": "db://assets/resources/art/dng_chest_open.png@6c48a",
+    "value": {
+      "depends": [
+        "5bf3058c-dc06-4fd3-9b0d-65d8eb38ad2e"
+      ]
+    },
+    "versionCode": 1
+  },
+  "5d423761-fdf1-491d-8b20-c828848e39c1": {
+    "url": "db://assets/resources/art/dng_pillar.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "a2e1acb3-6650-44c2-8be7-9a21dcec6e0d@6c48a": {
+    "url": "db://assets/resources/art/dng_copper_pillar.png@6c48a",
+    "value": {
+      "depends": [
+        "a2e1acb3-6650-44c2-8be7-9a21dcec6e0d"
+      ]
+    },
+    "versionCode": 1
+  },
+  "ec27f0e5-b44a-499b-9bed-0bdd82093f00": {
+    "url": "db://assets/resources/art/dng_portal_glow.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "a911d4d7-1119-4d32-8a18-dba0bb5e4d09@6c48a": {
+    "url": "db://assets/resources/art/dng_ice_wall.png@6c48a",
+    "value": {
+      "depends": [
+        "a911d4d7-1119-4d32-8a18-dba0bb5e4d09"
+      ]
+    },
+    "versionCode": 1
+  },
+  "43946c4a-78d6-4cbf-9da9-661ea30eecda@6c48a": {
+    "url": "db://assets/resources/art/dng_cracked_wall.png@6c48a",
+    "value": {
+      "depends": [
+        "43946c4a-78d6-4cbf-9da9-661ea30eecda"
+      ]
+    },
+    "versionCode": 1
+  },
+  "bd82d843-b4aa-46c9-a6ea-ddec254b2df0": {
+    "url": "db://assets/resources/art/dng_powder_jar.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "7fde6650-8085-410d-bce7-eb8f3e642e23": {
+    "url": "db://assets/resources/art/dng_rift_vortex.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "be1b7bfc-f091-46aa-9ec3-7a6c5b08e6ec@6c48a": {
+    "url": "db://assets/resources/art/dng_door.png@6c48a",
+    "value": {
+      "depends": [
+        "be1b7bfc-f091-46aa-9ec3-7a6c5b08e6ec"
+      ]
+    },
+    "versionCode": 1
+  },
+  "253abc87-2a36-4e2c-862f-6ee094fa19a4": {
+    "url": "db://assets/resources/art/dng_spike_trap.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "5d423761-fdf1-491d-8b20-c828848e39c1@6c48a": {
+    "url": "db://assets/resources/art/dng_pillar.png@6c48a",
+    "value": {
+      "depends": [
+        "5d423761-fdf1-491d-8b20-c828848e39c1"
+      ]
+    },
+    "versionCode": 1
+  },
+  "6b74ae9a-fbc6-4a98-aec4-2d2bf503a208": {
+    "url": "db://assets/resources/art/fish_brook_loach.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "ec27f0e5-b44a-499b-9bed-0bdd82093f00@6c48a": {
+    "url": "db://assets/resources/art/dng_portal_glow.png@6c48a",
+    "value": {
+      "depends": [
+        "ec27f0e5-b44a-499b-9bed-0bdd82093f00"
+      ]
+    },
+    "versionCode": 1
+  },
+  "f8bad87c-d9a9-4d7b-8c27-cbd5ea20bc87": {
+    "url": "db://assets/resources/art/fish_brook_trout.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "bd82d843-b4aa-46c9-a6ea-ddec254b2df0@6c48a": {
+    "url": "db://assets/resources/art/dng_powder_jar.png@6c48a",
+    "value": {
+      "depends": [
+        "bd82d843-b4aa-46c9-a6ea-ddec254b2df0"
+      ]
+    },
+    "versionCode": 1
+  },
+  "b6201cbc-03f3-45f7-a53b-0362d502a2ef": {
+    "url": "db://assets/resources/art/fish_estuary_dragon.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "7fde6650-8085-410d-bce7-eb8f3e642e23@6c48a": {
+    "url": "db://assets/resources/art/dng_rift_vortex.png@6c48a",
+    "value": {
+      "depends": [
+        "7fde6650-8085-410d-bce7-eb8f3e642e23"
+      ]
+    },
+    "versionCode": 1
+  },
+  "b5d64876-5830-467c-b3ed-8abebaccd58e": {
+    "url": "db://assets/resources/art/fish_estuary_perch.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "253abc87-2a36-4e2c-862f-6ee094fa19a4@6c48a": {
+    "url": "db://assets/resources/art/dng_spike_trap.png@6c48a",
+    "value": {
+      "depends": [
+        "253abc87-2a36-4e2c-862f-6ee094fa19a4"
+      ]
+    },
+    "versionCode": 1
+  },
+  "3d58a940-e07f-423a-b8c6-f407fc47c252": {
+    "url": "db://assets/resources/art/fish_lotus_crucian.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "6b74ae9a-fbc6-4a98-aec4-2d2bf503a208@6c48a": {
+    "url": "db://assets/resources/art/fish_brook_loach.png@6c48a",
+    "value": {
+      "depends": [
+        "6b74ae9a-fbc6-4a98-aec4-2d2bf503a208"
+      ]
+    },
+    "versionCode": 1
+  },
+  "bfe49d3e-9ab6-449d-b1d0-f1d9fa13573d": {
+    "url": "db://assets/resources/art/fish_lotus_koi.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "f8bad87c-d9a9-4d7b-8c27-cbd5ea20bc87@6c48a": {
+    "url": "db://assets/resources/art/fish_brook_trout.png@6c48a",
+    "value": {
+      "depends": [
+        "f8bad87c-d9a9-4d7b-8c27-cbd5ea20bc87"
+      ]
+    },
+    "versionCode": 1
+  },
+  "573a60dc-9568-418a-b697-02cdf47d4bef": {
+    "url": "db://assets/resources/art/furn_aquarium_porcelain.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "b5d64876-5830-467c-b3ed-8abebaccd58e@6c48a": {
+    "url": "db://assets/resources/art/fish_estuary_perch.png@6c48a",
+    "value": {
+      "depends": [
+        "b5d64876-5830-467c-b3ed-8abebaccd58e"
+      ]
+    },
+    "versionCode": 1
+  },
+  "d0518e78-b9a9-4f06-b85a-178694a7fd35": {
+    "url": "db://assets/resources/art/furn_bed_wood.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "b6201cbc-03f3-45f7-a53b-0362d502a2ef@6c48a": {
+    "url": "db://assets/resources/art/fish_estuary_dragon.png@6c48a",
+    "value": {
+      "depends": [
+        "b6201cbc-03f3-45f7-a53b-0362d502a2ef"
+      ]
+    },
+    "versionCode": 1
+  },
+  "4f5854ac-2139-4667-b0d8-3073488717aa": {
+    "url": "db://assets/resources/art/furn_bed_wood_side.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "3d58a940-e07f-423a-b8c6-f407fc47c252@6c48a": {
+    "url": "db://assets/resources/art/fish_lotus_crucian.png@6c48a",
+    "value": {
+      "depends": [
+        "3d58a940-e07f-423a-b8c6-f407fc47c252"
+      ]
+    },
+    "versionCode": 1
+  },
+  "498c40a2-1065-43aa-9f8e-3695373b5de3": {
+    "url": "db://assets/resources/art/furn_lantern_rabbit.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "bfe49d3e-9ab6-449d-b1d0-f1d9fa13573d@6c48a": {
+    "url": "db://assets/resources/art/fish_lotus_koi.png@6c48a",
+    "value": {
+      "depends": [
+        "bfe49d3e-9ab6-449d-b1d0-f1d9fa13573d"
+      ]
+    },
+    "versionCode": 1
+  },
+  "db5bb1db-20f7-4f83-aec2-ebb686008ebe": {
+    "url": "db://assets/resources/art/furn_lantern_rabbit_side.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "573a60dc-9568-418a-b697-02cdf47d4bef@6c48a": {
+    "url": "db://assets/resources/art/furn_aquarium_porcelain.png@6c48a",
+    "value": {
+      "depends": [
+        "573a60dc-9568-418a-b697-02cdf47d4bef"
+      ]
+    },
+    "versionCode": 1
+  },
+  "d0518e78-b9a9-4f06-b85a-178694a7fd35@6c48a": {
+    "url": "db://assets/resources/art/furn_bed_wood.png@6c48a",
+    "value": {
+      "depends": [
+        "d0518e78-b9a9-4f06-b85a-178694a7fd35"
+      ]
+    },
+    "versionCode": 1
+  },
+  "e51d0281-127c-4b60-957e-ed52f18e8f45": {
+    "url": "db://assets/resources/art/furn_screen_ink.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "43234133-0ef5-4c0a-b627-61f8a32414ad": {
+    "url": "db://assets/resources/art/furn_screen_ink_side.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "4f5854ac-2139-4667-b0d8-3073488717aa@6c48a": {
+    "url": "db://assets/resources/art/furn_bed_wood_side.png@6c48a",
+    "value": {
+      "depends": [
+        "4f5854ac-2139-4667-b0d8-3073488717aa"
+      ]
+    },
+    "versionCode": 1
+  },
+  "c7e1c2e5-0ff5-469f-b574-269a988e367d": {
+    "url": "db://assets/resources/art/furn_stove_clay.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "db5bb1db-20f7-4f83-aec2-ebb686008ebe@6c48a": {
+    "url": "db://assets/resources/art/furn_lantern_rabbit_side.png@6c48a",
+    "value": {
+      "depends": [
+        "db5bb1db-20f7-4f83-aec2-ebb686008ebe"
+      ]
+    },
+    "versionCode": 1
+  },
+  "498c40a2-1065-43aa-9f8e-3695373b5de3@6c48a": {
+    "url": "db://assets/resources/art/furn_lantern_rabbit.png@6c48a",
+    "value": {
+      "depends": [
+        "498c40a2-1065-43aa-9f8e-3695373b5de3"
+      ]
+    },
+    "versionCode": 1
+  },
+  "8b50ca84-1f12-4550-b9b9-583f54e565e1": {
+    "url": "db://assets/resources/art/furn_tea_table.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "8f6b09bf-df97-490e-8184-1660bea52a5c": {
+    "url": "db://assets/resources/art/furn_tea_table_side.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "e51d0281-127c-4b60-957e-ed52f18e8f45@6c48a": {
+    "url": "db://assets/resources/art/furn_screen_ink.png@6c48a",
+    "value": {
+      "depends": [
+        "e51d0281-127c-4b60-957e-ed52f18e8f45"
+      ]
+    },
+    "versionCode": 1
+  },
+  "c1cf06c6-41b8-4217-8756-c5b21b7cf3ad": {
+    "url": "db://assets/resources/art/island_ember_reef.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "43234133-0ef5-4c0a-b627-61f8a32414ad@6c48a": {
+    "url": "db://assets/resources/art/furn_screen_ink_side.png@6c48a",
+    "value": {
+      "depends": [
+        "43234133-0ef5-4c0a-b627-61f8a32414ad"
+      ]
+    },
+    "versionCode": 1
+  },
+  "20dd397f-087d-4e77-bc98-83cdf7886ba1": {
+    "url": "db://assets/resources/art/island_frost_isle.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "8f6b09bf-df97-490e-8184-1660bea52a5c@6c48a": {
+    "url": "db://assets/resources/art/furn_tea_table_side.png@6c48a",
+    "value": {
+      "depends": [
+        "8f6b09bf-df97-490e-8184-1660bea52a5c"
+      ]
+    },
+    "versionCode": 1
+  },
+  "768f765c-7574-4beb-94b3-2aefd60f2311": {
+    "url": "db://assets/resources/art/island_mist_marsh.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "c1cf06c6-41b8-4217-8756-c5b21b7cf3ad@6c48a": {
+    "url": "db://assets/resources/art/island_ember_reef.png@6c48a",
+    "value": {
+      "depends": [
+        "c1cf06c6-41b8-4217-8756-c5b21b7cf3ad"
+      ]
+    },
+    "versionCode": 1
+  },
+  "662cd1dd-5654-4033-867c-18d7bc5cbef9": {
+    "url": "db://assets/resources/art/mob_bamboo.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "c7e1c2e5-0ff5-469f-b574-269a988e367d@6c48a": {
+    "url": "db://assets/resources/art/furn_stove_clay.png@6c48a",
+    "value": {
+      "depends": [
+        "c7e1c2e5-0ff5-469f-b574-269a988e367d"
+      ]
+    },
+    "versionCode": 1
+  },
+  "c62a5687-0b1b-4574-94e2-dfd8e60fa585": {
+    "url": "db://assets/resources/art/mob_bamboo_0.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "8b50ca84-1f12-4550-b9b9-583f54e565e1@6c48a": {
+    "url": "db://assets/resources/art/furn_tea_table.png@6c48a",
+    "value": {
+      "depends": [
+        "8b50ca84-1f12-4550-b9b9-583f54e565e1"
+      ]
+    },
+    "versionCode": 1
+  },
+  "767d470b-deb1-472a-a39d-012ee2c216a3": {
+    "url": "db://assets/resources/art/mob_bamboo_1.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "768f765c-7574-4beb-94b3-2aefd60f2311@6c48a": {
+    "url": "db://assets/resources/art/island_mist_marsh.png@6c48a",
+    "value": {
+      "depends": [
+        "768f765c-7574-4beb-94b3-2aefd60f2311"
+      ]
+    },
+    "versionCode": 1
+  },
+  "11529b89-b05c-462e-847e-d52ec3fe0fb2": {
+    "url": "db://assets/resources/art/mob_bamboo_2.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "c62a5687-0b1b-4574-94e2-dfd8e60fa585@6c48a": {
+    "url": "db://assets/resources/art/mob_bamboo_0.png@6c48a",
+    "value": {
+      "depends": [
+        "c62a5687-0b1b-4574-94e2-dfd8e60fa585"
+      ]
+    },
+    "versionCode": 1
+  },
+  "246f6a59-27b6-40b7-a27d-0de0a7e895aa": {
+    "url": "db://assets/resources/art/mob_bamboo_3.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "20dd397f-087d-4e77-bc98-83cdf7886ba1@6c48a": {
+    "url": "db://assets/resources/art/island_frost_isle.png@6c48a",
+    "value": {
+      "depends": [
+        "20dd397f-087d-4e77-bc98-83cdf7886ba1"
+      ]
+    },
+    "versionCode": 1
+  },
+  "248dd292-938b-45cd-9747-cd08b5e911e6": {
+    "url": "db://assets/resources/art/mob_boss.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "662cd1dd-5654-4033-867c-18d7bc5cbef9@6c48a": {
+    "url": "db://assets/resources/art/mob_bamboo.png@6c48a",
+    "value": {
+      "depends": [
+        "662cd1dd-5654-4033-867c-18d7bc5cbef9"
+      ]
+    },
+    "versionCode": 1
+  },
+  "d40e9344-1b17-4f1f-b65e-d501dc507693": {
+    "url": "db://assets/resources/art/mob_boss_0.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "767d470b-deb1-472a-a39d-012ee2c216a3@6c48a": {
+    "url": "db://assets/resources/art/mob_bamboo_1.png@6c48a",
+    "value": {
+      "depends": [
+        "767d470b-deb1-472a-a39d-012ee2c216a3"
+      ]
+    },
+    "versionCode": 1
+  },
+  "6261f680-dfc6-4284-a5c6-ad434ea6a9f1": {
+    "url": "db://assets/resources/art/mob_boss_1.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "11529b89-b05c-462e-847e-d52ec3fe0fb2@6c48a": {
+    "url": "db://assets/resources/art/mob_bamboo_2.png@6c48a",
+    "value": {
+      "depends": [
+        "11529b89-b05c-462e-847e-d52ec3fe0fb2"
+      ]
+    },
+    "versionCode": 1
+  },
+  "dca94026-e484-4ad0-8356-3c5c44f7f179": {
+    "url": "db://assets/resources/art/mob_boss_2.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "246f6a59-27b6-40b7-a27d-0de0a7e895aa@6c48a": {
+    "url": "db://assets/resources/art/mob_bamboo_3.png@6c48a",
+    "value": {
+      "depends": [
+        "246f6a59-27b6-40b7-a27d-0de0a7e895aa"
+      ]
+    },
+    "versionCode": 1
+  },
+  "ea62d2bc-fcda-4527-9a3e-d6ea0825ae95": {
+    "url": "db://assets/resources/art/mob_boss_3.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "248dd292-938b-45cd-9747-cd08b5e911e6@6c48a": {
+    "url": "db://assets/resources/art/mob_boss.png@6c48a",
+    "value": {
+      "depends": [
+        "248dd292-938b-45cd-9747-cd08b5e911e6"
+      ]
+    },
+    "versionCode": 1
+  },
+  "0e2378d7-b54f-4450-9069-979258ff0e1c": {
+    "url": "db://assets/resources/art/mob_burrow_mole.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "6261f680-dfc6-4284-a5c6-ad434ea6a9f1@6c48a": {
+    "url": "db://assets/resources/art/mob_boss_1.png@6c48a",
+    "value": {
+      "depends": [
+        "6261f680-dfc6-4284-a5c6-ad434ea6a9f1"
+      ]
+    },
+    "versionCode": 1
+  },
+  "ef0e336e-9cbd-432c-9205-56f012997329": {
+    "url": "db://assets/resources/art/mob_burrow_mole_0.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "d40e9344-1b17-4f1f-b65e-d501dc507693@6c48a": {
+    "url": "db://assets/resources/art/mob_boss_0.png@6c48a",
+    "value": {
+      "depends": [
+        "d40e9344-1b17-4f1f-b65e-d501dc507693"
+      ]
+    },
+    "versionCode": 1
+  },
+  "bd6f1e48-c19d-4666-9af6-d1c86e915019": {
+    "url": "db://assets/resources/art/mob_burrow_mole_1.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "ea62d2bc-fcda-4527-9a3e-d6ea0825ae95@6c48a": {
+    "url": "db://assets/resources/art/mob_boss_3.png@6c48a",
+    "value": {
+      "depends": [
+        "ea62d2bc-fcda-4527-9a3e-d6ea0825ae95"
+      ]
+    },
+    "versionCode": 1
+  },
+  "609d0749-1e9f-4e1c-ae6b-2ec167321553": {
+    "url": "db://assets/resources/art/mob_burrow_mole_2.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "dca94026-e484-4ad0-8356-3c5c44f7f179@6c48a": {
+    "url": "db://assets/resources/art/mob_boss_2.png@6c48a",
+    "value": {
+      "depends": [
+        "dca94026-e484-4ad0-8356-3c5c44f7f179"
+      ]
+    },
+    "versionCode": 1
+  },
+  "1816fdca-e31e-4131-b3a9-43fcc3d11bdf": {
+    "url": "db://assets/resources/art/mob_burrow_mole_3.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "0e2378d7-b54f-4450-9069-979258ff0e1c@6c48a": {
+    "url": "db://assets/resources/art/mob_burrow_mole.png@6c48a",
+    "value": {
+      "depends": [
+        "0e2378d7-b54f-4450-9069-979258ff0e1c"
+      ]
+    },
+    "versionCode": 1
+  },
+  "1135f415-d8a6-4c31-8cca-cff11387bf2d": {
+    "url": "db://assets/resources/art/mob_golem.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "ef0e336e-9cbd-432c-9205-56f012997329@6c48a": {
+    "url": "db://assets/resources/art/mob_burrow_mole_0.png@6c48a",
+    "value": {
+      "depends": [
+        "ef0e336e-9cbd-432c-9205-56f012997329"
+      ]
+    },
+    "versionCode": 1
+  },
+  "96a63f3a-9cd9-48cd-8224-cf7f6ca7e54f": {
+    "url": "db://assets/resources/art/mob_golem_0.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "bd6f1e48-c19d-4666-9af6-d1c86e915019@6c48a": {
+    "url": "db://assets/resources/art/mob_burrow_mole_1.png@6c48a",
+    "value": {
+      "depends": [
+        "bd6f1e48-c19d-4666-9af6-d1c86e915019"
+      ]
+    },
+    "versionCode": 1
+  },
+  "0e48f0de-cebf-4687-98d1-e8329ae3ac98": {
+    "url": "db://assets/resources/art/mob_golem_1.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "609d0749-1e9f-4e1c-ae6b-2ec167321553@6c48a": {
+    "url": "db://assets/resources/art/mob_burrow_mole_2.png@6c48a",
+    "value": {
+      "depends": [
+        "609d0749-1e9f-4e1c-ae6b-2ec167321553"
+      ]
+    },
+    "versionCode": 1
+  },
+  "e254a0e8-065a-45e6-8b9d-e6b7e11146aa": {
+    "url": "db://assets/resources/art/mob_golem_2.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "1816fdca-e31e-4131-b3a9-43fcc3d11bdf@6c48a": {
+    "url": "db://assets/resources/art/mob_burrow_mole_3.png@6c48a",
+    "value": {
+      "depends": [
+        "1816fdca-e31e-4131-b3a9-43fcc3d11bdf"
+      ]
+    },
+    "versionCode": 1
+  },
+  "74a63937-0f25-4b4c-8bec-4881c8fd1da3": {
+    "url": "db://assets/resources/art/mob_golem_3.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "1135f415-d8a6-4c31-8cca-cff11387bf2d@6c48a": {
+    "url": "db://assets/resources/art/mob_golem.png@6c48a",
+    "value": {
+      "depends": [
+        "1135f415-d8a6-4c31-8cca-cff11387bf2d"
+      ]
+    },
+    "versionCode": 1
+  },
+  "3a1607e6-9f53-474b-93fb-a1ccde230c7e": {
+    "url": "db://assets/resources/art/mob_ink_fly.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "0e48f0de-cebf-4687-98d1-e8329ae3ac98@6c48a": {
+    "url": "db://assets/resources/art/mob_golem_1.png@6c48a",
+    "value": {
+      "depends": [
+        "0e48f0de-cebf-4687-98d1-e8329ae3ac98"
+      ]
+    },
+    "versionCode": 1
+  },
+  "89212f58-ea6c-423d-be40-915a488578a4": {
+    "url": "db://assets/resources/art/mob_ink_fly_0.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "96a63f3a-9cd9-48cd-8224-cf7f6ca7e54f@6c48a": {
+    "url": "db://assets/resources/art/mob_golem_0.png@6c48a",
+    "value": {
+      "depends": [
+        "96a63f3a-9cd9-48cd-8224-cf7f6ca7e54f"
+      ]
+    },
+    "versionCode": 1
+  },
+  "33e3fb45-c8e1-4d29-96b4-3376fc97a83f": {
+    "url": "db://assets/resources/art/mob_ink_fly_1.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "e254a0e8-065a-45e6-8b9d-e6b7e11146aa@6c48a": {
+    "url": "db://assets/resources/art/mob_golem_2.png@6c48a",
+    "value": {
+      "depends": [
+        "e254a0e8-065a-45e6-8b9d-e6b7e11146aa"
+      ]
+    },
+    "versionCode": 1
+  },
+  "7dfedd34-6eec-480e-8d08-c90471b238d5": {
+    "url": "db://assets/resources/art/mob_ink_fly_2.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "74a63937-0f25-4b4c-8bec-4881c8fd1da3@6c48a": {
+    "url": "db://assets/resources/art/mob_golem_3.png@6c48a",
+    "value": {
+      "depends": [
+        "74a63937-0f25-4b4c-8bec-4881c8fd1da3"
+      ]
+    },
+    "versionCode": 1
+  },
+  "76da85e9-5609-4b42-b77c-26ec59f9acf5": {
+    "url": "db://assets/resources/art/mob_ink_fly_3.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "3a1607e6-9f53-474b-93fb-a1ccde230c7e@6c48a": {
+    "url": "db://assets/resources/art/mob_ink_fly.png@6c48a",
+    "value": {
+      "depends": [
+        "3a1607e6-9f53-474b-93fb-a1ccde230c7e"
+      ]
+    },
+    "versionCode": 1
+  },
+  "5fd15161-3fc2-4d68-8c8d-f4f44f34a136": {
+    "url": "db://assets/resources/art/mob_leap_fox.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "33e3fb45-c8e1-4d29-96b4-3376fc97a83f@6c48a": {
+    "url": "db://assets/resources/art/mob_ink_fly_1.png@6c48a",
+    "value": {
+      "depends": [
+        "33e3fb45-c8e1-4d29-96b4-3376fc97a83f"
+      ]
+    },
+    "versionCode": 1
+  },
+  "89212f58-ea6c-423d-be40-915a488578a4@6c48a": {
+    "url": "db://assets/resources/art/mob_ink_fly_0.png@6c48a",
+    "value": {
+      "depends": [
+        "89212f58-ea6c-423d-be40-915a488578a4"
+      ]
+    },
+    "versionCode": 1
+  },
+  "9554b50c-db3c-4403-ab3b-e50c0fe9438a": {
+    "url": "db://assets/resources/art/mob_leap_fox_0.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "a202db21-2232-4d17-b02c-c3837a4cf144": {
+    "url": "db://assets/resources/art/mob_leap_fox_1.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "7dfedd34-6eec-480e-8d08-c90471b238d5@6c48a": {
+    "url": "db://assets/resources/art/mob_ink_fly_2.png@6c48a",
+    "value": {
+      "depends": [
+        "7dfedd34-6eec-480e-8d08-c90471b238d5"
+      ]
+    },
+    "versionCode": 1
+  },
+  "89f59de4-8993-4edf-8969-baebb1b0a983": {
+    "url": "db://assets/resources/art/mob_leap_fox_2.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "76da85e9-5609-4b42-b77c-26ec59f9acf5@6c48a": {
+    "url": "db://assets/resources/art/mob_ink_fly_3.png@6c48a",
+    "value": {
+      "depends": [
+        "76da85e9-5609-4b42-b77c-26ec59f9acf5"
+      ]
+    },
+    "versionCode": 1
+  },
+  "9137d3b1-67dd-4c06-8f14-e7a598450d7a": {
+    "url": "db://assets/resources/art/mob_leap_fox_3.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "5fd15161-3fc2-4d68-8c8d-f4f44f34a136@6c48a": {
+    "url": "db://assets/resources/art/mob_leap_fox.png@6c48a",
+    "value": {
+      "depends": [
+        "5fd15161-3fc2-4d68-8c8d-f4f44f34a136"
+      ]
+    },
+    "versionCode": 1
+  },
+  "4f8cfdcf-17ad-4749-af55-3468835442a5": {
+    "url": "db://assets/resources/art/npc_atang.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "9554b50c-db3c-4403-ab3b-e50c0fe9438a@6c48a": {
+    "url": "db://assets/resources/art/mob_leap_fox_0.png@6c48a",
+    "value": {
+      "depends": [
+        "9554b50c-db3c-4403-ab3b-e50c0fe9438a"
+      ]
+    },
+    "versionCode": 1
+  },
+  "8db4749b-3924-44f7-bf20-cc6d606722c5": {
+    "url": "db://assets/resources/art/npc_jianglao.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "a202db21-2232-4d17-b02c-c3837a4cf144@6c48a": {
+    "url": "db://assets/resources/art/mob_leap_fox_1.png@6c48a",
+    "value": {
+      "depends": [
+        "a202db21-2232-4d17-b02c-c3837a4cf144"
+      ]
+    },
+    "versionCode": 1
+  },
+  "d1dfefdf-3bec-453a-8557-600f02d4ed2a": {
+    "url": "db://assets/resources/art/npc_lubo.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "89f59de4-8993-4edf-8969-baebb1b0a983@6c48a": {
+    "url": "db://assets/resources/art/mob_leap_fox_2.png@6c48a",
+    "value": {
+      "depends": [
+        "89f59de4-8993-4edf-8969-baebb1b0a983"
+      ]
+    },
+    "versionCode": 1
+  },
+  "bea96072-4fd1-458e-aa81-c69a656f9166": {
+    "url": "db://assets/resources/art/npc_xuanmo.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "4f8cfdcf-17ad-4749-af55-3468835442a5@6c48a": {
+    "url": "db://assets/resources/art/npc_atang.png@6c48a",
+    "value": {
+      "depends": [
+        "4f8cfdcf-17ad-4749-af55-3468835442a5"
+      ]
+    },
+    "versionCode": 1
+  },
+  "311a4a0b-8034-4139-9094-29a8857244aa": {
+    "url": "db://assets/resources/art/obs_boulder.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "9137d3b1-67dd-4c06-8f14-e7a598450d7a@6c48a": {
+    "url": "db://assets/resources/art/mob_leap_fox_3.png@6c48a",
+    "value": {
+      "depends": [
+        "9137d3b1-67dd-4c06-8f14-e7a598450d7a"
+      ]
+    },
+    "versionCode": 1
+  },
+  "55308de5-64fc-4ea0-9b6e-9055434a6e6d": {
+    "url": "db://assets/resources/art/obs_grass.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "d1dfefdf-3bec-453a-8557-600f02d4ed2a@6c48a": {
+    "url": "db://assets/resources/art/npc_lubo.png@6c48a",
+    "value": {
+      "depends": [
+        "d1dfefdf-3bec-453a-8557-600f02d4ed2a"
+      ]
+    },
+    "versionCode": 1
+  },
+  "8db4749b-3924-44f7-bf20-cc6d606722c5@6c48a": {
+    "url": "db://assets/resources/art/npc_jianglao.png@6c48a",
+    "value": {
+      "depends": [
+        "8db4749b-3924-44f7-bf20-cc6d606722c5"
+      ]
+    },
+    "versionCode": 1
+  },
+  "325c2657-75cb-4127-9bad-1e2a35ad92c4": {
+    "url": "db://assets/resources/art/obs_shrub.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "8fda8d0d-ef00-4717-9b84-3b29fcd84fbd": {
+    "url": "db://assets/resources/art/pet_spirit_fox.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "bea96072-4fd1-458e-aa81-c69a656f9166@6c48a": {
+    "url": "db://assets/resources/art/npc_xuanmo.png@6c48a",
+    "value": {
+      "depends": [
+        "bea96072-4fd1-458e-aa81-c69a656f9166"
+      ]
+    },
+    "versionCode": 1
+  },
+  "311a4a0b-8034-4139-9094-29a8857244aa@6c48a": {
+    "url": "db://assets/resources/art/obs_boulder.png@6c48a",
+    "value": {
+      "depends": [
+        "311a4a0b-8034-4139-9094-29a8857244aa"
+      ]
+    },
+    "versionCode": 1
+  },
+  "84c624aa-108d-480e-8565-6d98b7af1acc": {
+    "url": "db://assets/resources/art/plant_sky_bamboo_combo.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "b27f6079-cbc5-488d-bf89-61dd62be9ec7": {
+    "url": "db://assets/resources/art/plant_thunder_potato.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "55308de5-64fc-4ea0-9b6e-9055434a6e6d@6c48a": {
+    "url": "db://assets/resources/art/obs_grass.png@6c48a",
+    "value": {
+      "depends": [
+        "55308de5-64fc-4ea0-9b6e-9055434a6e6d"
+      ]
+    },
+    "versionCode": 1
+  },
+  "b16ce1d8-e2fb-4140-b01f-1a7b587c462d": {
+    "url": "db://assets/resources/art/prop_bridge_front_rail.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "8fda8d0d-ef00-4717-9b84-3b29fcd84fbd@6c48a": {
+    "url": "db://assets/resources/art/pet_spirit_fox.png@6c48a",
+    "value": {
+      "depends": [
+        "8fda8d0d-ef00-4717-9b84-3b29fcd84fbd"
+      ]
+    },
+    "versionCode": 1
+  },
+  "13ccedeb-870f-421e-b001-585213139d18": {
+    "url": "db://assets/resources/art/prop_bridge_wood.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "325c2657-75cb-4127-9bad-1e2a35ad92c4@6c48a": {
+    "url": "db://assets/resources/art/obs_shrub.png@6c48a",
+    "value": {
+      "depends": [
+        "325c2657-75cb-4127-9bad-1e2a35ad92c4"
+      ]
+    },
+    "versionCode": 1
+  },
+  "4e335997-9c0e-4b8d-81ea-b2e73961a6d4": {
+    "url": "db://assets/resources/art/prop_fishing_spot.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "b27f6079-cbc5-488d-bf89-61dd62be9ec7@6c48a": {
+    "url": "db://assets/resources/art/plant_thunder_potato.png@6c48a",
+    "value": {
+      "depends": [
+        "b27f6079-cbc5-488d-bf89-61dd62be9ec7"
+      ]
+    },
+    "versionCode": 1
+  },
+  "f4d875b8-a977-4d00-9bb6-26acccd4a20a": {
+    "url": "db://assets/resources/art/prop_old_dock.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "84c624aa-108d-480e-8565-6d98b7af1acc@6c48a": {
+    "url": "db://assets/resources/art/plant_sky_bamboo_combo.png@6c48a",
+    "value": {
+      "depends": [
+        "84c624aa-108d-480e-8565-6d98b7af1acc"
+      ]
+    },
+    "versionCode": 1
+  },
+  "c551a2db-e2c7-480d-ba28-ea798e4813d3": {
+    "url": "db://assets/resources/art/prop_sail_boat.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "b16ce1d8-e2fb-4140-b01f-1a7b587c462d@6c48a": {
+    "url": "db://assets/resources/art/prop_bridge_front_rail.png@6c48a",
+    "value": {
+      "depends": [
+        "b16ce1d8-e2fb-4140-b01f-1a7b587c462d"
+      ]
+    },
+    "versionCode": 1
+  },
+  "88d39c31-7eb7-4fb7-ac0a-3954a030da01": {
+    "url": "db://assets/resources/art/prop_shipping_crate.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "13ccedeb-870f-421e-b001-585213139d18@6c48a": {
+    "url": "db://assets/resources/art/prop_bridge_wood.png@6c48a",
+    "value": {
+      "depends": [
+        "13ccedeb-870f-421e-b001-585213139d18"
+      ]
+    },
+    "versionCode": 1
+  },
+  "4e335997-9c0e-4b8d-81ea-b2e73961a6d4@6c48a": {
+    "url": "db://assets/resources/art/prop_fishing_spot.png@6c48a",
+    "value": {
+      "depends": [
+        "4e335997-9c0e-4b8d-81ea-b2e73961a6d4"
+      ]
+    },
+    "versionCode": 1
+  },
+  "8447242c-0ba0-403f-a87b-5e866562e34e": {
+    "url": "db://assets/resources/art/ui_btn_jade.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "fd8da505-6112-452f-97f8-20c6e4e9bcbc": {
+    "url": "db://assets/resources/art/ui_dng_btn_atk.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "f4d875b8-a977-4d00-9bb6-26acccd4a20a@6c48a": {
+    "url": "db://assets/resources/art/prop_old_dock.png@6c48a",
+    "value": {
+      "depends": [
+        "f4d875b8-a977-4d00-9bb6-26acccd4a20a"
+      ]
+    },
+    "versionCode": 1
+  },
+  "32c3f8fc-548a-4356-8672-81741e353d9e": {
+    "url": "db://assets/resources/art/ui_dng_btn_dodge.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "c551a2db-e2c7-480d-ba28-ea798e4813d3@6c48a": {
+    "url": "db://assets/resources/art/prop_sail_boat.png@6c48a",
+    "value": {
+      "depends": [
+        "c551a2db-e2c7-480d-ba28-ea798e4813d3"
+      ]
+    },
+    "versionCode": 1
+  },
+  "16379fe4-01ad-4c59-ad16-b7326493b18b": {
+    "url": "db://assets/resources/art/ui_dng_btn_rect.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "88d39c31-7eb7-4fb7-ac0a-3954a030da01@6c48a": {
+    "url": "db://assets/resources/art/prop_shipping_crate.png@6c48a",
+    "value": {
+      "depends": [
+        "88d39c31-7eb7-4fb7-ac0a-3954a030da01"
+      ]
+    },
+    "versionCode": 1
+  },
+  "f672307f-a102-4dd9-b485-19b82f00556c": {
+    "url": "db://assets/resources/art/ui_dng_card_bg.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "8447242c-0ba0-403f-a87b-5e866562e34e@6c48a": {
+    "url": "db://assets/resources/art/ui_btn_jade.png@6c48a",
+    "value": {
+      "depends": [
+        "8447242c-0ba0-403f-a87b-5e866562e34e"
+      ]
+    },
+    "versionCode": 1
+  },
+  "f13a42eb-27ef-47a7-a9c1-437491dcf1e1": {
+    "url": "db://assets/resources/catalogs/fish.json",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "fd8da505-6112-452f-97f8-20c6e4e9bcbc@6c48a": {
+    "url": "db://assets/resources/art/ui_dng_btn_atk.png@6c48a",
+    "value": {
+      "depends": [
+        "fd8da505-6112-452f-97f8-20c6e4e9bcbc"
+      ]
+    },
+    "versionCode": 1
+  },
+  "4596aa79-1bad-492e-b777-15509821d9bb": {
+    "url": "db://assets/resources/catalogs/plants.json",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "32c3f8fc-548a-4356-8672-81741e353d9e@6c48a": {
+    "url": "db://assets/resources/art/ui_dng_btn_dodge.png@6c48a",
+    "value": {
+      "depends": [
+        "32c3f8fc-548a-4356-8672-81741e353d9e"
+      ]
+    },
+    "versionCode": 1
+  },
+  "82636b72-267c-4840-a00d-ea1733525d48": {
+    "url": "db://assets/resources/catalogs/weapons.json",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "16379fe4-01ad-4c59-ad16-b7326493b18b@6c48a": {
+    "url": "db://assets/resources/art/ui_dng_btn_rect.png@6c48a",
+    "value": {
+      "depends": [
+        "16379fe4-01ad-4c59-ad16-b7326493b18b"
+      ]
+    },
+    "versionCode": 1
+  },
+  "f672307f-a102-4dd9-b485-19b82f00556c@6c48a": {
+    "url": "db://assets/resources/art/ui_dng_card_bg.png@6c48a",
+    "value": {
+      "depends": [
+        "f672307f-a102-4dd9-b485-19b82f00556c"
+      ]
+    },
+    "versionCode": 1
+  }
+}

@@ -1,0 +1,1154 @@
+{
+  "version": "1.0.1",
+  "map": {
+    "bundles": {
+      "time": 1795590412615.3535,
+      "uuid": "910fc8d7-df0f-47d0-a627-b6d7a8fe88f8"
+    },
+    "resources": {
+      "time": 1795590412615.4805,
+      "uuid": "0a7c4f28-c360-4dfd-abb6-b86fe377f265"
+    },
+    "scenes": {
+      "time": 1795590387436.692,
+      "uuid": "6e81b6a2-c7a2-4bb4-9f5c-26638772bead"
+    },
+    "scripts": {
+      "time": 1795590412615.7737,
+      "uuid": "1fc4bdb2-20b3-4fa2-a86e-68aaa859f578"
+    },
+    "bundles/bundle_audio": {
+      "time": 1795590387441.1824,
+      "uuid": "c12900ef-67b2-4299-a15d-b433cd4b414d"
+    },
+    "bundles/bundle_decor": {
+      "time": 1795590387441.0493,
+      "uuid": "3a765ac8-200e-4e19-af27-587a3193623c"
+    },
+    "bundles/bundle_dungeon": {
+      "time": 1795590387440.759,
+      "uuid": "5210a0b7-e929-4501-bc5d-1cbc97260fad"
+    },
+    "bundles/bundle_islands": {
+      "time": 1795590387440.917,
+      "uuid": "73efaa81-477e-4823-b4e3-2b07e38deab3"
+    },
+    "resources/art": {
+      "time": 1795590415427.48,
+      "uuid": "e17c2199-e31e-4acd-a428-5e2a3df3197e"
+    },
+    "resources/catalogs": {
+      "time": 1795590415427.6582,
+      "uuid": "02524088-edd9-4d55-81d9-0d4aaf289ca2"
+    },
+    "scripts/app": {
+      "time": 1795590387437.8345,
+      "uuid": "f490c417-5732-4a10-b77d-fb49411216c5"
+    },
+    "scripts/core": {
+      "time": 1795590412616.7527,
+      "uuid": "e1848817-89ce-4f52-be5d-34d8d55ee150"
+    },
+    "scripts/gameplay": {
+      "time": 1795590412615.9343,
+      "uuid": "62e717db-8344-4ac3-8527-c4d70ddfc4c7"
+    },
+    "scripts/platform": {
+      "time": 1795590412616.8152,
+      "uuid": "e6b912d8-f901-4c15-b9be-ca7d28c11070"
+    },
+    "scripts/ui": {
+      "time": 1795590412617.8867,
+      "uuid": "10856e6a-8cdd-4607-86b3-b47ade86fdfd"
+    },
+    "scripts/gameplay/dungeon": {
+      "time": 1795590412617.9353,
+      "uuid": "2259912d-f56c-4a27-bb1c-b734378cc678"
+    },
+    "scripts/gameplay/farm": {
+      "time": 1795590412617.982,
+      "uuid": "09594940-4fa7-407a-88f1-ce551b1f66c5"
+    },
+    "scripts/gameplay/overworld": {
+      "time": 1795590387440.3289,
+      "uuid": "40fc8cda-02d9-4e44-a470-e9626706be70"
+    },
+    "scripts/app/GameApp.ts": {
+      "time": 1795560546000,
+      "uuid": "da154b84-9e02-4bcf-8ae1-f5cbb0af8e5f"
+    },
+    "scripts/core/ArtLoader.ts": {
+      "time": 1795116716000,
+      "uuid": "0e1a21c3-303a-47df-b5e2-c49708122257"
+    },
+    "scripts/core/AudioManager.ts": {
+      "time": 1795133194000,
+      "uuid": "78dea8e7-6fdf-44a2-ac89-31236379d201"
+    },
+    "scripts/core/DataManager.ts": {
+      "time": 1795108740000,
+      "uuid": "59482d15-44ab-41ca-834f-d39ee8aa941e"
+    },
+    "scripts/core/EventBus.ts": {
+      "time": 1795108556000,
+      "uuid": "71ce354b-c6c2-4919-9928-415640698293"
+    },
+    "scripts/core/GameTypes.ts": {
+      "time": 1795545382000,
+      "uuid": "ea4e42a0-87a2-414c-ac84-bd8787b4896c"
+    },
+    "scripts/core/SaveManager.ts": {
+      "time": 1795545382000,
+      "uuid": "f7e77c39-256d-4f94-abd5-aca5b75abd5d"
+    },
+    "scripts/core/TimeSystem.ts": {
+      "time": 1795108556000,
+      "uuid": "c2fe56b4-75e6-4c36-a143-0319e42c6f01"
+    },
+    "scripts/platform/TapAdapter.ts": {
+      "time": 1795108806000,
+      "uuid": "ea373efd-e530-4a94-824b-30a074da8533"
+    },
+    "scripts/ui/DebugPanel.ts": {
+      "time": 1795129488000,
+      "uuid": "347bb8d1-774b-438d-8ff5-3b41e1a9413c"
+    },
+    "scripts/ui/DefenseOverlay.ts": {
+      "time": 1795133192000,
+      "uuid": "7e59d360-9a32-4f9c-87b2-4c5e74d9a954"
+    },
+    "scripts/ui/DungeonOverlay.ts": {
+      "time": 1795551066000,
+      "uuid": "5d48c250-7f21-4e8b-96a1-2b4d63c8f843"
+    },
+    "scripts/ui/FishingOverlay.ts": {
+      "time": 1795136424000,
+      "uuid": "4b19d720-6c44-4a8e-91c3-8f0a21e7b410"
+    },
+    "scripts/ui/IndoorOverlay.ts": {
+      "time": 1795138846000,
+      "uuid": "6e28a930-5d12-4c7f-83b5-1a9c42f8d621"
+    },
+    "scripts/ui/NpcDialogOverlay.ts": {
+      "time": 1795134392000,
+      "uuid": "8f37b140-2e61-4b9a-94d6-3c7e53a9e732"
+    },
+    "scripts/ui/OverworldHUD.ts": {
+      "time": 1795551020000,
+      "uuid": "9c82e450-3a19-4d71-8f22-5e1b74a2c831"
+    },
+    "scripts/ui/SettingsOverlay.ts": {
+      "time": 1795548256000,
+      "uuid": "9a61e470-4b53-4d8e-91c4-6f8a21b3c765"
+    },
+    "scripts/ui/VoyageOverlay.ts": {
+      "time": 1795136808000,
+      "uuid": "de2f4654-b4dd-4e0c-80c2-5d93090e1c4c"
+    },
+    "scripts/gameplay/dungeon/DungeonConfig.ts": {
+      "time": 1795545382000,
+      "uuid": "1d343373-2223-49b1-82ff-f58b25c1774f"
+    },
+    "scripts/gameplay/farm/FarmSystem.ts": {
+      "time": 1795132544000,
+      "uuid": "d95fc174-9d34-41bf-977d-550b46ccc39c"
+    },
+    "scripts/gameplay/overworld/OverworldController.ts": {
+      "time": 1795560546000,
+      "uuid": "7a41c210-8e31-4f92-9b14-2c6a91d0e512"
+    },
+    "bundles.meta": {
+      "time": 1795590412618.7021
+    },
+    "resources.meta": {
+      "time": 1795590412618.9053
+    },
+    "scenes.meta": {
+      "time": 1795590412618.9534
+    },
+    "scripts.meta": {
+      "time": 1795590412618.9934
+    },
+    "bundles/bundle_audio.meta": {
+      "time": 1795590412619.0312
+    },
+    "bundles/bundle_decor.meta": {
+      "time": 1795590412619.1936
+    },
+    "bundles/bundle_dungeon.meta": {
+      "time": 1795590412619.3035
+    },
+    "bundles/bundle_islands.meta": {
+      "time": 1795590412619.3877
+    },
+    "resources/art.meta": {
+      "time": 1795590412619.4663
+    },
+    "resources/catalogs.meta": {
+      "time": 1795590412619.5442
+    },
+    "scripts/app.meta": {
+      "time": 1795590412619.7407
+    },
+    "scripts/core.meta": {
+      "time": 1795590412619.848
+    },
+    "scripts/gameplay.meta": {
+      "time": 1795590412619.9302
+    },
+    "scripts/platform.meta": {
+      "time": 1795590412620.0242
+    },
+    "scripts/ui.meta": {
+      "time": 1795590412620.101
+    },
+    "scripts/gameplay/dungeon.meta": {
+      "time": 1795590412620.2834
+    },
+    "scripts/gameplay/farm.meta": {
+      "time": 1795590412620.4058
+    },
+    "scripts/gameplay/overworld.meta": {
+      "time": 1795590412620.5137
+    },
+    "scripts/app/GameApp.ts.meta": {
+      "time": 1795047776000
+    },
+    "scripts/core/ArtLoader.ts.meta": {
+      "time": 1795590412622.5398
+    },
+    "scripts/core/AudioManager.ts.meta": {
+      "time": 1795590412622.6062
+    },
+    "scripts/core/DataManager.ts.meta": {
+      "time": 1795590412622.6638
+    },
+    "scripts/core/EventBus.ts.meta": {
+      "time": 1795590412622.8376
+    },
+    "scripts/core/GameTypes.ts.meta": {
+      "time": 1795590412624.931
+    },
+    "scripts/core/SaveManager.ts.meta": {
+      "time": 1795590412625.1
+    },
+    "scripts/core/TimeSystem.ts.meta": {
+      "time": 1795590412625.177
+    },
+    "scripts/platform/TapAdapter.ts.meta": {
+      "time": 1795590412625.2397
+    },
+    "scripts/ui/DebugPanel.ts.meta": {
+      "time": 1795047776000
+    },
+    "scripts/ui/DefenseOverlay.ts.meta": {
+      "time": 1795113408000
+    },
+    "scripts/ui/DungeonOverlay.ts.meta": {
+      "time": 1795111982000
+    },
+    "scripts/ui/FishingOverlay.ts.meta": {
+      "time": 1795111348000
+    },
+    "scripts/ui/IndoorOverlay.ts.meta": {
+      "time": 1795111348000
+    },
+    "scripts/ui/NpcDialogOverlay.ts.meta": {
+      "time": 1795111348000
+    },
+    "scripts/ui/OverworldHUD.ts.meta": {
+      "time": 1795110364000
+    },
+    "scripts/ui/SettingsOverlay.ts.meta": {
+      "time": 1795116424000
+    },
+    "scripts/ui/VoyageOverlay.ts.meta": {
+      "time": 1795590412627.862
+    },
+    "scripts/gameplay/dungeon/DungeonConfig.ts.meta": {
+      "time": 1795590412627.9348
+    },
+    "scripts/gameplay/farm/FarmSystem.ts.meta": {
+      "time": 1795590412627.996
+    },
+    "scripts/gameplay/overworld/OverworldController.ts.meta": {
+      "time": 1795110364000
+    },
+    "scenes/launch.scene": {
+      "time": 1795116424000,
+      "uuid": "b5cf3ede-659f-4eec-9103-ecfa268ac4df"
+    },
+    "resources/art/bg_dungeon_bamboo.jpg": {
+      "time": 1795546634000,
+      "uuid": "c1d77b31-8c70-4d67-8412-f96bfb57e49d"
+    },
+    "resources/art/bg_dungeon_frost.jpg": {
+      "time": 1795549420000,
+      "uuid": "01c22e69-f75e-4a73-bb79-2f8254648c40"
+    },
+    "resources/art/bg_dungeon_magma.jpg": {
+      "time": 1795546634000,
+      "uuid": "a303cf7e-0534-43df-ad91-c6ea2919122f"
+    },
+    "resources/art/bg_dungeon_mist.jpg": {
+      "time": 1795549420000,
+      "uuid": "37f9aa6e-4c7d-4505-8ecb-22c266211079"
+    },
+    "resources/art/bg_dungeon_rift.jpg": {
+      "time": 1795549420000,
+      "uuid": "6bcbf3ff-20d3-4cd4-a72b-6f512d92ce51"
+    },
+    "resources/art/bg_dungeon_thunder.jpg": {
+      "time": 1795549420000,
+      "uuid": "a910e0e9-3aab-46ac-a49d-d5f72fc8d0a9"
+    },
+    "resources/art/bg_indoor_room.jpg": {
+      "time": 1795130118000,
+      "uuid": "b5247a19-2098-4997-955d-875cff5e50b1"
+    },
+    "resources/art/bg_island_ember.jpg": {
+      "time": 1795136808000,
+      "uuid": "c544e683-9fb1-4c57-abda-5afc67f427e0"
+    },
+    "resources/art/bg_island_frost.jpg": {
+      "time": 1795136808000,
+      "uuid": "d654aa0b-01a9-4e62-af1c-8b0fa752f659"
+    },
+    "resources/art/bg_island_mist.jpg": {
+      "time": 1795136808000,
+      "uuid": "c34ca110-103b-427a-b0b7-fdf4e1a4cfb1"
+    },
+    "resources/art/bg_overworld_map.jpg": {
+      "time": 1795560544000,
+      "uuid": "b5621b67-2ef4-435a-92a7-60f8544770d8"
+    },
+    "resources/art/bg_title_cover.jpg": {
+      "time": 1795129488000,
+      "uuid": "67fade7c-4cab-461e-865c-4f638cf5f609"
+    },
+    "resources/art/bld_cottage.png": {
+      "time": 1795560544000,
+      "uuid": "2a3e9385-370f-4614-80fb-ec4e85a75097"
+    },
+    "resources/art/bld_dungeon_portal.png": {
+      "time": 1795560544000,
+      "uuid": "16ca6476-f2e1-43b9-93c0-acf083bf1b32"
+    },
+    "resources/art/bld_kitchen_shed.png": {
+      "time": 1795560544000,
+      "uuid": "1ba8068a-d465-41d1-902a-f06583fe4bb2"
+    },
+    "resources/art/bld_seal_arch.png": {
+      "time": 1795560544000,
+      "uuid": "3ff535c1-1765-447d-87a1-e45a3c308d4c"
+    },
+    "resources/art/char_player.png": {
+      "time": 1795116350000,
+      "uuid": "929f5517-ead3-426d-b5be-06c6021a4029"
+    },
+    "resources/art/char_player_back.png": {
+      "time": 1795120350000,
+      "uuid": "ccf7e646-c8c0-436a-b2ab-96842bfb979a"
+    },
+    "resources/art/char_player_front.png": {
+      "time": 1795120350000,
+      "uuid": "5a388785-31cd-4e21-8f7a-8bce66edeb82"
+    },
+    "resources/art/char_player_side.png": {
+      "time": 1795120350000,
+      "uuid": "a227df20-b2e4-43bf-8132-ec982b4a0f75"
+    },
+    "resources/art/char_walk_back_0.png": {
+      "time": 1795118296000,
+      "uuid": "93f43781-7f3c-4fa9-884d-512f5baae62b"
+    },
+    "resources/art/char_walk_back_1.png": {
+      "time": 1795118296000,
+      "uuid": "98f9a4d1-bbfa-4ab8-a4b4-216ab06ec85c"
+    },
+    "resources/art/char_walk_back_2.png": {
+      "time": 1795118296000,
+      "uuid": "07a28a2e-6fcd-4e61-af90-fb6f42bd0430"
+    },
+    "resources/art/char_walk_back_3.png": {
+      "time": 1795118296000,
+      "uuid": "9ab40a27-2b74-4bb3-819b-d0f567221729"
+    },
+    "resources/art/char_walk_front_0.png": {
+      "time": 1795118296000,
+      "uuid": "46061172-296f-43c9-bb85-4fb6dd7545ea"
+    },
+    "resources/art/char_walk_front_1.png": {
+      "time": 1795118296000,
+      "uuid": "e566fa5c-cd13-4223-ac6d-85c201ba41a3"
+    },
+    "resources/art/char_walk_front_2.png": {
+      "time": 1795118296000,
+      "uuid": "2d6cfce2-801c-461b-8564-dc70f20edbfe"
+    },
+    "resources/art/char_walk_front_3.png": {
+      "time": 1795118296000,
+      "uuid": "ad5a5314-054f-422d-bd6d-64f8f4becc58"
+    },
+    "resources/art/char_walk_side_0.png": {
+      "time": 1795118296000,
+      "uuid": "9c541c85-012b-43e4-8a02-3aeb4d5d28fa"
+    },
+    "resources/art/char_walk_side_1.png": {
+      "time": 1795118296000,
+      "uuid": "ad4451af-22c0-4a8d-a45c-ff35976ac2c5"
+    },
+    "resources/art/char_walk_side_2.png": {
+      "time": 1795118296000,
+      "uuid": "9c1c9b79-904b-4f6a-9cd1-78592f26b00c"
+    },
+    "resources/art/char_walk_side_3.png": {
+      "time": 1795118296000,
+      "uuid": "5f2e03b5-e760-403d-a9f4-0334fb542655"
+    },
+    "resources/art/crop_spring_greens.png": {
+      "time": 1795126784000,
+      "uuid": "ca889896-6b12-4784-9580-e5be569f5f94"
+    },
+    "resources/art/def_cloud_shoot.png": {
+      "time": 1795127260000,
+      "uuid": "f086e7ab-4140-4e38-b6b8-12c9fa975acb"
+    },
+    "resources/art/def_flame_vine.png": {
+      "time": 1795127260000,
+      "uuid": "ae1e9ce9-54eb-416a-88bc-ecdc577441af"
+    },
+    "resources/art/def_iron_melon.png": {
+      "time": 1795127260000,
+      "uuid": "33d36473-3530-4fab-925e-2c2fada334a8"
+    },
+    "resources/art/def_lotus_pad.png": {
+      "time": 1795127260000,
+      "uuid": "89b9bfef-62de-4cb6-96b4-21fa6ecaacf6"
+    },
+    "resources/art/def_rain_tea.png": {
+      "time": 1795127260000,
+      "uuid": "2899f460-f72a-48ce-abc5-ec1dfb5ecd66"
+    },
+    "resources/art/def_sky_bamboo.png": {
+      "time": 1795127260000,
+      "uuid": "678953be-6bcb-4b03-aded-52a8611a8d3f"
+    },
+    "resources/art/dng_ancient_lantern.png": {
+      "time": 1795549532000,
+      "uuid": "245b295d-66ae-4d28-9f89-cc09a4a86ce5"
+    },
+    "resources/art/dng_chest_closed.png": {
+      "time": 1795549532000,
+      "uuid": "758bd05c-b52f-4391-99ad-6a451824fcb3"
+    },
+    "resources/art/dng_chest_open.png": {
+      "time": 1795549532000,
+      "uuid": "5bf3058c-dc06-4fd3-9b0d-65d8eb38ad2e"
+    },
+    "resources/art/dng_copper_pillar.png": {
+      "time": 1795549532000,
+      "uuid": "a2e1acb3-6650-44c2-8be7-9a21dcec6e0d"
+    },
+    "resources/art/dng_cracked_wall.png": {
+      "time": 1795128504000,
+      "uuid": "43946c4a-78d6-4cbf-9da9-661ea30eecda"
+    },
+    "resources/art/dng_door.png": {
+      "time": 1795128504000,
+      "uuid": "be1b7bfc-f091-46aa-9ec3-7a6c5b08e6ec"
+    },
+    "resources/art/dng_ice_wall.png": {
+      "time": 1795549532000,
+      "uuid": "a911d4d7-1119-4d32-8a18-dba0bb5e4d09"
+    },
+    "resources/art/dng_pillar.png": {
+      "time": 1795128504000,
+      "uuid": "5d423761-fdf1-491d-8b20-c828848e39c1"
+    },
+    "resources/art/dng_portal_glow.png": {
+      "time": 1795549532000,
+      "uuid": "ec27f0e5-b44a-499b-9bed-0bdd82093f00"
+    },
+    "resources/art/dng_powder_jar.png": {
+      "time": 1795549532000,
+      "uuid": "bd82d843-b4aa-46c9-a6ea-ddec254b2df0"
+    },
+    "resources/art/dng_rift_vortex.png": {
+      "time": 1795549532000,
+      "uuid": "7fde6650-8085-410d-bce7-eb8f3e642e23"
+    },
+    "resources/art/dng_spike_trap.png": {
+      "time": 1795549532000,
+      "uuid": "253abc87-2a36-4e2c-862f-6ee094fa19a4"
+    },
+    "resources/art/fish_brook_loach.png": {
+      "time": 1795129020000,
+      "uuid": "6b74ae9a-fbc6-4a98-aec4-2d2bf503a208"
+    },
+    "resources/art/fish_brook_trout.png": {
+      "time": 1795129020000,
+      "uuid": "f8bad87c-d9a9-4d7b-8c27-cbd5ea20bc87"
+    },
+    "resources/art/fish_estuary_dragon.png": {
+      "time": 1795129022000,
+      "uuid": "b6201cbc-03f3-45f7-a53b-0362d502a2ef"
+    },
+    "resources/art/fish_estuary_perch.png": {
+      "time": 1795129022000,
+      "uuid": "b5d64876-5830-467c-b3ed-8abebaccd58e"
+    },
+    "resources/art/fish_lotus_crucian.png": {
+      "time": 1795129022000,
+      "uuid": "3d58a940-e07f-423a-b8c6-f407fc47c252"
+    },
+    "resources/art/fish_lotus_koi.png": {
+      "time": 1795129022000,
+      "uuid": "bfe49d3e-9ab6-449d-b1d0-f1d9fa13573d"
+    },
+    "resources/art/furn_aquarium_porcelain.png": {
+      "time": 1795129020000,
+      "uuid": "573a60dc-9568-418a-b697-02cdf47d4bef"
+    },
+    "resources/art/furn_bed_wood.png": {
+      "time": 1795129020000,
+      "uuid": "d0518e78-b9a9-4f06-b85a-178694a7fd35"
+    },
+    "resources/art/furn_bed_wood_side.png": {
+      "time": 1795136422000,
+      "uuid": "4f5854ac-2139-4667-b0d8-3073488717aa"
+    },
+    "resources/art/furn_lantern_rabbit.png": {
+      "time": 1795129020000,
+      "uuid": "498c40a2-1065-43aa-9f8e-3695373b5de3"
+    },
+    "resources/art/furn_lantern_rabbit_side.png": {
+      "time": 1795136422000,
+      "uuid": "db5bb1db-20f7-4f83-aec2-ebb686008ebe"
+    },
+    "resources/art/furn_screen_ink.png": {
+      "time": 1795129020000,
+      "uuid": "e51d0281-127c-4b60-957e-ed52f18e8f45"
+    },
+    "resources/art/furn_screen_ink_side.png": {
+      "time": 1795136422000,
+      "uuid": "43234133-0ef5-4c0a-b627-61f8a32414ad"
+    },
+    "resources/art/furn_stove_clay.png": {
+      "time": 1795129020000,
+      "uuid": "c7e1c2e5-0ff5-469f-b574-269a988e367d"
+    },
+    "resources/art/furn_tea_table.png": {
+      "time": 1795129020000,
+      "uuid": "8b50ca84-1f12-4550-b9b9-583f54e565e1"
+    },
+    "resources/art/furn_tea_table_side.png": {
+      "time": 1795136422000,
+      "uuid": "8f6b09bf-df97-490e-8184-1660bea52a5c"
+    },
+    "resources/art/island_ember_reef.png": {
+      "time": 1795132544000,
+      "uuid": "c1cf06c6-41b8-4217-8756-c5b21b7cf3ad"
+    },
+    "resources/art/island_frost_isle.png": {
+      "time": 1795132544000,
+      "uuid": "20dd397f-087d-4e77-bc98-83cdf7886ba1"
+    },
+    "resources/art/island_mist_marsh.png": {
+      "time": 1795132544000,
+      "uuid": "768f765c-7574-4beb-94b3-2aefd60f2311"
+    },
+    "resources/art/mob_bamboo.png": {
+      "time": 1795127260000,
+      "uuid": "662cd1dd-5654-4033-867c-18d7bc5cbef9"
+    },
+    "resources/art/mob_bamboo_0.png": {
+      "time": 1795128500000,
+      "uuid": "c62a5687-0b1b-4574-94e2-dfd8e60fa585"
+    },
+    "resources/art/mob_bamboo_1.png": {
+      "time": 1795128500000,
+      "uuid": "767d470b-deb1-472a-a39d-012ee2c216a3"
+    },
+    "resources/art/mob_bamboo_2.png": {
+      "time": 1795128500000,
+      "uuid": "11529b89-b05c-462e-847e-d52ec3fe0fb2"
+    },
+    "resources/art/mob_bamboo_3.png": {
+      "time": 1795128500000,
+      "uuid": "246f6a59-27b6-40b7-a27d-0de0a7e895aa"
+    },
+    "resources/art/mob_boss.png": {
+      "time": 1795127260000,
+      "uuid": "248dd292-938b-45cd-9747-cd08b5e911e6"
+    },
+    "resources/art/mob_boss_0.png": {
+      "time": 1795128504000,
+      "uuid": "d40e9344-1b17-4f1f-b65e-d501dc507693"
+    },
+    "resources/art/mob_boss_1.png": {
+      "time": 1795128504000,
+      "uuid": "6261f680-dfc6-4284-a5c6-ad434ea6a9f1"
+    },
+    "resources/art/mob_boss_2.png": {
+      "time": 1795128504000,
+      "uuid": "dca94026-e484-4ad0-8356-3c5c44f7f179"
+    },
+    "resources/art/mob_boss_3.png": {
+      "time": 1795128504000,
+      "uuid": "ea62d2bc-fcda-4527-9a3e-d6ea0825ae95"
+    },
+    "resources/art/mob_burrow_mole.png": {
+      "time": 1795127260000,
+      "uuid": "0e2378d7-b54f-4450-9069-979258ff0e1c"
+    },
+    "resources/art/mob_burrow_mole_0.png": {
+      "time": 1795128502000,
+      "uuid": "ef0e336e-9cbd-432c-9205-56f012997329"
+    },
+    "resources/art/mob_burrow_mole_1.png": {
+      "time": 1795128502000,
+      "uuid": "bd6f1e48-c19d-4666-9af6-d1c86e915019"
+    },
+    "resources/art/mob_burrow_mole_2.png": {
+      "time": 1795128504000,
+      "uuid": "609d0749-1e9f-4e1c-ae6b-2ec167321553"
+    },
+    "resources/art/mob_burrow_mole_3.png": {
+      "time": 1795128504000,
+      "uuid": "1816fdca-e31e-4131-b3a9-43fcc3d11bdf"
+    },
+    "resources/art/mob_golem.png": {
+      "time": 1795127260000,
+      "uuid": "1135f415-d8a6-4c31-8cca-cff11387bf2d"
+    },
+    "resources/art/mob_golem_0.png": {
+      "time": 1795128500000,
+      "uuid": "96a63f3a-9cd9-48cd-8224-cf7f6ca7e54f"
+    },
+    "resources/art/mob_golem_1.png": {
+      "time": 1795128500000,
+      "uuid": "0e48f0de-cebf-4687-98d1-e8329ae3ac98"
+    },
+    "resources/art/mob_golem_2.png": {
+      "time": 1795128500000,
+      "uuid": "e254a0e8-065a-45e6-8b9d-e6b7e11146aa"
+    },
+    "resources/art/mob_golem_3.png": {
+      "time": 1795128500000,
+      "uuid": "74a63937-0f25-4b4c-8bec-4881c8fd1da3"
+    },
+    "resources/art/mob_ink_fly.png": {
+      "time": 1795127260000,
+      "uuid": "3a1607e6-9f53-474b-93fb-a1ccde230c7e"
+    },
+    "resources/art/mob_ink_fly_0.png": {
+      "time": 1795128502000,
+      "uuid": "89212f58-ea6c-423d-be40-915a488578a4"
+    },
+    "resources/art/mob_ink_fly_1.png": {
+      "time": 1795128502000,
+      "uuid": "33e3fb45-c8e1-4d29-96b4-3376fc97a83f"
+    },
+    "resources/art/mob_ink_fly_2.png": {
+      "time": 1795128502000,
+      "uuid": "7dfedd34-6eec-480e-8d08-c90471b238d5"
+    },
+    "resources/art/mob_ink_fly_3.png": {
+      "time": 1795128502000,
+      "uuid": "76da85e9-5609-4b42-b77c-26ec59f9acf5"
+    },
+    "resources/art/mob_leap_fox.png": {
+      "time": 1795127260000,
+      "uuid": "5fd15161-3fc2-4d68-8c8d-f4f44f34a136"
+    },
+    "resources/art/mob_leap_fox_0.png": {
+      "time": 1795128502000,
+      "uuid": "9554b50c-db3c-4403-ab3b-e50c0fe9438a"
+    },
+    "resources/art/mob_leap_fox_1.png": {
+      "time": 1795128502000,
+      "uuid": "a202db21-2232-4d17-b02c-c3837a4cf144"
+    },
+    "resources/art/mob_leap_fox_2.png": {
+      "time": 1795128502000,
+      "uuid": "89f59de4-8993-4edf-8969-baebb1b0a983"
+    },
+    "resources/art/mob_leap_fox_3.png": {
+      "time": 1795128502000,
+      "uuid": "9137d3b1-67dd-4c06-8f14-e7a598450d7a"
+    },
+    "resources/art/npc_atang.png": {
+      "time": 1795126782000,
+      "uuid": "4f8cfdcf-17ad-4749-af55-3468835442a5"
+    },
+    "resources/art/npc_jianglao.png": {
+      "time": 1795126780000,
+      "uuid": "8db4749b-3924-44f7-bf20-cc6d606722c5"
+    },
+    "resources/art/npc_lubo.png": {
+      "time": 1795126780000,
+      "uuid": "d1dfefdf-3bec-453a-8557-600f02d4ed2a"
+    },
+    "resources/art/npc_xuanmo.png": {
+      "time": 1795126782000,
+      "uuid": "bea96072-4fd1-458e-aa81-c69a656f9166"
+    },
+    "resources/art/obs_boulder.png": {
+      "time": 1795126784000,
+      "uuid": "311a4a0b-8034-4139-9094-29a8857244aa"
+    },
+    "resources/art/obs_grass.png": {
+      "time": 1795126782000,
+      "uuid": "55308de5-64fc-4ea0-9b6e-9055434a6e6d"
+    },
+    "resources/art/obs_shrub.png": {
+      "time": 1795126784000,
+      "uuid": "325c2657-75cb-4127-9bad-1e2a35ad92c4"
+    },
+    "resources/art/pet_spirit_fox.png": {
+      "time": 1795132544000,
+      "uuid": "8fda8d0d-ef00-4717-9b84-3b29fcd84fbd"
+    },
+    "resources/art/plant_sky_bamboo_combo.png": {
+      "time": 1795116350000,
+      "uuid": "84c624aa-108d-480e-8565-6d98b7af1acc"
+    },
+    "resources/art/plant_thunder_potato.png": {
+      "time": 1795116350000,
+      "uuid": "b27f6079-cbc5-488d-bf89-61dd62be9ec7"
+    },
+    "resources/art/prop_bridge_front_rail.png": {
+      "time": 1795560546000,
+      "uuid": "b16ce1d8-e2fb-4140-b01f-1a7b587c462d"
+    },
+    "resources/art/prop_bridge_wood.png": {
+      "time": 1795560546000,
+      "uuid": "13ccedeb-870f-421e-b001-585213139d18"
+    },
+    "resources/art/prop_fishing_spot.png": {
+      "time": 1795135794000,
+      "uuid": "4e335997-9c0e-4b8d-81ea-b2e73961a6d4"
+    },
+    "resources/art/prop_old_dock.png": {
+      "time": 1795560544000,
+      "uuid": "f4d875b8-a977-4d00-9bb6-26acccd4a20a"
+    },
+    "resources/art/prop_sail_boat.png": {
+      "time": 1795560546000,
+      "uuid": "c551a2db-e2c7-480d-ba28-ea798e4813d3"
+    },
+    "resources/art/prop_shipping_crate.png": {
+      "time": 1795560544000,
+      "uuid": "88d39c31-7eb7-4fb7-ac0a-3954a030da01"
+    },
+    "resources/art/ui_btn_jade.png": {
+      "time": 1795116350000,
+      "uuid": "8447242c-0ba0-403f-a87b-5e866562e34e"
+    },
+    "resources/art/ui_dng_btn_atk.png": {
+      "time": 1795549532000,
+      "uuid": "fd8da505-6112-452f-97f8-20c6e4e9bcbc"
+    },
+    "resources/art/ui_dng_btn_dodge.png": {
+      "time": 1795549532000,
+      "uuid": "32c3f8fc-548a-4356-8672-81741e353d9e"
+    },
+    "resources/art/ui_dng_btn_rect.png": {
+      "time": 1795550734000,
+      "uuid": "16379fe4-01ad-4c59-ad16-b7326493b18b"
+    },
+    "resources/art/ui_dng_card_bg.png": {
+      "time": 1795550734000,
+      "uuid": "f672307f-a102-4dd9-b485-19b82f00556c"
+    },
+    "resources/catalogs/fish.json": {
+      "time": 1795053266000,
+      "uuid": "f13a42eb-27ef-47a7-a9c1-437491dcf1e1"
+    },
+    "resources/catalogs/plants.json": {
+      "time": 1795053266000,
+      "uuid": "4596aa79-1bad-492e-b777-15509821d9bb"
+    },
+    "resources/catalogs/weapons.json": {
+      "time": 1795053266000,
+      "uuid": "82636b72-267c-4840-a00d-ea1733525d48"
+    },
+    "scenes/launch.scene.meta": {
+      "time": 1795047776000
+    },
+    "resources/art/bg_dungeon_frost.jpg.meta": {
+      "time": 1795590415702.1387
+    },
+    "resources/art/bg_dungeon_magma.jpg.meta": {
+      "time": 1795590415702.2656
+    },
+    "resources/art/bg_dungeon_bamboo.jpg.meta": {
+      "time": 1795590415702.61
+    },
+    "resources/art/bg_dungeon_mist.jpg.meta": {
+      "time": 1795590415702.8184
+    },
+    "resources/art/bg_dungeon_rift.jpg.meta": {
+      "time": 1795590415703.5454
+    },
+    "resources/art/bg_dungeon_thunder.jpg.meta": {
+      "time": 1795590415704.42
+    },
+    "resources/art/bg_indoor_room.jpg.meta": {
+      "time": 1795590415704.9153
+    },
+    "resources/art/bg_island_ember.jpg.meta": {
+      "time": 1795590415705.2505
+    },
+    "resources/art/bg_island_frost.jpg.meta": {
+      "time": 1795590415705.4558
+    },
+    "resources/art/bg_island_mist.jpg.meta": {
+      "time": 1795590415705.9595
+    },
+    "resources/art/bg_title_cover.jpg.meta": {
+      "time": 1795590415710.1885
+    },
+    "resources/art/bld_kitchen_shed.png.meta": {
+      "time": 1795590415710.6362
+    },
+    "resources/art/bld_cottage.png.meta": {
+      "time": 1795590415710.8271
+    },
+    "resources/art/bld_dungeon_portal.png.meta": {
+      "time": 1795590415711.1233
+    },
+    "resources/art/bg_overworld_map.jpg.meta": {
+      "time": 1795590415711.449
+    },
+    "resources/art/bld_seal_arch.png.meta": {
+      "time": 1795590415712.5996
+    },
+    "resources/art/char_player.png.meta": {
+      "time": 1795590415712.8035
+    },
+    "resources/art/char_player_back.png.meta": {
+      "time": 1795590415713.264
+    },
+    "resources/art/char_player_front.png.meta": {
+      "time": 1795590415713.486
+    },
+    "resources/art/char_player_side.png.meta": {
+      "time": 1795590415713.5833
+    },
+    "resources/art/char_walk_back_0.png.meta": {
+      "time": 1795590415715.8386
+    },
+    "resources/art/char_walk_back_1.png.meta": {
+      "time": 1795590415716.4978
+    },
+    "resources/art/char_walk_front_0.png.meta": {
+      "time": 1795590415717.1877
+    },
+    "resources/art/char_walk_back_2.png.meta": {
+      "time": 1795590415717.475
+    },
+    "resources/art/char_walk_back_3.png.meta": {
+      "time": 1795590415717.573
+    },
+    "resources/art/char_walk_front_1.png.meta": {
+      "time": 1795590415720.4797
+    },
+    "resources/art/char_walk_front_2.png.meta": {
+      "time": 1795590415720.9258
+    },
+    "resources/art/char_walk_side_0.png.meta": {
+      "time": 1795590415721.2273
+    },
+    "resources/art/char_walk_side_1.png.meta": {
+      "time": 1795590415721.3179
+    },
+    "resources/art/char_walk_front_3.png.meta": {
+      "time": 1795590415721.5415
+    },
+    "resources/art/char_walk_side_2.png.meta": {
+      "time": 1795590415722.3003
+    },
+    "resources/art/char_walk_side_3.png.meta": {
+      "time": 1795590415723.7114
+    },
+    "resources/art/def_cloud_shoot.png.meta": {
+      "time": 1795590415726.025
+    },
+    "resources/art/def_iron_melon.png.meta": {
+      "time": 1795590415726.2913
+    },
+    "resources/art/crop_spring_greens.png.meta": {
+      "time": 1795590415726.3845
+    },
+    "resources/art/def_lotus_pad.png.meta": {
+      "time": 1795590415726.7776
+    },
+    "resources/art/def_flame_vine.png.meta": {
+      "time": 1795590415726.9397
+    },
+    "resources/art/def_rain_tea.png.meta": {
+      "time": 1795590415728.0935
+    },
+    "resources/art/dng_ancient_lantern.png.meta": {
+      "time": 1795590415728.3418
+    },
+    "resources/art/dng_chest_closed.png.meta": {
+      "time": 1795590415728.6587
+    },
+    "resources/art/def_sky_bamboo.png.meta": {
+      "time": 1795590415728.8276
+    },
+    "resources/art/dng_chest_open.png.meta": {
+      "time": 1795590415729.1885
+    },
+    "resources/art/dng_copper_pillar.png.meta": {
+      "time": 1795590415729.5647
+    },
+    "resources/art/dng_ice_wall.png.meta": {
+      "time": 1795590415730.009
+    },
+    "resources/art/dng_cracked_wall.png.meta": {
+      "time": 1795590415730.0696
+    },
+    "resources/art/dng_door.png.meta": {
+      "time": 1795590415730.2483
+    },
+    "resources/art/dng_pillar.png.meta": {
+      "time": 1795590415730.7705
+    },
+    "resources/art/dng_portal_glow.png.meta": {
+      "time": 1795590415731.2563
+    },
+    "resources/art/dng_powder_jar.png.meta": {
+      "time": 1795590415732.0496
+    },
+    "resources/art/dng_rift_vortex.png.meta": {
+      "time": 1795590415732.2107
+    },
+    "resources/art/dng_spike_trap.png.meta": {
+      "time": 1795590415732.4927
+    },
+    "resources/art/fish_brook_loach.png.meta": {
+      "time": 1795590415732.6724
+    },
+    "resources/art/fish_brook_trout.png.meta": {
+      "time": 1795590415733.5103
+    },
+    "resources/art/fish_estuary_perch.png.meta": {
+      "time": 1795590415733.7239
+    },
+    "resources/art/fish_estuary_dragon.png.meta": {
+      "time": 1795590415733.9236
+    },
+    "resources/art/fish_lotus_crucian.png.meta": {
+      "time": 1795590415734.1118
+    },
+    "resources/art/fish_lotus_koi.png.meta": {
+      "time": 1795590415734.3022
+    },
+    "resources/art/furn_aquarium_porcelain.png.meta": {
+      "time": 1795590415735.03
+    },
+    "resources/art/furn_bed_wood.png.meta": {
+      "time": 1795590415735.11
+    },
+    "resources/art/furn_bed_wood_side.png.meta": {
+      "time": 1795590415735.6196
+    },
+    "resources/art/furn_lantern_rabbit_side.png.meta": {
+      "time": 1795590415735.8562
+    },
+    "resources/art/furn_lantern_rabbit.png.meta": {
+      "time": 1795590415735.9653
+    },
+    "resources/art/furn_screen_ink.png.meta": {
+      "time": 1795590415736.6187
+    },
+    "resources/art/furn_screen_ink_side.png.meta": {
+      "time": 1795590415736.7961
+    },
+    "resources/art/furn_tea_table_side.png.meta": {
+      "time": 1795590415737.8374
+    },
+    "resources/art/island_ember_reef.png.meta": {
+      "time": 1795590415738.0117
+    },
+    "resources/art/furn_stove_clay.png.meta": {
+      "time": 1795590415738.183
+    },
+    "resources/art/furn_tea_table.png.meta": {
+      "time": 1795590415738.3628
+    },
+    "resources/art/island_mist_marsh.png.meta": {
+      "time": 1795590415739.9358
+    },
+    "resources/art/mob_bamboo_0.png.meta": {
+      "time": 1795590415740.17
+    },
+    "resources/art/island_frost_isle.png.meta": {
+      "time": 1795590415740.3208
+    },
+    "resources/art/mob_bamboo.png.meta": {
+      "time": 1795590415740.4568
+    },
+    "resources/art/mob_bamboo_1.png.meta": {
+      "time": 1795590415740.6353
+    },
+    "resources/art/mob_bamboo_2.png.meta": {
+      "time": 1795590415741.5854
+    },
+    "resources/art/mob_bamboo_3.png.meta": {
+      "time": 1795590415741.8242
+    },
+    "resources/art/mob_boss.png.meta": {
+      "time": 1795590415742.1504
+    },
+    "resources/art/mob_boss_1.png.meta": {
+      "time": 1795590415742.3323
+    },
+    "resources/art/mob_boss_0.png.meta": {
+      "time": 1795590415742.514
+    },
+    "resources/art/mob_boss_3.png.meta": {
+      "time": 1795590415743.3418
+    },
+    "resources/art/mob_boss_2.png.meta": {
+      "time": 1795590415743.5583
+    },
+    "resources/art/mob_burrow_mole.png.meta": {
+      "time": 1795590415743.7332
+    },
+    "resources/art/mob_burrow_mole_0.png.meta": {
+      "time": 1795590415744.3528
+    },
+    "resources/art/mob_burrow_mole_1.png.meta": {
+      "time": 1795590415744.5002
+    },
+    "resources/art/mob_burrow_mole_2.png.meta": {
+      "time": 1795590415744.925
+    },
+    "resources/art/mob_burrow_mole_3.png.meta": {
+      "time": 1795590415745.2224
+    },
+    "resources/art/mob_golem.png.meta": {
+      "time": 1795590415745.41
+    },
+    "resources/art/mob_golem_1.png.meta": {
+      "time": 1795590415746.0037
+    },
+    "resources/art/mob_golem_0.png.meta": {
+      "time": 1795590415746.2405
+    },
+    "resources/art/mob_golem_2.png.meta": {
+      "time": 1795590415746.5186
+    },
+    "resources/art/mob_golem_3.png.meta": {
+      "time": 1795590415746.7092
+    },
+    "resources/art/mob_ink_fly.png.meta": {
+      "time": 1795590415747.2334
+    },
+    "resources/art/mob_ink_fly_1.png.meta": {
+      "time": 1795590415747.993
+    },
+    "resources/art/mob_ink_fly_0.png.meta": {
+      "time": 1795590415748.1204
+    },
+    "resources/art/mob_ink_fly_2.png.meta": {
+      "time": 1795590415750.0654
+    },
+    "resources/art/mob_ink_fly_3.png.meta": {
+      "time": 1795590415750.2122
+    },
+    "resources/art/mob_leap_fox.png.meta": {
+      "time": 1795590415750.4873
+    },
+    "resources/art/mob_leap_fox_0.png.meta": {
+      "time": 1795590415750.7278
+    },
+    "resources/art/mob_leap_fox_1.png.meta": {
+      "time": 1795590415750.9924
+    },
+    "resources/art/mob_leap_fox_2.png.meta": {
+      "time": 1795590415751.7756
+    },
+    "resources/art/npc_atang.png.meta": {
+      "time": 1795590415751.987
+    },
+    "resources/art/mob_leap_fox_3.png.meta": {
+      "time": 1795590415752.2185
+    },
+    "resources/art/npc_lubo.png.meta": {
+      "time": 1795590415752.7031
+    },
+    "resources/art/npc_jianglao.png.meta": {
+      "time": 1795590415752.8262
+    },
+    "resources/art/npc_xuanmo.png.meta": {
+      "time": 1795590415753.4717
+    },
+    "resources/art/obs_boulder.png.meta": {
+      "time": 1795590415753.5742
+    },
+    "resources/art/obs_grass.png.meta": {
+      "time": 1795590415753.9412
+    },
+    "resources/art/pet_spirit_fox.png.meta": {
+      "time": 1795590415754.4456
+    },
+    "resources/art/obs_shrub.png.meta": {
+      "time": 1795590415754.7205
+    },
+    "resources/art/plant_thunder_potato.png.meta": {
+      "time": 1795590415755.4712
+    },
+    "resources/art/plant_sky_bamboo_combo.png.meta": {
+      "time": 1795590415755.9434
+    },
+    "resources/art/prop_bridge_front_rail.png.meta": {
+      "time": 1795590415756.1296
+    },
+    "resources/art/prop_bridge_wood.png.meta": {
+      "time": 1795590415757.3257
+    },
+    "resources/art/prop_fishing_spot.png.meta": {
+      "time": 1795590415757.478
+    },
+    "resources/art/prop_old_dock.png.meta": {
+      "time": 1795590415757.81
+    },
+    "resources/art/prop_sail_boat.png.meta": {
+      "time": 1795590415757.9636
+    },
+    "resources/art/prop_shipping_crate.png.meta": {
+      "time": 1795590415758.1414
+    },
+    "resources/art/ui_btn_jade.png.meta": {
+      "time": 1795590415759.8716
+    },
+    "resources/art/ui_dng_btn_atk.png.meta": {
+      "time": 1795590415762.8909
+    },
+    "resources/art/ui_dng_btn_dodge.png.meta": {
+      "time": 1795590415763.5264
+    },
+    "resources/art/ui_dng_btn_rect.png.meta": {
+      "time": 1795590415764.2305
+    },
+    "resources/art/ui_dng_card_bg.png.meta": {
+      "time": 1795590415768.3909
+    },
+    "resources/catalogs/fish.json.meta": {
+      "time": 1795590415768.8096
+    },
+    "resources/catalogs/plants.json.meta": {
+      "time": 1795590415768.8965
+    },
+    "resources/catalogs/weapons.json.meta": {
+      "time": 1795590415769.0762
+    }
+  },
+  "missing": {}
+}

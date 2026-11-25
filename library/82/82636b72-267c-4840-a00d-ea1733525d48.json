@@ -1,0 +1,243 @@
+{
+  "__type__": "cc.JsonAsset",
+  "_name": "weapons",
+  "_objFlags": 0,
+  "__editorExtras__": {},
+  "_native": "",
+  "json": {
+    "$schema_version": "2.0.0",
+    "weapon_classes": [
+      "melee",
+      "ranged",
+      "laser",
+      "plant_art"
+    ],
+    "weapons": [
+      {
+        "id": "bamboo_sword",
+        "name": "青竹剑",
+        "class": "melee",
+        "rarity": "common",
+        "damage": 16,
+        "attackIntervalSec": 0.42,
+        "manaCost": 0,
+        "rangeTiles": 1.9,
+        "arcDeg": 120,
+        "canDestroyBullets": true,
+        "canReflectBullets": false,
+        "critChance": 0.1,
+        "unlockType": "starter",
+        "craftRecipe": [],
+        "recommendedEnchants": [
+          "flame_pepper",
+          "thunder_grass"
+        ],
+        "description": "主角初始佩剑，挥砍轻快顺手，精准出剑可劈碎迎面飞来的异界弹幕。"
+      },
+      {
+        "id": "soul_fan",
+        "name": "镇魂折扇",
+        "class": "melee",
+        "rarity": "rare",
+        "damage": 22,
+        "attackIntervalSec": 0.55,
+        "manaCost": 2,
+        "rangeTiles": 2.4,
+        "arcDeg": 145,
+        "canDestroyBullets": true,
+        "canReflectBullets": true,
+        "critChance": 0.15,
+        "unlockType": "blueprint",
+        "craftRecipe": [
+          {
+            "itemId": "xuan_iron",
+            "count": 4
+          },
+          {
+            "itemId": "sky_bamboo",
+            "count": 3
+          }
+        ],
+        "recommendedEnchants": [
+          "frost_melon",
+          "flame_pepper"
+        ],
+        "description": "绘有水墨山河的奇门折扇，扇面卷起清风不仅范围极广，还能将敌方弹幕弹反回去。"
+      },
+      {
+        "id": "talisman_pistol",
+        "name": "连发符箓枪",
+        "class": "ranged",
+        "rarity": "common",
+        "damage": 11,
+        "attackIntervalSec": 0.24,
+        "manaCost": 1,
+        "rangeTiles": 7.5,
+        "projectileSpeed": 15,
+        "projectilesPerShot": 1,
+        "spreadDeg": 4,
+        "critChance": 0.12,
+        "unlockType": "starter",
+        "craftRecipe": [],
+        "recommendedEnchants": [
+          "frost_melon",
+          "thunder_potato"
+        ],
+        "description": "机关匣内装填朱砂纸符，射速稳定、自动瞄准手感极佳，是风筝走位的主力副手。"
+      },
+      {
+        "id": "zhuge_crossbow",
+        "name": "机关诸葛弩",
+        "class": "ranged",
+        "rarity": "uncommon",
+        "damage": 9,
+        "attackIntervalSec": 0.52,
+        "manaCost": 2,
+        "rangeTiles": 6.8,
+        "projectileSpeed": 16.5,
+        "projectilesPerShot": 3,
+        "spreadDeg": 22,
+        "critChance": 0.14,
+        "unlockType": "blueprint",
+        "craftRecipe": [
+          {
+            "itemId": "xuan_iron",
+            "count": 3
+          },
+          {
+            "itemId": "cloud_bamboo_shoot",
+            "count": 4
+          }
+        ],
+        "recommendedEnchants": [
+          "frost_melon",
+          "flame_pepper"
+        ],
+        "description": "木石精工打造的连发扇形弩机，一次齐射三支竹矢，贴脸爆发与中距离清怪皆宜。"
+      },
+      {
+        "id": "bagua_mirror",
+        "name": "八卦聚光镜",
+        "class": "laser",
+        "rarity": "rare",
+        "damage": 38,
+        "attackIntervalSec": 0.85,
+        "manaCost": 6,
+        "rangeTiles": 10,
+        "pierce": true,
+        "wallBounceCount": 1,
+        "beamWidthPx": 26,
+        "critChance": 0.18,
+        "unlockType": "blueprint",
+        "craftRecipe": [
+          {
+            "itemId": "xuan_iron",
+            "count": 6
+          },
+          {
+            "itemId": "seal_shard",
+            "count": 2
+          }
+        ],
+        "recommendedEnchants": [
+          "spirit_tea",
+          "thunder_grass"
+        ],
+        "description": "八角铜镜汇聚青金灵能，瞬间射出穿透全屏的灼目激光，且遇石墙可折射一次。"
+      },
+      {
+        "id": "thunder_staff",
+        "name": "雷纹灵杖",
+        "class": "laser",
+        "rarity": "rare",
+        "damage": 24,
+        "attackIntervalSec": 0.62,
+        "manaCost": 5,
+        "rangeTiles": 7,
+        "chainTargets": 3,
+        "chainRangeTiles": 3,
+        "critChance": 0.15,
+        "unlockType": "blueprint",
+        "craftRecipe": [
+          {
+            "itemId": "xuan_iron",
+            "count": 5
+          },
+          {
+            "itemId": "thunder_grass",
+            "count": 3
+          }
+        ],
+        "recommendedEnchants": [
+          "spirit_tea",
+          "frost_melon"
+        ],
+        "description": "以惊蛰引雷草盘绕法杖顶端，击中首个目标后自动向周围弹跳三道链式雷电。"
+      },
+      {
+        "id": "thorn_whip",
+        "name": "荆棘藤鞭",
+        "class": "plant_art",
+        "rarity": "uncommon",
+        "damage": 20,
+        "attackIntervalSec": 0.58,
+        "manaCost": 1,
+        "rangeTiles": 3.6,
+        "pierce": true,
+        "rootChance": 0.25,
+        "rootDurationSec": 1.2,
+        "critChance": 0.12,
+        "unlockType": "blueprint",
+        "craftRecipe": [
+          {
+            "itemId": "sky_bamboo",
+            "count": 3
+          },
+          {
+            "itemId": "flame_pepper",
+            "count": 2
+          }
+        ],
+        "recommendedEnchants": [
+          "flame_pepper",
+          "frost_melon"
+        ],
+        "description": "中距离穿透抽击的灵藤长鞭，命中时有几率短暂缠绕定身怪物，为走位腾出空间。"
+      },
+      {
+        "id": "gourd_launcher",
+        "name": "丹火灵葫芦",
+        "class": "plant_art",
+        "rarity": "rare",
+        "damage": 34,
+        "attackIntervalSec": 0.9,
+        "manaCost": 5,
+        "rangeTiles": 6.5,
+        "lobArc": true,
+        "aoeRadiusTiles": 2,
+        "leaveBurnZoneSec": 3,
+        "critChance": 0.15,
+        "unlockType": "blueprint",
+        "craftRecipe": [
+          {
+            "itemId": "xuan_iron",
+            "count": 4
+          },
+          {
+            "itemId": "thunder_potato",
+            "count": 4
+          },
+          {
+            "itemId": "flame_pepper",
+            "count": 3
+          }
+        ],
+        "recommendedEnchants": [
+          "thunder_potato",
+          "spirit_tea"
+        ],
+        "description": "将雷火薯与炎椒炼入朱红宝葫芦，抛出弧线丹火弹，落地爆裂并留下持续灼烧火环。"
+      }
+    ]
+  }
+}

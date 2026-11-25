@@ -1,0 +1,1650 @@
+System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2", "__unresolved_3", "__unresolved_4", "__unresolved_5", "__unresolved_6", "__unresolved_7", "__unresolved_8", "__unresolved_9", "__unresolved_10", "__unresolved_11", "__unresolved_12", "__unresolved_13"], function (_export, _context) {
+  "use strict";
+
+  var _reporterNs, _cclegacy, __checkObsolete__, __checkObsoleteInNamespace__, _decorator, Color, Component, Graphics, input, Input, KeyCode, Label, LabelOutline, Layers, Node, Sprite, UITransform, Vec2, DataManager, EventBus, GameApp, FarmSystem, FishingOverlay, IndoorOverlay, NpcDialogOverlay, DungeonOverlay, DefenseOverlay, SettingsOverlay, OverworldHUD, VoyageOverlay, ArtLoader, _dec, _class, _class2, _crd, ccclass, MAP_W, MAP_H, WORLD_HALF_W, WORLD_HALF_H, VIEW_HALF_W, VIEW_HALF_H, PLAYER_SPEED, INTERACT_RADIUS, RIVER_TABLE, BAY_SHORE, STARTER_PLOT_COORDS, OBSTACLES, FISH_ID_TO_ART, OverworldController;
+
+  function getRiverBounds(py) {
+    if (py >= RIVER_TABLE[0][0]) return [RIVER_TABLE[0][1], RIVER_TABLE[0][2]];
+    var last = RIVER_TABLE[RIVER_TABLE.length - 1];
+    if (py <= last[0]) return [last[1], last[2]];
+
+    for (var i = 0; i < RIVER_TABLE.length - 1; i++) {
+      var [y0, l0, r0] = RIVER_TABLE[i];
+      var [y1, l1, r1] = RIVER_TABLE[i + 1];
+
+      if (py <= y0 && py >= y1) {
+        var t = (y0 - py) / (y0 - y1);
+        return [l0 + (l1 - l0) * t, r0 + (r1 - r0) * t];
+      }
+    }
+
+    return [-450, -280];
+  }
+
+  function getBayMinY(px) {
+    if (px <= BAY_SHORE[0][0]) return BAY_SHORE[0][1];
+    var last = BAY_SHORE[BAY_SHORE.length - 1];
+    if (px >= last[0]) return last[1];
+
+    for (var i = 0; i < BAY_SHORE.length - 1; i++) {
+      var [x0, y0] = BAY_SHORE[i];
+      var [x1, y1] = BAY_SHORE[i + 1];
+
+      if (px >= x0 && px <= x1) {
+        var t = (px - x0) / (x1 - x0);
+        return y0 + (y1 - y0) * t;
+      }
+    }
+
+    return -620;
+  }
+  /** 东侧手绘木栅栏内 4×3 主田左半区（开局直接可种的 6 块农田） */
+
+
+  function _reportPossibleCrUseOfRiverSegmentId(extras) {
+    _reporterNs.report("RiverSegmentId", "../../core/GameTypes", _context.meta, extras);
+  }
+
+  function _reportPossibleCrUseOfDataManager(extras) {
+    _reporterNs.report("DataManager", "../../core/DataManager", _context.meta, extras);
+  }
+
+  function _reportPossibleCrUseOfEventBus(extras) {
+    _reporterNs.report("EventBus", "../../core/EventBus", _context.meta, extras);
+  }
+
+  function _reportPossibleCrUseOfGameApp(extras) {
+    _reporterNs.report("GameApp", "../../app/GameApp", _context.meta, extras);
+  }
+
+  function _reportPossibleCrUseOfFarmSystem(extras) {
+    _reporterNs.report("FarmSystem", "../farm/FarmSystem", _context.meta, extras);
+  }
+
+  function _reportPossibleCrUseOfFishingOverlay(extras) {
+    _reporterNs.report("FishingOverlay", "../../ui/FishingOverlay", _context.meta, extras);
+  }
+
+  function _reportPossibleCrUseOfIndoorOverlay(extras) {
+    _reporterNs.report("IndoorOverlay", "../../ui/IndoorOverlay", _context.meta, extras);
+  }
+
+  function _reportPossibleCrUseOfNpcDialogOverlay(extras) {
+    _reporterNs.report("NpcDialogOverlay", "../../ui/NpcDialogOverlay", _context.meta, extras);
+  }
+
+  function _reportPossibleCrUseOfNpcId(extras) {
+    _reporterNs.report("NpcId", "../../ui/NpcDialogOverlay", _context.meta, extras);
+  }
+
+  function _reportPossibleCrUseOfDungeonOverlay(extras) {
+    _reporterNs.report("DungeonOverlay", "../../ui/DungeonOverlay", _context.meta, extras);
+  }
+
+  function _reportPossibleCrUseOfDefenseOverlay(extras) {
+    _reporterNs.report("DefenseOverlay", "../../ui/DefenseOverlay", _context.meta, extras);
+  }
+
+  function _reportPossibleCrUseOfSettingsOverlay(extras) {
+    _reporterNs.report("SettingsOverlay", "../../ui/SettingsOverlay", _context.meta, extras);
+  }
+
+  function _reportPossibleCrUseOfOverworldHUD(extras) {
+    _reporterNs.report("OverworldHUD", "../../ui/OverworldHUD", _context.meta, extras);
+  }
+
+  function _reportPossibleCrUseOfVoyageOverlay(extras) {
+    _reporterNs.report("VoyageOverlay", "../../ui/VoyageOverlay", _context.meta, extras);
+  }
+
+  function _reportPossibleCrUseOfArtLoader(extras) {
+    _reporterNs.report("ArtLoader", "../../core/ArtLoader", _context.meta, extras);
+  }
+
+  return {
+    setters: [function (_unresolved_) {
+      _reporterNs = _unresolved_;
+    }, function (_cc) {
+      _cclegacy = _cc.cclegacy;
+      __checkObsolete__ = _cc.__checkObsolete__;
+      __checkObsoleteInNamespace__ = _cc.__checkObsoleteInNamespace__;
+      _decorator = _cc._decorator;
+      Color = _cc.Color;
+      Component = _cc.Component;
+      Graphics = _cc.Graphics;
+      input = _cc.input;
+      Input = _cc.Input;
+      KeyCode = _cc.KeyCode;
+      Label = _cc.Label;
+      LabelOutline = _cc.LabelOutline;
+      Layers = _cc.Layers;
+      Node = _cc.Node;
+      Sprite = _cc.Sprite;
+      UITransform = _cc.UITransform;
+      Vec2 = _cc.Vec2;
+    }, function (_unresolved_2) {
+      DataManager = _unresolved_2.DataManager;
+    }, function (_unresolved_3) {
+      EventBus = _unresolved_3.EventBus;
+    }, function (_unresolved_4) {
+      GameApp = _unresolved_4.GameApp;
+    }, function (_unresolved_5) {
+      FarmSystem = _unresolved_5.FarmSystem;
+    }, function (_unresolved_6) {
+      FishingOverlay = _unresolved_6.FishingOverlay;
+    }, function (_unresolved_7) {
+      IndoorOverlay = _unresolved_7.IndoorOverlay;
+    }, function (_unresolved_8) {
+      NpcDialogOverlay = _unresolved_8.NpcDialogOverlay;
+    }, function (_unresolved_9) {
+      DungeonOverlay = _unresolved_9.DungeonOverlay;
+    }, function (_unresolved_10) {
+      DefenseOverlay = _unresolved_10.DefenseOverlay;
+    }, function (_unresolved_11) {
+      SettingsOverlay = _unresolved_11.SettingsOverlay;
+    }, function (_unresolved_12) {
+      OverworldHUD = _unresolved_12.OverworldHUD;
+    }, function (_unresolved_13) {
+      VoyageOverlay = _unresolved_13.VoyageOverlay;
+    }, function (_unresolved_14) {
+      ArtLoader = _unresolved_14.ArtLoader;
+    }],
+    execute: function () {
+      _crd = true;
+
+      _cclegacy._RF.push({}, "7a41cIQjjFPkpsULGqR0OUS", "OverworldController", undefined);
+      /**
+       * 《异界小农场 2.0》V1.3：2880×1620 阔境手绘大地图（动态流水、真鱼荷塘、零穿模碰撞、无圆圈干扰）
+       * - 地图面积翻倍至 2880×1620，中庭四门、北境石坛、东侧大农田、东北灵泉荷塘、西岸南北双开荒旷野与南岸海湾全区疏通，开荒区不挡主路。
+       * - 严格像素级水体/栅栏/桥面碰撞并通过全图可达性验证，杜绝穿栅栏、下河与桥头卡死。
+       * - 河流配备多层北向南动态流水波纹与水光，东北荷塘采用真实手绘鱼类贴图游动，移除脚下橙色选中圆圈。
+       */
+
+
+      __checkObsolete__(['_decorator', 'Color', 'Component', 'EventKeyboard', 'EventTouch', 'Graphics', 'input', 'Input', 'KeyCode', 'Label', 'LabelOutline', 'Layers', 'Node', 'Sprite', 'SpriteFrame', 'UITransform', 'Vec2']);
+
+      ({
+        ccclass
+      } = _decorator);
+      MAP_W = 2880;
+      MAP_H = 1620;
+      WORLD_HALF_W = MAP_W / 2; // 1440
+
+      WORLD_HALF_H = MAP_H / 2; // 810
+
+      VIEW_HALF_W = 640;
+      VIEW_HALF_H = 360;
+      PLAYER_SPEED = 205;
+      INTERACT_RADIUS = 104;
+      /** 像素级实测采样的河道左右岸边界表（每 60px 一档，线性插值） */
+
+      RIVER_TABLE = [[780, -430, -238], [720, -460, -268], [660, -466, -274], [600, -460, -256], [540, -382, -220], [480, -370, -214], [420, -352, -160], [360, -358, -172], [300, -382, -184], [240, -424, -244], [180, -466, -268], [120, -496, -328], [60, -526, -328], [0, -470, -310], [-60, -470, -310], [-120, -502, -292], [-180, -466, -298], [-240, -394, -196], [-300, -394, -184], [-360, -388, -190], [-420, -412, -214], [-480, -442, -244], [-540, -496, -274], [-600, -526, -316], [-660, -610, -328], [-720, -658, -64], [-780, -718, -64]];
+      /** 南岸海湾水岸线（wx → 可站立最低 py） */
+
+      BAY_SHORE = [[-1440, -760], [-1000, -760], [-800, -760], [-700, -730], [-600, -630], [-500, -540], [-200, -620], [-100, -610], [0, -595], [100, -580], [200, -595], [300, -605], [400, -605], [500, -615], [600, -595], [700, -615], [800, -635], [900, -670], [1000, -700], [1200, -700], [1440, -730]];
+      STARTER_PLOT_COORDS = [{
+        x: 880,
+        y: 90
+      }, {
+        x: 1005,
+        y: 90
+      }, {
+        x: 880,
+        y: -55
+      }, {
+        x: 1005,
+        y: -55
+      }, {
+        x: 880,
+        y: -200
+      }, {
+        x: 1005,
+        y: -200
+      }];
+      /** 剩余 24 块分阶段解锁农田（东侧轻草 6 块 + 西岸南空地一阶 9 块 + 西岸北空地二阶 9 块 = 全岛 30 块，完全不挡主路） */
+
+      OBSTACLES = [// 东侧 4×3 右半区：6 块薄草荒地
+      {
+        id: 'obs_east_grass_0',
+        x: 1130,
+        y: 90,
+        tier: 1,
+        style: 'grass',
+        name: '东田杂草',
+        rewardItem: 'wood',
+        rewardCount: 2
+      }, {
+        id: 'obs_east_grass_1',
+        x: 1255,
+        y: 90,
+        tier: 1,
+        style: 'grass',
+        name: '东田杂草',
+        rewardItem: 'wood',
+        rewardCount: 2
+      }, {
+        id: 'obs_east_grass_2',
+        x: 1130,
+        y: -55,
+        tier: 1,
+        style: 'grass',
+        name: '东田杂草',
+        rewardItem: 'wood',
+        rewardCount: 2
+      }, {
+        id: 'obs_east_grass_3',
+        x: 1255,
+        y: -55,
+        tier: 1,
+        style: 'grass',
+        name: '东田杂草',
+        rewardItem: 'wood',
+        rewardCount: 2
+      }, {
+        id: 'obs_east_grass_4',
+        x: 1130,
+        y: -200,
+        tier: 1,
+        style: 'grass',
+        name: '东田杂草',
+        rewardItem: 'wood',
+        rewardCount: 2
+      }, {
+        id: 'obs_east_grass_5',
+        x: 1255,
+        y: -200,
+        tier: 1,
+        style: 'grass',
+        name: '东田杂草',
+        rewardItem: 'wood',
+        rewardCount: 2
+      }, // 西岸南空地 3×3 梯田（一阶灌木碎石，9 块，位于土路西侧空地不挡路）
+      {
+        id: 'obs_west_t1_0',
+        x: -1180,
+        y: -260,
+        tier: 1,
+        style: 'shrub',
+        name: '荒草灌木',
+        rewardItem: 'wood',
+        rewardCount: 4
+      }, {
+        id: 'obs_west_t1_1',
+        x: -1065,
+        y: -260,
+        tier: 1,
+        style: 'shrub',
+        name: '苔藓碎石',
+        rewardItem: 'stone',
+        rewardCount: 4
+      }, {
+        id: 'obs_west_t1_2',
+        x: -950,
+        y: -260,
+        tier: 1,
+        style: 'shrub',
+        name: '枯木灌丛',
+        rewardItem: 'wood',
+        rewardCount: 4
+      }, {
+        id: 'obs_west_t1_3',
+        x: -1180,
+        y: -365,
+        tier: 1,
+        style: 'shrub',
+        name: '苔藓碎石',
+        rewardItem: 'stone',
+        rewardCount: 4
+      }, {
+        id: 'obs_west_t1_4',
+        x: -1065,
+        y: -365,
+        tier: 1,
+        style: 'shrub',
+        name: '荒草灌木',
+        rewardItem: 'wood',
+        rewardCount: 5
+      }, {
+        id: 'obs_west_t1_5',
+        x: -950,
+        y: -365,
+        tier: 1,
+        style: 'shrub',
+        name: '苔藓碎石',
+        rewardItem: 'stone',
+        rewardCount: 4
+      }, {
+        id: 'obs_west_t1_6',
+        x: -1180,
+        y: -470,
+        tier: 1,
+        style: 'shrub',
+        name: '枯木灌丛',
+        rewardItem: 'wood',
+        rewardCount: 5
+      }, {
+        id: 'obs_west_t1_7',
+        x: -1065,
+        y: -470,
+        tier: 1,
+        style: 'shrub',
+        name: '荒草灌木',
+        rewardItem: 'wood',
+        rewardCount: 4
+      }, {
+        id: 'obs_west_t1_8',
+        x: -950,
+        y: -470,
+        tier: 1,
+        style: 'shrub',
+        name: '苔藓碎石',
+        rewardItem: 'stone',
+        rewardCount: 5
+      }, // 西岸北空地 3×3 梯田（二阶深林古岩，9 块，位于古树空地不挡路）
+      {
+        id: 'obs_west_t2_0',
+        x: -1180,
+        y: 530,
+        tier: 2,
+        style: 'boulder',
+        name: '二阶古岩',
+        rewardItem: 'stone',
+        rewardCount: 7
+      }, {
+        id: 'obs_west_t2_1',
+        x: -1065,
+        y: 530,
+        tier: 2,
+        style: 'boulder',
+        name: '二阶铁木',
+        rewardItem: 'wood',
+        rewardCount: 7
+      }, {
+        id: 'obs_west_t2_2',
+        x: -950,
+        y: 530,
+        tier: 2,
+        style: 'boulder',
+        name: '二阶古岩',
+        rewardItem: 'stone',
+        rewardCount: 7
+      }, {
+        id: 'obs_west_t2_3',
+        x: -1180,
+        y: 425,
+        tier: 2,
+        style: 'boulder',
+        name: '二阶铁木',
+        rewardItem: 'wood',
+        rewardCount: 8
+      }, {
+        id: 'obs_west_t2_4',
+        x: -1065,
+        y: 425,
+        tier: 2,
+        style: 'boulder',
+        name: '二阶古岩',
+        rewardItem: 'stone',
+        rewardCount: 8
+      }, {
+        id: 'obs_west_t2_5',
+        x: -950,
+        y: 425,
+        tier: 2,
+        style: 'boulder',
+        name: '二阶铁木',
+        rewardItem: 'wood',
+        rewardCount: 7
+      }, {
+        id: 'obs_west_t2_6',
+        x: -1180,
+        y: 320,
+        tier: 2,
+        style: 'boulder',
+        name: '二阶古岩',
+        rewardItem: 'stone',
+        rewardCount: 8
+      }, {
+        id: 'obs_west_t2_7',
+        x: -1065,
+        y: 320,
+        tier: 2,
+        style: 'boulder',
+        name: '二阶铁木',
+        rewardItem: 'wood',
+        rewardCount: 8
+      }, {
+        id: 'obs_west_t2_8',
+        x: -950,
+        y: 320,
+        tier: 2,
+        style: 'boulder',
+        name: '二阶古岩',
+        rewardItem: 'stone',
+        rewardCount: 8
+      }];
+      FISH_ID_TO_ART = {
+        brook_loach: 'fish_brook_loach',
+        brook_trout: 'fish_brook_trout',
+        lotus_crucian: 'fish_lotus_crucian',
+        lotus_koi: 'fish_lotus_koi',
+        estuary_perch: 'fish_estuary_perch',
+        estuary_dragon: 'fish_estuary_dragon'
+      };
+
+      _export("OverworldController", OverworldController = (_dec = ccclass('OverworldController'), _dec(_class = (_class2 = class OverworldController extends Component {
+        constructor() {
+          super(...arguments);
+          this._worldRoot = void 0;
+          this._waterFxGfx = void 0;
+          this._pondFishLayer = void 0;
+          this._pondFishViews = [];
+          this._pondFishSig = '';
+          this._plotsLayer = void 0;
+          this._obstaclesLayer = void 0;
+          this._playerNode = void 0;
+          this._playerBody = void 0;
+          this._bridgeFrontRail = void 0;
+          this._petNode = void 0;
+          this._petPos = new Vec2(180, -90);
+          this._dockOldNode = void 0;
+          this._dockSailNode = void 0;
+          this._joyBase = void 0;
+          this._joyKnob = void 0;
+          this._playerPos = new Vec2(235, -70);
+          this._keys = new Set();
+          this._joyActive = false;
+          this._joyOrigin = new Vec2();
+          this._joyDir = new Vec2();
+          this._walkPhase = 0;
+          this._facingX = 1;
+          this._facingDir = 'front';
+          this._walkFrames = {
+            front: [null, null, null, null],
+            side: [null, null, null, null],
+            back: [null, null, null, null]
+          };
+          this._idleSprites = {};
+          this._animFrameIdx = 0;
+          this._animTimer = 0;
+          this._dustTimer = 0;
+          this._dusts = [];
+          this._smokePuffs = [];
+          this._smokeTimer = 0;
+          this._ambientGfx = void 0;
+          this._ambientTime = 0;
+          this._plotNodes = new Map();
+          this._obstacleNodes = new Map();
+          this._nearestTarget = null;
+        }
+
+        static get inst() {
+          return this._inst;
+        }
+
+        get nearestTarget() {
+          return this._nearestTarget;
+        }
+
+        onLoad() {
+          OverworldController._inst = this;
+
+          this._buildWorldScene();
+
+          this._buildTouchJoystickLayer();
+
+          input.on(Input.EventType.KEY_DOWN, this._onKeyDown, this);
+          input.on(Input.EventType.KEY_UP, this._onKeyUp, this);
+          (_crd && EventBus === void 0 ? (_reportPossibleCrUseOfEventBus({
+            error: Error()
+          }), EventBus) : EventBus).inst.on('dayAdvanced', this.refreshWorldObjects, this);
+          (_crd && EventBus === void 0 ? (_reportPossibleCrUseOfEventBus({
+            error: Error()
+          }), EventBus) : EventBus).inst.on('saveCompleted', this.refreshWorldObjects, this);
+        }
+
+        start() {
+          this.schedule(this._waitReady, 0.1);
+        }
+
+        onDestroy() {
+          if (OverworldController._inst === this) OverworldController._inst = null;
+          this.unschedule(this._waitReady);
+          input.off(Input.EventType.KEY_DOWN, this._onKeyDown, this);
+          input.off(Input.EventType.KEY_UP, this._onKeyUp, this);
+          (_crd && EventBus === void 0 ? (_reportPossibleCrUseOfEventBus({
+            error: Error()
+          }), EventBus) : EventBus).inst.offTarget(this);
+        }
+
+        _waitReady() {
+          var _inst;
+
+          if ((_inst = (_crd && GameApp === void 0 ? (_reportPossibleCrUseOfGameApp({
+            error: Error()
+          }), GameApp) : GameApp).inst) != null && _inst.ready) {
+            (_crd && FarmSystem === void 0 ? (_reportPossibleCrUseOfFarmSystem({
+              error: Error()
+            }), FarmSystem) : FarmSystem).inst.init();
+            this.refreshWorldObjects();
+            this.unschedule(this._waitReady);
+          }
+        }
+
+        _uiNode(name, parent) {
+          var n = new Node(name);
+          n.layer = Layers.Enum.UI_2D;
+          n.parent = parent;
+          return n;
+        }
+
+        _isModalOpen() {
+          var _inst2, _inst3, _inst4, _inst5, _inst6, _inst7, _inst8;
+
+          return !!((_inst2 = (_crd && FishingOverlay === void 0 ? (_reportPossibleCrUseOfFishingOverlay({
+            error: Error()
+          }), FishingOverlay) : FishingOverlay).inst) != null && _inst2.isOpen || (_inst3 = (_crd && IndoorOverlay === void 0 ? (_reportPossibleCrUseOfIndoorOverlay({
+            error: Error()
+          }), IndoorOverlay) : IndoorOverlay).inst) != null && _inst3.isOpen || (_inst4 = (_crd && NpcDialogOverlay === void 0 ? (_reportPossibleCrUseOfNpcDialogOverlay({
+            error: Error()
+          }), NpcDialogOverlay) : NpcDialogOverlay).inst) != null && _inst4.isOpen || (_inst5 = (_crd && DungeonOverlay === void 0 ? (_reportPossibleCrUseOfDungeonOverlay({
+            error: Error()
+          }), DungeonOverlay) : DungeonOverlay).inst) != null && _inst5.isOpen || (_inst6 = (_crd && DefenseOverlay === void 0 ? (_reportPossibleCrUseOfDefenseOverlay({
+            error: Error()
+          }), DefenseOverlay) : DefenseOverlay).inst) != null && _inst6.isOpen || (_inst7 = (_crd && SettingsOverlay === void 0 ? (_reportPossibleCrUseOfSettingsOverlay({
+            error: Error()
+          }), SettingsOverlay) : SettingsOverlay).inst) != null && _inst7.isOpen || (_crd && OverworldHUD === void 0 ? (_reportPossibleCrUseOfOverworldHUD({
+            error: Error()
+          }), OverworldHUD) : OverworldHUD).isTitleOpen || (_inst8 = (_crd && VoyageOverlay === void 0 ? (_reportPossibleCrUseOfVoyageOverlay({
+            error: Error()
+          }), VoyageOverlay) : VoyageOverlay).inst) != null && _inst8.isOpen);
+        }
+
+        _buildWorldScene() {
+          this._worldRoot = this._uiNode('WorldRoot', this.node);
+
+          this._worldRoot.setSiblingIndex(0); // 1. 全新 2880×1620 阔境手绘国风大地图底图
+
+
+          var bgNode = this._uiNode('OverworldMapBg', this._worldRoot);
+
+          var bgGfx = bgNode.addComponent(Graphics);
+          bgGfx.fillColor = new Color(184, 210, 174, 255);
+          bgGfx.rect(-WORLD_HALF_W, -WORLD_HALF_H, MAP_W, MAP_H);
+          bgGfx.fill();
+          (_crd && ArtLoader === void 0 ? (_reportPossibleCrUseOfArtLoader({
+            error: Error()
+          }), ArtLoader) : ArtLoader).applySprite(bgNode, 'bg_overworld_map', MAP_W, MAP_H); // 1.5 河流动态流水波纹层（位于桥面与建筑之下，贴合水面）
+
+          this._waterFxGfx = this._uiNode('WaterFlowFx', this._worldRoot).addComponent(Graphics); // 1.6 东北灵泉荷塘真实手绘鱼类游动层
+
+          this._pondFishLayer = this._uiNode('PondFishLayer', this._worldRoot); // 2. 跨河正交水平木拱桥（底层桥面，严丝合缝衔接中庭西门土路与西岸草径）
+
+          var bridgeNode = this._uiNode('BridgeArt', this._worldRoot);
+
+          bridgeNode.setPosition(-405, -18, 0);
+          (_crd && ArtLoader === void 0 ? (_reportPossibleCrUseOfArtLoader({
+            error: Error()
+          }), ArtLoader) : ArtLoader).applySprite(bridgeNode, 'prop_bridge_wood', 310, 126); // 3. 核心正面正交手绘建筑
+
+          this._drawArtLandmark('主角农舍', 90, 96, 'bld_cottage', 220, 146, 82);
+
+          this._drawArtLandmark('室外灶棚', 385, 92, 'bld_kitchen_shed', 156, 124, 70);
+
+          this._drawArtLandmark('秘境石门', 105, 650, 'bld_dungeon_portal', 152, 162, 90);
+
+          this._drawArtLandmark('封印古碑', 365, 650, 'bld_seal_arch', 156, 168, 92); // 出货箱（置于石板路北侧，不挡东田木门）
+
+
+          this._drawArtLandmark('出货箱', 680, 96, 'prop_shipping_crate', 74, 68, 42); // 南岸旧码头 / 出海帆船
+
+
+          this._dockOldNode = this._uiNode('DockOld', this._worldRoot);
+
+          this._dockOldNode.setPosition(115, -630, 0);
+
+          (_crd && ArtLoader === void 0 ? (_reportPossibleCrUseOfArtLoader({
+            error: Error()
+          }), ArtLoader) : ArtLoader).applySprite(this._dockOldNode, 'prop_old_dock', 240, 100);
+
+          var dockLbl1 = this._uiNode('Lbl', this._dockOldNode).addComponent(Label);
+
+          dockLbl1.node.setPosition(0, 58, 0);
+          dockLbl1.string = '南岸旧码头';
+
+          this._styleWorldLabel(dockLbl1, new Color(34, 46, 40, 255));
+
+          this._dockSailNode = this._uiNode('DockSail', this._worldRoot);
+
+          this._dockSailNode.setPosition(115, -610, 0);
+
+          (_crd && ArtLoader === void 0 ? (_reportPossibleCrUseOfArtLoader({
+            error: Error()
+          }), ArtLoader) : ArtLoader).applySprite(this._dockSailNode, 'prop_sail_boat', 164, 184);
+
+          var dockLbl2 = this._uiNode('Lbl', this._dockSailNode).addComponent(Label);
+
+          dockLbl2.node.setPosition(0, 96, 0);
+          dockLbl2.string = '南岸出海帆船';
+
+          this._styleWorldLabel(dockLbl2, new Color(22, 68, 64, 255));
+
+          this._dockSailNode.active = false; // 4. 4 位常驻 NPC 沉稳驻岗
+
+          this._drawNpcArt('陆伯', 680, -195, 'npc_lubo', 52, 112);
+
+          this._drawNpcArt('江老', 645, 425, 'npc_jianglao', 58, 112);
+
+          this._drawNpcArt('玄墨', 235, 515, 'npc_xuanmo', 48, 112);
+
+          this._drawNpcArt('阿棠', 315, -470, 'npc_atang', 54, 112); // 5. 三处水边手绘垂钓木桩与竹鱼篓素材
+
+
+          this._drawFishingSpotArt(-155, 290);
+
+          this._drawFishingSpotArt(730, 345);
+
+          this._drawFishingSpotArt(-155, -355);
+
+          this._plotsLayer = this._uiNode('PlotsLayer', this._worldRoot);
+          this._obstaclesLayer = this._uiNode('ObstaclesLayer', this._worldRoot);
+
+          this._buildPlayer(); // V1.1 国风灵宠·青云小狐随行节点
+
+
+          this._petNode = this._uiNode('SpiritPet', this._worldRoot);
+
+          this._petNode.setPosition(this._petPos.x, this._petPos.y, 0);
+
+          var petShadow = this._uiNode('Shadow', this._petNode).addComponent(Graphics);
+
+          petShadow.fillColor = new Color(24, 38, 32, 65);
+          petShadow.ellipse(0, -18, 15, 6);
+          petShadow.fill();
+          (_crd && ArtLoader === void 0 ? (_reportPossibleCrUseOfArtLoader({
+            error: Error()
+          }), ArtLoader) : ArtLoader).applySprite(this._petNode, 'pet_spirit_fox', 52, 54);
+          this._petNode.active = false; // 木桥前侧栏杆遮挡层（过桥时盖在主角脚踝前）
+
+          this._bridgeFrontRail = this._uiNode('BridgeFrontRail', this._worldRoot);
+
+          this._bridgeFrontRail.setPosition(-405, -18, 0);
+
+          (_crd && ArtLoader === void 0 ? (_reportPossibleCrUseOfArtLoader({
+            error: Error()
+          }), ArtLoader) : ArtLoader).applySprite(this._bridgeFrontRail, 'prop_bridge_front_rail', 310, 126);
+          this._ambientGfx = this._uiNode('AmbientFx', this._worldRoot).addComponent(Graphics); // 初始立即生成荷塘真实游鱼精灵
+
+          this._rebuildPondFishSprites();
+        }
+
+        _rebuildPondFishSprites() {
+          var _inst9, _inst$saveData$farm$p;
+
+          var stockedIds = (_inst9 = (_crd && GameApp === void 0 ? (_reportPossibleCrUseOfGameApp({
+            error: Error()
+          }), GameApp) : GameApp).inst) != null && _inst9.ready ? (_inst$saveData$farm$p = (_crd && GameApp === void 0 ? (_reportPossibleCrUseOfGameApp({
+            error: Error()
+          }), GameApp) : GameApp).inst.saveData.farm.pondFishIds) != null ? _inst$saveData$farm$p : [] : []; // 即使尚未放养，荷塘里也保留 2 条野生锦鲤/荷塘鲫游动；放养后额外同池展示对应真鱼贴图
+
+          var artKeys = ['fish_lotus_koi', 'fish_lotus_crucian'];
+
+          for (var fid of stockedIds) {
+            var _FISH_ID_TO_ART$fid;
+
+            artKeys.push((_FISH_ID_TO_ART$fid = FISH_ID_TO_ART[fid]) != null ? _FISH_ID_TO_ART$fid : 'fish_lotus_koi');
+          }
+
+          var sig = artKeys.join('|');
+          if (sig === this._pondFishSig && this._pondFishViews.length > 0) return;
+          this._pondFishSig = sig;
+
+          this._pondFishLayer.removeAllChildren();
+
+          this._pondFishViews = [];
+          artKeys.forEach((artKey, idx) => {
+            var fn = this._uiNode("PondFish_" + idx, this._pondFishLayer);
+
+            var sizeW = artKey === 'fish_estuary_dragon' ? 54 : 44;
+            var sizeH = artKey === 'fish_brook_loach' ? 18 : 26;
+            (_crd && ArtLoader === void 0 ? (_reportPossibleCrUseOfArtLoader({
+              error: Error()
+            }), ArtLoader) : ArtLoader).applySprite(fn, artKey, sizeW, sizeH, () => {
+              var _fn$getChildByName;
+
+              var sp = (_fn$getChildByName = fn.getChildByName('ArtSprite')) == null ? void 0 : _fn$getChildByName.getComponent(Sprite);
+              if (sp) sp.color = new Color(238, 250, 248, 222);
+            });
+            var ring = idx % 3;
+
+            this._pondFishViews.push({
+              node: fn,
+              artKey,
+              phase: idx * 1.45,
+              speed: 0.42 + idx % 3 * 0.11,
+              rx: 74 + ring * 44,
+              ry: 32 + ring * 22,
+              cx: 978 + (idx % 2 === 0 ? -18 : 22),
+              cy: 472 + (idx % 3 - 1) * 18
+            });
+          });
+        }
+
+        _styleWorldLabel(lbl, color) {
+          var _lbl$node$getComponen;
+
+          lbl.fontSize = 14;
+          lbl.lineHeight = 18;
+          lbl.isBold = true;
+          lbl.color = color;
+          var outline = (_lbl$node$getComponen = lbl.node.getComponent(LabelOutline)) != null ? _lbl$node$getComponen : lbl.node.addComponent(LabelOutline);
+          outline.color = new Color(252, 248, 236, 240);
+          outline.width = 2.2;
+        }
+
+        _drawArtLandmark(title, x, y, artKey, w, h, lblOffsetY) {
+          var n = this._uiNode("ArtLandmark_" + artKey, this._worldRoot);
+
+          n.setPosition(x, y, 0); // 双层柔和接地投影：消除建筑贴地漂浮与发白感
+
+          var sg = this._uiNode('Shadow', n).addComponent(Graphics);
+
+          sg.fillColor = new Color(22, 34, 28, 52);
+          sg.ellipse(0, -h * 0.42, w * 0.49, Math.max(10, h * 0.14));
+          sg.fill();
+          sg.fillColor = new Color(18, 28, 22, 76);
+          sg.ellipse(0, -h * 0.43, w * 0.39, Math.max(7, h * 0.09));
+          sg.fill();
+
+          var body = this._uiNode('ArtBody', n);
+
+          (_crd && ArtLoader === void 0 ? (_reportPossibleCrUseOfArtLoader({
+            error: Error()
+          }), ArtLoader) : ArtLoader).applySprite(body, artKey, w, h);
+
+          var lbl = this._uiNode('Lbl', n).addComponent(Label);
+
+          lbl.node.setPosition(0, lblOffsetY, 0);
+          lbl.string = title;
+
+          this._styleWorldLabel(lbl, new Color(34, 46, 40, 255));
+        }
+
+        _drawNpcArt(title, x, y, artKey, w, h) {
+          var n = this._uiNode("Npc_" + artKey, this._worldRoot);
+
+          n.setPosition(x, y, 0);
+
+          var sg = this._uiNode('Shadow', n).addComponent(Graphics);
+
+          sg.fillColor = new Color(24, 38, 32, 74);
+          sg.ellipse(0, -h * 0.44, w * 0.44, 7.5);
+          sg.fill();
+
+          var body = this._uiNode('NpcBody', n);
+
+          (_crd && ArtLoader === void 0 ? (_reportPossibleCrUseOfArtLoader({
+            error: Error()
+          }), ArtLoader) : ArtLoader).applySprite(body, artKey, w, h);
+
+          var lbl = this._uiNode('Lbl', n).addComponent(Label);
+
+          lbl.node.setPosition(0, h * 0.56, 0);
+          lbl.string = title;
+
+          this._styleWorldLabel(lbl, new Color(30, 44, 38, 255));
+        }
+
+        _drawFishingSpotArt(x, y) {
+          var n = this._uiNode("FishingSpot_" + x + "_" + y, this._worldRoot);
+
+          n.setPosition(x, y, 0);
+
+          var sg = this._uiNode('Shadow', n).addComponent(Graphics);
+
+          sg.fillColor = new Color(24, 38, 32, 60);
+          sg.ellipse(0, -22, 22, 7);
+          sg.fill();
+          (_crd && ArtLoader === void 0 ? (_reportPossibleCrUseOfArtLoader({
+            error: Error()
+          }), ArtLoader) : ArtLoader).applySprite(n, 'prop_fishing_spot', 56, 62);
+        }
+
+        _buildPlayer() {
+          var _this = this;
+
+          this._playerNode = this._uiNode('Player', this._worldRoot);
+
+          this._playerNode.setPosition(this._playerPos.x, this._playerPos.y, 0);
+
+          var shadow = this._uiNode('Shadow', this._playerNode);
+
+          var sg = shadow.addComponent(Graphics);
+          sg.fillColor = new Color(24, 38, 32, 78);
+          sg.ellipse(0, 0, 17, 7);
+          sg.fill();
+          this._playerBody = this._uiNode('Body', this._playerNode);
+
+          this._playerBody.setPosition(0, 42, 0);
+
+          var bg = this._playerBody.addComponent(Graphics);
+
+          (_crd && ArtLoader === void 0 ? (_reportPossibleCrUseOfArtLoader({
+            error: Error()
+          }), ArtLoader) : ArtLoader).applySprite(this._playerBody, 'char_player_front', 82, 108, () => {
+            bg.clear();
+          });
+          void (_crd && ArtLoader === void 0 ? (_reportPossibleCrUseOfArtLoader({
+            error: Error()
+          }), ArtLoader) : ArtLoader).loadSpriteFrame('char_player_front').then(sf => {
+            if (sf) this._idleSprites.front = sf;
+          });
+          void (_crd && ArtLoader === void 0 ? (_reportPossibleCrUseOfArtLoader({
+            error: Error()
+          }), ArtLoader) : ArtLoader).loadSpriteFrame('char_player_side').then(sf => {
+            if (sf) this._idleSprites.side = sf;
+          });
+          void (_crd && ArtLoader === void 0 ? (_reportPossibleCrUseOfArtLoader({
+            error: Error()
+          }), ArtLoader) : ArtLoader).loadSpriteFrame('char_player_back').then(sf => {
+            if (sf) this._idleSprites.back = sf;
+          });
+          ['front', 'side', 'back'].forEach(dir => {
+            var _loop = function _loop(i) {
+              void (_crd && ArtLoader === void 0 ? (_reportPossibleCrUseOfArtLoader({
+                error: Error()
+              }), ArtLoader) : ArtLoader).loadSpriteFrame("char_walk_" + dir + "_" + i).then(sf => {
+                if (sf) _this._walkFrames[dir][i] = sf;
+              });
+            };
+
+            for (var i = 0; i < 4; i++) {
+              _loop(i);
+            }
+          });
+        }
+
+        _buildTouchJoystickLayer() {
+          var pad = this._uiNode('LeftTouchPad', this.node);
+
+          var ut = pad.addComponent(UITransform);
+          ut.setContentSize(640, 720);
+          pad.setPosition(-320, 0, 0);
+          pad.setSiblingIndex(1);
+          this._joyBase = this._uiNode('JoyBase', this.node);
+
+          var bg = this._joyBase.addComponent(Graphics);
+
+          bg.strokeColor = new Color(31, 111, 104, 150);
+          bg.fillColor = new Color(238, 243, 241, 90);
+          bg.lineWidth = 3;
+          bg.circle(0, 0, 56);
+          bg.fill();
+          bg.stroke();
+          this._joyBase.active = false;
+          this._joyKnob = this._uiNode('JoyKnob', this._joyBase);
+
+          var kg = this._joyKnob.addComponent(Graphics);
+
+          kg.fillColor = new Color(31, 111, 104, 210);
+          kg.circle(0, 0, 22);
+          kg.fill();
+          pad.on(Node.EventType.TOUCH_START, e => {
+            if (this._isModalOpen()) return;
+            var loc = e.getUILocation();
+            this._joyActive = true;
+
+            this._joyOrigin.set(loc.x - 640, loc.y - 360);
+
+            this._joyDir.set(0, 0);
+
+            this._joyBase.setPosition(this._joyOrigin.x, this._joyOrigin.y, 0);
+
+            this._joyKnob.setPosition(0, 0, 0);
+
+            this._joyBase.active = true;
+          });
+          pad.on(Node.EventType.TOUCH_MOVE, e => {
+            if (!this._joyActive || this._isModalOpen()) return;
+            var loc = e.getUILocation();
+            var dx = loc.x - 640 - this._joyOrigin.x;
+            var dy = loc.y - 360 - this._joyOrigin.y;
+            var dist = Math.hypot(dx, dy);
+            var maxR = 52;
+
+            if (dist > 6) {
+              var clamped = Math.min(dist, maxR);
+
+              this._joyKnob.setPosition(dx / dist * clamped, dy / dist * clamped, 0);
+
+              this._joyDir.set(dx / dist, dy / dist);
+            } else {
+              this._joyKnob.setPosition(0, 0, 0);
+
+              this._joyDir.set(0, 0);
+            }
+          });
+
+          var endJoy = () => {
+            this._joyActive = false;
+
+            this._joyDir.set(0, 0);
+
+            this._joyBase.active = false;
+          };
+
+          pad.on(Node.EventType.TOUCH_END, endJoy);
+          pad.on(Node.EventType.TOUCH_CANCEL, endJoy);
+        }
+
+        _onKeyDown(e) {
+          this._keys.add(e.keyCode);
+        }
+
+        _onKeyUp(e) {
+          this._keys.delete(e.keyCode);
+        }
+
+        _isObstacleClearedOrLegacyOccupied(obsId) {
+          var app = (_crd && GameApp === void 0 ? (_reportPossibleCrUseOfGameApp({
+            error: Error()
+          }), GameApp) : GameApp).inst;
+          if (!(app != null && app.ready)) return false;
+          if (app.saveData.farm.clearedObstacleIds.includes(obsId)) return true;
+          var knownClearedCount = app.saveData.farm.clearedObstacleIds.filter(cid => OBSTACLES.some(o => o.id === cid)).length;
+          var legacyExtra = Math.max(0, app.saveData.farm.plots.length - STARTER_PLOT_COORDS.length - knownClearedCount);
+
+          if (legacyExtra > 0) {
+            var idx = OBSTACLES.findIndex(o => o.id === obsId);
+            if (idx >= 0 && idx < legacyExtra) return true;
+          }
+
+          return false;
+        }
+
+        refreshWorldObjects() {
+          var app = (_crd && GameApp === void 0 ? (_reportPossibleCrUseOfGameApp({
+            error: Error()
+          }), GameApp) : GameApp).inst;
+          if (!(app != null && app.ready)) return;
+          if (this._petNode) this._petNode.active = !!app.saveData.farm.petAdopted;
+          var dockOk = !!app.saveData.islands.dockRepaired;
+          if (this._dockOldNode) this._dockOldNode.active = !dockOk;
+          if (this._dockSailNode) this._dockSailNode.active = dockOk;
+
+          this._rebuildPondFishSprites();
+
+          for (var plot of app.saveData.farm.plots) {
+            var coord = this._getPlotCoord(plot.plotId);
+
+            var view = this._plotNodes.get(plot.plotId);
+
+            if (!view) {
+              var root = this._uiNode("Plot_" + plot.plotId, this._plotsLayer);
+
+              var gfx = root.addComponent(Graphics);
+
+              var cropNode = this._uiNode('CropArt', root);
+
+              cropNode.setPosition(0, 8, 0);
+
+              var lblNode = this._uiNode('Lbl', root);
+
+              lblNode.setPosition(0, -34, 0);
+              var lbl = lblNode.addComponent(Label);
+              lbl.fontSize = 12;
+              lbl.lineHeight = 15;
+              lbl.color = new Color(34, 48, 42, 235);
+              view = {
+                root,
+                gfx,
+                lbl,
+                cropNode,
+                cropKey: ''
+              };
+
+              this._plotNodes.set(plot.plotId, view);
+            }
+
+            view.root.setPosition(coord.x, coord.y, 0);
+            var g = view.gfx;
+            g.clear();
+            var watered = (_crd && FarmSystem === void 0 ? (_reportPossibleCrUseOfFarmSystem({
+              error: Error()
+            }), FarmSystem) : FarmSystem).inst.isWateredToday(plot);
+            g.fillColor = watered ? new Color(118, 86, 60, 245) : new Color(166, 128, 92, 240);
+            g.strokeColor = new Color(96, 70, 48, 210);
+            g.lineWidth = 1.8;
+            g.roundRect(-36, -27, 72, 54, 8);
+            g.fill();
+            g.stroke();
+            g.strokeColor = watered ? new Color(92, 64, 42, 130) : new Color(138, 102, 70, 125);
+            g.lineWidth = 1.3;
+
+            for (var ry of [-12, 0, 12]) {
+              g.moveTo(-24, ry);
+              g.lineTo(24, ry);
+            }
+
+            g.stroke();
+
+            if (!plot.plantId) {
+              view.lbl.string = '';
+              view.cropNode.active = false;
+            } else {
+              var def = (_crd && DataManager === void 0 ? (_reportPossibleCrUseOfDataManager({
+                error: Error()
+              }), DataManager) : DataManager).inst.getPlant(plot.plantId);
+              var mature = (_crd && FarmSystem === void 0 ? (_reportPossibleCrUseOfFarmSystem({
+                error: Error()
+              }), FarmSystem) : FarmSystem).inst.isMature(plot);
+              var ratio = def ? Math.min(1, plot.growthDays / Math.max(1, def.growDays)) : 0;
+              var desiredKey = (def == null ? void 0 : def.id) === 'thunder_potato' ? 'plant_thunder_potato' : (def == null ? void 0 : def.category) === 'combo' ? 'plant_sky_bamboo_combo' : 'crop_spring_greens';
+              view.cropNode.active = true;
+
+              if (view.cropKey !== desiredKey) {
+                view.cropKey = desiredKey;
+                view.cropNode.removeAllChildren();
+                (_crd && ArtLoader === void 0 ? (_reportPossibleCrUseOfArtLoader({
+                  error: Error()
+                }), ArtLoader) : ArtLoader).applySprite(view.cropNode, desiredKey, 58, 54);
+              }
+
+              if (mature) {
+                var _def$name;
+
+                g.fillColor = new Color(252, 234, 152, 145);
+                g.circle(0, 4, 24);
+                g.fill();
+                view.cropNode.setScale(1, 1, 1);
+                view.lbl.string = ((_def$name = def == null ? void 0 : def.name) != null ? _def$name : '') + "\u2713";
+              } else {
+                var _def$growDays;
+
+                var sc = 0.46 + ratio * 0.38;
+                view.cropNode.setScale(sc, sc, 1);
+                view.lbl.string = plot.growthDays + "/" + ((_def$growDays = def == null ? void 0 : def.growDays) != null ? _def$growDays : 1);
+              }
+            }
+          }
+
+          for (var obs of OBSTACLES) {
+            var cleared = this._isObstacleClearedOrLegacyOccupied(obs.id);
+
+            var node = this._obstacleNodes.get(obs.id);
+
+            if (cleared) {
+              if (node) node.active = false;
+              continue;
+            }
+
+            if (!node) {
+              node = this._uiNode("Obs_" + obs.id, this._obstaclesLayer);
+              node.setPosition(obs.x, obs.y, 0);
+              var artKey = obs.style === 'grass' ? 'obs_grass' : obs.style === 'shrub' ? 'obs_shrub' : 'obs_boulder';
+              var [aw, ah] = obs.style === 'grass' ? [70, 50] : obs.style === 'shrub' ? [72, 66] : [72, 56];
+
+              var artHolder = this._uiNode('ObsArt', node);
+
+              artHolder.setPosition(0, 2, 0);
+              (_crd && ArtLoader === void 0 ? (_reportPossibleCrUseOfArtLoader({
+                error: Error()
+              }), ArtLoader) : ArtLoader).applySprite(artHolder, artKey, aw, ah);
+
+              this._obstacleNodes.set(obs.id, node);
+            }
+
+            node.active = true;
+          }
+        }
+
+        _getPlotCoord(plotId) {
+          var _app$saveData$farm$cl, _app$saveData$farm$pl;
+
+          if (plotId < STARTER_PLOT_COORDS.length) return STARTER_PLOT_COORDS[plotId];
+          var app = (_crd && GameApp === void 0 ? (_reportPossibleCrUseOfGameApp({
+            error: Error()
+          }), GameApp) : GameApp).inst;
+          var cleared = (_app$saveData$farm$cl = app == null ? void 0 : app.saveData.farm.clearedObstacleIds) != null ? _app$saveData$farm$cl : [];
+          var extraIdx = plotId - STARTER_PLOT_COORDS.length;
+          var knownCleared = cleared.filter(cid => OBSTACLES.some(o => o.id === cid));
+          var legacyExtra = Math.max(0, ((_app$saveData$farm$pl = app == null ? void 0 : app.saveData.farm.plots.length) != null ? _app$saveData$farm$pl : 6) - STARTER_PLOT_COORDS.length - knownCleared.length);
+
+          if (extraIdx < legacyExtra) {
+            var slot = OBSTACLES[Math.min(extraIdx, OBSTACLES.length - 1)];
+            return {
+              x: slot.x,
+              y: slot.y
+            };
+          }
+
+          var cid = knownCleared[extraIdx - legacyExtra];
+          var obs = OBSTACLES.find(o => o.id === cid);
+          if (obs) return {
+            x: obs.x,
+            y: obs.y
+          };
+          var fallback = OBSTACLES[Math.min(extraIdx, OBSTACLES.length - 1)];
+          return {
+            x: fallback.x,
+            y: fallback.y
+          };
+        }
+
+        getNearbyPlotIds(centerPlotId, maxCount) {
+          var app = (_crd && GameApp === void 0 ? (_reportPossibleCrUseOfGameApp({
+            error: Error()
+          }), GameApp) : GameApp).inst;
+          if (!(app != null && app.ready)) return [centerPlotId];
+
+          var center = this._getPlotCoord(centerPlotId);
+
+          var list = app.saveData.farm.plots.map(p => {
+            var c = this._getPlotCoord(p.plotId);
+
+            return {
+              id: p.plotId,
+              dist: Math.hypot(c.x - center.x, c.y - center.y)
+            };
+          }).filter(item => item.dist <= 185).sort((a, b) => a.dist - b.dist);
+          return list.slice(0, maxCount).map(i => i.id);
+        }
+
+        update(dt) {
+          if (this._isModalOpen()) return;
+          var vx = this._joyDir.x;
+          var vy = this._joyDir.y;
+          if (this._keys.has(KeyCode.KEY_W) || this._keys.has(KeyCode.ARROW_UP)) vy += 1;
+          if (this._keys.has(KeyCode.KEY_S) || this._keys.has(KeyCode.ARROW_DOWN)) vy -= 1;
+          if (this._keys.has(KeyCode.KEY_A) || this._keys.has(KeyCode.ARROW_LEFT)) vx -= 1;
+          if (this._keys.has(KeyCode.KEY_D) || this._keys.has(KeyCode.ARROW_RIGHT)) vx += 1;
+          var len = Math.hypot(vx, vy);
+
+          if (len > 0.01) {
+            var _this$_walkFrames$thi;
+
+            vx /= len;
+            vy /= len;
+            var nx = Math.max(-1330, Math.min(1330, this._playerPos.x + vx * PLAYER_SPEED * dt));
+            var ny = Math.max(-700, Math.min(720, this._playerPos.y + vy * PLAYER_SPEED * dt));
+
+            var hitBox = (px, py, x1, y1, x2, y2) => px > x1 && px < x2 && py > y1 && py < y2;
+
+            var canStand = (px, py) => {
+              // 1. 像素级蜿蜒主河道水域碰撞（仅水平木桥桥面通道 px in [-565, -245] && py in [-44, 14] 可过）
+              var [rLeft, rRight] = getRiverBounds(py);
+              var onBridgeDeck = px >= -565 && px <= -245 && py >= -44 && py <= 14;
+              if (px > rLeft && px < rRight && !onBridgeDeck) return false; // 2. 南岸海湾精准水岸线碰撞
+
+              if (py < getBayMinY(px)) return false; // 3. 东北独立灵泉荷塘水域碰撞
+
+              var inPond = ((px - 975) / 282) ** 2 + ((py - 475) / 178) ** 2 < 1;
+              if (inPond) return false; // 4. 核心建筑实体碰撞
+
+              if (hitBox(px, py, -16, 30, 196, 168)) return false; // 主角农舍
+
+              if (hitBox(px, py, 310, 32, 460, 158)) return false; // 室外灶棚
+
+              if (hitBox(px, py, 32, 580, 178, 725)) return false; // 秘境石门
+
+              if (hitBox(px, py, 290, 580, 440, 725)) return false; // 封印古碑
+
+              if (hitBox(px, py, 642, 64, 718, 128)) return false; // 出货箱
+              // 5. 北境古石坛前护墙（中段宽石阶 x in [145, 335] 畅通）
+
+              if (hitBox(px, py, -85, 425, 145, 478)) return false;
+              if (hitBox(px, py, 335, 425, 555, 478)) return false; // 6. 中庭手绘竹篱围栏碰撞（四面宽敞大门畅通）
+
+              if (hitBox(px, py, -105, 178, 165, 224)) return false; // 北竹篱左
+
+              if (hitBox(px, py, 305, 178, 562, 224)) return false; // 北竹篱右
+
+              if (hitBox(px, py, -105, -296, 165, -246)) return false; // 南竹篱左
+
+              if (hitBox(px, py, 305, -296, 562, -246)) return false; // 南竹篱右
+
+              if (hitBox(px, py, -105, 30, -72, 224)) return false; // 西竹篱上
+
+              if (hitBox(px, py, -105, -296, -72, -65)) return false; // 西竹篱下
+
+              if (hitBox(px, py, 530, 22, 565, 224)) return false; // 东竹篱上
+
+              if (hitBox(px, py, 530, -296, 565, -95)) return false; // 东竹篱下
+              // 7. 东侧农田手绘木栅栏碰撞（西面宽大门洞 y in [-115, 22] 畅通）
+
+              if (hitBox(px, py, 755, 182, 1345, 228)) return false; // 东田北栅栏
+
+              if (hitBox(px, py, 755, -395, 1345, -348)) return false; // 东田南栅栏
+
+              if (hitBox(px, py, 1310, -395, 1355, 228)) return false; // 东田东栅栏
+
+              if (hitBox(px, py, 752, 22, 795, 228)) return false; // 东田西栅栏上
+
+              if (hitBox(px, py, 752, -395, 795, -115)) return false; // 东田西栅栏下
+
+              return true;
+            };
+
+            var finalX = this._playerPos.x;
+            var finalY = this._playerPos.y;
+            if (canStand(nx, finalY)) finalX = nx;
+            if (canStand(finalX, ny)) finalY = ny;
+
+            this._playerPos.set(finalX, finalY);
+
+            if (Math.abs(vx) > Math.abs(vy) * 0.85) {
+              this._facingDir = 'side';
+              this._facingX = vx < 0 ? -1 : 1;
+            } else if (vy > 0) {
+              this._facingDir = 'back';
+              this._facingX = 1;
+            } else {
+              this._facingDir = 'front';
+              this._facingX = 1;
+            }
+
+            this._animTimer += dt;
+
+            if (this._animTimer >= 0.16) {
+              this._animTimer -= 0.16;
+              this._animFrameIdx = (this._animFrameIdx + 1) % 4;
+            }
+
+            var spNode = this._playerBody.getChildByName('ArtSprite');
+
+            var sp = spNode == null ? void 0 : spNode.getComponent(Sprite);
+            var frameSf = (_this$_walkFrames$thi = this._walkFrames[this._facingDir][this._animFrameIdx]) != null ? _this$_walkFrames$thi : this._idleSprites[this._facingDir];
+
+            if (sp && frameSf && sp.spriteFrame !== frameSf) {
+              sp.spriteFrame = frameSf;
+            }
+
+            this._walkPhase += dt * 8.5;
+
+            this._playerBody.setPosition(0, 42 + Math.abs(Math.sin(this._walkPhase)) * 2.5, 0);
+
+            this._playerBody.angle = 0;
+
+            this._playerBody.setScale(this._facingX, 1, 1);
+
+            this._dustTimer -= dt;
+
+            if (this._dustTimer <= 0) {
+              this._dustTimer = 0.24;
+
+              this._dusts.push({
+                x: this._playerPos.x,
+                y: this._playerPos.y - 2,
+                r: 4 + Math.random() * 2,
+                life: 0.28
+              });
+            }
+          } else {
+            var _this$_idleSprites$th;
+
+            this._animFrameIdx = 1;
+
+            var _spNode = this._playerBody.getChildByName('ArtSprite');
+
+            var _sp = _spNode == null ? void 0 : _spNode.getComponent(Sprite);
+
+            var idleSf = (_this$_idleSprites$th = this._idleSprites[this._facingDir]) != null ? _this$_idleSprites$th : this._walkFrames[this._facingDir][1];
+
+            if (_sp && idleSf && _sp.spriteFrame !== idleSf) {
+              _sp.spriteFrame = idleSf;
+            }
+
+            this._playerBody.setPosition(0, 42, 0);
+
+            this._playerBody.angle = 0;
+
+            this._playerBody.setScale(this._facingX, 1, 1);
+          } // 过拱桥平滑弧度抬升
+
+
+          var archLift = 0;
+
+          if (this._playerPos.x >= -560 && this._playerPos.x <= -250 && this._playerPos.y >= -46 && this._playerPos.y <= 16) {
+            var t = (this._playerPos.x - -560) / 310;
+            archLift = Math.sin(t * Math.PI) * 14;
+          }
+
+          this._playerNode.setPosition(this._playerPos.x, this._playerPos.y + archLift, 0);
+
+          if (this._bridgeFrontRail) {
+            this._bridgeFrontRail.active = this._playerPos.y >= -46;
+          } // 摄像机边界钳位（2880×1620 阔境平滑跟随，绝不露出地图外黑边）
+
+
+          var maxCamX = WORLD_HALF_W - VIEW_HALF_W; // 800
+
+          var maxCamY = WORLD_HALF_H - VIEW_HALF_H; // 450
+
+          var targetX = Math.max(-maxCamX, Math.min(maxCamX, -this._playerPos.x));
+          var targetY = Math.max(-maxCamY, Math.min(maxCamY, -this._playerPos.y));
+          var cur = this._worldRoot.position;
+          var lerp = Math.min(1, dt * 7);
+
+          this._worldRoot.setPosition(cur.x + (targetX - cur.x) * lerp, cur.y + (targetY - cur.y) * lerp, 0);
+
+          this._updateNearestTarget();
+
+          this._stepAmbientFx(dt);
+        }
+
+        _stepAmbientFx(dt) {
+          this._ambientTime += dt; // 1. 河流北向南动态流水波纹 + 荷塘/海湾柔光涟漪
+
+          if (this._waterFxGfx) {
+            var wg = this._waterFxGfx;
+            wg.clear(); // 三股不同流速的流水纹沿着 RIVER_TABLE 中心线自北向南连续流动
+
+            var streams = [{
+              lane: -0.26,
+              speed: 58,
+              segLen: 46,
+              gap: 150,
+              alpha: 125,
+              width: 2.2
+            }, {
+              lane: 0.02,
+              speed: 74,
+              segLen: 58,
+              gap: 170,
+              alpha: 155,
+              width: 2.6
+            }, {
+              lane: 0.27,
+              speed: 52,
+              segLen: 42,
+              gap: 145,
+              alpha: 115,
+              width: 2.0
+            }];
+
+            for (var st of streams) {
+              var offset = this._ambientTime * st.speed % st.gap;
+              wg.strokeColor = new Color(232, 252, 248, st.alpha);
+              wg.lineWidth = st.width;
+
+              for (var headY = 780 - offset; headY > -720; headY -= st.gap) {
+                var tailY = headY + st.segLen;
+                var midY = (headY + tailY) * 0.5;
+                var [l1, r1] = getRiverBounds(tailY);
+                var [l2, r2] = getRiverBounds(midY);
+                var [l3, r3] = getRiverBounds(headY);
+                var x1 = (l1 + r1) * 0.5 + (r1 - l1) * 0.5 * st.lane;
+                var x2 = (l2 + r2) * 0.5 + (r2 - l2) * 0.5 * st.lane + Math.sin(this._ambientTime * 2.4 + midY * 0.02) * 4;
+                var x3 = (l3 + r3) * 0.5 + (r3 - l3) * 0.5 * st.lane;
+                wg.moveTo(x1, tailY);
+                wg.lineTo(x2, midY);
+                wg.lineTo(x3, headY);
+              }
+
+              wg.stroke();
+            } // 河面漂浮碎光点
+
+
+            for (var i = 0; i < 14; i++) {
+              var wy = 760 - (this._ambientTime * (44 + i % 4 * 10) + i * 112) % 1460;
+              var [rl, rr] = getRiverBounds(wy);
+              var frac = 0.25 + i * 37 % 50 / 100;
+              var wx = rl + (rr - rl) * frac;
+              var pulse = 0.45 + 0.55 * Math.sin(this._ambientTime * 3.5 + i);
+              wg.fillColor = new Color(242, 255, 252, Math.floor(pulse * 140));
+              wg.ellipse(wx, wy, 3.2, 8.5);
+              wg.fill();
+            } // 南岸海湾缓动浪纹
+
+
+            wg.strokeColor = new Color(235, 252, 250, 120);
+            wg.lineWidth = 2.0;
+
+            for (var wi = 0; wi < 4; wi++) {
+              var _wx = -240 + wi * 380 + Math.sin(this._ambientTime * 1.1 + wi) * 18;
+
+              var _wy = -710 + wi % 2 * 26 + Math.cos(this._ambientTime * 1.4 + wi) * 5;
+
+              wg.moveTo(_wx - 48, _wy);
+              wg.lineTo(_wx + 48, _wy);
+            }
+
+            wg.stroke(); // 三处钓点水面柔和涟漪提示
+
+            for (var [rx, ry] of [[-238, 290], [835, 395], [-235, -355]]) {
+              var _rr = 9 + this._ambientTime * 12 % 20;
+
+              var alpha = Math.max(0, Math.floor((1 - (_rr - 9) / 20) * 165));
+              wg.strokeColor = new Color(236, 252, 248, alpha);
+              wg.lineWidth = 1.7;
+              wg.ellipse(rx, ry, _rr, _rr * 0.54);
+              wg.stroke();
+            }
+          } // 2. 东北灵泉荷塘真实手绘鱼类精灵游动（按游向自动翻面与摆尾）
+
+
+          for (var f of this._pondFishViews) {
+            var ang = this._ambientTime * f.speed + f.phase;
+            var fx = f.cx + Math.cos(ang) * f.rx;
+            var fy = f.cy + Math.sin(ang) * f.ry;
+            var vx = -Math.sin(ang) * f.rx * f.speed;
+            var vy = Math.cos(ang) * f.ry * f.speed;
+            f.node.setPosition(fx, fy, 0);
+            var flipX = vx < 0 ? -1 : 1;
+            f.node.setScale(flipX, 1, 1);
+            var pitch = Math.atan2(vy, Math.abs(vx) + 1e-3) * (180 / Math.PI) * 0.45;
+            f.node.angle = flipX > 0 ? pitch : -pitch;
+          }
+
+          if (!this._ambientGfx) return;
+          var g = this._ambientGfx;
+          g.clear(); // 3. 脚步轻柔扬尘
+
+          for (var d of this._dusts) {
+            d.life -= dt;
+            d.r += dt * 7;
+
+            if (d.life > 0) {
+              g.fillColor = new Color(236, 230, 212, Math.floor(d.life / 0.28 * 120));
+              g.circle(d.x, d.y, d.r);
+              g.fill();
+            }
+          }
+
+          this._dusts = this._dusts.filter(d => d.life > 0); // 4. 室外灶棚轻柔炊烟
+
+          this._smokeTimer -= dt;
+
+          if (this._smokeTimer <= 0) {
+            this._smokeTimer = 0.65;
+
+            this._smokePuffs.push({
+              x: 385 + (Math.random() - 0.5) * 8,
+              y: 132,
+              r: 6,
+              life: 2.0,
+              maxLife: 2.0
+            });
+          }
+
+          for (var s of this._smokePuffs) {
+            s.life -= dt;
+            s.y += dt * 22;
+            s.r += dt * 5;
+
+            if (s.life > 0) {
+              g.fillColor = new Color(250, 248, 242, Math.floor(s.life / s.maxLife * 110));
+              g.circle(s.x, s.y, s.r);
+              g.fill();
+            }
+          }
+
+          this._smokePuffs = this._smokePuffs.filter(s => s.life > 0); // 5. 灵宠·青云小狐随行
+
+          if (this._petNode && this._petNode.active) {
+            var dx = this._playerPos.x - 44 * this._facingX - this._petPos.x;
+            var dy = this._playerPos.y - 16 - this._petPos.y;
+
+            var _d = Math.hypot(dx, dy);
+
+            if (_d > 16) {
+              var step = Math.min(_d, 185 * dt);
+              this._petPos.x += dx / _d * step;
+              this._petPos.y += dy / _d * step;
+              var hop = Math.abs(Math.sin(this._ambientTime * 8)) * 4;
+
+              this._petNode.setPosition(this._petPos.x, this._petPos.y + 22 + hop, 0);
+
+              this._petNode.setScale(dx < -2 ? -1 : 1, 1, 1);
+            } else {
+              this._petNode.setPosition(this._petPos.x, this._petPos.y + 22, 0);
+            }
+          }
+        }
+
+        _updateNearestTarget() {
+          var app = (_crd && GameApp === void 0 ? (_reportPossibleCrUseOfGameApp({
+            error: Error()
+          }), GameApp) : GameApp).inst;
+          if (!(app != null && app.ready)) return;
+          var candidates = [{
+            id: 'cottage',
+            kind: 'cottage',
+            x: 90,
+            y: 18,
+            label: '进入屋舍'
+          }, {
+            id: 'kitchen',
+            kind: 'kitchen',
+            x: 385,
+            y: 18,
+            label: '室外下厨'
+          }, {
+            id: 'shipping',
+            kind: 'shipping',
+            x: 680,
+            y: 52,
+            label: '出货卖菜'
+          }, {
+            id: 'npc_lubo',
+            kind: 'npc',
+            npcId: 'lubo',
+            x: 680,
+            y: -195,
+            label: '对话·陆伯'
+          }, {
+            id: 'npc_jianglao',
+            kind: 'npc',
+            npcId: 'jianglao',
+            x: 645,
+            y: 425,
+            label: '对话·江老'
+          }, {
+            id: 'npc_xuanmo',
+            kind: 'npc',
+            npcId: 'xuanmo',
+            x: 235,
+            y: 515,
+            label: '对话·玄墨'
+          }, {
+            id: 'npc_atang',
+            kind: 'npc',
+            npcId: 'atang',
+            x: 315,
+            y: -470,
+            label: '对话·阿棠'
+          }, {
+            id: 'fish_up',
+            kind: 'fishing',
+            riverSegment: 'upstream_brook',
+            x: -155,
+            y: 290,
+            label: '寒溪垂钓'
+          }, {
+            id: 'fish_mid',
+            kind: 'fishing',
+            riverSegment: 'midstream_lotus',
+            x: 730,
+            y: 345,
+            label: '荷塘垂钓'
+          }, {
+            id: 'fish_down',
+            kind: 'fishing',
+            riverSegment: 'downstream_estuary',
+            x: -155,
+            y: -355,
+            label: '河口垂钓'
+          }, {
+            id: 'seal',
+            kind: 'seal',
+            x: 365,
+            y: 562,
+            label: '查看封印'
+          }, {
+            id: 'portal',
+            kind: 'portal',
+            x: 105,
+            y: 562,
+            label: '异界入口'
+          }, {
+            id: 'dock',
+            kind: 'dock',
+            x: 115,
+            y: -535,
+            label: app.saveData.islands.dockRepaired ? '扬帆出海' : '修缮木船'
+          }];
+
+          for (var plot of app.saveData.farm.plots) {
+            var c = this._getPlotCoord(plot.plotId);
+
+            var lbl = !plot.plantId ? '播种' : (_crd && FarmSystem === void 0 ? (_reportPossibleCrUseOfFarmSystem({
+              error: Error()
+            }), FarmSystem) : FarmSystem).inst.isMature(plot) ? '收获' : '浇水';
+            candidates.push({
+              id: "plot_" + plot.plotId,
+              kind: 'plot',
+              x: c.x,
+              y: c.y,
+              label: lbl,
+              plotId: plot.plotId
+            });
+          }
+
+          for (var obs of OBSTACLES) {
+            if (this._isObstacleClearedOrLegacyOccupied(obs.id)) continue;
+            candidates.push({
+              id: obs.id,
+              kind: 'obstacle',
+              x: obs.x,
+              y: obs.y,
+              label: obs.tier === 1 ? '开荒解锁' : '需铁镐',
+              obstacleTier: obs.tier,
+              rewardItem: obs.rewardItem,
+              rewardCount: obs.rewardCount
+            });
+          }
+
+          var best = null;
+          var bestDist = INTERACT_RADIUS;
+
+          for (var _c of candidates) {
+            var d = Math.hypot(_c.x - this._playerPos.x, _c.y - this._playerPos.y);
+
+            if (d < bestDist) {
+              bestDist = d;
+              best = _c;
+            }
+          }
+
+          this._nearestTarget = best;
+        }
+
+      }, _class2._inst = null, _class2)) || _class));
+
+      _cclegacy._RF.pop();
+
+      _crd = false;
+    }
+  };
+});
+//# sourceMappingURL=cde73d37687a9b4cbf3768f58304c92cbfa32f5e.js.map

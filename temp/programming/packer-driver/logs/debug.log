@@ -1,0 +1,711 @@
+15:06:52.641 debug: 2026/11/25 15:06:52
+15:06:52.641 debug: Project: /Users/liangqy/www/taptap/OtherworldLittleFarmV2
+15:06:52.641 debug: Targets: editor,preview
+15:06:52.642 debug: Packer deriver version file lost or format incorrect: Error: ENOENT: no such file or directory, open '/Users/liangqy/www/taptap/OtherworldLittleFarmV2/temp/programming/packer-driver/VERSION'
+15:06:52.642 debug: Clearing out the targets...
+15:06:52.643 debug: Engine path: /Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine
+15:06:52.647 debug: Initializing target [Editor]
+15:06:52.647 debug: Loading cache
+15:06:52.647 debug: No record files found: Error: ENOENT: no such file or directory, open '/Users/liangqy/www/taptap/OtherworldLittleFarmV2/temp/programming/packer-driver/targets/editor/main-record.json'
+15:06:52.647 debug: Loading cache costs 0.13466700000026322ms.
+15:06:52.647 debug: Engine features shipped in editor: base,gfx-webgl,gfx-webgl2,gfx-empty,gfx-webgpu,3d,animation,skeletal-animation,2d,rich-text,mask,graphics,ui-skew,ui,affine-transform,sorting-2d,particle,particle-2d,physics-framework,physics-cannon,physics-physx,physics-ammo,physics-builtin,physics-2d-framework,physics-2d-box2d-jsb,physics-2d-box2d,physics-2d-builtin,physics-2d-box2d-wasm,intersection-2d,primitive,profiler,occlusion-query,geometry-renderer,debug-renderer,audio,video,xr,light-probe,terrain,webview,tween,tiled-map,vendor-google,spine-3.8,spine-4.2,dragon-bones,marionette,procedural-animation,custom-pipeline,custom-pipeline-builtin-scripts,custom-pipeline-post-process,legacy-pipeline,websocket,websocket-server,meshopt
+15:06:52.647 debug: Our import map(foo:/bar): {
+  "imports": {
+    "cc": "cce:/internal/x/cc"
+  }
+}
+15:06:52.647 debug: Initializing target [Preview]
+15:06:52.648 debug: Loading cache
+15:06:52.648 debug: No record files found: Error: ENOENT: no such file or directory, open '/Users/liangqy/www/taptap/OtherworldLittleFarmV2/temp/programming/packer-driver/targets/preview/main-record.json'
+15:06:52.648 debug: Loading cache costs 0.42074999999931606ms.
+15:06:52.648 debug: Our import map(foo:/bar): {
+  "imports": {
+    "cc": "cce:/internal/x/cc"
+  }
+}
+15:06:52.666 debug: Sync engine features: 2d,affine-transform,animation,audio,base,custom-pipeline,dragon-bones,gfx-webgl,gfx-webgl2,graphics,intersection-2d,mask,particle-2d,physics-2d-box2d,profiler,rich-text,spine-3.8,tiled-map,tween,ui,video,webview
+15:06:52.667 debug: Reset databases. Enumerated domains: [
+  {
+    "root": "db://internal/",
+    "physical": "/Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets"
+  },
+  {
+    "root": "db://assets/",
+    "physical": "/Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets"
+  }
+]
+15:06:52.667 debug: Our import map(foo:/bar): {
+  "imports": {
+    "cc": "cce:/internal/x/cc",
+    "db://internal/": "file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/",
+    "db://assets/": "file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/"
+  }
+}
+15:06:52.668 debug: Our import map(foo:/bar): {
+  "imports": {
+    "cc": "cce:/internal/x/cc",
+    "db://internal/": "file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/",
+    "db://assets/": "file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/"
+  }
+}
+15:06:52.668 debug: Pulling asset-db.
+15:06:52.669 debug: Fetch asset-db cost: 1.7146250000005239ms.
+15:06:52.670 debug: Build iteration starts.
+Number of accumulated asset changes: 27
+Feature changed: false
+15:06:52.670 debug: Target(editor) build started.
+15:06:52.671 debug: QuickPack.build, lock file failed!, workspace: /Users/liangqy/www/taptap/OtherworldLittleFarmV2/temp/programming/packer-driver/targets/editor, err: Error: ENOENT: no such file or directory, lstat '/Users/liangqy/www/taptap/OtherworldLittleFarmV2/temp/programming/packer-driver/targets/editor'
+15:06:52.671 debug: Inspect cce:/internal/x/cc
+15:06:52.688 debug: transform url: 'cce:/internal/x/cc' costs: 16.80 ms
+15:06:52.689 debug: Resolve cce:/internal/x/cc-fu/base from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/base.
+15:06:52.689 debug: Resolve cce:/internal/x/cc-fu/gfx-webgl from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/gfx-webgl.
+15:06:52.689 debug: Resolve cce:/internal/x/cc-fu/gfx-webgl2 from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/gfx-webgl2.
+15:06:52.689 debug: Resolve cce:/internal/x/cc-fu/gfx-empty from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/gfx-empty.
+15:06:52.689 debug: Resolve cce:/internal/x/cc-fu/gfx-webgpu from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/gfx-webgpu.
+15:06:52.689 debug: Resolve cce:/internal/x/cc-fu/3d from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/3d.
+15:06:52.689 debug: Resolve cce:/internal/x/cc-fu/animation from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/animation.
+15:06:52.689 debug: Resolve cce:/internal/x/cc-fu/skeletal-animation from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/skeletal-animation.
+15:06:52.689 debug: Resolve cce:/internal/x/cc-fu/2d from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/2d.
+15:06:52.689 debug: Resolve cce:/internal/x/cc-fu/sorting from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/sorting.
+15:06:52.689 debug: Resolve cce:/internal/x/cc-fu/rich-text from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/rich-text.
+15:06:52.689 debug: Resolve cce:/internal/x/cc-fu/mask from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/mask.
+15:06:52.689 debug: Resolve cce:/internal/x/cc-fu/graphics from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/graphics.
+15:06:52.689 debug: Resolve cce:/internal/x/cc-fu/ui-skew from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/ui-skew.
+15:06:52.689 debug: Resolve cce:/internal/x/cc-fu/ui from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/ui.
+15:06:52.689 debug: Resolve cce:/internal/x/cc-fu/affine-transform from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/affine-transform.
+15:06:52.689 debug: Resolve cce:/internal/x/cc-fu/sorting-2d from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/sorting-2d.
+15:06:52.689 debug: Resolve cce:/internal/x/cc-fu/particle from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/particle.
+15:06:52.689 debug: Resolve cce:/internal/x/cc-fu/particle-2d from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/particle-2d.
+15:06:52.689 debug: Resolve cce:/internal/x/cc-fu/physics-framework from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/physics-framework.
+15:06:52.689 debug: Resolve cce:/internal/x/cc-fu/physics-cannon from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/physics-cannon.
+15:06:52.689 debug: Resolve cce:/internal/x/cc-fu/physics-physx from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/physics-physx.
+15:06:52.689 debug: Resolve cce:/internal/x/cc-fu/physics-ammo from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/physics-ammo.
+15:06:52.689 debug: Resolve cce:/internal/x/cc-fu/physics-builtin from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/physics-builtin.
+15:06:52.689 debug: Resolve cce:/internal/x/cc-fu/physics-2d-framework from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/physics-2d-framework.
+15:06:52.689 debug: Resolve cce:/internal/x/cc-fu/physics-2d-box2d-jsb from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/physics-2d-box2d-jsb.
+15:06:52.689 debug: Resolve cce:/internal/x/cc-fu/physics-2d-box2d from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/physics-2d-box2d.
+15:06:52.689 debug: Resolve cce:/internal/x/cc-fu/physics-2d-builtin from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/physics-2d-builtin.
+15:06:52.689 debug: Resolve cce:/internal/x/cc-fu/physics-2d-box2d-wasm from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/physics-2d-box2d-wasm.
+15:06:52.689 debug: Resolve cce:/internal/x/cc-fu/intersection-2d from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/intersection-2d.
+15:06:52.689 debug: Resolve cce:/internal/x/cc-fu/primitive from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/primitive.
+15:06:52.689 debug: Resolve cce:/internal/x/cc-fu/profiler from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/profiler.
+15:06:52.689 debug: Resolve cce:/internal/x/cc-fu/geometry-renderer from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/geometry-renderer.
+15:06:52.689 debug: Resolve cce:/internal/x/cc-fu/audio from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/audio.
+15:06:52.689 debug: Resolve cce:/internal/x/cc-fu/video from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/video.
+15:06:52.689 debug: Resolve cce:/internal/x/cc-fu/xr from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/xr.
+15:06:52.689 debug: Resolve cce:/internal/x/cc-fu/light-probe from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/light-probe.
+15:06:52.689 debug: Resolve cce:/internal/x/cc-fu/terrain from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/terrain.
+15:06:52.689 debug: Resolve cce:/internal/x/cc-fu/webview from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/webview.
+15:06:52.689 debug: Resolve cce:/internal/x/cc-fu/tween from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/tween.
+15:06:52.689 debug: Resolve cce:/internal/x/cc-fu/tiled-map from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/tiled-map.
+15:06:52.689 debug: Resolve cce:/internal/x/cc-fu/vendor-google from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/vendor-google.
+15:06:52.689 debug: Resolve cce:/internal/x/cc-fu/spine from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/spine.
+15:06:52.689 debug: Resolve cce:/internal/x/cc-fu/dragon-bones from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/dragon-bones.
+15:06:52.689 debug: Resolve cce:/internal/x/cc-fu/custom-pipeline from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/custom-pipeline.
+15:06:52.689 debug: Resolve cce:/internal/x/cc-fu/custom-pipeline-post-process from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/custom-pipeline-post-process.
+15:06:52.689 debug: Resolve cce:/internal/x/cc-fu/legacy-pipeline from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/legacy-pipeline.
+15:06:52.689 debug: Inspect cce:/internal/x/prerequisite-imports
+15:06:52.695 debug: transform url: 'cce:/internal/x/prerequisite-imports' costs: 6.10 ms
+15:06:52.695 debug: Resolve file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-dof-pass.ts from cce:/internal/x/prerequisite-imports as file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-dof-pass.ts.
+15:06:52.696 debug: Inspect file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-dof-pass.ts
+15:06:52.730 debug: transform url: 'file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-dof-pass.ts' costs: 34.20 ms
+15:06:52.730 debug: Resolve file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-pass.ts from cce:/internal/x/prerequisite-imports as file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-pass.ts.
+15:06:52.730 debug: Inspect file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-pass.ts
+15:06:52.738 debug: transform url: 'file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-pass.ts' costs: 7.40 ms
+15:06:52.738 debug: Resolve file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-settings.ts from cce:/internal/x/prerequisite-imports as file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-settings.ts.
+15:06:52.738 debug: Inspect file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-settings.ts
+15:06:52.761 debug: transform url: 'file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-settings.ts' costs: 22.20 ms
+15:06:52.761 debug: Resolve file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-types.ts from cce:/internal/x/prerequisite-imports as file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-types.ts.
+15:06:52.761 debug: Inspect file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-types.ts
+15:06:52.772 debug: transform url: 'file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-types.ts' costs: 10.80 ms
+15:06:52.772 debug: Resolve file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline.ts from cce:/internal/x/prerequisite-imports as file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline.ts.
+15:06:52.772 debug: Inspect file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline.ts
+15:06:52.854 debug: transform url: 'file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline.ts' costs: 81.50 ms
+15:06:52.855 debug: Resolve file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/tools/debug-view-runtime-control.ts from cce:/internal/x/prerequisite-imports as file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/tools/debug-view-runtime-control.ts.
+15:06:52.855 debug: Inspect file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/tools/debug-view-runtime-control.ts
+15:06:52.873 debug: transform url: 'file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/tools/debug-view-runtime-control.ts' costs: 17.80 ms
+15:06:52.874 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts.
+15:06:52.874 debug: Inspect file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts
+15:06:52.889 debug: transform url: 'file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts' costs: 15.70 ms
+15:06:52.890 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/ArtLoader.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/ArtLoader.ts.
+15:06:52.890 debug: Inspect file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/ArtLoader.ts
+15:06:52.895 debug: transform url: 'file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/ArtLoader.ts' costs: 5.20 ms
+15:06:52.896 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/AudioManager.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/AudioManager.ts.
+15:06:52.896 debug: Inspect file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/AudioManager.ts
+15:06:52.906 debug: transform url: 'file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/AudioManager.ts' costs: 10.50 ms
+15:06:52.907 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/DataManager.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/DataManager.ts.
+15:06:52.907 debug: Inspect file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/DataManager.ts
+15:06:52.915 debug: transform url: 'file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/DataManager.ts' costs: 8.50 ms
+15:06:52.916 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/EventBus.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/EventBus.ts.
+15:06:52.916 debug: Inspect file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/EventBus.ts
+15:06:52.921 debug: transform url: 'file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/EventBus.ts' costs: 5.30 ms
+15:06:52.921 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/GameTypes.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/GameTypes.ts.
+15:06:52.921 debug: Inspect file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/GameTypes.ts
+15:06:52.925 debug: transform url: 'file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/GameTypes.ts' costs: 3.90 ms
+15:06:52.926 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/SaveManager.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/SaveManager.ts.
+15:06:52.926 debug: Inspect file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/SaveManager.ts
+15:06:52.935 debug: transform url: 'file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/SaveManager.ts' costs: 9.40 ms
+15:06:52.935 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/TimeSystem.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/TimeSystem.ts.
+15:06:52.935 debug: Inspect file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/TimeSystem.ts
+15:06:52.945 debug: transform url: 'file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/TimeSystem.ts' costs: 9.30 ms
+15:06:52.945 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/dungeon/DungeonConfig.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/dungeon/DungeonConfig.ts.
+15:06:52.945 debug: Inspect file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/dungeon/DungeonConfig.ts
+15:06:52.975 debug: transform url: 'file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/dungeon/DungeonConfig.ts' costs: 30.20 ms
+15:06:52.976 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/farm/FarmSystem.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/farm/FarmSystem.ts.
+15:06:52.976 debug: Inspect file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/farm/FarmSystem.ts
+15:06:52.994 debug: transform url: 'file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/farm/FarmSystem.ts' costs: 17.70 ms
+15:06:52.995 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts.
+15:06:52.995 debug: Inspect file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts
+15:06:53.063 debug: transform url: 'file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts' costs: 68.00 ms
+15:06:53.064 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/platform/TapAdapter.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/platform/TapAdapter.ts.
+15:06:53.064 debug: Inspect file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/platform/TapAdapter.ts
+15:06:53.072 debug: transform url: 'file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/platform/TapAdapter.ts' costs: 8.80 ms
+15:06:53.073 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DebugPanel.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DebugPanel.ts.
+15:06:53.073 debug: Inspect file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DebugPanel.ts
+15:06:53.085 debug: transform url: 'file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DebugPanel.ts' costs: 11.90 ms
+15:06:53.085 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DefenseOverlay.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DefenseOverlay.ts.
+15:06:53.085 debug: Inspect file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DefenseOverlay.ts
+15:06:53.163 debug: transform url: 'file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DefenseOverlay.ts' costs: 77.10 ms
+15:06:53.164 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DungeonOverlay.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DungeonOverlay.ts.
+15:06:53.164 debug: Inspect file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DungeonOverlay.ts
+15:06:53.379 debug: transform url: 'file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DungeonOverlay.ts' costs: 215.00 ms
+15:06:53.381 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/FishingOverlay.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/FishingOverlay.ts.
+15:06:53.382 debug: Inspect file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/FishingOverlay.ts
+15:06:53.411 debug: transform url: 'file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/FishingOverlay.ts' costs: 29.30 ms
+15:06:53.412 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/IndoorOverlay.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/IndoorOverlay.ts.
+15:06:53.412 debug: Inspect file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/IndoorOverlay.ts
+15:06:53.461 debug: transform url: 'file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/IndoorOverlay.ts' costs: 49.30 ms
+15:06:53.462 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/NpcDialogOverlay.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/NpcDialogOverlay.ts.
+15:06:53.462 debug: Inspect file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/NpcDialogOverlay.ts
+15:06:53.489 debug: transform url: 'file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/NpcDialogOverlay.ts' costs: 27.10 ms
+15:06:53.489 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/OverworldHUD.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/OverworldHUD.ts.
+15:06:53.489 debug: Inspect file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/OverworldHUD.ts
+15:06:53.527 debug: transform url: 'file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/OverworldHUD.ts' costs: 37.50 ms
+15:06:53.528 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/SettingsOverlay.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/SettingsOverlay.ts.
+15:06:53.528 debug: Inspect file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/SettingsOverlay.ts
+15:06:53.545 debug: transform url: 'file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/SettingsOverlay.ts' costs: 17.20 ms
+15:06:53.545 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/VoyageOverlay.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/VoyageOverlay.ts.
+15:06:53.545 debug: Inspect file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/VoyageOverlay.ts
+15:06:53.599 debug: transform url: 'file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/VoyageOverlay.ts' costs: 54.00 ms
+15:06:53.600 debug: Resolve cce:/internal/code-quality/cr.mjs from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-dof-pass.ts as cce:/internal/code-quality/cr.mjs.
+15:06:53.600 debug: Inspect cce:/internal/code-quality/cr.mjs
+15:06:53.602 debug: transform url: 'cce:/internal/code-quality/cr.mjs' costs: 1.70 ms
+15:06:53.602 debug: Resolve cc from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-dof-pass.ts as cce:/internal/x/cc.
+15:06:53.602 debug: Resolve cc from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-dof-pass.ts as cce:/internal/x/cc.
+15:06:53.602 debug: Resolve cc from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-dof-pass.ts as cce:/internal/x/cc.
+15:06:53.602 debug: Resolve cc/env from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-dof-pass.ts as external dependency cc/env.
+15:06:53.602 debug: Resolve ./builtin-pipeline-settings from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-dof-pass.ts as file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-settings.ts.
+15:06:53.603 debug: Resolve ./builtin-pipeline-pass from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-dof-pass.ts as file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-pass.ts.
+15:06:53.603 debug: Resolve ./builtin-pipeline from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-dof-pass.ts as file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline.ts.
+15:06:53.603 debug: Resolve cce:/internal/code-quality/cr.mjs from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-settings.ts as cce:/internal/code-quality/cr.mjs.
+15:06:53.603 debug: Resolve cc from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-settings.ts as cce:/internal/x/cc.
+15:06:53.604 debug: Resolve cc from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-settings.ts as cce:/internal/x/cc.
+15:06:53.604 debug: Resolve cc from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-settings.ts as cce:/internal/x/cc.
+15:06:53.604 debug: Resolve cc/env from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-settings.ts as external dependency cc/env.
+15:06:53.604 debug: Resolve ./builtin-pipeline-types from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-settings.ts as file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-types.ts.
+15:06:53.604 debug: Resolve cc from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-types.ts as cce:/internal/x/cc.
+15:06:53.604 debug: Resolve cc from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-types.ts as cce:/internal/x/cc.
+15:06:53.604 debug: Resolve cc from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-types.ts as cce:/internal/x/cc.
+15:06:53.604 debug: Resolve cce:/internal/code-quality/cr.mjs from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-pass.ts as cce:/internal/code-quality/cr.mjs.
+15:06:53.604 debug: Resolve cc from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-pass.ts as cce:/internal/x/cc.
+15:06:53.604 debug: Resolve cc from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-pass.ts as cce:/internal/x/cc.
+15:06:53.604 debug: Resolve cc from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-pass.ts as cce:/internal/x/cc.
+15:06:53.604 debug: Resolve ./builtin-pipeline-settings from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-pass.ts as file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-settings.ts.
+15:06:53.604 debug: Resolve cc/env from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-pass.ts as external dependency cc/env.
+15:06:53.604 debug: Resolve cce:/internal/code-quality/cr.mjs from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline.ts as cce:/internal/code-quality/cr.mjs.
+15:06:53.604 debug: Resolve cc from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline.ts as cce:/internal/x/cc.
+15:06:53.604 debug: Resolve cc from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline.ts as cce:/internal/x/cc.
+15:06:53.604 debug: Resolve cc from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline.ts as cce:/internal/x/cc.
+15:06:53.604 debug: Resolve cc/env from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline.ts as external dependency cc/env.
+15:06:53.604 debug: Resolve ./builtin-pipeline-types from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline.ts as file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-types.ts.
+15:06:53.604 debug: Resolve cc from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/tools/debug-view-runtime-control.ts as cce:/internal/x/cc.
+15:06:53.604 debug: Resolve cc from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/tools/debug-view-runtime-control.ts as cce:/internal/x/cc.
+15:06:53.604 debug: Resolve cc from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/tools/debug-view-runtime-control.ts as cce:/internal/x/cc.
+15:06:53.604 debug: Resolve cce:/internal/code-quality/cr.mjs from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts as cce:/internal/code-quality/cr.mjs.
+15:06:53.604 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts as cce:/internal/x/cc.
+15:06:53.604 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts as cce:/internal/x/cc.
+15:06:53.604 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts as cce:/internal/x/cc.
+15:06:53.604 debug: Resolve ../core/DataManager from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/DataManager.ts.
+15:06:53.604 debug: Resolve ../core/EventBus from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/EventBus.ts.
+15:06:53.604 debug: Resolve ../core/SaveManager from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/SaveManager.ts.
+15:06:53.604 debug: Resolve ../core/TimeSystem from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/TimeSystem.ts.
+15:06:53.604 debug: Resolve ../platform/TapAdapter from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/platform/TapAdapter.ts.
+15:06:53.604 debug: Resolve cce:/internal/code-quality/cr.mjs from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/DataManager.ts as cce:/internal/code-quality/cr.mjs.
+15:06:53.604 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/DataManager.ts as cce:/internal/x/cc.
+15:06:53.604 debug: Resolve cce:/internal/code-quality/cr.mjs from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/EventBus.ts as cce:/internal/code-quality/cr.mjs.
+15:06:53.604 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/EventBus.ts as cce:/internal/x/cc.
+15:06:53.604 debug: Resolve cce:/internal/code-quality/cr.mjs from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/SaveManager.ts as cce:/internal/code-quality/cr.mjs.
+15:06:53.604 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/SaveManager.ts as cce:/internal/x/cc.
+15:06:53.604 debug: Resolve ./EventBus from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/SaveManager.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/EventBus.ts.
+15:06:53.604 debug: Resolve cce:/internal/code-quality/cr.mjs from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/TimeSystem.ts as cce:/internal/code-quality/cr.mjs.
+15:06:53.604 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/TimeSystem.ts as cce:/internal/x/cc.
+15:06:53.604 debug: Resolve ./EventBus from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/TimeSystem.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/EventBus.ts.
+15:06:53.604 debug: Resolve cce:/internal/code-quality/cr.mjs from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/platform/TapAdapter.ts as cce:/internal/code-quality/cr.mjs.
+15:06:53.605 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/platform/TapAdapter.ts as cce:/internal/x/cc.
+15:06:53.605 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/platform/TapAdapter.ts as cce:/internal/x/cc.
+15:06:53.605 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/platform/TapAdapter.ts as cce:/internal/x/cc.
+15:06:53.605 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/ArtLoader.ts as cce:/internal/x/cc.
+15:06:53.605 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/ArtLoader.ts as cce:/internal/x/cc.
+15:06:53.605 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/ArtLoader.ts as cce:/internal/x/cc.
+15:06:53.605 debug: Resolve cce:/internal/code-quality/cr.mjs from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/AudioManager.ts as cce:/internal/code-quality/cr.mjs.
+15:06:53.605 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/AudioManager.ts as cce:/internal/x/cc.
+15:06:53.605 debug: Resolve ../app/GameApp from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/AudioManager.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts.
+15:06:53.605 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/GameTypes.ts as cce:/internal/x/cc.
+15:06:53.605 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/dungeon/DungeonConfig.ts as cce:/internal/x/cc.
+15:06:53.605 debug: Resolve cce:/internal/code-quality/cr.mjs from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/farm/FarmSystem.ts as cce:/internal/code-quality/cr.mjs.
+15:06:53.605 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/farm/FarmSystem.ts as cce:/internal/x/cc.
+15:06:53.605 debug: Resolve ../../core/DataManager from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/farm/FarmSystem.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/DataManager.ts.
+15:06:53.605 debug: Resolve ../../core/EventBus from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/farm/FarmSystem.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/EventBus.ts.
+15:06:53.605 debug: Resolve ../../app/GameApp from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/farm/FarmSystem.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts.
+15:06:53.605 debug: Resolve cce:/internal/code-quality/cr.mjs from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts as cce:/internal/code-quality/cr.mjs.
+15:06:53.605 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts as cce:/internal/x/cc.
+15:06:53.605 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts as cce:/internal/x/cc.
+15:06:53.605 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts as cce:/internal/x/cc.
+15:06:53.605 debug: Resolve ../../core/DataManager from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/DataManager.ts.
+15:06:53.605 debug: Resolve ../../core/EventBus from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/EventBus.ts.
+15:06:53.605 debug: Resolve ../../app/GameApp from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts.
+15:06:53.605 debug: Resolve ../farm/FarmSystem from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/farm/FarmSystem.ts.
+15:06:53.605 debug: Resolve ../../ui/FishingOverlay from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/FishingOverlay.ts.
+15:06:53.605 debug: Resolve ../../ui/IndoorOverlay from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/IndoorOverlay.ts.
+15:06:53.605 debug: Resolve ../../ui/NpcDialogOverlay from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/NpcDialogOverlay.ts.
+15:06:53.605 debug: Resolve ../../ui/DungeonOverlay from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DungeonOverlay.ts.
+15:06:53.605 debug: Resolve ../../ui/DefenseOverlay from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DefenseOverlay.ts.
+15:06:53.605 debug: Resolve ../../ui/SettingsOverlay from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/SettingsOverlay.ts.
+15:06:53.605 debug: Resolve ../../ui/OverworldHUD from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/OverworldHUD.ts.
+15:06:53.605 debug: Resolve ../../ui/VoyageOverlay from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/VoyageOverlay.ts.
+15:06:53.605 debug: Resolve ../../core/ArtLoader from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/ArtLoader.ts.
+15:06:53.605 debug: Resolve cce:/internal/code-quality/cr.mjs from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/FishingOverlay.ts as cce:/internal/code-quality/cr.mjs.
+15:06:53.605 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/FishingOverlay.ts as cce:/internal/x/cc.
+15:06:53.605 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/FishingOverlay.ts as cce:/internal/x/cc.
+15:06:53.605 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/FishingOverlay.ts as cce:/internal/x/cc.
+15:06:53.605 debug: Resolve ../core/DataManager from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/FishingOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/DataManager.ts.
+15:06:53.605 debug: Resolve ../app/GameApp from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/FishingOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts.
+15:06:53.605 debug: Resolve ../core/ArtLoader from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/FishingOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/ArtLoader.ts.
+15:06:53.605 debug: Resolve ../core/AudioManager from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/FishingOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/AudioManager.ts.
+15:06:53.606 debug: Resolve ../gameplay/farm/FarmSystem from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/FishingOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/farm/FarmSystem.ts.
+15:06:53.606 debug: Resolve cce:/internal/code-quality/cr.mjs from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/IndoorOverlay.ts as cce:/internal/code-quality/cr.mjs.
+15:06:53.606 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/IndoorOverlay.ts as cce:/internal/x/cc.
+15:06:53.606 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/IndoorOverlay.ts as cce:/internal/x/cc.
+15:06:53.606 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/IndoorOverlay.ts as cce:/internal/x/cc.
+15:06:53.606 debug: Resolve ../core/DataManager from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/IndoorOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/DataManager.ts.
+15:06:53.606 debug: Resolve ../app/GameApp from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/IndoorOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts.
+15:06:53.606 debug: Resolve ../core/ArtLoader from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/IndoorOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/ArtLoader.ts.
+15:06:53.606 debug: Resolve ../core/AudioManager from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/IndoorOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/AudioManager.ts.
+15:06:53.606 debug: Resolve cce:/internal/code-quality/cr.mjs from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/NpcDialogOverlay.ts as cce:/internal/code-quality/cr.mjs.
+15:06:53.606 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/NpcDialogOverlay.ts as cce:/internal/x/cc.
+15:06:53.606 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/NpcDialogOverlay.ts as cce:/internal/x/cc.
+15:06:53.606 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/NpcDialogOverlay.ts as cce:/internal/x/cc.
+15:06:53.606 debug: Resolve ../core/DataManager from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/NpcDialogOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/DataManager.ts.
+15:06:53.606 debug: Resolve ../app/GameApp from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/NpcDialogOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts.
+15:06:53.606 debug: Resolve ./IndoorOverlay from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/NpcDialogOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/IndoorOverlay.ts.
+15:06:53.606 debug: Resolve ../core/ArtLoader from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/NpcDialogOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/ArtLoader.ts.
+15:06:53.606 debug: Resolve ../core/AudioManager from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/NpcDialogOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/AudioManager.ts.
+15:06:53.606 debug: Resolve cce:/internal/code-quality/cr.mjs from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DungeonOverlay.ts as cce:/internal/code-quality/cr.mjs.
+15:06:53.606 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DungeonOverlay.ts as cce:/internal/x/cc.
+15:06:53.606 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DungeonOverlay.ts as cce:/internal/x/cc.
+15:06:53.606 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DungeonOverlay.ts as cce:/internal/x/cc.
+15:06:53.606 debug: Resolve ../app/GameApp from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DungeonOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts.
+15:06:53.606 debug: Resolve ../core/ArtLoader from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DungeonOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/ArtLoader.ts.
+15:06:53.606 debug: Resolve ../core/AudioManager from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DungeonOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/AudioManager.ts.
+15:06:53.606 debug: Resolve ../gameplay/dungeon/DungeonConfig from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DungeonOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/dungeon/DungeonConfig.ts.
+15:06:53.606 debug: Resolve cce:/internal/code-quality/cr.mjs from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DefenseOverlay.ts as cce:/internal/code-quality/cr.mjs.
+15:06:53.610 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DefenseOverlay.ts as cce:/internal/x/cc.
+15:06:53.610 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DefenseOverlay.ts as cce:/internal/x/cc.
+15:06:53.610 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DefenseOverlay.ts as cce:/internal/x/cc.
+15:06:53.610 debug: Resolve ../core/ArtLoader from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DefenseOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/ArtLoader.ts.
+15:06:53.610 debug: Resolve ../core/AudioManager from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DefenseOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/AudioManager.ts.
+15:06:53.610 debug: Resolve ../app/GameApp from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DefenseOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts.
+15:06:53.610 debug: Resolve cce:/internal/code-quality/cr.mjs from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/SettingsOverlay.ts as cce:/internal/code-quality/cr.mjs.
+15:06:53.610 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/SettingsOverlay.ts as cce:/internal/x/cc.
+15:06:53.610 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/SettingsOverlay.ts as cce:/internal/x/cc.
+15:06:53.610 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/SettingsOverlay.ts as cce:/internal/x/cc.
+15:06:53.610 debug: Resolve ../core/AudioManager from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/SettingsOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/AudioManager.ts.
+15:06:53.610 debug: Resolve ../app/GameApp from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/SettingsOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts.
+15:06:53.610 debug: Resolve ./DebugPanel from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/SettingsOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DebugPanel.ts.
+15:06:53.610 debug: Resolve ./DungeonOverlay from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/SettingsOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DungeonOverlay.ts.
+15:06:53.610 debug: Resolve ./DefenseOverlay from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/SettingsOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DefenseOverlay.ts.
+15:06:53.610 debug: Resolve ./VoyageOverlay from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/SettingsOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/VoyageOverlay.ts.
+15:06:53.610 debug: Resolve ./FishingOverlay from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/SettingsOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/FishingOverlay.ts.
+15:06:53.610 debug: Resolve ./IndoorOverlay from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/SettingsOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/IndoorOverlay.ts.
+15:06:53.610 debug: Resolve cce:/internal/code-quality/cr.mjs from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DebugPanel.ts as cce:/internal/code-quality/cr.mjs.
+15:06:53.610 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DebugPanel.ts as cce:/internal/x/cc.
+15:06:53.610 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DebugPanel.ts as cce:/internal/x/cc.
+15:06:53.610 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DebugPanel.ts as cce:/internal/x/cc.
+15:06:53.610 debug: Resolve cc/env from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DebugPanel.ts as external dependency cc/env.
+15:06:53.610 debug: Resolve ../core/DataManager from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DebugPanel.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/DataManager.ts.
+15:06:53.610 debug: Resolve ../app/GameApp from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DebugPanel.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts.
+15:06:53.610 debug: Resolve cce:/internal/code-quality/cr.mjs from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/VoyageOverlay.ts as cce:/internal/code-quality/cr.mjs.
+15:06:53.610 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/VoyageOverlay.ts as cce:/internal/x/cc.
+15:06:53.610 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/VoyageOverlay.ts as cce:/internal/x/cc.
+15:06:53.610 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/VoyageOverlay.ts as cce:/internal/x/cc.
+15:06:53.610 debug: Resolve ../app/GameApp from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/VoyageOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts.
+15:06:53.610 debug: Resolve ../core/ArtLoader from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/VoyageOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/ArtLoader.ts.
+15:06:53.610 debug: Resolve ../core/AudioManager from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/VoyageOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/AudioManager.ts.
+15:06:53.610 debug: Resolve cce:/internal/code-quality/cr.mjs from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/OverworldHUD.ts as cce:/internal/code-quality/cr.mjs.
+15:06:53.610 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/OverworldHUD.ts as cce:/internal/x/cc.
+15:06:53.610 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/OverworldHUD.ts as cce:/internal/x/cc.
+15:06:53.610 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/OverworldHUD.ts as cce:/internal/x/cc.
+15:06:53.610 debug: Resolve ../core/EventBus from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/OverworldHUD.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/EventBus.ts.
+15:06:53.610 debug: Resolve ../app/GameApp from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/OverworldHUD.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts.
+15:06:53.610 debug: Resolve ../gameplay/farm/FarmSystem from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/OverworldHUD.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/farm/FarmSystem.ts.
+15:06:53.610 debug: Resolve ../gameplay/overworld/OverworldController from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/OverworldHUD.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts.
+15:06:53.610 debug: Resolve ./FishingOverlay from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/OverworldHUD.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/FishingOverlay.ts.
+15:06:53.610 debug: Resolve ./IndoorOverlay from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/OverworldHUD.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/IndoorOverlay.ts.
+15:06:53.610 debug: Resolve ./NpcDialogOverlay from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/OverworldHUD.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/NpcDialogOverlay.ts.
+15:06:53.610 debug: Resolve ./DungeonOverlay from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/OverworldHUD.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DungeonOverlay.ts.
+15:06:53.610 debug: Resolve ./DefenseOverlay from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/OverworldHUD.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DefenseOverlay.ts.
+15:06:53.610 debug: Resolve ./VoyageOverlay from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/OverworldHUD.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/VoyageOverlay.ts.
+15:06:53.610 debug: Resolve ../core/ArtLoader from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/OverworldHUD.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/ArtLoader.ts.
+15:06:53.610 debug: Resolve ../core/AudioManager from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/OverworldHUD.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/AudioManager.ts.
+15:06:53.611 debug: Target(editor) ends with cost 940.945208000001ms.
+15:06:53.611 debug: Target(preview) build started.
+15:06:53.612 debug: QuickPack.build, lock file failed!, workspace: /Users/liangqy/www/taptap/OtherworldLittleFarmV2/temp/programming/packer-driver/targets/preview, err: Error: ENOENT: no such file or directory, lstat '/Users/liangqy/www/taptap/OtherworldLittleFarmV2/temp/programming/packer-driver/targets/preview'
+15:06:53.612 debug: Inspect cce:/internal/x/cc
+15:06:53.618 debug: transform url: 'cce:/internal/x/cc' costs: 5.70 ms
+15:06:53.618 debug: Resolve cce:/internal/x/cc-fu/2d from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/2d.
+15:06:53.618 debug: Resolve cce:/internal/x/cc-fu/sorting from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/sorting.
+15:06:53.618 debug: Resolve cce:/internal/x/cc-fu/affine-transform from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/affine-transform.
+15:06:53.618 debug: Resolve cce:/internal/x/cc-fu/animation from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/animation.
+15:06:53.618 debug: Resolve cce:/internal/x/cc-fu/audio from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/audio.
+15:06:53.618 debug: Resolve cce:/internal/x/cc-fu/base from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/base.
+15:06:53.618 debug: Resolve cce:/internal/x/cc-fu/custom-pipeline from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/custom-pipeline.
+15:06:53.618 debug: Resolve cce:/internal/x/cc-fu/dragon-bones from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/dragon-bones.
+15:06:53.618 debug: Resolve cce:/internal/x/cc-fu/gfx-webgl from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/gfx-webgl.
+15:06:53.618 debug: Resolve cce:/internal/x/cc-fu/gfx-webgl2 from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/gfx-webgl2.
+15:06:53.618 debug: Resolve cce:/internal/x/cc-fu/graphics from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/graphics.
+15:06:53.618 debug: Resolve cce:/internal/x/cc-fu/intersection-2d from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/intersection-2d.
+15:06:53.618 debug: Resolve cce:/internal/x/cc-fu/mask from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/mask.
+15:06:53.618 debug: Resolve cce:/internal/x/cc-fu/particle-2d from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/particle-2d.
+15:06:53.618 debug: Resolve cce:/internal/x/cc-fu/physics-2d-box2d from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/physics-2d-box2d.
+15:06:53.618 debug: Resolve cce:/internal/x/cc-fu/physics-2d-framework from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/physics-2d-framework.
+15:06:53.618 debug: Resolve cce:/internal/x/cc-fu/profiler from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/profiler.
+15:06:53.618 debug: Resolve cce:/internal/x/cc-fu/rich-text from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/rich-text.
+15:06:53.618 debug: Resolve cce:/internal/x/cc-fu/spine from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/spine.
+15:06:53.618 debug: Resolve cce:/internal/x/cc-fu/tiled-map from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/tiled-map.
+15:06:53.618 debug: Resolve cce:/internal/x/cc-fu/tween from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/tween.
+15:06:53.618 debug: Resolve cce:/internal/x/cc-fu/ui from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/ui.
+15:06:53.618 debug: Resolve cce:/internal/x/cc-fu/video from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/video.
+15:06:53.618 debug: Resolve cce:/internal/x/cc-fu/webview from cce:/internal/x/cc as external dependency cce:/internal/x/cc-fu/webview.
+15:06:53.618 debug: Inspect cce:/internal/x/prerequisite-imports
+15:06:53.621 debug: transform url: 'cce:/internal/x/prerequisite-imports' costs: 2.50 ms
+15:06:53.621 debug: Resolve file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-dof-pass.ts from cce:/internal/x/prerequisite-imports as file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-dof-pass.ts.
+15:06:53.621 debug: Inspect file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-dof-pass.ts
+15:06:53.640 debug: transform url: 'file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-dof-pass.ts' costs: 18.60 ms
+15:06:53.640 debug: Resolve file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-pass.ts from cce:/internal/x/prerequisite-imports as file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-pass.ts.
+15:06:53.640 debug: Inspect file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-pass.ts
+15:06:53.646 debug: transform url: 'file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-pass.ts' costs: 5.90 ms
+15:06:53.646 debug: Resolve file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-settings.ts from cce:/internal/x/prerequisite-imports as file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-settings.ts.
+15:06:53.646 debug: Inspect file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-settings.ts
+15:06:53.667 debug: transform url: 'file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-settings.ts' costs: 20.40 ms
+15:06:53.668 debug: Resolve file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-types.ts from cce:/internal/x/prerequisite-imports as file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-types.ts.
+15:06:53.668 debug: Inspect file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-types.ts
+15:06:53.678 debug: transform url: 'file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-types.ts' costs: 9.80 ms
+15:06:53.679 debug: Resolve file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline.ts from cce:/internal/x/prerequisite-imports as file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline.ts.
+15:06:53.679 debug: Inspect file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline.ts
+15:06:53.750 debug: transform url: 'file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline.ts' costs: 71.10 ms
+15:06:53.751 debug: Resolve file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/tools/debug-view-runtime-control.ts from cce:/internal/x/prerequisite-imports as file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/tools/debug-view-runtime-control.ts.
+15:06:53.751 debug: Inspect file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/tools/debug-view-runtime-control.ts
+15:06:53.771 debug: transform url: 'file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/tools/debug-view-runtime-control.ts' costs: 20.00 ms
+15:06:53.771 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts.
+15:06:53.771 debug: Inspect file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts
+15:06:53.788 debug: transform url: 'file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts' costs: 16.50 ms
+15:06:53.788 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/ArtLoader.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/ArtLoader.ts.
+15:06:53.788 debug: Inspect file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/ArtLoader.ts
+15:06:53.795 debug: transform url: 'file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/ArtLoader.ts' costs: 6.30 ms
+15:06:53.796 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/AudioManager.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/AudioManager.ts.
+15:06:53.796 debug: Inspect file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/AudioManager.ts
+15:06:53.806 debug: transform url: 'file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/AudioManager.ts' costs: 10.60 ms
+15:06:53.807 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/DataManager.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/DataManager.ts.
+15:06:53.807 debug: Inspect file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/DataManager.ts
+15:06:53.817 debug: transform url: 'file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/DataManager.ts' costs: 10.60 ms
+15:06:53.818 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/EventBus.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/EventBus.ts.
+15:06:53.818 debug: Inspect file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/EventBus.ts
+15:06:53.824 debug: transform url: 'file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/EventBus.ts' costs: 6.60 ms
+15:06:53.825 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/GameTypes.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/GameTypes.ts.
+15:06:53.825 debug: Inspect file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/GameTypes.ts
+15:06:53.828 debug: transform url: 'file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/GameTypes.ts' costs: 3.90 ms
+15:06:53.829 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/SaveManager.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/SaveManager.ts.
+15:06:53.829 debug: Inspect file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/SaveManager.ts
+15:06:53.840 debug: transform url: 'file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/SaveManager.ts' costs: 11.60 ms
+15:06:53.841 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/TimeSystem.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/TimeSystem.ts.
+15:06:53.841 debug: Inspect file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/TimeSystem.ts
+15:06:53.851 debug: transform url: 'file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/TimeSystem.ts' costs: 10.40 ms
+15:06:53.852 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/dungeon/DungeonConfig.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/dungeon/DungeonConfig.ts.
+15:06:53.852 debug: Inspect file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/dungeon/DungeonConfig.ts
+15:06:53.885 debug: transform url: 'file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/dungeon/DungeonConfig.ts' costs: 32.60 ms
+15:06:53.885 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/farm/FarmSystem.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/farm/FarmSystem.ts.
+15:06:53.885 debug: Inspect file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/farm/FarmSystem.ts
+15:06:53.906 debug: transform url: 'file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/farm/FarmSystem.ts' costs: 20.80 ms
+15:06:53.907 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts.
+15:06:53.907 debug: Inspect file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts
+15:06:53.980 debug: transform url: 'file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts' costs: 73.20 ms
+15:06:53.981 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/platform/TapAdapter.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/platform/TapAdapter.ts.
+15:06:53.981 debug: Inspect file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/platform/TapAdapter.ts
+15:06:53.990 debug: transform url: 'file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/platform/TapAdapter.ts' costs: 8.50 ms
+15:06:53.990 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DebugPanel.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DebugPanel.ts.
+15:06:53.990 debug: Inspect file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DebugPanel.ts
+15:06:54.000 debug: transform url: 'file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DebugPanel.ts' costs: 10.50 ms
+15:06:54.001 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DefenseOverlay.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DefenseOverlay.ts.
+15:06:54.001 debug: Inspect file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DefenseOverlay.ts
+15:06:54.082 debug: transform url: 'file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DefenseOverlay.ts' costs: 80.60 ms
+15:06:54.083 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DungeonOverlay.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DungeonOverlay.ts.
+15:06:54.083 debug: Inspect file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DungeonOverlay.ts
+15:06:54.345 debug: transform url: 'file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DungeonOverlay.ts' costs: 261.70 ms
+15:06:54.347 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/FishingOverlay.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/FishingOverlay.ts.
+15:06:54.347 debug: Inspect file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/FishingOverlay.ts
+15:06:54.378 debug: transform url: 'file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/FishingOverlay.ts' costs: 31.00 ms
+15:06:54.379 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/IndoorOverlay.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/IndoorOverlay.ts.
+15:06:54.379 debug: Inspect file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/IndoorOverlay.ts
+15:06:54.436 debug: transform url: 'file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/IndoorOverlay.ts' costs: 56.80 ms
+15:06:54.436 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/NpcDialogOverlay.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/NpcDialogOverlay.ts.
+15:06:54.436 debug: Inspect file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/NpcDialogOverlay.ts
+15:06:54.460 debug: transform url: 'file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/NpcDialogOverlay.ts' costs: 23.70 ms
+15:06:54.461 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/OverworldHUD.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/OverworldHUD.ts.
+15:06:54.461 debug: Inspect file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/OverworldHUD.ts
+15:06:54.501 debug: transform url: 'file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/OverworldHUD.ts' costs: 40.00 ms
+15:06:54.501 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/SettingsOverlay.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/SettingsOverlay.ts.
+15:06:54.502 debug: Inspect file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/SettingsOverlay.ts
+15:06:54.520 debug: transform url: 'file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/SettingsOverlay.ts' costs: 18.60 ms
+15:06:54.521 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/VoyageOverlay.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/VoyageOverlay.ts.
+15:06:54.521 debug: Inspect file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/VoyageOverlay.ts
+15:06:54.580 debug: transform url: 'file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/VoyageOverlay.ts' costs: 59.30 ms
+15:06:54.581 debug: Resolve cce:/internal/code-quality/cr.mjs from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-dof-pass.ts as cce:/internal/code-quality/cr.mjs.
+15:06:54.581 debug: Inspect cce:/internal/code-quality/cr.mjs
+15:06:54.583 debug: transform url: 'cce:/internal/code-quality/cr.mjs' costs: 2.20 ms
+15:06:54.583 debug: Resolve cc from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-dof-pass.ts as cce:/internal/x/cc.
+15:06:54.583 debug: Resolve cc from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-dof-pass.ts as cce:/internal/x/cc.
+15:06:54.583 debug: Resolve cc from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-dof-pass.ts as cce:/internal/x/cc.
+15:06:54.583 debug: Resolve cc/env from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-dof-pass.ts as external dependency cc/env.
+15:06:54.583 debug: Resolve ./builtin-pipeline-settings from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-dof-pass.ts as file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-settings.ts.
+15:06:54.583 debug: Resolve ./builtin-pipeline-pass from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-dof-pass.ts as file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-pass.ts.
+15:06:54.583 debug: Resolve ./builtin-pipeline from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-dof-pass.ts as file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline.ts.
+15:06:54.583 debug: Resolve cce:/internal/code-quality/cr.mjs from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-settings.ts as cce:/internal/code-quality/cr.mjs.
+15:06:54.583 debug: Resolve cc from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-settings.ts as cce:/internal/x/cc.
+15:06:54.583 debug: Resolve cc from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-settings.ts as cce:/internal/x/cc.
+15:06:54.583 debug: Resolve cc from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-settings.ts as cce:/internal/x/cc.
+15:06:54.583 debug: Resolve cc/env from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-settings.ts as external dependency cc/env.
+15:06:54.584 debug: Resolve ./builtin-pipeline-types from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-settings.ts as file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-types.ts.
+15:06:54.584 debug: Resolve cc from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-types.ts as cce:/internal/x/cc.
+15:06:54.584 debug: Resolve cc from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-types.ts as cce:/internal/x/cc.
+15:06:54.584 debug: Resolve cc from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-types.ts as cce:/internal/x/cc.
+15:06:54.584 debug: Resolve cce:/internal/code-quality/cr.mjs from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-pass.ts as cce:/internal/code-quality/cr.mjs.
+15:06:54.584 debug: Resolve cc from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-pass.ts as cce:/internal/x/cc.
+15:06:54.584 debug: Resolve cc from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-pass.ts as cce:/internal/x/cc.
+15:06:54.584 debug: Resolve cc from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-pass.ts as cce:/internal/x/cc.
+15:06:54.584 debug: Resolve ./builtin-pipeline-settings from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-pass.ts as file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-settings.ts.
+15:06:54.584 debug: Resolve cc/env from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-pass.ts as external dependency cc/env.
+15:06:54.584 debug: Resolve cce:/internal/code-quality/cr.mjs from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline.ts as cce:/internal/code-quality/cr.mjs.
+15:06:54.584 debug: Resolve cc from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline.ts as cce:/internal/x/cc.
+15:06:54.584 debug: Resolve cc from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline.ts as cce:/internal/x/cc.
+15:06:54.584 debug: Resolve cc from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline.ts as cce:/internal/x/cc.
+15:06:54.584 debug: Resolve cc/env from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline.ts as external dependency cc/env.
+15:06:54.584 debug: Resolve ./builtin-pipeline-types from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline.ts as file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-types.ts.
+15:06:54.584 debug: Resolve cc from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/tools/debug-view-runtime-control.ts as cce:/internal/x/cc.
+15:06:54.584 debug: Resolve cc from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/tools/debug-view-runtime-control.ts as cce:/internal/x/cc.
+15:06:54.584 debug: Resolve cc from file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/tools/debug-view-runtime-control.ts as cce:/internal/x/cc.
+15:06:54.584 debug: Resolve cce:/internal/code-quality/cr.mjs from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts as cce:/internal/code-quality/cr.mjs.
+15:06:54.584 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts as cce:/internal/x/cc.
+15:06:54.584 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts as cce:/internal/x/cc.
+15:06:54.584 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts as cce:/internal/x/cc.
+15:06:54.584 debug: Resolve ../core/DataManager from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/DataManager.ts.
+15:06:54.584 debug: Resolve ../core/EventBus from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/EventBus.ts.
+15:06:54.584 debug: Resolve ../core/SaveManager from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/SaveManager.ts.
+15:06:54.584 debug: Resolve ../core/TimeSystem from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/TimeSystem.ts.
+15:06:54.584 debug: Resolve ../platform/TapAdapter from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/platform/TapAdapter.ts.
+15:06:54.584 debug: Resolve cce:/internal/code-quality/cr.mjs from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/DataManager.ts as cce:/internal/code-quality/cr.mjs.
+15:06:54.584 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/DataManager.ts as cce:/internal/x/cc.
+15:06:54.584 debug: Resolve cce:/internal/code-quality/cr.mjs from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/EventBus.ts as cce:/internal/code-quality/cr.mjs.
+15:06:54.584 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/EventBus.ts as cce:/internal/x/cc.
+15:06:54.584 debug: Resolve cce:/internal/code-quality/cr.mjs from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/SaveManager.ts as cce:/internal/code-quality/cr.mjs.
+15:06:54.584 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/SaveManager.ts as cce:/internal/x/cc.
+15:06:54.584 debug: Resolve ./EventBus from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/SaveManager.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/EventBus.ts.
+15:06:54.584 debug: Resolve cce:/internal/code-quality/cr.mjs from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/TimeSystem.ts as cce:/internal/code-quality/cr.mjs.
+15:06:54.584 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/TimeSystem.ts as cce:/internal/x/cc.
+15:06:54.584 debug: Resolve ./EventBus from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/TimeSystem.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/EventBus.ts.
+15:06:54.584 debug: Resolve cce:/internal/code-quality/cr.mjs from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/platform/TapAdapter.ts as cce:/internal/code-quality/cr.mjs.
+15:06:54.584 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/platform/TapAdapter.ts as cce:/internal/x/cc.
+15:06:54.584 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/platform/TapAdapter.ts as cce:/internal/x/cc.
+15:06:54.584 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/platform/TapAdapter.ts as cce:/internal/x/cc.
+15:06:54.584 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/ArtLoader.ts as cce:/internal/x/cc.
+15:06:54.584 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/ArtLoader.ts as cce:/internal/x/cc.
+15:06:54.584 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/ArtLoader.ts as cce:/internal/x/cc.
+15:06:54.584 debug: Resolve cce:/internal/code-quality/cr.mjs from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/AudioManager.ts as cce:/internal/code-quality/cr.mjs.
+15:06:54.584 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/AudioManager.ts as cce:/internal/x/cc.
+15:06:54.584 debug: Resolve ../app/GameApp from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/AudioManager.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts.
+15:06:54.584 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/GameTypes.ts as cce:/internal/x/cc.
+15:06:54.584 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/dungeon/DungeonConfig.ts as cce:/internal/x/cc.
+15:06:54.584 debug: Resolve cce:/internal/code-quality/cr.mjs from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/farm/FarmSystem.ts as cce:/internal/code-quality/cr.mjs.
+15:06:54.584 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/farm/FarmSystem.ts as cce:/internal/x/cc.
+15:06:54.584 debug: Resolve ../../core/DataManager from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/farm/FarmSystem.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/DataManager.ts.
+15:06:54.584 debug: Resolve ../../core/EventBus from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/farm/FarmSystem.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/EventBus.ts.
+15:06:54.584 debug: Resolve ../../app/GameApp from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/farm/FarmSystem.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts.
+15:06:54.584 debug: Resolve cce:/internal/code-quality/cr.mjs from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts as cce:/internal/code-quality/cr.mjs.
+15:06:54.585 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts as cce:/internal/x/cc.
+15:06:54.585 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts as cce:/internal/x/cc.
+15:06:54.585 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts as cce:/internal/x/cc.
+15:06:54.585 debug: Resolve ../../core/DataManager from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/DataManager.ts.
+15:06:54.585 debug: Resolve ../../core/EventBus from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/EventBus.ts.
+15:06:54.585 debug: Resolve ../../app/GameApp from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts.
+15:06:54.585 debug: Resolve ../farm/FarmSystem from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/farm/FarmSystem.ts.
+15:06:54.585 debug: Resolve ../../ui/FishingOverlay from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/FishingOverlay.ts.
+15:06:54.585 debug: Resolve ../../ui/IndoorOverlay from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/IndoorOverlay.ts.
+15:06:54.585 debug: Resolve ../../ui/NpcDialogOverlay from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/NpcDialogOverlay.ts.
+15:06:54.585 debug: Resolve ../../ui/DungeonOverlay from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DungeonOverlay.ts.
+15:06:54.585 debug: Resolve ../../ui/DefenseOverlay from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DefenseOverlay.ts.
+15:06:54.585 debug: Resolve ../../ui/SettingsOverlay from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/SettingsOverlay.ts.
+15:06:54.585 debug: Resolve ../../ui/OverworldHUD from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/OverworldHUD.ts.
+15:06:54.585 debug: Resolve ../../ui/VoyageOverlay from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/VoyageOverlay.ts.
+15:06:54.585 debug: Resolve ../../core/ArtLoader from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/ArtLoader.ts.
+15:06:54.585 debug: Resolve cce:/internal/code-quality/cr.mjs from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/FishingOverlay.ts as cce:/internal/code-quality/cr.mjs.
+15:06:54.585 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/FishingOverlay.ts as cce:/internal/x/cc.
+15:06:54.585 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/FishingOverlay.ts as cce:/internal/x/cc.
+15:06:54.585 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/FishingOverlay.ts as cce:/internal/x/cc.
+15:06:54.585 debug: Resolve ../core/DataManager from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/FishingOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/DataManager.ts.
+15:06:54.585 debug: Resolve ../app/GameApp from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/FishingOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts.
+15:06:54.585 debug: Resolve ../core/ArtLoader from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/FishingOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/ArtLoader.ts.
+15:06:54.585 debug: Resolve ../core/AudioManager from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/FishingOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/AudioManager.ts.
+15:06:54.585 debug: Resolve ../gameplay/farm/FarmSystem from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/FishingOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/farm/FarmSystem.ts.
+15:06:54.585 debug: Resolve cce:/internal/code-quality/cr.mjs from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/IndoorOverlay.ts as cce:/internal/code-quality/cr.mjs.
+15:06:54.585 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/IndoorOverlay.ts as cce:/internal/x/cc.
+15:06:54.585 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/IndoorOverlay.ts as cce:/internal/x/cc.
+15:06:54.585 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/IndoorOverlay.ts as cce:/internal/x/cc.
+15:06:54.585 debug: Resolve ../core/DataManager from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/IndoorOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/DataManager.ts.
+15:06:54.585 debug: Resolve ../app/GameApp from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/IndoorOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts.
+15:06:54.585 debug: Resolve ../core/ArtLoader from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/IndoorOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/ArtLoader.ts.
+15:06:54.585 debug: Resolve ../core/AudioManager from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/IndoorOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/AudioManager.ts.
+15:06:54.585 debug: Resolve cce:/internal/code-quality/cr.mjs from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/NpcDialogOverlay.ts as cce:/internal/code-quality/cr.mjs.
+15:06:54.585 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/NpcDialogOverlay.ts as cce:/internal/x/cc.
+15:06:54.585 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/NpcDialogOverlay.ts as cce:/internal/x/cc.
+15:06:54.585 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/NpcDialogOverlay.ts as cce:/internal/x/cc.
+15:06:54.585 debug: Resolve ../core/DataManager from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/NpcDialogOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/DataManager.ts.
+15:06:54.585 debug: Resolve ../app/GameApp from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/NpcDialogOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts.
+15:06:54.585 debug: Resolve ./IndoorOverlay from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/NpcDialogOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/IndoorOverlay.ts.
+15:06:54.586 debug: Resolve ../core/ArtLoader from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/NpcDialogOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/ArtLoader.ts.
+15:06:54.586 debug: Resolve ../core/AudioManager from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/NpcDialogOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/AudioManager.ts.
+15:06:54.586 debug: Resolve cce:/internal/code-quality/cr.mjs from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DungeonOverlay.ts as cce:/internal/code-quality/cr.mjs.
+15:06:54.586 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DungeonOverlay.ts as cce:/internal/x/cc.
+15:06:54.586 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DungeonOverlay.ts as cce:/internal/x/cc.
+15:06:54.586 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DungeonOverlay.ts as cce:/internal/x/cc.
+15:06:54.586 debug: Resolve ../app/GameApp from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DungeonOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts.
+15:06:54.586 debug: Resolve ../core/ArtLoader from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DungeonOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/ArtLoader.ts.
+15:06:54.586 debug: Resolve ../core/AudioManager from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DungeonOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/AudioManager.ts.
+15:06:54.586 debug: Resolve ../gameplay/dungeon/DungeonConfig from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DungeonOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/dungeon/DungeonConfig.ts.
+15:06:54.586 debug: Resolve cce:/internal/code-quality/cr.mjs from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DefenseOverlay.ts as cce:/internal/code-quality/cr.mjs.
+15:06:54.586 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DefenseOverlay.ts as cce:/internal/x/cc.
+15:06:54.586 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DefenseOverlay.ts as cce:/internal/x/cc.
+15:06:54.586 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DefenseOverlay.ts as cce:/internal/x/cc.
+15:06:54.586 debug: Resolve ../core/ArtLoader from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DefenseOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/ArtLoader.ts.
+15:06:54.586 debug: Resolve ../core/AudioManager from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DefenseOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/AudioManager.ts.
+15:06:54.586 debug: Resolve ../app/GameApp from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DefenseOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts.
+15:06:54.586 debug: Resolve cce:/internal/code-quality/cr.mjs from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/SettingsOverlay.ts as cce:/internal/code-quality/cr.mjs.
+15:06:54.586 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/SettingsOverlay.ts as cce:/internal/x/cc.
+15:06:54.586 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/SettingsOverlay.ts as cce:/internal/x/cc.
+15:06:54.586 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/SettingsOverlay.ts as cce:/internal/x/cc.
+15:06:54.586 debug: Resolve ../core/AudioManager from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/SettingsOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/AudioManager.ts.
+15:06:54.586 debug: Resolve ../app/GameApp from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/SettingsOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts.
+15:06:54.586 debug: Resolve ./DebugPanel from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/SettingsOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DebugPanel.ts.
+15:06:54.586 debug: Resolve ./DungeonOverlay from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/SettingsOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DungeonOverlay.ts.
+15:06:54.586 debug: Resolve ./DefenseOverlay from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/SettingsOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DefenseOverlay.ts.
+15:06:54.586 debug: Resolve ./VoyageOverlay from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/SettingsOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/VoyageOverlay.ts.
+15:06:54.586 debug: Resolve ./FishingOverlay from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/SettingsOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/FishingOverlay.ts.
+15:06:54.589 debug: Resolve ./IndoorOverlay from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/SettingsOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/IndoorOverlay.ts.
+15:06:54.589 debug: Resolve cce:/internal/code-quality/cr.mjs from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DebugPanel.ts as cce:/internal/code-quality/cr.mjs.
+15:06:54.589 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DebugPanel.ts as cce:/internal/x/cc.
+15:06:54.589 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DebugPanel.ts as cce:/internal/x/cc.
+15:06:54.589 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DebugPanel.ts as cce:/internal/x/cc.
+15:06:54.589 debug: Resolve cc/env from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DebugPanel.ts as external dependency cc/env.
+15:06:54.589 debug: Resolve ../core/DataManager from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DebugPanel.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/DataManager.ts.
+15:06:54.589 debug: Resolve ../app/GameApp from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DebugPanel.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts.
+15:06:54.589 debug: Resolve cce:/internal/code-quality/cr.mjs from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/VoyageOverlay.ts as cce:/internal/code-quality/cr.mjs.
+15:06:54.589 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/VoyageOverlay.ts as cce:/internal/x/cc.
+15:06:54.589 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/VoyageOverlay.ts as cce:/internal/x/cc.
+15:06:54.589 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/VoyageOverlay.ts as cce:/internal/x/cc.
+15:06:54.589 debug: Resolve ../app/GameApp from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/VoyageOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts.
+15:06:54.589 debug: Resolve ../core/ArtLoader from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/VoyageOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/ArtLoader.ts.
+15:06:54.589 debug: Resolve ../core/AudioManager from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/VoyageOverlay.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/AudioManager.ts.
+15:06:54.589 debug: Resolve cce:/internal/code-quality/cr.mjs from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/OverworldHUD.ts as cce:/internal/code-quality/cr.mjs.
+15:06:54.589 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/OverworldHUD.ts as cce:/internal/x/cc.
+15:06:54.589 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/OverworldHUD.ts as cce:/internal/x/cc.
+15:06:54.589 debug: Resolve cc from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/OverworldHUD.ts as cce:/internal/x/cc.
+15:06:54.589 debug: Resolve ../core/EventBus from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/OverworldHUD.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/EventBus.ts.
+15:06:54.589 debug: Resolve ../app/GameApp from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/OverworldHUD.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts.
+15:06:54.589 debug: Resolve ../gameplay/farm/FarmSystem from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/OverworldHUD.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/farm/FarmSystem.ts.
+15:06:54.589 debug: Resolve ../gameplay/overworld/OverworldController from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/OverworldHUD.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts.
+15:06:54.589 debug: Resolve ./FishingOverlay from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/OverworldHUD.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/FishingOverlay.ts.
+15:06:54.589 debug: Resolve ./IndoorOverlay from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/OverworldHUD.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/IndoorOverlay.ts.
+15:06:54.589 debug: Resolve ./NpcDialogOverlay from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/OverworldHUD.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/NpcDialogOverlay.ts.
+15:06:54.589 debug: Resolve ./DungeonOverlay from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/OverworldHUD.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DungeonOverlay.ts.
+15:06:54.589 debug: Resolve ./DefenseOverlay from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/OverworldHUD.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DefenseOverlay.ts.
+15:06:54.589 debug: Resolve ./VoyageOverlay from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/OverworldHUD.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/VoyageOverlay.ts.
+15:06:54.589 debug: Resolve ../core/ArtLoader from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/OverworldHUD.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/ArtLoader.ts.
+15:06:54.589 debug: Resolve ../core/AudioManager from file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/OverworldHUD.ts as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/AudioManager.ts.
+15:06:54.590 debug: Target(preview) ends with cost 978.471375000001ms.
+15:06:55.975 debug: Pulling asset-db.
+15:06:56.210 debug: Fetch asset-db cost: 234.81854100000055ms.
+15:06:56.212 debug: Build iteration starts.
+Number of accumulated asset changes: 27
+Feature changed: false
+15:06:56.212 debug: Target(editor) build started.
+15:06:56.213 debug: Detected change: cce:/internal/x/prerequisite-imports. Last mtime: Thu Jan 01 1970 08:00:08 GMT+0800 (中国标准时间), Current mtime: Thu Jan 01 1970 08:00:12 GMT+0800 (中国标准时间)
+15:06:56.213 debug: Inspect cce:/internal/x/prerequisite-imports
+15:06:56.220 debug: transform url: 'cce:/internal/x/prerequisite-imports' costs: 7.10 ms
+15:06:56.221 debug: Resolve file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-dof-pass.ts from cce:/internal/x/prerequisite-imports as file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-dof-pass.ts.
+15:06:56.221 debug: Resolve file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-pass.ts from cce:/internal/x/prerequisite-imports as file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-pass.ts.
+15:06:56.221 debug: Resolve file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-settings.ts from cce:/internal/x/prerequisite-imports as file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-settings.ts.
+15:06:56.221 debug: Resolve file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-types.ts from cce:/internal/x/prerequisite-imports as file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-types.ts.
+15:06:56.221 debug: Resolve file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline.ts from cce:/internal/x/prerequisite-imports as file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline.ts.
+15:06:56.222 debug: Resolve file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/tools/debug-view-runtime-control.ts from cce:/internal/x/prerequisite-imports as file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/tools/debug-view-runtime-control.ts.
+15:06:56.222 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts.
+15:06:56.222 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/ArtLoader.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/ArtLoader.ts.
+15:06:56.222 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/AudioManager.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/AudioManager.ts.
+15:06:56.222 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/DataManager.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/DataManager.ts.
+15:06:56.222 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/EventBus.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/EventBus.ts.
+15:06:56.222 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/GameTypes.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/GameTypes.ts.
+15:06:56.222 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/SaveManager.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/SaveManager.ts.
+15:06:56.222 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/TimeSystem.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/TimeSystem.ts.
+15:06:56.222 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/dungeon/DungeonConfig.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/dungeon/DungeonConfig.ts.
+15:06:56.222 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/farm/FarmSystem.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/farm/FarmSystem.ts.
+15:06:56.222 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts.
+15:06:56.222 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/platform/TapAdapter.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/platform/TapAdapter.ts.
+15:06:56.222 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DebugPanel.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DebugPanel.ts.
+15:06:56.222 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DefenseOverlay.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DefenseOverlay.ts.
+15:06:56.222 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DungeonOverlay.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DungeonOverlay.ts.
+15:06:56.222 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/FishingOverlay.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/FishingOverlay.ts.
+15:06:56.222 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/IndoorOverlay.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/IndoorOverlay.ts.
+15:06:56.222 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/NpcDialogOverlay.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/NpcDialogOverlay.ts.
+15:06:56.222 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/OverworldHUD.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/OverworldHUD.ts.
+15:06:56.222 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/SettingsOverlay.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/SettingsOverlay.ts.
+15:06:56.222 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/VoyageOverlay.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/VoyageOverlay.ts.
+15:06:56.228 debug: Target(editor) ends with cost 16.441375000000335ms.
+15:06:56.229 debug: Target(preview) build started.
+15:06:56.230 debug: Detected change: cce:/internal/x/prerequisite-imports. Last mtime: Thu Jan 01 1970 08:00:09 GMT+0800 (中国标准时间), Current mtime: Thu Jan 01 1970 08:00:12 GMT+0800 (中国标准时间)
+15:06:56.230 debug: Inspect cce:/internal/x/prerequisite-imports
+15:06:56.235 debug: transform url: 'cce:/internal/x/prerequisite-imports' costs: 4.70 ms
+15:06:56.235 debug: Resolve file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-dof-pass.ts from cce:/internal/x/prerequisite-imports as file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-dof-pass.ts.
+15:06:56.235 debug: Resolve file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-pass.ts from cce:/internal/x/prerequisite-imports as file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-pass.ts.
+15:06:56.235 debug: Resolve file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-settings.ts from cce:/internal/x/prerequisite-imports as file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-settings.ts.
+15:06:56.235 debug: Resolve file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-types.ts from cce:/internal/x/prerequisite-imports as file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline-types.ts.
+15:06:56.235 debug: Resolve file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline.ts from cce:/internal/x/prerequisite-imports as file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_renderpipeline/builtin-pipeline.ts.
+15:06:56.235 debug: Resolve file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/tools/debug-view-runtime-control.ts from cce:/internal/x/prerequisite-imports as file:///Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/tools/debug-view-runtime-control.ts.
+15:06:56.235 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/app/GameApp.ts.
+15:06:56.235 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/ArtLoader.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/ArtLoader.ts.
+15:06:56.235 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/AudioManager.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/AudioManager.ts.
+15:06:56.235 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/DataManager.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/DataManager.ts.
+15:06:56.235 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/EventBus.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/EventBus.ts.
+15:06:56.235 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/GameTypes.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/GameTypes.ts.
+15:06:56.235 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/SaveManager.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/SaveManager.ts.
+15:06:56.235 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/TimeSystem.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/core/TimeSystem.ts.
+15:06:56.235 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/dungeon/DungeonConfig.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/dungeon/DungeonConfig.ts.
+15:06:56.236 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/farm/FarmSystem.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/farm/FarmSystem.ts.
+15:06:56.236 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/gameplay/overworld/OverworldController.ts.
+15:06:56.236 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/platform/TapAdapter.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/platform/TapAdapter.ts.
+15:06:56.236 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DebugPanel.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DebugPanel.ts.
+15:06:56.236 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DefenseOverlay.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DefenseOverlay.ts.
+15:06:56.236 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DungeonOverlay.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/DungeonOverlay.ts.
+15:06:56.236 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/FishingOverlay.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/FishingOverlay.ts.
+15:06:56.236 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/IndoorOverlay.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/IndoorOverlay.ts.
+15:06:56.236 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/NpcDialogOverlay.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/NpcDialogOverlay.ts.
+15:06:56.236 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/OverworldHUD.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/OverworldHUD.ts.
+15:06:56.236 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/SettingsOverlay.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/SettingsOverlay.ts.
+15:06:56.236 debug: Resolve file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/VoyageOverlay.ts from cce:/internal/x/prerequisite-imports as file:///Users/liangqy/www/taptap/OtherworldLittleFarmV2/assets/scripts/ui/VoyageOverlay.ts.
+15:06:56.241 debug: Target(preview) ends with cost 12.514832999999271ms.

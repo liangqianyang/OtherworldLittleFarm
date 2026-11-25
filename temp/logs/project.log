@@ -1,0 +1,114 @@
+11-25-2026 15:06:43 - log: Load engine in /Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine
+11-25-2026 15:06:43 - log: Register native engine in /Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/native
+11-25-2026 15:06:43 - log: Request namespace: device-list
+11-25-2026 15:06:46 - log: [RB] extension loaded v0.1.12 sha256=3d66302ab21f7808de5cd6d5908c063a9d9ca2e38ad335388e5cae82906ce7ff path=/Users/liangqy/.CocosCreator/builtin-extensions/3.8.8/runtime-bridge
+11-25-2026 15:06:46 - log: [Tap小游戏] ========================================
+11-25-2026 15:06:46 - log: [Tap小游戏] TapTap 小游戏构建插件 v1.2.0
+11-25-2026 15:06:46 - log: [Tap小游戏] ----------------------------------------
+11-25-2026 15:06:46 - log: [Tap小游戏] 类型定义已就绪 → 代码中输入 tap. 即可获得提示
+11-25-2026 15:06:46 - log: [Tap小游戏] ----------------------------------------
+11-25-2026 15:06:46 - log: [Tap小游戏] AI Skills 位于 extensions/taptap-minigame-tools/ai-skills/
+11-25-2026 15:06:46 - log: [Tap小游戏]   tap-sdk-skill.md        → SDK 基础模块
+11-25-2026 15:06:46 - log: [Tap小游戏]   tap-ad-skill.md         → 广告模块
+11-25-2026 15:06:46 - log: [Tap小游戏]   tap-cloud-save-skill.md → 云存档模块
+11-25-2026 15:06:46 - log: [Tap小游戏] ========================================
+11-25-2026 15:06:47 - error: Cannot set properties of undefined (setting 'type')TypeError: Cannot set properties of undefined (setting 'type')
+    at PluginManager.internalRegister (/Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/builtin/builder/dist/browser/plugin.ccc:1:2370)
+    at PluginManager.register (/Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/builtin/builder/dist/share/plugin-manager.ccc:1:3726)
+    at PluginManager.register (/Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/builtin/builder/dist/browser/plugin.ccc:1:1275)
+    at PluginManager.step (/Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/builtin/builder/dist/share/plugin-manager.ccc:1:2477)
+    at PluginManager.addTask (/Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/builtin/builder/dist/share/plugin-manager.ccc:1:2252)
+11-25-2026 15:06:47 - error: cocos-service register panelInfo failed!
+11-25-2026 15:06:55 - log: waiting the ready of builder worker...
+11-25-2026 15:06:56 - error: [Assets] Cannot find module 'fs-extra'
+Require stack:
+- /Users/liangqy/www/taptap/OtherworldLittleFarmV2/extensions/taptap-minigame-tools/dist/converter-ts.js
+- /Users/liangqy/www/taptap/OtherworldLittleFarmV2/extensions/taptap-minigame-tools/dist/hooks.js
+- /Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/node_modules/@editor/creator/dist/module/protected/public.ccc
+- /Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/node_modules/@editor/creator/dist/module/protected/index.ccc
+- /Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/node_modules/@editor/creator/dist/module/index.ccc
+- /Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/node_modules/editor/preload.js
+- /Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/builtin/asset-db/dist/worker/index.ccc
+- /Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/node_modules/@base/electron-worker/static/script.ccc
+- /Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/node_modules/@base/electron-worker/static/worker.htmlError: Cannot find module 'fs-extra'
+Require stack:
+- /Users/liangqy/www/taptap/OtherworldLittleFarmV2/extensions/taptap-minigame-tools/dist/converter-ts.js
+- /Users/liangqy/www/taptap/OtherworldLittleFarmV2/extensions/taptap-minigame-tools/dist/hooks.js
+- /Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/node_modules/@editor/creator/dist/module/protected/public.ccc
+- /Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/node_modules/@editor/creator/dist/module/protected/index.ccc
+- /Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/node_modules/@editor/creator/dist/module/index.ccc
+- /Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/node_modules/editor/preload.js
+- /Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/builtin/asset-db/dist/worker/index.ccc
+- /Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/node_modules/@base/electron-worker/static/script.ccc
+- /Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/node_modules/@base/electron-worker/static/worker.html
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1152:15)
+    at Function.a._resolveFilename (node:electron/js2c/renderer_init:2:2669)
+    at Function._resolveFilename (/Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/node_modules/cc/preload.ts:109:46)
+    at Module._load (node:internal/modules/cjs/loader:993:27)
+    at Function.c._load (node:electron/js2c/node_init:2:17025)
+    at Function.s._load (node:electron/js2c/renderer_init:2:30909)
+    at Function._load (/Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/node_modules/cc/preload.ts:127:35)
+    at Module.require (node:internal/modules/cjs/loader:1240:19)
+    at require (node:internal/modules/helpers:179:18)
+    at Object.<anonymous> (/Users/liangqy/www/taptap/OtherworldLittleFarmV2/extensions/taptap-minigame-tools/dist/converter-ts.js:45:25)
+    at Object.<anonymous> (/Users/liangqy/www/taptap/OtherworldLittleFarmV2/extensions/taptap-minigame-tools/dist/converter-ts.js:602:3)
+    at Module._compile (node:internal/modules/cjs/loader:1373:14)
+    at Object.extFunction (/Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/node_modules/@editor/creator/dist/require.js:1:2204)
+    at Module.load (node:internal/modules/cjs/loader:1215:32)
+    at Module._load (node:internal/modules/cjs/loader:1031:12)
+    at Function.c._load (node:electron/js2c/node_init:2:17025)
+    at Function.s._load (node:electron/js2c/renderer_init:2:30909)
+    at Function._load (/Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/node_modules/cc/preload.ts:127:35)
+    at Module.require (node:internal/modules/cjs/loader:1240:19)
+    at require (node:internal/modules/helpers:179:18)
+    at Object.<anonymous> (/Users/liangqy/www/taptap/OtherworldLittleFarmV2/extensions/taptap-minigame-tools/dist/hooks.js:45:24)
+    at Object.<anonymous> (/Users/liangqy/www/taptap/OtherworldLittleFarmV2/extensions/taptap-minigame-tools/dist/hooks.js:365:3)
+    at Module._compile (node:internal/modules/cjs/loader:1373:14)
+    at Object.extFunction (/Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/node_modules/@editor/creator/dist/require.js:1:2204)
+    at Module.load (node:internal/modules/cjs/loader:1215:32)
+    at Module._load (node:internal/modules/cjs/loader:1031:12)
+    at Function.c._load (node:electron/js2c/node_init:2:17025)
+    at Function.s._load (node:electron/js2c/renderer_init:2:30909)
+    at Function._load (/Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/node_modules/cc/preload.ts:127:35)
+    at Module.require (node:internal/modules/cjs/loader:1240:19)
+    at n (/Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/node_modules/@editor/creator/dist/require.js:1:2785)
+    at Object.requireFile (/Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/node_modules/@editor/creator/dist/module/protected/public.ccc:1:466)
+    at PluginManager.register (/Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/builtin/builder/dist/worker/plugin.ccc:1:1304)
+    at /Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/builtin/builder/dist/worker/plugin.ccc:1:873
+    at Array.map (<anonymous>)
+    at PluginManager.init (/Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/builtin/builder/dist/worker/plugin.ccc:1:861)
+    at initBuildEnv (/Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/builtin/builder/dist/worker/index.ccc:1:3235)
+    at Ipc.<anonymous> (/Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/builtin/builder/dist/worker/msg-util.ccc:1:216)
+    at Ipc.emit (node:events:519:28)
+    at EventEmitter.<anonymous> (/Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/node_modules/@base/electron-worker/static/script.ccc:1:1664)
+    at EventEmitter.emit (node:events:519:28)
+    at IpcRenderer.<anonymous> (/Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/node_modules/@base/electron-base-ipc/dist/renderer.ccc:1:3858)
+    at IpcRenderer.emit (node:events:519:28)
+    at Object.onMessage (node:electron/js2c/renderer_init:2:8837)
+11-25-2026 15:06:56 - error: [Assets] register plugin taptap-minigame-tools in build worker failed!Error: [Assets] register plugin taptap-minigame-tools in build worker failed!
+    at console.error (/Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/node_modules/@sentry/core/src/utils-hoist/instrument/console.ts:40:14)
+    at NewConsole.error (/Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/builtin/asset-db/dist/worker/console.ccc:1:1536)
+    at PluginManager.register (/Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/builtin/builder/dist/worker/plugin.ccc:1:1682)
+    at /Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/builtin/builder/dist/worker/plugin.ccc:1:873
+    at Array.map (<anonymous>)
+    at PluginManager.init (/Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/builtin/builder/dist/worker/plugin.ccc:1:861)
+    at initBuildEnv (/Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/builtin/builder/dist/worker/index.ccc:1:3235)
+    at Ipc.<anonymous> (/Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/builtin/builder/dist/worker/msg-util.ccc:1:216)
+    at Ipc.emit (node:events:519:28)
+    at EventEmitter.<anonymous> (/Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/node_modules/@base/electron-worker/static/script.ccc:1:1664)
+    at EventEmitter.emit (node:events:519:28)
+    at IpcRenderer.<anonymous> (/Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/node_modules/@base/electron-base-ipc/dist/renderer.ccc:1:3858)
+    at IpcRenderer.emit (node:events:519:28)
+    at Object.onMessage (node:electron/js2c/renderer_init:2:8837)
+11-25-2026 15:06:56 - log: [Scene] [bullet]:bullet wasm lib loaded.
+11-25-2026 15:06:56 - log: [Scene] [box2d]:box2d wasm lib loaded.
+11-25-2026 15:06:56 - log: [Scene] meshopt wasm decoder initialized
+11-25-2026 15:06:56 - log: [Scene] [PHYSICS]: using builtin.
+11-25-2026 15:06:56 - log: [Scene] Cocos Creator v3.8.8
+11-25-2026 15:06:56 - log: [Scene] Using custom pipeline: Builtin
+11-25-2026 15:06:56 - log: [Scene] [PHYSICS2D]: switch from builtin to box2d.
+11-25-2026 15:47:45 - warn: Object has been destroyedTypeError: Object has been destroyed
+    at WebContents._.send (node:electron/js2c/browser_init:2:74130)
+    at WindowSender.immediately (/Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/node_modules/@base/electron-base-ipc/dist/sender.ccc:1:2082)
+    at Immediate._onImmediate (/Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/node_modules/@base/electron-base-ipc/dist/sender.ccc:1:2008)
+    at processImmediate (node:internal/timers:478:21)
