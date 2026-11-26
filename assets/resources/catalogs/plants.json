@@ -1,0 +1,381 @@
+{
+  "$schema_version": "2.0.0",
+  "calendar_rule": {
+    "yearDays": 48,
+    "seasons": ["spring", "summer", "autumn", "winter"],
+    "daysPerSeason": 12,
+    "daysPerSolarTerm": 2
+  },
+  "plants": [
+    {
+      "id": "spring_greens",
+      "name": "青露菜",
+      "category": "daily",
+      "rarity": "common",
+      "seasons": ["spring", "autumn"],
+      "solarTerms": [],
+      "growDays": 2,
+      "waterNeed": true,
+      "seedCost": 6,
+      "sellPrice": 18,
+      "harvestCount": [1, 2],
+      "source": ["npc_lubo"],
+      "cookingTags": ["vegetable", "stamina"],
+      "defense": null,
+      "dungeonUse": null,
+      "weaponEnchant": null,
+      "description": "清脆鲜嫩的初春灵蔬，生长迅速，是前期最稳妥的日常收入与灵膳基底。"
+    },
+    {
+      "id": "golden_rice",
+      "name": "金穗灵稻",
+      "category": "daily",
+      "rarity": "common",
+      "seasons": ["summer", "autumn"],
+      "solarTerms": [],
+      "growDays": 3,
+      "waterNeed": true,
+      "seedCost": 10,
+      "sellPrice": 28,
+      "harvestCount": [2, 3],
+      "source": ["npc_lubo"],
+      "cookingTags": ["grain", "stamina"],
+      "defense": null,
+      "dungeonUse": null,
+      "weaponEnchant": null,
+      "description": "稻穗泛着淡淡金光的日常主粮，常与河鱼同烹制作高阶灵膳。"
+    },
+    {
+      "id": "jade_melon",
+      "name": "翠玉瓜",
+      "category": "daily",
+      "rarity": "uncommon",
+      "seasons": ["summer"],
+      "solarTerms": [],
+      "growDays": 4,
+      "waterNeed": true,
+      "seedCost": 16,
+      "sellPrice": 48,
+      "harvestCount": [1, 2],
+      "source": ["npc_lubo", "npc_atang"],
+      "cookingTags": ["melon", "cooling"],
+      "defense": null,
+      "dungeonUse": null,
+      "weaponEnchant": null,
+      "description": "瓜瓤如碧玉般清凉，除高价出货外，更是制作抗暑灵饮的核心原料。"
+    },
+    {
+      "id": "winter_radish",
+      "name": "雪玉萝卜",
+      "category": "daily",
+      "rarity": "common",
+      "seasons": ["winter"],
+      "solarTerms": [],
+      "growDays": 3,
+      "waterNeed": true,
+      "seedCost": 12,
+      "sellPrice": 36,
+      "harvestCount": [1, 2],
+      "source": ["npc_lubo"],
+      "cookingTags": ["root", "warming"],
+      "defense": null,
+      "dungeonUse": null,
+      "weaponEnchant": null,
+      "description": "霜雪越重越清甜的冬日灵根，炖汤可带来温和的御寒与回血效果。"
+    },
+    {
+      "id": "thunder_potato",
+      "name": "雷火薯",
+      "category": "amphibious",
+      "rarity": "uncommon",
+      "seasons": ["spring", "autumn"],
+      "solarTerms": [],
+      "growDays": 3,
+      "waterNeed": true,
+      "seedCost": 18,
+      "sellPrice": 42,
+      "harvestCount": [2, 3],
+      "source": ["npc_xuanmo", "dungeon_bamboo_ruin"],
+      "cookingTags": ["spicy", "root"],
+      "defense": {
+        "role": "mine",
+        "perennialRegrowSec": 15,
+        "damage": 65,
+        "aoeRadiusTiles": 1.6,
+        "knockback": 1.2,
+        "canStackOn": false,
+        "allowsStackAbove": false,
+        "synergies": [
+          { "neighborId": "flame_pepper", "effect": "burn_aoe", "bonusMult": 1.3 }
+        ]
+      },
+      "dungeonUse": {
+        "type": "throwable_grenade",
+        "damage": 75,
+        "aoeRadiusTiles": 2.0,
+        "breaksCrackedWall": true,
+        "cooldownSec": 1.5,
+        "stackLimit": 5
+      },
+      "weaponEnchant": {
+        "element": "fire",
+        "effect": "explosive_hit",
+        "durationRuns": 1
+      },
+      "description": "俗称爆炎土豆。埋在防线受踏即爆且宿根自动再生；收获后装进背包就是能炸怪炸暗墙的土豆手雷。"
+    },
+    {
+      "id": "cloud_bamboo_shoot",
+      "name": "穿云笋",
+      "category": "amphibious",
+      "rarity": "uncommon",
+      "seasons": ["spring", "summer"],
+      "solarTerms": [],
+      "growDays": 4,
+      "waterNeed": true,
+      "seedCost": 22,
+      "sellPrice": 52,
+      "harvestCount": [1, 2],
+      "source": ["npc_xuanmo", "dungeon_bamboo_ruin"],
+      "cookingTags": ["bamboo", "agility"],
+      "defense": {
+        "role": "archer",
+        "perennialRegrowSec": 0,
+        "damage": 18,
+        "attackIntervalSec": 1.1,
+        "rangeTiles": 4.5,
+        "canHitAir": false,
+        "canStackOn": true,
+        "allowsStackAbove": false,
+        "elevatedBonus": {
+          "rangeMult": 1.35,
+          "canHitAir": true,
+          "immuneGroundMelee": true
+        },
+        "synergies": [
+          { "neighborId": "flame_pepper", "effect": "flaming_arrows", "bonusMult": 1.25 },
+          { "neighborId": "spirit_tea", "effect": "haste_aura", "attackSpeedMult": 1.25 }
+        ]
+      },
+      "dungeonUse": {
+        "type": "portable_turret",
+        "damage": 14,
+        "attackIntervalSec": 0.9,
+        "durationSec": 18,
+        "cooldownSec": 4.0,
+        "stackLimit": 3
+      },
+      "weaponEnchant": null,
+      "description": "自带锐利竹箭的灵笋。叠种在撑天竹高台上可进化为防空狙击塔；拔起成袖珍盆栽可带进地牢就地扎根吐弹。"
+    },
+    {
+      "id": "frost_melon",
+      "name": "霜露瓜",
+      "category": "amphibious",
+      "rarity": "rare",
+      "seasons": ["winter"],
+      "solarTerms": ["shuangjiang", "lidong", "xiaoxue"],
+      "growDays": 5,
+      "waterNeed": true,
+      "seedCost": 35,
+      "sellPrice": 95,
+      "harvestCount": [1, 2],
+      "source": ["npc_atang", "dungeon_bamboo_ruin"],
+      "cookingTags": ["melon", "frost"],
+      "defense": {
+        "role": "slow_aura",
+        "perennialRegrowSec": 0,
+        "slowFactor": 0.45,
+        "aoeRadiusTiles": 2.4,
+        "canStackOn": false,
+        "allowsStackAbove": false,
+        "synergies": [
+          { "neighborId": "water_lotus", "effect": "freeze_pulse", "bonusMult": 1.2 }
+        ]
+      },
+      "dungeonUse": {
+        "type": "throwable_frost_ring",
+        "freezeSec": 3.0,
+        "aoeRadiusTiles": 2.6,
+        "cooldownSec": 3.0,
+        "stackLimit": 4
+      },
+      "weaponEnchant": {
+        "element": "frost",
+        "effect": "slow_on_hit",
+        "durationRuns": 1
+      },
+      "description": "仅在霜降前后与寒冬出没的奇珍瓜果。防线可展开大范围寒霜减速，带进地牢捏碎即可冰封群怪。"
+    },
+    {
+      "id": "spirit_tea",
+      "name": "谷雨灵茶",
+      "category": "amphibious",
+      "rarity": "solar_limited",
+      "seasons": ["spring"],
+      "solarTerms": ["guyu", "lixia"],
+      "growDays": 4,
+      "waterNeed": true,
+      "seedCost": 40,
+      "sellPrice": 120,
+      "harvestCount": [2, 3],
+      "source": ["npc_atang", "solar_event_guyu"],
+      "cookingTags": ["tea", "mana"],
+      "defense": {
+        "role": "support_aura",
+        "perennialRegrowSec": 0,
+        "aoeRadiusTiles": 1.8,
+        "allyAttackSpeedMult": 1.25,
+        "canStackOn": false,
+        "allowsStackAbove": false,
+        "synergies": []
+      },
+      "dungeonUse": {
+        "type": "instant_elixir",
+        "restoreMana": 60,
+        "clearBulletsRadiusTiles": 3.0,
+        "cooldownSec": 6.0,
+        "stackLimit": 3
+      },
+      "weaponEnchant": {
+        "element": "spirit",
+        "effect": "mana_cost_down_25pct",
+        "durationRuns": 1
+      },
+      "description": "谷雨节气限定灵茶，错过须待来年返场。防线可鼓舞四周灵植提速，进地牢轻啜一口可回灵力并震散身周弹幕。"
+    },
+    {
+      "id": "sky_bamboo",
+      "name": "撑天竹",
+      "category": "combo",
+      "rarity": "uncommon",
+      "seasons": ["spring", "summer", "autumn", "winter"],
+      "solarTerms": [],
+      "growDays": 3,
+      "waterNeed": true,
+      "seedCost": 15,
+      "sellPrice": 30,
+      "harvestCount": [1, 1],
+      "source": ["npc_xuanmo", "npc_lubo"],
+      "cookingTags": [],
+      "defense": {
+        "role": "platform",
+        "perennialRegrowSec": 0,
+        "elevationLevel": 1,
+        "canStackOn": false,
+        "allowsStackAbove": true,
+        "synergies": []
+      },
+      "dungeonUse": {
+        "type": "deployable_cover",
+        "blockBulletsSec": 8.0,
+        "cooldownSec": 5.0,
+        "stackLimit": 3
+      },
+      "weaponEnchant": null,
+      "description": "成熟后笔直拔高半格形成稳固高台，可托举穿云笋等远程灵植获得俯瞰射程与对空能力。"
+    },
+    {
+      "id": "flame_pepper",
+      "name": "炎椒藤",
+      "category": "combo",
+      "rarity": "uncommon",
+      "seasons": ["summer", "autumn"],
+      "solarTerms": ["lixia", "xiaoshu"],
+      "growDays": 3,
+      "waterNeed": true,
+      "seedCost": 20,
+      "sellPrice": 46,
+      "harvestCount": [2, 3],
+      "source": ["npc_lubo", "dungeon_bamboo_ruin"],
+      "cookingTags": ["spicy", "warming"],
+      "defense": {
+        "role": "catalyst_fire",
+        "perennialRegrowSec": 0,
+        "adjacentAura": "ignite_allies",
+        "burnDps": 8,
+        "burnSec": 3.0,
+        "canStackOn": false,
+        "allowsStackAbove": false,
+        "synergies": [
+          { "neighborId": "cloud_bamboo_shoot", "effect": "flaming_arrows", "bonusMult": 1.25 },
+          { "neighborId": "thunder_potato", "effect": "burn_aoe", "bonusMult": 1.3 }
+        ]
+      },
+      "dungeonUse": null,
+      "weaponEnchant": {
+        "element": "fire",
+        "effect": "melee_flame_wave",
+        "durationRuns": 1
+      },
+      "description": "辛辣炽热的火系催化灵植。种在射手或雷火薯旁即可触发灼烧连携；摘果可为近战武器附魔火浪。"
+    },
+    {
+      "id": "water_lotus",
+      "name": "聚水荷",
+      "category": "combo",
+      "rarity": "uncommon",
+      "seasons": ["summer", "autumn"],
+      "solarTerms": ["xiazhi", "bailu"],
+      "growDays": 4,
+      "waterNeed": false,
+      "seedCost": 20,
+      "sellPrice": 45,
+      "harvestCount": [1, 2],
+      "source": ["npc_jianglao", "npc_lubo"],
+      "cookingTags": ["cooling", "lotus"],
+      "defense": {
+        "role": "catalyst_water",
+        "perennialRegrowSec": 0,
+        "slowFactor": 0.25,
+        "aoeRadiusTiles": 1.8,
+        "wetGround": true,
+        "canStackOn": false,
+        "allowsStackAbove": false,
+        "synergies": [
+          { "neighborId": "thunder_grass", "effect": "chain_electro", "bonusMult": 1.5 },
+          { "neighborId": "frost_melon", "effect": "freeze_pulse", "bonusMult": 1.2 }
+        ]
+      },
+      "dungeonUse": null,
+      "weaponEnchant": null,
+      "description": "无需浇水便能润湿周边石板的灵荷，与引雷草相邻可形成大范围感电链，与霜露瓜相邻则触发冰冻脉冲。"
+    },
+    {
+      "id": "thunder_grass",
+      "name": "引雷草",
+      "category": "combo",
+      "rarity": "solar_limited",
+      "seasons": ["spring", "summer"],
+      "solarTerms": ["jingzhe", "chunfen"],
+      "growDays": 4,
+      "waterNeed": true,
+      "seedCost": 38,
+      "sellPrice": 110,
+      "harvestCount": [1, 2],
+      "source": ["npc_atang", "solar_event_jingzhe"],
+      "cookingTags": ["lightning"],
+      "defense": {
+        "role": "lightning_turret",
+        "perennialRegrowSec": 0,
+        "damage": 32,
+        "attackIntervalSec": 1.8,
+        "rangeTiles": 3.8,
+        "chainTargets": 1,
+        "wetChainTargets": 3,
+        "canStackOn": true,
+        "allowsStackAbove": false,
+        "synergies": [
+          { "neighborId": "water_lotus", "effect": "chain_electro", "bonusMult": 1.5 }
+        ]
+      },
+      "dungeonUse": null,
+      "weaponEnchant": {
+        "element": "lightning",
+        "effect": "chain_lightning_3",
+        "durationRuns": 1
+      },
+      "description": "惊蛰春雷催生的奇草，错过须待来年。防线单体落雷，雨天或邻接聚水荷时立刻进化为三目标链式感电。"
+    }
+  ]
+}
